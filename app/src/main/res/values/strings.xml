@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Douniu</string>
+
+    <string-array name="tab_titles">
+        <item>首页</item>
+        <item>资讯</item>
+        <item>首席</item>
+        <item>行情</item>
+        <item>我的</item>
+    </string-array>
+
+    <string-array name="bar_item_titles">
+        <item>斗牛吧</item>
+        <item>斗牛直播室</item>
+        <item>斗牛士评级</item>
+    </string-array>
+</resources>
