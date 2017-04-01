@@ -20,7 +20,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ActivityAdvisor extends FragmentActivity implements View.OnClickListener{
+public class ActivityAskAdvisor extends FragmentActivity implements View.OnClickListener{
 
     @BindView(R.id.iv_base_back)
     ImageView back;
@@ -39,7 +39,7 @@ public class ActivityAdvisor extends FragmentActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_advisor);
+        setContentView(R.layout.activity_ask_advisor);
         ButterKnife.bind(this);
         title.setText("精英首席");
         edit.setVisibility(View.INVISIBLE);

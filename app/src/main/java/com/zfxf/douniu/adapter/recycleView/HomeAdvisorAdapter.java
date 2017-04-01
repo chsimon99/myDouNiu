@@ -58,7 +58,7 @@ public class HomeAdvisorAdapter extends RecyclerView.Adapter<HomeAdvisorAdapter.
         public MyHolder(View itemView, MyItemClickListener listener) {
             super(itemView);
             this.mListener = listener;
-            //            imageView.setOnClickListener(this);
+            itemView.setOnClickListener(this);
         }
 
         @Override

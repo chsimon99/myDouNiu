@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.ActivityAdvisorHome;
 import com.zfxf.douniu.activity.ActivityBar;
 import com.zfxf.douniu.activity.ActivityXiangMu;
 import com.zfxf.douniu.activity.ActivityZhengu;
@@ -174,6 +175,14 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
         ll_zhengu.setOnClickListener(this);
         ll_moni.setOnClickListener(this);
         ll_xiangmu.setOnClickListener(this);
+        mAdvisorAdapter.setOnItemClickListener(new HomeAdvisorAdapter.MyItemClickListener() {
+            @Override
+            public void onItemClick(View v, int positon) {
+                Intent intent = new Intent(getActivity(), ActivityAdvisorHome.class);
+                getActivity().startActivity(intent);
+                getActivity().overridePendingTransition(0,0);
+            }
+        });
     }
 
     @Override

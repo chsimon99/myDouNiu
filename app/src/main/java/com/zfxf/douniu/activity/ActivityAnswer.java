@@ -40,7 +40,7 @@ public class ActivityAnswer extends FragmentActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_advisor);
+        setContentView(R.layout.activity_ask_advisor);
         ButterKnife.bind(this);
         title.setText("回答");
         edit.setVisibility(View.INVISIBLE);

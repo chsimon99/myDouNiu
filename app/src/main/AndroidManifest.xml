@@ -19,12 +19,15 @@
         <activity android:name=".activity.MainActivityTabHost"/>
         <activity android:name=".activity.ActivityBar"/>
         <activity android:name=".activity.ActivityZhengu"/>
-        <activity android:name=".activity.ActivityAdvisor"/>
+        <activity android:name=".activity.ActivityAskAdvisor"/>
         <activity android:name=".activity.ActivityAnswer"/>
         <activity android:name=".activity.ActivityAnswerDetail"/>
         <activity android:name=".activity.ActivityAskStock"/>
         <activity android:name=".activity.ActivityXiangMu"/>
         <activity android:name=".activity.ActivityXiangMuDetail"/>
+        <activity android:name=".activity.ActivityAdvisorHome"/>
     </application>
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 </manifest>

@@ -144,7 +144,7 @@ public class ActivityZhengu extends FragmentActivity implements View.OnClickList
                 finish();
                 break;
             case R.id.rl_zhengu_advisor_detail:
-                intent = new Intent(this, ActivityAdvisor.class);
+                intent = new Intent(this, ActivityAskAdvisor.class);
                 startActivity(intent);
                 overridePendingTransition(0,0);
                 break;
