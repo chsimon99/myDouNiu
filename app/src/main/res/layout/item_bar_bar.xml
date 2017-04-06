@@ -71,7 +71,7 @@
                 android:layout_height="@dimen/dm020"
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/dm020"
-                android:src="@drawable/bar_eye"/>
+                android:src="@drawable/icon_eye"/>
             <TextView
                 android:id="@+id/tv_bar_bar_count"
                 android:layout_width="wrap_content"

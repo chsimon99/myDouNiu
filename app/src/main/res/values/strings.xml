@@ -14,4 +14,13 @@
         <item>斗牛直播室</item>
         <item>斗牛士评级</item>
     </string-array>
+
+    <string-array name="advisor_home_item_titles">
+        <item>直播课</item>
+        <item>公开课</item>
+        <item>私密课</item>
+        <item>1对1</item>
+        <item>资本圈</item>
+        <item>金股池</item>
+    </string-array>
 </resources>
