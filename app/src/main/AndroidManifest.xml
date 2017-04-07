@@ -26,8 +26,12 @@
         <activity android:name=".activity.ActivityXiangMu"/>
         <activity android:name=".activity.ActivityXiangMuDetail"/>
         <activity android:name=".activity.ActivityAdvisorHome"/>
+        <activity android:name=".activity.login.ActivityLogin"/>
+        <activity android:name=".activity.login.ActivityRegister"/>
+        <activity android:name=".activity.login.ActivityForget"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 </manifest>

@@ -61,49 +61,13 @@ public class FragmentAdvisorHomeSecret extends BaseFragment {
 		mRecyclerView.setLinearLayout();
 		mRecyclerView.setAdapter(mSecretAdapter);
 		mRecyclerView.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL));
-		mRecyclerView.setFooterViewText("加载更多……");
+		mRecyclerView.setPullRefreshEnable(false);
+		mRecyclerView.setPushRefreshEnable(false);
 	}
 	int num = 0;
 	@Override
 	public void initListener() {
 		super.initListener();
-		mRecyclerView.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
-			@Override
-			public void onRefresh() {
-				mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
-					@Override
-					public void run() {
-						mRecyclerView.setPullLoadMoreCompleted();
-					}
-				},1000);
-			}
-
-			@Override
-			public void onLoadMore() {
-				if(num > 1){
-					Toast.makeText(CommonUtils.getContext(),"没有数据了",Toast.LENGTH_SHORT).show();
-					mRecyclerView.setPullLoadMoreCompleted();
-					return;
-				}
-				num++;
-				List<String> newdatas = new ArrayList<String>();
-				newdatas.add("7");
-				mSecretAdapter.addDatas(newdatas);
-				mRecyclerView.post(new Runnable() {
-					@Override
-					public void run() {
-						mSecretAdapter.notifyDataSetChanged();
-					}
-				});
-				mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
-					@Override
-					public void run() {
-						mRecyclerView.setPullLoadMoreCompleted();
-					}
-				},1000);
-			}
-		});
-
 		mSecretAdapter.setOnItemClickListener(new AdvisorHomeSecretAdapter.MyItemClickListener() {
 			@Override
 			public void onItemClick(View v, int positon) {

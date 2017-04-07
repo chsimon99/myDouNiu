@@ -1,10 +1,12 @@
 package com.zfxf.douniu.view.fragment;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.base.BaseFragment;
 
 import butterknife.ButterKnife;
@@ -32,6 +34,8 @@ public class FragmentMyself extends BaseFragment {
 	@Override
 	public void initdata() {
 		super.initdata();
+		Intent intent = new Intent(getActivity(), ActivityLogin.class);
+		getActivity().startActivity(intent);
 	}
 
 	@Override

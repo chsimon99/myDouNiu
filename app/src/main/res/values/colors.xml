@@ -14,5 +14,7 @@
     <color name="titleText">#333333</color>
     <color name="titleTextGray">#999999</color>
     <color name="advisorType">#ffa135</color>
+    <color name="colorRise">#CC3333</color>
+    <color name="colorFall">#06BB28</color>
 
 </resources>

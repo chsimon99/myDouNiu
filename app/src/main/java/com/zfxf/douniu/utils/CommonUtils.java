@@ -167,4 +167,14 @@ public class CommonUtils {
     public static void toastMessage(String msg){
         Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
+
+    /**
+     * 判断手机号的正则表达式
+     * @param username
+     * @return
+     */
+    public static boolean isMobilePhone(String username) {
+        String telRegex = "[1][34578]\\d{9}";
+        return username.matches(telRegex);
+    }
 }

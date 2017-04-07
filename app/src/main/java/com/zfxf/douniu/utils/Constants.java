@@ -9,4 +9,5 @@ package com.zfxf.douniu.utils;
 public interface Constants {
     String CONFIGFILE = "douniu";
     String ISSETUP = "issetup";
+    String userId = "USERID";
 }
