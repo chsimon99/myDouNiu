@@ -26,6 +26,7 @@ public class FragmentBarBar extends BaseFragment {
 	PullLoadMoreRecyclerView mRecyclerView;
 	private BarBarAdapter mBarAdapter;
 	private List<String> datas = new ArrayList<String>();
+	private RecycleViewDivider mDivider;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -58,7 +59,10 @@ public class FragmentBarBar extends BaseFragment {
 
 		mRecyclerView.setLinearLayout();
 		mRecyclerView.setAdapter(mBarAdapter);
-		mRecyclerView.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL));
+		if(mDivider == null){//防止多次加载出现宽度变宽
+			mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
+			mRecyclerView.addItemDecoration(mDivider);
+		}
 //		mRecyclerView.addItemDecoration(
 //				new RecycleViewDivider(getActivity(),LinearLayoutManager.HORIZONTAL,
 //						CommonUtils.dip2px(getActivity(),20), Color.parseColor("#f4f4f4")));

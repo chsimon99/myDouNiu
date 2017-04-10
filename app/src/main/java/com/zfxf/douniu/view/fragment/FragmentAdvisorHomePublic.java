@@ -27,6 +27,7 @@ public class FragmentAdvisorHomePublic extends BaseFragment {
 	PullLoadMoreRecyclerView mRecyclerView;
 	private AdvisorHomePublicAdapter mPublicAdapter;
 	private List<String> datas = new ArrayList<String>();
+	private RecycleViewDivider mDivider;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -61,7 +62,10 @@ public class FragmentAdvisorHomePublic extends BaseFragment {
 
 		mRecyclerView.setLinearLayout();
 		mRecyclerView.setAdapter(mPublicAdapter);
-		mRecyclerView.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL));
+		if(mDivider == null){
+			mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
+			mRecyclerView.addItemDecoration(mDivider);
+		}
 		mRecyclerView.setFooterViewText("加载更多……");
 	}
 	int num = 0;

@@ -35,6 +35,9 @@ public class ActivityBar extends FragmentActivity implements View.OnClickListene
     private List<Fragment> list_fragment = new ArrayList<>();
     private FragmentPagerAdapter mAdapter;
     private List<String> list_title = new ArrayList<>();
+    private Fragment mFragmentBarBar;
+    private Fragment mFragmentBarZhibo;
+    private Fragment mFragmentBarGrade;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,13 +49,19 @@ public class ActivityBar extends FragmentActivity implements View.OnClickListene
     }
 
     private void initdata() {
-        Fragment fragmentBarBar = new FragmentBarBar();
-        Fragment fragmentBarZhibo = new FragmentBarZhibo();
-        Fragment fragmentBarGrade = new FragmentBarGrade();
+        if (mFragmentBarBar == null) {
+            mFragmentBarBar = new FragmentBarBar();
+        }
+        if (mFragmentBarZhibo == null) {
+            mFragmentBarZhibo = new FragmentBarZhibo();
+        }
+        if (mFragmentBarGrade == null) {
+            mFragmentBarGrade = new FragmentBarGrade();
+        }
         if(list_fragment.size() == 0){
-            list_fragment.add(fragmentBarBar);
-            list_fragment.add(fragmentBarZhibo);
-            list_fragment.add(fragmentBarGrade);
+            list_fragment.add(mFragmentBarBar);
+            list_fragment.add(mFragmentBarZhibo);
+            list_fragment.add(mFragmentBarGrade);
         }
         if(list_title.size() == 0){
             String[] titleStrings = CommonUtils.getResource().getStringArray(R.array.bar_item_titles);

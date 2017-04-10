@@ -7,9 +7,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.adapter.recycleView.AdvisorHomeDirectAdapter;
+import com.zfxf.douniu.adapter.recycleView.NewTopPolicyAdapter;
 import com.zfxf.douniu.base.BaseFragment;
-import com.zfxf.douniu.bean.TestBean;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.RecycleViewDivider;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
@@ -21,19 +20,19 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class FragmentAdvisorHomeDirect extends BaseFragment {
+public class FragmentNewTopPoint extends BaseFragment {
 	private View view;
 
-	@BindView(R.id.rv_advisor_home_direct)
+	@BindView(R.id.rv_fragment_new_top_point)
 	PullLoadMoreRecyclerView mRecyclerView;
-	private AdvisorHomeDirectAdapter mHomeDirectAdapter;
-	private List<TestBean> datas = new ArrayList<TestBean>();
+	private NewTopPolicyAdapter mNewTopPolicyAdapter;
+	private List<String> datas = new ArrayList<String>();
 	private RecycleViewDivider mDivider;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
 		if (view == null) {
-			view = inflater.inflate(R.layout.fragment_advisor_home_direct, null);
+			view = inflater.inflate(R.layout.fragment_new_top_point, null);
 		}
 		ViewGroup parent = (ViewGroup) view.getParent();
 		if(parent !=null){
@@ -50,25 +49,22 @@ public class FragmentAdvisorHomeDirect extends BaseFragment {
 	@Override
 	public void initdata() {
 		super.initdata();
-		if(datas.size() == 0){
-			for (int i =1;i<11;i++){
-				TestBean testBean = new TestBean();
-				testBean.setStr(i+"");
-				if(i == 1){
-					testBean.setFlag(true);
-				}else{
-					testBean.setFlag(false);
-				}
-				datas.add(testBean);
-			}
+		if (datas.size() == 0) {
+			datas.add("1");
+			datas.add("2");
+			datas.add("3");
+			datas.add("4");
+			datas.add("4");
+			datas.add("4");
+			datas.add("4");
 		}
-		if(mHomeDirectAdapter == null){
-			mHomeDirectAdapter = new AdvisorHomeDirectAdapter(getActivity(),datas);
+		if (mNewTopPolicyAdapter == null) {
+			mNewTopPolicyAdapter = new NewTopPolicyAdapter(getActivity(), datas);
 		}
 
 		mRecyclerView.setLinearLayout();
-		mRecyclerView.setAdapter(mHomeDirectAdapter);
-		if(mDivider == null){
+		mRecyclerView.setAdapter(mNewTopPolicyAdapter);
+		if(mDivider == null){//防止多次加载出现宽度变宽
 			mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
 			mRecyclerView.addItemDecoration(mDivider);
 		}
@@ -86,24 +82,24 @@ public class FragmentAdvisorHomeDirect extends BaseFragment {
 					public void run() {
 						mRecyclerView.setPullLoadMoreCompleted();
 					}
-				},1000);
+				}, 1000);
 			}
 
 			@Override
 			public void onLoadMore() {
-				if(num > 1){
-					Toast.makeText(CommonUtils.getContext(),"没有数据了",Toast.LENGTH_SHORT).show();
+				if (num > 1) {
+					Toast.makeText(CommonUtils.getContext(), "没有数据了", Toast.LENGTH_SHORT).show();
 					mRecyclerView.setPullLoadMoreCompleted();
 					return;
 				}
 				num++;
-				TestBean testBean = new TestBean();
-				testBean.setStr("11");
-				mHomeDirectAdapter.addDatas(testBean);
+				List<String> newdatas = new ArrayList<String>();
+				newdatas.add("7");
+				mNewTopPolicyAdapter.addDatas("");
 				mRecyclerView.post(new Runnable() {
 					@Override
 					public void run() {
-						mHomeDirectAdapter.notifyDataSetChanged();
+						mNewTopPolicyAdapter.notifyDataSetChanged();
 					}
 				});
 				mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
@@ -111,14 +107,14 @@ public class FragmentAdvisorHomeDirect extends BaseFragment {
 					public void run() {
 						mRecyclerView.setPullLoadMoreCompleted();
 					}
-				},1000);
+				}, 1000);
 			}
 		});
 
-		mHomeDirectAdapter.setOnItemClickListener(new AdvisorHomeDirectAdapter.MyItemClickListener() {
+		mNewTopPolicyAdapter.setOnItemClickListener(new NewTopPolicyAdapter.MyItemClickListener() {
 			@Override
 			public void onItemClick(View v, int positon) {
-				Toast.makeText(CommonUtils.getContext(),"点击了"+positon,Toast.LENGTH_SHORT).show();
+				CommonUtils.toastMessage("点击了" + positon);
 			}
 		});
 	}

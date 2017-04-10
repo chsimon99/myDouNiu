@@ -46,6 +46,7 @@ public class FragmentBarGrade extends BaseFragment {
 	TextView income;
 	@BindView(R.id.tv_bar_grade_human)
 	TextView human;
+	private RecycleViewDivider mDivider;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -84,7 +85,6 @@ public class FragmentBarGrade extends BaseFragment {
 		}
 		mCommendRecyclerView.setLayoutManager(mCommendManager);
 		mCommendRecyclerView.setAdapter(mCommendAdapter);
-		mCommendRecyclerView.addItemDecoration(new RecycleViewDivider(getActivity(),LinearLayoutManager.HORIZONTAL));
 
 		/**
 		 * 人气最高
@@ -102,7 +102,6 @@ public class FragmentBarGrade extends BaseFragment {
 		}
 		mHumanRecyclerView.setLayoutManager(mHumanManager);
 		mHumanRecyclerView.setAdapter(mHumanAdapter);
-		mHumanRecyclerView.addItemDecoration(new RecycleViewDivider(getActivity(),LinearLayoutManager.HORIZONTAL));
 
 		/**
 		 * 收益最好
@@ -119,8 +118,13 @@ public class FragmentBarGrade extends BaseFragment {
 		}
 		mIncomeRecyclerView.setLayoutManager(mIncomeManager);
 		mIncomeRecyclerView.setAdapter(mIncomeAdapter);
-		mIncomeRecyclerView.addItemDecoration(new RecycleViewDivider(getActivity(),LinearLayoutManager.HORIZONTAL));
 
+		if(mDivider ==null){
+			mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
+			mCommendRecyclerView.addItemDecoration(mDivider);
+			mHumanRecyclerView.addItemDecoration(mDivider);
+			mIncomeRecyclerView.addItemDecoration(mDivider);
+		}
 		super.initdata();
 	}
 

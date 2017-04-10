@@ -27,6 +27,7 @@ public class FragmentAdvisorHomeGold extends BaseFragment {
     PullLoadMoreRecyclerView mRecyclerView;
     private AdvisorHomeGoldAdapter mGoldAdapter;
     private List<String> datas = new ArrayList<String>();
+    private RecycleViewDivider mDivider;
 
     @Override
     public View initView(LayoutInflater inflater) {
@@ -59,7 +60,10 @@ public class FragmentAdvisorHomeGold extends BaseFragment {
 
         mRecyclerView.setLinearLayout();
         mRecyclerView.setAdapter(mGoldAdapter);
-        mRecyclerView.addItemDecoration(new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL));
+        if(mDivider == null){
+            mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
+            mRecyclerView.addItemDecoration(mDivider);
+        }
         mRecyclerView.setPullRefreshEnable(false);
         mRecyclerView.setPushRefreshEnable(false);
     }

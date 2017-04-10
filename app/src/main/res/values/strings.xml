@@ -23,4 +23,10 @@
         <item>资本圈</item>
         <item>金股池</item>
     </string-array>
+
+    <string-array name="fragment_new_top_titles">
+        <item>政策解读</item>
+        <item>事件追踪</item>
+        <item>观点视角</item>
+    </string-array>
 </resources>

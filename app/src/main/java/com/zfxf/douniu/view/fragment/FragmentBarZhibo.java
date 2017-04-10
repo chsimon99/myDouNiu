@@ -27,6 +27,8 @@ public class FragmentBarZhibo extends BaseFragment {
 	PullLoadMoreRecyclerView mRecyclerView;
 	private BarZhiboAdapter mZhiboAdapter;
 	private List<String> datas = new ArrayList<String>();
+	private RecycleViewDivider mDivider;
+
 	@Override
 	public View initView(LayoutInflater inflater) {
 		if (view == null) {
@@ -59,9 +61,11 @@ public class FragmentBarZhibo extends BaseFragment {
 
 		mRecyclerView.setLinearLayout();
 		mRecyclerView.setAdapter(mZhiboAdapter);
-		mRecyclerView.addItemDecoration(
-				new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL,
-						CommonUtils.dip2px(getActivity(),10), Color.parseColor("#f4f4f4")));
+		if(mDivider == null){
+			mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL,
+					CommonUtils.dip2px(getActivity(), 10), Color.parseColor("#f4f4f4"));
+			mRecyclerView.addItemDecoration(mDivider);
+		}
 		mRecyclerView.setFooterViewText("加载更多……");
 	}
 	int num = 0;
