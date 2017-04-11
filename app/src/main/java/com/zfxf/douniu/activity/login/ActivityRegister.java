@@ -83,13 +83,6 @@ public class ActivityRegister extends FragmentActivity implements View.OnClickLi
                 successLogin();
                 break;
             case R.id.ll_register_xieyi://同意协议
-//                if(!isAgree){
-//                    isAgree = !isAgree;
-//                    select.setImageResource(R.drawable.icon_no_select);
-//                }else{
-//                    isAgree = !isAgree;
-//                    select.setImageResource(R.drawable.icon_select);
-//                }
                 break;
 
         }

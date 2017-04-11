@@ -1,13 +1,14 @@
 package com.zfxf.douniu.view.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.ActivityInformation;
 import com.zfxf.douniu.adapter.recycleView.NewTopPolicyAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.utils.CommonUtils;
@@ -60,7 +61,6 @@ public class FragmentNewTopPolicy extends BaseFragment {
             datas.add("4");
             datas.add("4");
         }
-        Log.d("------------","FragmentNewTopPolicy init data");
         if (mNewTopPolicyAdapter == null) {
             mNewTopPolicyAdapter = new NewTopPolicyAdapter(getActivity(), datas);
         }
@@ -119,7 +119,9 @@ public class FragmentNewTopPolicy extends BaseFragment {
         mNewTopPolicyAdapter.setOnItemClickListener(new NewTopPolicyAdapter.MyItemClickListener() {
             @Override
             public void onItemClick(View v, int positon) {
-                Toast.makeText(CommonUtils.getContext(), "点击了" + positon, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(CommonUtils.getContext(), ActivityInformation.class);
+                startActivity(intent);
+                getActivity().overridePendingTransition(0,0);
             }
         });
     }

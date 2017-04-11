@@ -8,6 +8,6 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
     <style name="MyBarTabLayout" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
-        <item name="android:textSize">@dimen/dm028</item>
+        <item name="android:textSize">@dimen/dm026</item>
     </style>
 </resources>

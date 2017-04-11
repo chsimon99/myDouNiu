@@ -2,11 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:background="@color/colorWhite"
               android:orientation="vertical">
-    <TextView
+    <View
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textSize="@dimen/dm150"
-        android:textColor="@color/colorTitle"
-        android:text="4"/>
+        android:layout_height="@dimen/dm016"
+        android:background="@color/colorBgGary"/>
+    <com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView
+        android:id="@+id/rv_fragment_new_notice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </LinearLayout>

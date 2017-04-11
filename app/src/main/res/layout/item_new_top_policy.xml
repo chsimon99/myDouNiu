@@ -27,7 +27,7 @@
             android:layout_gravity="center"
             android:layout_marginRight="@dimen/dm018"
             android:text="09:52:50"
-            android:textColor="@color/titleTextGray"
+            android:textColor="@color/colorText"
             android:textSize="@dimen/dm024"/>
 
     </LinearLayout>

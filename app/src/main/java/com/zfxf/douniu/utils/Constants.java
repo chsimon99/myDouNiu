@@ -10,4 +10,6 @@ public interface Constants {
     String CONFIGFILE = "douniu";
     String ISSETUP = "issetup";
     String userId = "USERID";
+    String rvaluateResult = "RVALUATERESULT";
+    String rvaluateSuccess = "RVALUATESUCCESS";
 }

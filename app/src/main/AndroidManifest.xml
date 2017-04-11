@@ -29,6 +29,24 @@
         <activity android:name=".activity.login.ActivityLogin"/>
         <activity android:name=".activity.login.ActivityRegister"/>
         <activity android:name=".activity.login.ActivityForget"/>
+        <activity android:name=".activity.ActivityInformation"/>
+        <activity android:name=".activity.myself.ActivityMyselfShezhi"/>
+        <activity android:name=".activity.myself.ActivityMyselfContact"/>
+        <activity android:name=".activity.myself.ActivityMyselfQuestion"/>
+        <activity android:name=".activity.myself.ActivityMyselfReviseCode"/>
+        <activity android:name=".activity.myself.ActivityMyselfRvaluateOne"/>
+        <activity android:name=".activity.myself.ActivityMyselfRvaluateTwo"/>
+        <activity android:name=".activity.myself.ActivityMyselfRvaluateThird"/>
+        <activity android:name=".activity.myself.ActivityMyselfRvaluateFourth"/>
+        <activity android:name=".activity.myself.ActivityMyselfRvaluateFifth"/>
+        <activity android:name=".activity.myself.ActivityMyselfRvaluateSix"/>
+        <activity android:name=".activity.myself.ActivityMyselfRvaluateSeven"/>
+        <activity android:name=".activity.myself.ActivityMyselfRvaluateEight"/>
+        <activity android:name=".activity.myself.ActivityMyselfRvaluateNine"/>
+        <activity android:name=".activity.myself.ActivityMyselfRvaluateTen"/>
+        <activity android:name=".activity.myself.ActivityMyselfRvaluateEleven"/>
+        <activity android:name=".activity.myself.ActivityMyselfRvaluateTwelve"/>
+        <activity android:name=".activity.myself.ActivityMyselfRvaluateResult"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

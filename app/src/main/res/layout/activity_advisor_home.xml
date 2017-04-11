@@ -186,7 +186,7 @@
         android:layout_height="@dimen/dm072"
         app:tabIndicatorColor="@color/colorTitle"
         app:tabIndicatorHeight="@dimen/dm004"
-        app:tabMode="scrollable"
+        app:tabMode="fixed"
         app:tabSelectedTextColor="@color/colorTitle"
         app:tabTextAppearance="@style/MyBarTabLayout"
         app:tabTextColor="@color/colorText"/>

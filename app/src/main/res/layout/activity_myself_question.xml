@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBgGary"
+    android:orientation="vertical">
+    <include layout="@layout/activity_base_title"/>
+
+    <EditText
+        android:id="@+id/et_myself_question_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm260"
+        android:background="@color/colorWhite"
+        android:gravity="left"
+        android:hint="我们会因为您的反馈做的更好……"
+        android:padding="@dimen/dm020"
+        android:paddingBottom="@dimen/dm020"
+        android:paddingTop="@dimen/dm020"
+        android:textColorHint="@color/colorText"
+        android:textSize="@dimen/dm024"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm016"/>
+    <EditText
+        android:id="@+id/et_myself_question_phone"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm080"
+        android:background="@color/colorWhite"
+        android:gravity="center_vertical|left"
+        android:inputType="number"
+        android:hint="留下您的联系方式(您的意见得到认可会有礼物奉上)"
+        android:padding="@dimen/dm020"
+        android:textColorHint="@color/colorText"
+        android:textSize="@dimen/dm024"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_myself_question_submit"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm080"
+        android:layout_marginLeft="@dimen/dm040"
+        android:layout_marginRight="@dimen/dm040"
+        android:layout_marginTop="@dimen/dm045"
+        android:background="@drawable/backgroud_button_app_color">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="提交"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/dm034"/>
+    </RelativeLayout>
+</LinearLayout>

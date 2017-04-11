@@ -7,6 +7,7 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorText">#666666</color>
     <color name="colorBgGary">#f4f4f4</color>
+    <color name="colorQuestionGary">#f2f2f2</color>
     <color name="colorToRed">#cc3333</color>
     <color name="colorSuper">#fca33b</color>
     <color name="colorShort">#fb6733</color>
@@ -16,5 +17,6 @@
     <color name="advisorType">#ffa135</color>
     <color name="colorRise">#CC3333</color>
     <color name="colorFall">#06BB28</color>
+    <color name="colorPhone">#6398db</color>
 
 </resources>
