@@ -65,6 +65,12 @@ public class ActivityAdvisorHome extends FragmentActivity implements View.OnClic
     TextView midder;//中线
     @BindView(R.id.tv_advisor_home_introduce)
     TextView introduce;//简介
+    private Fragment mFragmentAdvisorHomeDirect;
+    private Fragment mFragmentAdvisorHomePublic;
+    private Fragment mFragmentAdvisorHomeSecret;
+    private Fragment mFragmentAdvisorHomeOne;
+    private Fragment mFragmentAdvisorHomeCapital;
+    private Fragment mFragmentAdvisorHomeGold;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,20 +82,32 @@ public class ActivityAdvisorHome extends FragmentActivity implements View.OnClic
     }
 
     private void initdata() {
+        if(mFragmentAdvisorHomeDirect == null){
+            mFragmentAdvisorHomeDirect = new FragmentAdvisorHomeDirect();
+        }
+        if(mFragmentAdvisorHomePublic == null){
+            mFragmentAdvisorHomePublic = new FragmentAdvisorHomePublic();
+        }
+        if(mFragmentAdvisorHomeSecret == null){
+            mFragmentAdvisorHomeSecret = new FragmentAdvisorHomeSecret();
+        }
+        if(mFragmentAdvisorHomeOne== null){
+            mFragmentAdvisorHomeOne = new FragmentAdvisorHomeOne();
+        }
+        if(mFragmentAdvisorHomeCapital == null){
+            mFragmentAdvisorHomeCapital = new FragmentAdvisorHomeCapital();
+        }
+        if(mFragmentAdvisorHomeGold == null){
+            mFragmentAdvisorHomeGold = new FragmentAdvisorHomeGold();
+        }
 
-        Fragment fragmentAdvisorHomeDirect = new FragmentAdvisorHomeDirect();
-        Fragment fragmentAdvisorHomePublic = new FragmentAdvisorHomePublic();
-        Fragment fragmentAdvisorHomeSecret = new FragmentAdvisorHomeSecret();
-        Fragment fragmentAdvisorHomeOne = new FragmentAdvisorHomeOne();
-        Fragment fragmentAdvisorHomeCapital = new FragmentAdvisorHomeCapital();
-        Fragment fragmentAdvisorHomeGold = new FragmentAdvisorHomeGold();
         if(list_fragment.size() == 0){
-            list_fragment.add(fragmentAdvisorHomeDirect);
-            list_fragment.add(fragmentAdvisorHomePublic);
-            list_fragment.add(fragmentAdvisorHomeSecret);
-            list_fragment.add(fragmentAdvisorHomeOne);
-            list_fragment.add(fragmentAdvisorHomeCapital);
-            list_fragment.add(fragmentAdvisorHomeGold);
+            list_fragment.add(mFragmentAdvisorHomeDirect);
+            list_fragment.add(mFragmentAdvisorHomePublic);
+            list_fragment.add(mFragmentAdvisorHomeSecret);
+            list_fragment.add(mFragmentAdvisorHomeOne);
+            list_fragment.add(mFragmentAdvisorHomeCapital);
+            list_fragment.add(mFragmentAdvisorHomeGold);
         }
         if(list_title.size() == 0){
             String[] titleStrings = CommonUtils.getResource().getStringArray(R.array.advisor_home_item_titles);

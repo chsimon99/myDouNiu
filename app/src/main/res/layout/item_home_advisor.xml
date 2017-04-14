@@ -25,7 +25,7 @@
                 android:layout_gravity="center"
                 android:layout_marginRight="@dimen/dm005"
                 android:text="百变股神"
-                android:textColor="#32384d"
+                android:textColor="@color/titleText"
                 android:textSize="@dimen/dm028"/>
             <TextView
                 android:id="@+id/tv_home_advisor_midder"

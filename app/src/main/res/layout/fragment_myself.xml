@@ -155,7 +155,7 @@
         <LinearLayout
             android:id="@+id/ll_myself_subscribe"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dm060"
+            android:layout_height="@dimen/dm080"
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="@dimen/dm035"
@@ -189,7 +189,7 @@
         <LinearLayout
             android:id="@+id/ll_myself_consume"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dm060"
+            android:layout_height="@dimen/dm080"
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="@dimen/dm035"
@@ -224,7 +224,7 @@
         <LinearLayout
             android:id="@+id/ll_myself_advisor"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dm060"
+            android:layout_height="@dimen/dm080"
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="@dimen/dm035"
@@ -263,7 +263,7 @@
         <LinearLayout
             android:id="@+id/ll_myself_evaluate"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dm060"
+            android:layout_height="@dimen/dm080"
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="@dimen/dm035"
@@ -297,7 +297,7 @@
         <LinearLayout
             android:id="@+id/ll_myself_contract"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dm060"
+            android:layout_height="@dimen/dm080"
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="@dimen/dm035"
@@ -332,7 +332,7 @@
         android:id="@+id/ll_myself_shezhi"
         android:layout_width="match_parent"
         android:background="@color/colorWhite"
-        android:layout_height="@dimen/dm060"
+        android:layout_height="@dimen/dm080"
         android:orientation="horizontal">
         <ImageView
             android:layout_width="@dimen/dm035"

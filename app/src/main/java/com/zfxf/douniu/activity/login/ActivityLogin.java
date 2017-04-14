@@ -15,6 +15,8 @@ import android.widget.TextView;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.internet.LoginInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,9 +74,9 @@ public class ActivityLogin extends FragmentActivity implements View.OnClickListe
     }
 
     private boolean isEye = false;
+    Intent intent;
     @Override
     public void onClick(View v) {
-        Intent intent;
         switch (v.getId()){
             case R.id.iv_base_back:
                 finishAll();
@@ -118,15 +120,6 @@ public class ActivityLogin extends FragmentActivity implements View.OnClickListe
     private void logIn() {
         String str_phone = phone.getText().toString();
         String str_passport = passport.getText().toString();
-        LoginInternetRequest.login(str_phone, str_passport, new LoginInternetRequest.ForResultListener() {
-            @Override
-            public void onResponseMessage(String code) {
-                if(code.equals("成功")){
-                    CommonUtils.toastMessage("登录成功");
-                }
-            }
-        });
-
 
         if(TextUtils.isEmpty(str_phone)){
             CommonUtils.toastMessage("用户名不能为空");
@@ -140,6 +133,17 @@ public class ActivityLogin extends FragmentActivity implements View.OnClickListe
                 return;
             }
         }
+        LoginInternetRequest.login(str_phone, str_passport, new LoginInternetRequest.ForResultListener() {
+            @Override
+            public void onResponseMessage(String code) {
+                if(code.equals("成功")){
+                    CommonUtils.toastMessage("登录成功");
+                    SpTools.setBoolean(CommonUtils.getContext(), Constants.isLogin,true);
+                    finishAll();
+                    finish();
+                }
+            }
+        });
     }
 
     private void finishAll() {

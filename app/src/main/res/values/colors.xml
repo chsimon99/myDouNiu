@@ -18,5 +18,8 @@
     <color name="colorRise">#CC3333</color>
     <color name="colorFall">#06BB28</color>
     <color name="colorPhone">#6398db</color>
+    <color name="colorNUll">#00ffffff</color>
+    <color name="colorGrayWhite">#99ffffff</color>
+    <color name="colorGray">#CCCCCC</color>
 
 </resources>

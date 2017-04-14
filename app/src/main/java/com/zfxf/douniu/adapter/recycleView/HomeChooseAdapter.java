@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
@@ -54,7 +54,7 @@ public class HomeChooseAdapter extends RecyclerView.Adapter<HomeChooseAdapter.My
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private MyItemClickListener mListener;
-        LinearLayout mLinearLayout;
+        ImageView img;
         TextView type;
         TextView scale;
         TextView income;
@@ -64,7 +64,7 @@ public class HomeChooseAdapter extends RecyclerView.Adapter<HomeChooseAdapter.My
         public MyHolder(View itemView, MyItemClickListener listener) {
             super(itemView);
             this.mListener = listener;
-            mLinearLayout = (LinearLayout) itemView.findViewById(R.id.ll_home_choose);
+            img = (ImageView) itemView.findViewById(R.id.iv_home_choose_img);
             type = (TextView) itemView.findViewById(R.id.tv_home_choose_type);
             scale = (TextView) itemView.findViewById(R.id.tv_home_choose_scale);
             income = (TextView) itemView.findViewById(R.id.tv_home_choose_income);
@@ -73,7 +73,7 @@ public class HomeChooseAdapter extends RecyclerView.Adapter<HomeChooseAdapter.My
 
             type.getPaint().setFakeBoldText(true);//加粗
             subscriber.getPaint().setFakeBoldText(true);//加粗
-            mLinearLayout.setOnClickListener(this);
+            itemView.setOnClickListener(this);
         }
 
         @Override
@@ -85,9 +85,9 @@ public class HomeChooseAdapter extends RecyclerView.Adapter<HomeChooseAdapter.My
 
         public void setRefreshData(String str, int position) {
             if(position % 2 ==0){
-                mLinearLayout.setBackgroundResource(R.drawable.home_choose);
+                img.setImageResource(R.drawable.home_choose);
             }else{
-                mLinearLayout.setBackgroundResource(R.drawable.home_choose1);
+                img.setImageResource(R.drawable.home_choose1);
             }
         }
     }

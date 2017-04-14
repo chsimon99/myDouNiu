@@ -88,11 +88,13 @@ public class AdvisorHomeDirectAdapter extends RecyclerView.Adapter<AdvisorHomeDi
             if(bean.isFlag()){
                 time.setTextColor(CommonUtils.getContext().getResources().getColor(R.color.colorTitle));
                count.setTextColor(CommonUtils.getContext().getResources().getColor(R.color.colorShort));
+                type.setImageResource(R.drawable.icon_eyes);
                 content.setText("语言文字直播中");
             }else {
                 content.setText(bean.getStr());
                 time.setTextColor(CommonUtils.getContext().getResources().getColor(R.color.titleTextGray));
                 count.setTextColor(CommonUtils.getContext().getResources().getColor(R.color.titleTextGray));
+                type.setImageResource(R.drawable.icon_eye);
             }
         }
     }

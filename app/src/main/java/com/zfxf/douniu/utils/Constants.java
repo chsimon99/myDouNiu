@@ -12,4 +12,5 @@ public interface Constants {
     String userId = "USERID";
     String rvaluateResult = "RVALUATERESULT";
     String rvaluateSuccess = "RVALUATESUCCESS";
+    String isLogin = "ISLOGIN";
 }

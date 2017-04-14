@@ -85,6 +85,8 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
     private List<String> chooseDatas = new ArrayList<String>();
     private List<String> zhiboDatas = new ArrayList<String>();
 
+    private RecycleViewDivider mDivider;
+
     @Override
     public View initView(LayoutInflater inflater) {
         if (view == null) {
@@ -153,7 +155,10 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
 
         mAdvisorRecyclerView.setLayoutManager(mAdvisorManager);
         mAdvisorRecyclerView.setAdapter(mAdvisorAdapter);
-        mAdvisorRecyclerView.addItemDecoration(new RecycleViewDivider(getActivity(),LinearLayoutManager.HORIZONTAL));
+        if(mDivider == null){//防止多次加载出现宽度变宽
+            mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
+            mAdvisorRecyclerView.addItemDecoration(mDivider);
+        }
 
         mChooseRecyclerView.setLayoutManager(mChooseManager);
         mChooseRecyclerView.setAdapter(mChooseAdapter);

@@ -138,13 +138,17 @@ public class FragmentNews extends BaseFragment implements View.OnClickListener{
 	}
 
 	private void reset() {
-//		tt.getPaint().setFakeBoldText(false);
-//		kx.getPaint().setFakeBoldText(false);
-//		jx.getPaint().setFakeBoldText(false);
-//		gg.getPaint().setFakeBoldText(false);
 		v_tt.setVisibility(View.INVISIBLE);
 		v_kx.setVisibility(View.INVISIBLE);
 		v_jx.setVisibility(View.INVISIBLE);
 		v_gg.setVisibility(View.INVISIBLE);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		reset();
+		v_tt.setVisibility(View.VISIBLE);
+		select(0);
 	}
 }

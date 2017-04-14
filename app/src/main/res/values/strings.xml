@@ -30,8 +30,32 @@
         <item>观点视角</item>
     </string-array>
 
+    <string-array name="fragment_myself_consume_titles">
+        <item>待支付</item>
+        <item>已完成</item>
+    </string-array>
+
+    <string-array name="fragment_myself_attention_titles">
+        <item>首席</item>
+        <item>斗牛士</item>
+    </string-array>
+
+    <string-array name="fragment_myself_ask_titles">
+        <item>已回答</item>
+        <item>未回答</item>
+    </string-array>
+
+    <string-array name="fragment_myself_subscribe_titles">
+        <item>选股王</item>
+        <item>公开课</item>
+        <item>私密课</item>
+        <item>资本圈</item>
+        <item>金股池</item>
+    </string-array>
+
     <string name="evaluate_second_result">稳健型</string>
     <string name="evaluate_third_result">积极型</string>
     <string name="evaluate_second_content">此类投资者愿意承担一定程度的风险，主要强调投资风险和资产增值之间的平衡，主要投资目标是资产的增值，为了获得一定收益可以承受投资产品价格的波动，甚至可以承受一段时间内投资产品价格的下跌，此类投资者可以承受一定程度的资产波动风险和本金亏损风险</string>
     <string name="evaluate_third_content">此类投资者为了获得高回报的投资收益能够承受投资产品价格的剧烈波动，也可以承担这种波动所带来的结果，投资目标主要是取得超额收益，为实现投资目标愿意冒比较大的投资风险，此类投资者能够承担相当大的投资风险和本金亏损风险</string>
+    <string name="filter_vcode">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
 </resources>

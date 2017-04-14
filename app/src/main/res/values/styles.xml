@@ -10,4 +10,16 @@
     <style name="MyBarTabLayout" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
         <item name="android:textSize">@dimen/dm026</item>
     </style>
+
+    <style name="MydateStyle" parent="android:Theme.Holo.Light">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <!--设置dialog不全屏 -->
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <!--除去title，如果在代码里面有其他设置会没效果的不过完全没效果-->
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowBackground">@color/colorNUll</item>
+    </style>
 </resources>

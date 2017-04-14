@@ -47,6 +47,15 @@
         <activity android:name=".activity.myself.ActivityMyselfRvaluateEleven"/>
         <activity android:name=".activity.myself.ActivityMyselfRvaluateTwelve"/>
         <activity android:name=".activity.myself.ActivityMyselfRvaluateResult"/>
+        <activity android:name=".activity.myself.ActivityMyselfAdvisor"/>
+        <activity android:name=".activity.myself.ActivityMyselfConsume"/>
+        <activity android:name=".activity.myself.ActivityMyselfAttention"/>
+        <activity android:name=".activity.myself.ActivityMyselfAsk"/>
+        <activity android:name=".activity.myself.ActivityMyselfSubscribe"/>
+        <activity android:name=".activity.myself.ActivityMyselfInformation"/>
+        <activity android:name=".activity.advisor.ActivityAdvisorAllPublicDetail"/>
+        <activity android:name=".activity.advisor.ActivityAdvisorAllSecretDetail"/>
+        <activity android:name=".activity.ActivityToPay"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
