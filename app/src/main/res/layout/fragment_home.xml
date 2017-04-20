@@ -10,6 +10,7 @@
         android:background="@color/colorTitle"
         android:orientation="horizontal">
         <LinearLayout
+            android:id="@+id/ll_home_research"
             android:layout_width="0dp"
             android:layout_height="@dimen/dm052"
             android:layout_gravity="center"
@@ -33,6 +34,7 @@
                 android:textSize="@dimen/dm026"/>
         </LinearLayout>
         <ImageView
+            android:id="@+id/iv_home_message"
             android:layout_width="@dimen/dm050"
             android:layout_height="@dimen/dm050"
             android:layout_gravity="center"
@@ -173,7 +175,7 @@
                             android:textSize="@dimen/dm028"/>
                     </LinearLayout>
                     <LinearLayout
-                        android:id="@+id/ll_home_zhengu"
+                        android:id="@+id/ll_home_wenda"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -183,13 +185,13 @@
                             android:layout_width="@dimen/dm090"
                             android:layout_height="@dimen/dm090"
                             android:layout_gravity="center"
-                            android:src="@drawable/home_zhengu"/>
+                            android:src="@drawable/home_wenda"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/dm018"
-                            android:text="诊股吧"
+                            android:text="微问答"
                             android:textColor="@color/colorText"
                             android:textSize="@dimen/dm028"/>
                     </LinearLayout>

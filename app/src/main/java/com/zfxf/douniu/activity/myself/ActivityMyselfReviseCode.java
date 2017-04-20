@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.internet.LoginInternetRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,6 +62,14 @@ public class ActivityMyselfReviseCode extends FragmentActivity implements View.O
                 finish();
                 break;
             case R.id.rl_myself_revise_confirm:
+                LoginInternetRequest.reviseCode(password.getText().toString(),
+                        newpassword.getText().toString(), password_confirm.getText().toString(),
+                        password, newpassword, password_confirm, new LoginInternetRequest.ForResultListener() {
+                            @Override
+                            public void onResponseMessage(String code) {
+
+                            }
+                        });
                 break;
         }
     }

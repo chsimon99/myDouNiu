@@ -244,7 +244,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:text="问股"
+                android:text="提问"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/dm034"/>
         </LinearLayout>

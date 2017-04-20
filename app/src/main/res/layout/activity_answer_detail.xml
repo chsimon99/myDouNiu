@@ -154,7 +154,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="问股"
+            android:text="提问"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/dm034"/>
     </LinearLayout>

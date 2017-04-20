@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.activity.ActivityInformation;
+import com.zfxf.douniu.activity.ActivityHeadLineDetail;
 import com.zfxf.douniu.adapter.recycleView.NewTopPolicyAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.utils.CommonUtils;
@@ -116,7 +116,7 @@ public class FragmentNewTopPoint extends BaseFragment {
 		mNewTopPolicyAdapter.setOnItemClickListener(new NewTopPolicyAdapter.MyItemClickListener() {
 			@Override
 			public void onItemClick(View v, int positon) {
-				Intent intent = new Intent(CommonUtils.getContext(), ActivityInformation.class);
+				Intent intent = new Intent(CommonUtils.getContext(), ActivityHeadLineDetail.class);
 				startActivity(intent);
 				getActivity().overridePendingTransition(0,0);
 			}

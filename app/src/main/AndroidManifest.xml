@@ -56,6 +56,17 @@
         <activity android:name=".activity.advisor.ActivityAdvisorAllPublicDetail"/>
         <activity android:name=".activity.advisor.ActivityAdvisorAllSecretDetail"/>
         <activity android:name=".activity.ActivityToPay"/>
+        <activity android:name=".activity.ActivityBuyNiu"/>
+        <activity android:name=".activity.ActivityDeposit"/>
+        <activity android:name=".activity.ActivityLiving"/>
+        <activity android:name=".activity.myself.ActivityMyselfMessage"/>
+        <activity android:name=".activity.myself.ActivityMyselfMessageCategorie"/>
+        <activity android:name=".activity.ActivityResearch"/>
+        <activity android:name=".activity.ActivityHeadline"/>
+        <activity android:name=".activity.ActivityHeadLineDetail"/>
+        <activity android:name=".activity.ActivityReward"/>
+        <activity android:name=".activity.ActivityGoldPond"/>
+        <activity android:name=".activity.Activityhistory"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

@@ -61,6 +61,7 @@ public class ZhenguAdvisorAdapter extends RecyclerView.Adapter<ZhenguAdvisorAdap
         TextView name;
         TextView type;
         TextView ask;
+        TextView price;
         public MyHolder(View itemView, MyItemClickListener listener) {
             super(itemView);
             this.mListener = listener;
@@ -68,6 +69,7 @@ public class ZhenguAdvisorAdapter extends RecyclerView.Adapter<ZhenguAdvisorAdap
             name = (TextView) itemView.findViewById(R.id.tv_zhengu_advisor_name);
             type = (TextView) itemView.findViewById(R.id.tv_zhengu_advisor_type);
             ask = (TextView) itemView.findViewById(R.id.tv_zhengu_advisor_ask);
+            price = (TextView) itemView.findViewById(R.id.tv_zhengu_advisor_price);
             name.getPaint().setFakeBoldText(true);//加粗
             ask.getPaint().setFakeBoldText(true);//加粗
 

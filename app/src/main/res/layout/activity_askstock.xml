@@ -3,19 +3,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
     android:orientation="vertical">
     <include layout="@layout/activity_base_title"/>
 
     <EditText
+        android:background="@color/colorWhite"
         android:id="@+id/et_askstock"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dm020"
-        android:layout_marginRight="@dimen/dm020"
-        android:layout_marginTop="@dimen/dm032"
-        android:hint="请输入您的问题"
+        android:layout_height="@dimen/dm300"
+        android:paddingLeft="@dimen/dm020"
+        android:paddingRight="@dimen/dm020"
+        android:paddingTop="@dimen/dm032"
+        android:hint="问股速回，解您所困。24小时无人解答，将按支付路径全额退款"
         android:imeOptions="actionDone"
+        android:gravity="start"
         android:inputType="textMultiLine"
         android:textColor="@color/titleText"
         android:textSize="@dimen/dm026"/>
@@ -23,10 +24,40 @@
         android:id="@+id/tv_askstock_count"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dm010"
         android:text="0/50"
         android:gravity="end"
         android:layout_marginRight="@dimen/dm020"
         android:textColor="@color/colorTitle"
         android:textSize="@dimen/dm024"
     />
+    <LinearLayout
+        android:id="@+id/ll_askstock_contact"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm080"
+        android:background="@color/colorWhite"
+        android:layout_marginTop="@dimen/dm020"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/dm020"
+            android:text="查看问答细则及责任说明"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/dm026"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+        <ImageView
+            android:layout_width="@dimen/dm014"
+            android:layout_height="@dimen/dm028"
+            android:layout_gravity="center"
+            android:layout_marginRight="@dimen/dm020"
+            android:src="@drawable/home_jiantou"/>
+    </LinearLayout>
+
+
+
 </LinearLayout>

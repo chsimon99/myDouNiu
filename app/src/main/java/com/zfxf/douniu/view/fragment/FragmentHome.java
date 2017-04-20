@@ -14,12 +14,16 @@ import android.widget.TextView;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.activity.ActivityAdvisorHome;
 import com.zfxf.douniu.activity.ActivityBar;
+import com.zfxf.douniu.activity.ActivityHeadline;
+import com.zfxf.douniu.activity.ActivityResearch;
 import com.zfxf.douniu.activity.ActivityXiangMu;
 import com.zfxf.douniu.activity.ActivityZhengu;
+import com.zfxf.douniu.activity.myself.ActivityMyselfMessage;
 import com.zfxf.douniu.adapter.recycleView.HomeAdvisorAdapter;
 import com.zfxf.douniu.adapter.recycleView.HomeChooseAdapter;
 import com.zfxf.douniu.adapter.recycleView.HomeZhiboAdapter;
 import com.zfxf.douniu.base.BaseFragment;
+import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.utils.MyLunBo;
 import com.zfxf.douniu.view.FullyLinearLayoutManager;
 import com.zfxf.douniu.view.InnerView;
@@ -38,6 +42,13 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
     InnerView mViewPage;
     @BindView(R.id.item_home_pic_ll)
     LinearLayout mContainer;
+
+    @BindView(R.id.ll_home_research)
+    LinearLayout research;
+
+    @BindView(R.id.iv_home_message)
+    ImageView message;
+
     @BindView(R.id.tv_home_gold)
     TextView gold;
     @BindView(R.id.tv_home_choose_stock)
@@ -57,8 +68,8 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
     LinearLayout ll_bar;
     @BindView(R.id.ll_home_toutiao)
     LinearLayout ll_toutiao;
-    @BindView(R.id.ll_home_zhengu)
-    LinearLayout ll_zhengu;
+    @BindView(R.id.ll_home_wenda)
+    LinearLayout ll_wenda;
     @BindView(R.id.ll_home_moni)
     LinearLayout ll_moni;
     @BindView(R.id.ll_home_xiangmu)
@@ -177,9 +188,11 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
         ll_smk.setOnClickListener(this);
         ll_bar.setOnClickListener(this);
         ll_toutiao.setOnClickListener(this);
-        ll_zhengu.setOnClickListener(this);
+        ll_wenda.setOnClickListener(this);
         ll_moni.setOnClickListener(this);
         ll_xiangmu.setOnClickListener(this);
+        message.setOnClickListener(this);
+        research.setOnClickListener(this);
         mAdvisorAdapter.setOnItemClickListener(new HomeAdvisorAdapter.MyItemClickListener() {
             @Override
             public void onItemClick(View v, int positon) {
@@ -189,10 +202,9 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
             }
         });
     }
-
+    Intent intent;
     @Override
     public void onClick(View v) {
-        Intent intent;
         switch (v.getId()){
             case R.id.iv_home_jinpai_more:
                 break;
@@ -208,8 +220,11 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
                 getActivity().overridePendingTransition(0,0);
                 break;
             case R.id.ll_home_toutiao:
+                intent = new Intent(getActivity(), ActivityHeadline.class);
+                getActivity().startActivity(intent);
+                getActivity().overridePendingTransition(0,0);
                 break;
-            case R.id.ll_home_zhengu:
+            case R.id.ll_home_wenda:
                 intent = new Intent(getActivity(), ActivityZhengu.class);
                 getActivity().startActivity(intent);
                 getActivity().overridePendingTransition(0,0);
@@ -217,11 +232,22 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
             case R.id.ll_home_moni:
                 break;
             case R.id.ll_home_xiangmu:
-                intent = new Intent(getActivity(), ActivityXiangMu.class);
-                getActivity().startActivity(intent);
+            intent = new Intent(getActivity(), ActivityXiangMu.class);
+            getActivity().startActivity(intent);
+            getActivity().overridePendingTransition(0,0);
+                break;
+            case R.id.iv_home_message:
+                intent = new Intent(CommonUtils.getContext(), ActivityMyselfMessage.class);
+                startActivity(intent);
+                getActivity().overridePendingTransition(0,0);
+                break;
+            case R.id.ll_home_research:
+                intent = new Intent(CommonUtils.getContext(), ActivityResearch.class);
+                startActivity(intent);
                 getActivity().overridePendingTransition(0,0);
                 break;
         }
+        intent = null;
     }
 
     class myPicAdapter extends PagerAdapter {

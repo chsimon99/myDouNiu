@@ -34,9 +34,9 @@ public class FragmentAdvisor extends BaseFragment {
 	private Fragment mFragmentAdvisorAllDirect;
 	private Fragment mFragmentAdvisorAllPublic;
 	private Fragment mFragmentAdvisorAllSecret;
-	private Fragment mFragmentAdvisorHomeOne;
-	private Fragment mFragmentAdvisorHomeCapital;
-	private Fragment mFragmentAdvisorHomeGold;
+	private Fragment mFragmentAdvisorAllAsking;
+	private Fragment mFragmentAdvisorAllReference;
+	private Fragment mFragmentAdvisorAllGoldPond;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -67,23 +67,24 @@ public class FragmentAdvisor extends BaseFragment {
 		if(mFragmentAdvisorAllSecret == null){
 			mFragmentAdvisorAllSecret = new FragmentAdvisorAllSecret();
 		}
-		if(mFragmentAdvisorHomeOne== null){
-			mFragmentAdvisorHomeOne = new FragmentAdvisorHomeOne();
+		if(mFragmentAdvisorAllGoldPond == null){
+			mFragmentAdvisorAllGoldPond = new FragmentAdvisorAllGoldPond();
 		}
-		if(mFragmentAdvisorHomeCapital == null){
-			mFragmentAdvisorHomeCapital = new FragmentAdvisorHomeCapital();
+		if(mFragmentAdvisorAllAsking == null){
+			mFragmentAdvisorAllAsking = new FragmentAdvisorAllAsking();
 		}
-		if(mFragmentAdvisorHomeGold == null){
-			mFragmentAdvisorHomeGold = new FragmentAdvisorHomeGold();
+		if(mFragmentAdvisorAllReference == null){
+			mFragmentAdvisorAllReference = new FragmentAdvisorAllReference();
 		}
+
 
 		if(list_fragment.size() == 0){
 			list_fragment.add(mFragmentAdvisorAllDirect);
 			list_fragment.add(mFragmentAdvisorAllPublic);
 			list_fragment.add(mFragmentAdvisorAllSecret);
-			list_fragment.add(mFragmentAdvisorHomeOne);
-			list_fragment.add(mFragmentAdvisorHomeCapital);
-			list_fragment.add(mFragmentAdvisorHomeGold);
+			list_fragment.add(mFragmentAdvisorAllGoldPond);
+			list_fragment.add(mFragmentAdvisorAllAsking);
+			list_fragment.add(mFragmentAdvisorAllReference);
 		}
 		if(list_title.size() == 0){
 			String[] titleStrings = CommonUtils.getResource().getStringArray(R.array.advisor_home_item_titles);

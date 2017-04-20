@@ -10,11 +10,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.activity.myself.ActivityMyselfAdvisor;
 import com.zfxf.douniu.activity.myself.ActivityMyselfAsk;
 import com.zfxf.douniu.activity.myself.ActivityMyselfAttention;
 import com.zfxf.douniu.activity.myself.ActivityMyselfConsume;
 import com.zfxf.douniu.activity.myself.ActivityMyselfInformation;
+import com.zfxf.douniu.activity.myself.ActivityMyselfMessage;
 import com.zfxf.douniu.activity.myself.ActivityMyselfRvaluateOne;
 import com.zfxf.douniu.activity.myself.ActivityMyselfRvaluateResult;
 import com.zfxf.douniu.activity.myself.ActivityMyselfShezhi;
@@ -105,6 +107,9 @@ public class FragmentMyself extends BaseFragment implements View.OnClickListener
 	public void onClick(View v) {
 		switch (v.getId()){
 			case R.id.rl_myself_message:
+				intent = new Intent(CommonUtils.getContext(), ActivityMyselfMessage.class);
+				startActivity(intent);
+				getActivity().overridePendingTransition(0,0);
 				break;
 			case R.id.rl_myself_wallet:
 				break;
@@ -158,18 +163,18 @@ public class FragmentMyself extends BaseFragment implements View.OnClickListener
 			case R.id.rl_myself_img:
 			case R.id.tv_myself_name:
 				boolean isLogin = SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin, false);
-				Intent intent = new Intent(getActivity(), ActivityMyselfInformation.class);
-				startActivity(intent);
-				getActivity().overridePendingTransition(0,0);
-//				if(isLogin){
-//					Intent intent = new Intent(getActivity(), ActivityMyselfInformation.class);
-//					startActivity(intent);
-//					getActivity().overridePendingTransition(0,0);
-//				}else{
-//					Intent intent = new Intent(getActivity(), ActivityLogin.class);
-//					startActivity(intent);
-//					getActivity().overridePendingTransition(0,0);
-//				}
+//				Intent intent = new Intent(getActivity(), ActivityMyselfInformation.class);
+//				startActivity(intent);
+//				getActivity().overridePendingTransition(0,0);
+				if(isLogin){
+					Intent intent = new Intent(getActivity(), ActivityMyselfInformation.class);
+					startActivity(intent);
+					getActivity().overridePendingTransition(0,0);
+				}else{
+					Intent intent = new Intent(getActivity(), ActivityLogin.class);
+					startActivity(intent);
+					getActivity().overridePendingTransition(0,0);
+				}
 				break;
 		}
 		intent = null;

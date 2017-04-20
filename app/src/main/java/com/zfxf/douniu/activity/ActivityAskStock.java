@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
@@ -40,7 +41,8 @@ public class ActivityAskStock extends FragmentActivity implements View.OnClickLi
 
     @BindView(R.id.tv_askstock_count)
     TextView count;
-
+    @BindView(R.id.ll_askstock_contact)
+    LinearLayout contract;
     @BindView(R.id.et_askstock)
     EditText askstock;
 
@@ -76,6 +78,7 @@ public class ActivityAskStock extends FragmentActivity implements View.OnClickLi
     private void initListener() {
         back.setOnClickListener(this);
         confirm.setOnClickListener(this);
+        contract.setOnClickListener(this);
         //edittext设置多行后， android:imeOptions="actionDone" 这个不起作用，只有单行才起作用
 //        askstock.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 //            @Override
@@ -137,6 +140,9 @@ public class ActivityAskStock extends FragmentActivity implements View.OnClickLi
             case R.id.tv_base_confirm:
                 //提交服务器
                 confirm();
+                break;
+            case R.id.ll_askstock_contact:
+                //细则说明
                 break;
         }
     }

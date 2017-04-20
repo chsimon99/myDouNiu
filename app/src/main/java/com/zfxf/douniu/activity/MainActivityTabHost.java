@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.base.BaseApplication;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.fragment.FragmentAdvisor;
 import com.zfxf.douniu.view.fragment.FragmentHome;
@@ -85,6 +86,7 @@ public class MainActivityTabHost extends FragmentActivity {
 				Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
 				exitTime = System.currentTimeMillis();
 			} else {
+				BaseApplication.getThreadPool().shutdownNow();//关闭线程池
 				finish();
 				System.exit(0);
 			}

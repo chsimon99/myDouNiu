@@ -11,5 +11,7 @@
     <com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView
         android:id="@+id/rv_fragment_new_top_policy"
         android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/dm018"
+        android:layout_marginRight="@dimen/dm018"
         android:layout_height="wrap_content"/>
 </LinearLayout>

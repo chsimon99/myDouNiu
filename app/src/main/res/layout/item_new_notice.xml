@@ -9,11 +9,13 @@
         android:orientation="horizontal">
         <TextView
             android:id="@+id/tv_new_notice_content"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dm500"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/dm018"
-            android:text="4月5日上市公司重磅新闻全揽新闻全览……"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="4月5日上市公司重磅新闻全揽新闻全览上市公司啊是大"
             android:textColor="@color/titleText"
             android:textSize="@dimen/dm026"/>
         <View

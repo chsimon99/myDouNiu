@@ -126,6 +126,23 @@ public class CommonUtils {
     public static void removeTask(Runnable task) {
         getMainThreadHandler().removeCallbacks(task);
     }
+    public static Handler handler = new Handler();
+    public static  void runLunBoTask(final Runnable task, final int delayMillis){
+        BaseApplication.getThreadPool().submit(new Thread(){
+            @Override
+            public void run() {
+                handler.postDelayed(task, delayMillis);
+            }
+        });
+    }
+    public static  void removeLunBoTask(final Runnable task){
+        BaseApplication.getThreadPool().submit(new Thread(){
+            @Override
+            public void run() {
+                handler.removeCallbacks(task);
+            }
+        });
+    }
 
     /**
      * 改变滑动条的长度

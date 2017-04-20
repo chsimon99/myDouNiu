@@ -5,18 +5,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.activity.advisor.ActivityAdvisorAllPublicDetail;
 import com.zfxf.douniu.adapter.recycleView.AdvisorAllPublicAdapter;
-import com.zfxf.douniu.adapter.viewPager.PicPagerAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.utils.MyLunBo;
-import com.zfxf.douniu.view.InnerView;
-import com.zfxf.douniu.view.RecycleViewDivider;
+import com.zfxf.douniu.view.RecycleViewLunboDivider;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
 import java.util.ArrayList;
@@ -29,10 +26,6 @@ import butterknife.ButterKnife;
 public class FragmentAdvisorAllPublic extends BaseFragment{
 	private View view;
 
-	@BindView(R.id.inwerview)
-	InnerView mViewPage;
-	@BindView(R.id.item_home_pic_ll)
-	LinearLayout mContainer;
 	private List<Integer> mDatas = new ArrayList<Integer>();
 	private MyLunBo mMyLunBO;
 
@@ -40,8 +33,7 @@ public class FragmentAdvisorAllPublic extends BaseFragment{
 	PullLoadMoreRecyclerView mRecyclerView;
 	private AdvisorAllPublicAdapter mAllPublicAdapter;
 	private List<String> datas = new ArrayList<String>();
-	private RecycleViewDivider mDivider;
-	private PicPagerAdapter mPagerAdapter;
+	private RecycleViewLunboDivider mDivider;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -63,22 +55,13 @@ public class FragmentAdvisorAllPublic extends BaseFragment{
 	@Override
 	public void initdata() {
 		super.initdata();
+
 		if (mDatas.size() == 0) {
 			mDatas.add(R.drawable.home_banner);
 			mDatas.add(R.drawable.home_banner);
 			mDatas.add(R.drawable.home_banner);
 			mDatas.add(R.drawable.home_banner);
 		}
-		if(mPagerAdapter ==null){
-			mPagerAdapter = new PicPagerAdapter(mDatas, CommonUtils.getContext(), new PicPagerAdapter.MyOnClickListener() {
-				@Override
-				public void onItemClick(int positon) {
-					CommonUtils.toastMessage("您点击的是第 " + (++positon) + " 个Item");
-				}
-			});
-		}
-		mViewPage.setAdapter(mPagerAdapter);
-
 
 		if(datas.size() == 0){
 			datas.add("");
@@ -89,16 +72,19 @@ public class FragmentAdvisorAllPublic extends BaseFragment{
 			datas.add("");
 		}
 		if(mAllPublicAdapter == null){
-			mAllPublicAdapter = new AdvisorAllPublicAdapter(getActivity(),datas);
+			mAllPublicAdapter = new AdvisorAllPublicAdapter(getActivity(),datas,mDatas);
+			View view = View.inflate(getActivity(),R.layout.item_lunbo_with_gray,null);
+			mAllPublicAdapter.setHeaderView(view);
 		}
 
 		mRecyclerView.setLinearLayout();
 		mRecyclerView.setAdapter(mAllPublicAdapter);
 		if(mDivider == null){
-			mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
+			mDivider = new RecycleViewLunboDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
 			mRecyclerView.addItemDecoration(mDivider);
 		}
 		mRecyclerView.setFooterViewText("加载更多……");
+		mMyLunBO = mAllPublicAdapter.getLunBo();
 	}
 	int num = 0;
 	@Override
@@ -169,13 +155,9 @@ public class FragmentAdvisorAllPublic extends BaseFragment{
 	}
 	@Override
 	public void onResume() {
-		if (mMyLunBO == null) {
-			mMyLunBO = new MyLunBo(mContainer, mViewPage, mDatas);
-			mMyLunBO.startLunBO();
-		}
 		if (isOnPause) {//防止轮播图暂定不动
 			if (mMyLunBO != null)
-				mMyLunBO.restartLunBO();
+			mMyLunBO.restartLunBO();//不用restart是为了防止突然轮播的速度快
 			isOnPause = false;
 		}
 		super.onResume();

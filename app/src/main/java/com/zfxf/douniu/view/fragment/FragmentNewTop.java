@@ -49,7 +49,7 @@ public class FragmentNewTop extends BaseFragment {
     @Override
     public View initView(LayoutInflater inflater) {
         if (view == null) {
-            view = inflater.inflate(R.layout.fragment_new_top, null);
+            view = inflater.inflate(R.layout.activity_headline, null);
         }
         ViewGroup parent = (ViewGroup) view.getParent();
         if (parent != null) {

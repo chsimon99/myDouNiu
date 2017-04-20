@@ -118,7 +118,6 @@ public class MyLunBo {
         }
         @Override
         public void run() {
-//            isRun = !isRun;
             int item = mInnerView.getCurrentItem();
             item++;
             mInnerView.setCurrentItem(item);

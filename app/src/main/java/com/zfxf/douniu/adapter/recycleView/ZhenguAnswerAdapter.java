@@ -58,18 +58,24 @@ public class ZhenguAnswerAdapter extends RecyclerView.Adapter<ZhenguAnswerAdapte
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private MyItemClickListener mListener;
         ImageView imageView;
+        ImageView lock;
+        ImageView unlock;
         TextView name;
         TextView title;
         TextView detail;
         TextView time;
+        TextView count;
         public MyHolder(View itemView, MyItemClickListener listener) {
             super(itemView);
             this.mListener = listener;
             imageView = (ImageView) itemView.findViewById(R.id.iv_bar_bar_img);
+            lock = (ImageView) itemView.findViewById(R.id.iv_bar_bar_lock_yy);
+            unlock = (ImageView) itemView.findViewById(R.id.iv_bar_bar_unlock_yy);
             name = (TextView) itemView.findViewById(R.id.tv_bar_bar_name);
             title = (TextView) itemView.findViewById(R.id.tv_bar_bar_title);
             detail = (TextView) itemView.findViewById(R.id.tv_bar_bar_detail);
             time = (TextView) itemView.findViewById(R.id.tv_bar_bar_time);
+            count = (TextView) itemView.findViewById(R.id.tv_bar_bar_count);
 
             itemView.setOnClickListener(this);
         }
@@ -82,12 +88,21 @@ public class ZhenguAnswerAdapter extends RecyclerView.Adapter<ZhenguAnswerAdapte
         }
 
         public void setRefreshData(String str) {
-            if(str.equals("9")){
+            if(str.equals("1")){
                 name.setText("孙悟空");
                 title.setText("看我72变");
+                lock.setVisibility(View.GONE);
+                unlock.setVisibility(View.VISIBLE);
+            }else if(str.equals("2")){
+                name.setText(str);
+                title.setText(str);
+                unlock.setVisibility(View.GONE);
+                lock.setVisibility(View.VISIBLE);
             }else{
                 name.setText(str);
                 title.setText(str);
+                unlock.setVisibility(View.GONE);
+                lock.setVisibility(View.VISIBLE);
             }
         }
     }

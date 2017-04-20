@@ -24,7 +24,7 @@
                 android:id="@+id/tv_advisor_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dm035"
+                android:layout_marginTop="@dimen/dm030"
                 android:text="刘倩倩"
                 android:textColor="@color/titleText"
                 android:textSize="@dimen/dm028"/>
@@ -33,8 +33,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dm018"
-                android:layout_marginTop="@dimen/dm035"
-                android:text="持牌"
+                android:layout_marginTop="@dimen/dm030"
+                android:text="金牌"
                 android:textColor="@color/advisorType"
                 android:textSize="@dimen/dm024"/>
         </LinearLayout>

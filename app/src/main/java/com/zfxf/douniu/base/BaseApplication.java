@@ -5,6 +5,9 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * @author Admin
  * @time 2017/2/10 12:40
@@ -17,6 +20,7 @@ public class BaseApplication extends Application {
     private static long		mMainTreadId;
     private static Looper	mMainLooper;
     private static Handler mHandler;
+    private static ExecutorService threadPool;
 
     public static Handler getHandler() {
         return mHandler;
@@ -38,6 +42,10 @@ public class BaseApplication extends Application {
         return mMainLooper;
     }
 
+    public static ExecutorService getThreadPool() {
+        return threadPool;
+    }
+
     @Override
     public void onCreate() {
         mContext = getApplicationContext();// 上下文
@@ -45,6 +53,7 @@ public class BaseApplication extends Application {
         mMainTreadId = android.os.Process.myTid();// 主线程Id
         mMainLooper = getMainLooper(); // 主线程Looper对象
         mHandler = new Handler();// 定义一个handler
+        threadPool = Executors.newCachedThreadPool();//定义一个线程池
         super.onCreate();
     }
 }

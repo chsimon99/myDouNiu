@@ -1,5 +1,6 @@
 package com.zfxf.douniu.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -65,7 +66,10 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
         ButterKnife.bind(this);
         title.setText("提交订单");
         edit.setVisibility(View.INVISIBLE);
-
+        String pay_type = getIntent().getStringExtra("type");
+        String count = getIntent().getStringExtra("count");
+        money.setText("￥"+count);
+        type.setText(pay_type);
         initData();
         initListener();
     }
@@ -83,7 +87,7 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
         pay.setOnClickListener(this);
         yu_e_pay.setOnClickListener(this);
     }
-
+    Intent intent;
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -110,8 +114,12 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
                 break;
             case R.id.tv_topay_yue_pay:
                 CommonUtils.toastMessage("余额支付");
+                intent = new Intent(this,ActivityBuyNiu.class);
+                startActivity(intent);
+                overridePendingTransition(0,0);
                 break;
         }
+        intent = null;
     }
 
     private void finishAll() {

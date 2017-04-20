@@ -1,15 +1,20 @@
 package com.zfxf.douniu.view.fragment;
 
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.adapter.viewPager.BarItemAdapter;
 import com.zfxf.douniu.base.BaseFragment;
+import com.zfxf.douniu.utils.CommonUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,34 +23,17 @@ import butterknife.ButterKnife;
 public class FragmentNews extends BaseFragment implements View.OnClickListener{
 	private View view;
 
-	@BindView(R.id.tv_fragment_new_tt)
-	TextView tt;
-	@BindView(R.id.tv_fragment_new_kx)
-	TextView kx;
-	@BindView(R.id.tv_fragment_new_jx)
-	TextView jx;
-	@BindView(R.id.tv_fragment_new_gg)
-	TextView gg;
-	@BindView(R.id.v_fragment_new_tt)
-	View v_tt;
-	@BindView(R.id.v_fragment_new_kx)
-	View v_kx;
-	@BindView(R.id.v_fragment_new_jx)
-	View v_jx;
-	@BindView(R.id.v_fragment_new_gg)
-	View v_gg;
-	@BindView(R.id.rl_fragment_new_tt)
-	RelativeLayout rl_tt;
-	@BindView(R.id.rl_fragment_new_kx)
-	RelativeLayout rl_kx;
+	@BindView(R.id.tl_fragment_new)
+	TabLayout mTabLayout;
+	@BindView(R.id.vp_fragment_new)
+	ViewPager mViewPager;
+	private List<Fragment> list_fragment = new ArrayList<>();
+	private FragmentPagerAdapter mAdapter;
+	private List<String> list_title = new ArrayList<>();
 
-	private FragmentTransaction mFt;
-	private FragmentNewTop mNewTop;
 	private FragmentNewExpress mNewExpress;
 	private FragmentNewChoice mNewChoice;
 	private FragmentNewNotice mNewNotice;
-	private Fragment[] mFragments;
-	private int mIndex = 0;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -67,10 +55,6 @@ public class FragmentNews extends BaseFragment implements View.OnClickListener{
 	@Override
 	public void initdata() {
 		super.initdata();
-
-		if(mNewTop == null){
-			mNewTop = new FragmentNewTop();
-		}
 		if(mNewExpress == null){
 			mNewExpress = new FragmentNewExpress();
 		}
@@ -80,75 +64,40 @@ public class FragmentNews extends BaseFragment implements View.OnClickListener{
 		if(mNewNotice == null){
 			mNewNotice = new FragmentNewNotice();
 		}
-		mFragments = new Fragment[]{mNewTop,mNewExpress,mNewChoice,mNewNotice};
-		if(mFt == null){
-			mFt = getActivity().getSupportFragmentManager().beginTransaction();
-			mFt.add(R.id.fl_fragment_new_content, mNewTop);
-			mFt.commit();
+		if(list_fragment.size() == 0){
+			list_fragment.add(mNewChoice);
+			list_fragment.add(mNewExpress);
+			list_fragment.add(mNewNotice);
 		}
-		select(0);
+
+		if(list_title.size() == 0){
+			String[] titleStrings = CommonUtils.getResource().getStringArray(R.array.fragment_new_titles);
+			for(int i = 0; i<titleStrings.length;i++){
+				list_title.add(titleStrings[i]);
+			}
+		}
+		if(mAdapter == null){
+			mAdapter = new BarItemAdapter(getActivity().getSupportFragmentManager(),list_fragment,list_title);
+			mViewPager.setAdapter(mAdapter);
+			mTabLayout.setupWithViewPager(mViewPager);
+			mTabLayout.post(new Runnable() {//改变滑动条的长度
+				@Override
+				public void run() {
+					CommonUtils.setIndicator(mTabLayout, CommonUtils.dip2px(CommonUtils.getContext(),20)
+							,CommonUtils.dip2px(CommonUtils.getContext(),20));
+				}
+			});
+		}
 	}
 
 	@Override
 	public void initListener() {
 		super.initListener();
-		tt.setOnClickListener(this);
-		kx.setOnClickListener(this);
-		jx.setOnClickListener(this);
-		gg.setOnClickListener(this);
-
 	}
-
-	private void select(int index) {
-		if(mIndex == index){
-			return;
-		}
-		mFt = getActivity().getSupportFragmentManager().beginTransaction();
-		mFt.hide(mFragments[mIndex]);//隐藏
-		if(!mFragments[index].isAdded()){
-			mFt.add(R.id.fl_fragment_new_content,mFragments[index]).show(mFragments[index]);
-		}else{
-			mFt.show(mFragments[index]);
-		}
-		mFt.commit();
-		mIndex = index;
-	}
-
 	@Override
 	public void onClick(View v) {
-		reset();
 		switch (v.getId()){
-			case R.id.tv_fragment_new_tt:
-				v_tt.setVisibility(View.VISIBLE);
-				select(0);
-				break;
-			case R.id.tv_fragment_new_kx:
-				v_kx.setVisibility(View.VISIBLE);
-				select(1);
-				break;
-			case R.id.tv_fragment_new_jx:
-				v_jx.setVisibility(View.VISIBLE);
-				select(2);
-				break;
-			case R.id.tv_fragment_new_gg:
-				v_gg.setVisibility(View.VISIBLE);
-				select(3);
-				break;
+
 		}
-	}
-
-	private void reset() {
-		v_tt.setVisibility(View.INVISIBLE);
-		v_kx.setVisibility(View.INVISIBLE);
-		v_jx.setVisibility(View.INVISIBLE);
-		v_gg.setVisibility(View.INVISIBLE);
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		reset();
-		v_tt.setVisibility(View.VISIBLE);
-		select(0);
 	}
 }
