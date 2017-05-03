@@ -103,8 +103,8 @@ public class FragmentNewTop extends BaseFragment {
         mTabLayout.post(new Runnable() {//改变滑动条的长度
             @Override
             public void run() {
-                CommonUtils.setIndicator(mTabLayout, CommonUtils.dip2px(CommonUtils.getContext(),5)
-                        ,CommonUtils.dip2px(CommonUtils.getContext(),5));
+                CommonUtils.setIndicator(mTabLayout, CommonUtils.px2dip(CommonUtils.getContext(),30)
+                        ,CommonUtils.px2dip(CommonUtils.getContext(),30));
             }
         });
     }

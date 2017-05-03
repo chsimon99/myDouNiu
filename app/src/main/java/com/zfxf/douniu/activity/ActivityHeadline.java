@@ -111,8 +111,8 @@ public class ActivityHeadline extends FragmentActivity implements View.OnClickLi
         mTabLayout.post(new Runnable() {//改变滑动条的长度
             @Override
             public void run() {
-                CommonUtils.setIndicator(mTabLayout, CommonUtils.dip2px(CommonUtils.getContext(),10)
-                        ,CommonUtils.dip2px(CommonUtils.getContext(),10));
+                CommonUtils.setIndicator(mTabLayout, CommonUtils.px2dip(CommonUtils.getContext(),40)
+                        ,CommonUtils.px2dip(CommonUtils.getContext(),40));
             }
         });
 

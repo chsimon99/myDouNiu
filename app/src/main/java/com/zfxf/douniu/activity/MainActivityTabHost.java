@@ -27,7 +27,7 @@ import com.zfxf.douniu.view.fragment.FragmentNews;
  */
 public class MainActivityTabHost extends FragmentActivity {
 
-	private FragmentTabHost mTabHost;
+	public static FragmentTabHost mTabHost;
 	private LayoutInflater mLayoutInflater;
 
 	private Class mFragmentArray[] = { FragmentHome.class, FragmentNews.class,FragmentAdvisor.class, FragmentMarket.class, FragmentMyself.class };
@@ -93,5 +93,15 @@ public class MainActivityTabHost extends FragmentActivity {
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+	public static void setTabHost(int index){
+		mTabHost.setCurrentTab(index);
+	}
+	static int index;
+	public static void setIndex(int num){
+		index = num;
+	}
+	public static int getIndex(){
+		return index;
 	}
 }

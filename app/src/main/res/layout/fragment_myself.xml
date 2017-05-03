@@ -117,14 +117,14 @@
                         android:layout_width="@dimen/dm070"
                         android:layout_height="@dimen/dm070"
                         android:layout_centerHorizontal="true"
-                        android:src="@drawable/myself_account"/>
+                        android:src="@drawable/myself_subscribe"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/iv_myself_account"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="@dimen/dm010"
-                        android:text="开户/交易"
+                        android:text="我的订阅"
                         android:textColor="@color/colorText"
                         android:textSize="@dimen/dm022"/>
                 </RelativeLayout>
@@ -159,40 +159,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorWhite"
                 android:orientation="vertical">
-                <LinearLayout
-                    android:id="@+id/ll_myself_subscribe"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dm080"
-                    android:orientation="horizontal">
-                    <ImageView
-                        android:layout_width="@dimen/dm035"
-                        android:layout_height="@dimen/dm035"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/dm020"
-                        android:src="@drawable/myself_subscribe"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="@dimen/dm020"
-                        android:text="我的订阅"
-                        android:textColor="@color/titleText"
-                        android:textSize="@dimen/dm026"/>
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"/>
-                    <ImageView
-                        android:layout_width="@dimen/dm014"
-                        android:layout_height="@dimen/dm028"
-                        android:layout_gravity="center"
-                        android:layout_marginRight="@dimen/dm020"
-                        android:src="@drawable/home_jiantou"/>
-                </LinearLayout>
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/gray"/>
+
                 <LinearLayout
                     android:id="@+id/ll_myself_consume"
                     android:layout_width="match_parent"

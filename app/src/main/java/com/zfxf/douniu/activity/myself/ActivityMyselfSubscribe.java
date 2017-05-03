@@ -70,18 +70,19 @@ public class ActivityMyselfSubscribe extends FragmentActivity implements View.On
         if(mFragmentMyselfSubscribeSecret == null){
             mFragmentMyselfSubscribeSecret = new FragmentMyselfSubscribeSecret();
         }
-        if(mFragmentMyselfSubscribeCapital == null){
-            mFragmentMyselfSubscribeCapital = new FragmentMyselfSubscribeCapital();
-        }
         if(mFragmentMyselfSubscribeGold == null){
             mFragmentMyselfSubscribeGold = new FragmentMyselfSubscribeGold();
         }
+        if(mFragmentMyselfSubscribeCapital == null){
+            mFragmentMyselfSubscribeCapital = new FragmentMyselfSubscribeCapital();
+        }
+
         if(list_fragment.size() == 0){
             list_fragment.add(mFragmentMyselfSubscribeChoice);
             list_fragment.add(mFragmentMyselfSubscribePublic);
             list_fragment.add(mFragmentMyselfSubscribeSecret);
-            list_fragment.add(mFragmentMyselfSubscribeCapital);
             list_fragment.add(mFragmentMyselfSubscribeGold);
+            list_fragment.add(mFragmentMyselfSubscribeCapital);
         }
 
         if(list_title.size() == 0){
@@ -97,8 +98,8 @@ public class ActivityMyselfSubscribe extends FragmentActivity implements View.On
         mTabLayout.post(new Runnable() {//改变滑动条的长度
             @Override
             public void run() {
-                CommonUtils.setIndicator(mTabLayout, CommonUtils.dip2px(CommonUtils.getContext(),2)
-                        ,CommonUtils.dip2px(CommonUtils.getContext(),2));
+                CommonUtils.setIndicator(mTabLayout, CommonUtils.px2dip(CommonUtils.getContext(),20)
+                        ,CommonUtils.px2dip(CommonUtils.getContext(),20));
             }
         });
     }

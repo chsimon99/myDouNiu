@@ -78,8 +78,8 @@ public class FragmentAdvisorAllGoldPond extends BaseFragment {
             mTabLayout.post(new Runnable() {//改变滑动条的长度
                 @Override
                 public void run() {
-                    CommonUtils.setIndicator(mTabLayout, CommonUtils.dip2px(CommonUtils.getContext(),20)
-                            ,CommonUtils.dip2px(CommonUtils.getContext(),20));
+                    CommonUtils.setIndicator(mTabLayout, CommonUtils.px2dip(CommonUtils.getContext(),80)
+                            ,CommonUtils.px2dip(CommonUtils.getContext(),80));
                 }
             });
         }

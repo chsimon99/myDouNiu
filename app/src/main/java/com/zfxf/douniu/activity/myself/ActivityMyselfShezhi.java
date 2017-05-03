@@ -1,8 +1,10 @@
 package com.zfxf.douniu.activity.myself;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -10,6 +12,9 @@ import android.widget.TextView;
 
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
+import com.zfxf.douniu.view.fragment.FragmentMyself;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -91,6 +96,27 @@ public class ActivityMyselfShezhi extends FragmentActivity implements View.OnCli
             case R.id.ll_myself_she_update:
                 break;
             case R.id.ll_myself_she_quit:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                AlertDialog dialog = builder.create();
+                builder.setTitle("是否退出登录")
+                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                SpTools.setBoolean(CommonUtils.getContext(), Constants.isLogin,false);
+                                SpTools.setString(CommonUtils.getContext(),Constants.userId,"");
+                                FragmentMyself.exit();
+                                finishAll();
+                                finish();
+
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
                 break;
         }
     }

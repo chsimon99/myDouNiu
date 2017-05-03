@@ -21,8 +21,9 @@
         <item>私密课</item>
         <item>金股池</item>
         <item>微问答</item>
-        <item>资本圈</item>
+        <item>大参考</item>
     </string-array>
+
     <string-array name="advisor_home_gold_titles">
         <item>短线持仓</item>
         <item>中线持仓</item>
@@ -38,6 +39,11 @@
         <item>精选</item>
         <item>快讯</item>
         <item>公告</item>
+    </string-array>
+
+    <string-array name="advisot_list_titles">
+        <item>金牌</item>
+        <item>首席</item>
     </string-array>
 
     <string-array name="fragment_myself_consume_titles">
@@ -59,13 +65,20 @@
         <item>选股王</item>
         <item>公开课</item>
         <item>私密课</item>
-        <item>资本圈</item>
         <item>金股池</item>
+        <item>大参考</item>
     </string-array>
 
     <string-array name="fragment_living_titles">
         <item>直播</item>
         <item>互动</item>
+    </string-array>
+
+    <string-array name="activity_simulation_titles">
+        <item>买入</item>
+        <item>卖出</item>
+        <item>委托</item>
+        <item>查询</item>
     </string-array>
 
     <string name="evaluate_second_result">稳健型</string>

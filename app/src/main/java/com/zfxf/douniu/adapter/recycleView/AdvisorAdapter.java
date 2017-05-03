@@ -2,7 +2,6 @@ package com.zfxf.douniu.adapter.recycleView;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -60,13 +59,15 @@ public class AdvisorAdapter extends RecyclerView.Adapter<AdvisorAdapter.MyHolder
         private MyItemClickListener mListener;
         ImageView imageView;
         TextView name;
-        TextView detail;
+        TextView count;
+        TextView price;
         public MyHolder(View itemView, MyItemClickListener listener) {
             super(itemView);
             this.mListener = listener;
             imageView = (ImageView) itemView.findViewById(R.id.iv_advisor_img);
             name = (TextView) itemView.findViewById(R.id.tv_advisor_name);
-            detail = (TextView) itemView.findViewById(R.id.tv_advisor_detail);
+            price = (TextView) itemView.findViewById(R.id.tv_advisor_price);
+            count = (TextView) itemView.findViewById(R.id.tv_advisor_count);
 
             itemView.setOnClickListener(this);
         }
@@ -79,9 +80,7 @@ public class AdvisorAdapter extends RecyclerView.Adapter<AdvisorAdapter.MyHolder
         }
 
         public void setRefreshData(String str) {
-            if(!TextUtils.isEmpty(str)){
-                detail.setText("这个是新加载的数据");
-            }
+
         }
     }
 }

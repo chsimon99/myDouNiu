@@ -21,5 +21,6 @@
     <color name="colorNUll">#00ffffff</color>
     <color name="colorGrayWhite">#99ffffff</color>
     <color name="colorGray">#CCCCCC</color>
+    <color name="colorWhiteE">#CCCCCC</color>
 
 </resources>

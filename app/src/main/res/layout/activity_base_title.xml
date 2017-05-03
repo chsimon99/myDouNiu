@@ -41,6 +41,24 @@
         android:layout_marginRight="@dimen/dm020"
         android:src="@drawable/share"
         android:visibility="gone"/>
+    <ImageView
+        android:id="@+id/iv_base_question"
+        android:layout_width="@dimen/dm040"
+        android:layout_height="@dimen/dm040"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/dm020"
+        android:src="@drawable/icon_question"
+        android:visibility="gone"/>
+    <ImageView
+        android:id="@+id/iv_base_refresh"
+        android:layout_width="@dimen/dm040"
+        android:layout_height="@dimen/dm040"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/dm020"
+        android:src="@drawable/icon_refresh"
+        android:visibility="gone"/>
     <TextView
         android:id="@+id/tv_base_confirm"
         android:layout_width="wrap_content"

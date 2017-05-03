@@ -42,7 +42,6 @@ public class ActivityResearch extends FragmentActivity implements View.OnClickLi
                 switch(actionId){
                     case EditorInfo.IME_ACTION_SEARCH:
                         CommonUtils.toastMessage("开始搜索");
-                        research.setText("");
                         break;
                 }
                 return false;
@@ -55,6 +54,8 @@ public class ActivityResearch extends FragmentActivity implements View.OnClickLi
         switch (v.getId()){
             case R.id.tv_research_cannel:
                 research.setText("");
+                finishAll();
+                finish();
                 break;
         }
     }

@@ -5,90 +5,63 @@
               android:background="@color/colorWhite"
               android:orientation="vertical">
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dm025"
-        android:layout_marginTop="@dimen/dm024"
+        android:layout_margin="@dimen/dm018"
         android:orientation="horizontal">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dm020"
-            android:layout_marginRight="@dimen/dm015"
-            android:orientation="vertical">
-            <ImageView
-                android:id="@+id/iv_myself_subscrobe_capital_img"
-                android:layout_width="@dimen/dm100"
-                android:layout_height="@dimen/dm100"
-                android:src="@drawable/home_adviosr_img"/>
-            <TextView
-                android:id="@+id/tv_myself_subscrobe_capital_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dm008"
-                android:text="七八老师"
-                android:layout_gravity="center"
-                android:textColor="@color/titleText"
-                android:textSize="@dimen/dm024"/>
-        </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
                 android:id="@+id/tv_myself_subscrobe_capital_title"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="六六老师金股圈"
+                android:layout_marginTop="@dimen/dm008"
+                android:text="微软股票只占财富的12%，为啥世界首富一直是他？"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:textColor="@color/titleText"
                 android:textSize="@dimen/dm028"/>
-            <TextView
-                android:id="@+id/tv_myself_subscrobe_capital_detail"
-                android:layout_marginTop="@dimen/dm014"
-                android:maxLines="3"
-                android:ellipsize="end"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="春节活动：\n现在加入圈子，即可获得老九春季即可获得老九 策略报告和五朵金花金股池，送..."
-                android:textColor="@color/colorText"
-                android:textSize="@dimen/dm024"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/dm020"
-            android:layout_marginLeft="@dimen/dm030"
-            android:layout_marginTop="@dimen/dm008"
-            android:orientation="vertical">
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dm005"
                 android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_myself_subscrobe_capital_from"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="中方信富"
+                    android:textColor="@color/colorText"
+                    android:textSize="@dimen/dm024"/>
                 <TextView
                     android:id="@+id/tv_myself_subscrobe_capital_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="148"
+                    android:layout_marginLeft="@dimen/dm035"
+                    android:text="1435"
                     android:textColor="@color/colorTitle"
                     android:textSize="@dimen/dm022"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="/500"
-                    android:textColor="@color/titleTextGray"
+                    android:layout_marginLeft="@dimen/dm005"
+                    android:text="人订阅"
+                    android:textColor="@color/colorText"
                     android:textSize="@dimen/dm022"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"/>
             </LinearLayout>
-            <TextView
-                android:layout_width="@dimen/dm110"
-                android:layout_marginTop="@dimen/dm046"
-                android:background="@drawable/backgroud_button_gary_color"
-                android:gravity="center"
-                android:layout_height="@dimen/dm050"
-                android:text="已加入"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/dm024"/>
         </LinearLayout>
+        <ImageView
+            android:id="@+id/iv_myself_subscrobe_capital_img"
+            android:layout_width="@dimen/dm118"
+            android:layout_height="@dimen/dm118"
+            android:layout_marginLeft="@dimen/dm035"
+            android:src="@drawable/public_img"/>
     </LinearLayout>
 </LinearLayout>

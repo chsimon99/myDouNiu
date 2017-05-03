@@ -15,10 +15,10 @@ import android.widget.TextView;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.adapter.viewPager.BarItemAdapter;
 import com.zfxf.douniu.utils.CommonUtils;
-import com.zfxf.douniu.view.fragment.FragmentAdvisorHomeCapital;
+import com.zfxf.douniu.view.fragment.FragmentAdvisorHomeReference;
 import com.zfxf.douniu.view.fragment.FragmentAdvisorHomeDirect;
 import com.zfxf.douniu.view.fragment.FragmentAdvisorHomeGold;
-import com.zfxf.douniu.view.fragment.FragmentAdvisorHomeOne;
+import com.zfxf.douniu.view.fragment.FragmentAdvisorHomeAsking;
 import com.zfxf.douniu.view.fragment.FragmentAdvisorHomePublic;
 import com.zfxf.douniu.view.fragment.FragmentAdvisorHomeSecret;
 
@@ -57,12 +57,6 @@ public class ActivityAdvisorHome extends FragmentActivity implements View.OnClic
     TextView count;//粉丝数量
     @BindView(R.id.tv_advisor_home_income)
     TextView income;//近期收益
-    @BindView(R.id.tv_advisor_home_super)
-    TextView superShort;//超短线
-    @BindView(R.id.tv_advisor_home_short)
-    TextView Short;//短线
-    @BindView(R.id.tv_advisor_home_midder)
-    TextView midder;//中线
     @BindView(R.id.tv_advisor_home_introduce)
     TextView introduce;//简介
     private Fragment mFragmentAdvisorHomeDirect;
@@ -91,23 +85,24 @@ public class ActivityAdvisorHome extends FragmentActivity implements View.OnClic
         if(mFragmentAdvisorHomeSecret == null){
             mFragmentAdvisorHomeSecret = new FragmentAdvisorHomeSecret();
         }
-        if(mFragmentAdvisorHomeOne== null){
-            mFragmentAdvisorHomeOne = new FragmentAdvisorHomeOne();
-        }
-        if(mFragmentAdvisorHomeCapital == null){
-            mFragmentAdvisorHomeCapital = new FragmentAdvisorHomeCapital();
-        }
         if(mFragmentAdvisorHomeGold == null){
             mFragmentAdvisorHomeGold = new FragmentAdvisorHomeGold();
         }
+        if(mFragmentAdvisorHomeOne== null){
+            mFragmentAdvisorHomeOne = new FragmentAdvisorHomeAsking();
+        }
+        if(mFragmentAdvisorHomeCapital == null){
+            mFragmentAdvisorHomeCapital = new FragmentAdvisorHomeReference();
+        }
+
 
         if(list_fragment.size() == 0){
             list_fragment.add(mFragmentAdvisorHomeDirect);
             list_fragment.add(mFragmentAdvisorHomePublic);
             list_fragment.add(mFragmentAdvisorHomeSecret);
+            list_fragment.add(mFragmentAdvisorHomeGold);
             list_fragment.add(mFragmentAdvisorHomeOne);
             list_fragment.add(mFragmentAdvisorHomeCapital);
-            list_fragment.add(mFragmentAdvisorHomeGold);
         }
         if(list_title.size() == 0){
             String[] titleStrings = CommonUtils.getResource().getStringArray(R.array.advisor_home_item_titles);
@@ -122,8 +117,8 @@ public class ActivityAdvisorHome extends FragmentActivity implements View.OnClic
         mTabLayout.post(new Runnable() {//改变滑动条的长度
             @Override
             public void run() {
-                CommonUtils.setIndicator(mTabLayout, CommonUtils.dip2px(CommonUtils.getContext(),2)
-                        ,CommonUtils.dip2px(CommonUtils.getContext(),2));
+                CommonUtils.setIndicator(mTabLayout, CommonUtils.px2dip(CommonUtils.getContext(),10)
+                        ,CommonUtils.px2dip(CommonUtils.getContext(),10));
             }
         });
 

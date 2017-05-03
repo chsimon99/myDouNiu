@@ -8,7 +8,9 @@
         android:layout_height="@dimen/dm016"
         android:background="@color/colorBgGary"/>
     <com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView
-        android:id="@+id/rv_advisor_home_one"
+        android:id="@+id/rv_advisor_home_asking"
         android:layout_width="match_parent"
+        android:paddingLeft="@dimen/dm018"
+        android:paddingRight="@dimen/dm018"
         android:layout_height="wrap_content"/>
 </LinearLayout>

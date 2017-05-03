@@ -84,6 +84,7 @@ public class AdvisorAllReferenceAdapter extends RecyclerView.Adapter<AdvisorAllR
         private PicPagerAdapter mPagerAdapter;
         InnerView mViewPage;
         ImageView img;
+        ImageView lock;
         TextView count;
         TextView title;
         TextView from;
@@ -102,6 +103,7 @@ public class AdvisorAllReferenceAdapter extends RecyclerView.Adapter<AdvisorAllR
             }
 
             img = (ImageView) itemView.findViewById(R.id.iv_advisor_all_reference_img);
+            lock = (ImageView) itemView.findViewById(R.id.iv_advisor_all_reference_lock);
             title = (TextView) itemView.findViewById(R.id.tv_advisor_all_reference_title);
             from = (TextView) itemView.findViewById(R.id.tv_advisor_all_reference_from);
             count = (TextView) itemView.findViewById(R.id.tv_advisor_all_reference_count);

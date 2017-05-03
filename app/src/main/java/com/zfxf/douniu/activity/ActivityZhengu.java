@@ -65,7 +65,7 @@ public class ActivityZhengu extends FragmentActivity implements View.OnClickList
         ButterKnife.bind(this);
         text_advisor.getPaint().setFakeBoldText(true);//加粗
         text_answer.getPaint().setFakeBoldText(true);//加粗
-        title.setText("问股");
+        title.setText("微问答");
         edit.setVisibility(View.INVISIBLE);
         initdata();
         initListener();

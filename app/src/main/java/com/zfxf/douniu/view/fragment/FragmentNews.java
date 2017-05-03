@@ -83,8 +83,8 @@ public class FragmentNews extends BaseFragment implements View.OnClickListener{
 			mTabLayout.post(new Runnable() {//改变滑动条的长度
 				@Override
 				public void run() {
-					CommonUtils.setIndicator(mTabLayout, CommonUtils.dip2px(CommonUtils.getContext(),20)
-							,CommonUtils.dip2px(CommonUtils.getContext(),20));
+					CommonUtils.setIndicator(mTabLayout, CommonUtils.px2dip(CommonUtils.getContext(),60)
+							,CommonUtils.px2dip(CommonUtils.getContext(),60));
 				}
 			});
 		}

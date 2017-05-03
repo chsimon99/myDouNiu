@@ -9,15 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.activity.ActivityAdvisorHome;
+import com.zfxf.douniu.activity.ActivityAdvisorList;
 import com.zfxf.douniu.activity.ActivityBar;
 import com.zfxf.douniu.activity.ActivityHeadline;
+import com.zfxf.douniu.activity.ActivityIntelligenceChoose;
 import com.zfxf.douniu.activity.ActivityResearch;
+import com.zfxf.douniu.activity.ActivitySimulation;
 import com.zfxf.douniu.activity.ActivityXiangMu;
-import com.zfxf.douniu.activity.ActivityZhengu;
+import com.zfxf.douniu.activity.MainActivityTabHost;
 import com.zfxf.douniu.activity.myself.ActivityMyselfMessage;
 import com.zfxf.douniu.adapter.recycleView.HomeAdvisorAdapter;
 import com.zfxf.douniu.adapter.recycleView.HomeChooseAdapter;
@@ -56,8 +60,8 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
     @BindView(R.id.tv_home_zhibo)
     TextView zhibo;
 
-    @BindView(R.id.iv_home_jinpai_more)
-    ImageView jinpai_more;
+    @BindView(R.id.rl_home_jinpai_more)
+    RelativeLayout jinpai_more;
     @BindView(R.id.ll_home_zhibo)
     LinearLayout ll_zhibo;
     @BindView(R.id.ll_home_gkk)
@@ -201,20 +205,39 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
                 getActivity().overridePendingTransition(0,0);
             }
         });
+        mChooseAdapter.setOnItemClickListener(new HomeChooseAdapter.MyItemClickListener() {
+            @Override
+            public void onItemClick(View v, int positon) {
+                Intent intent = new Intent(getActivity(), ActivityIntelligenceChoose.class);
+                getActivity().startActivity(intent);
+                getActivity().overridePendingTransition(0,0);
+            }
+        });
     }
     Intent intent;
     @Override
     public void onClick(View v) {
+
         switch (v.getId()){
-            case R.id.iv_home_jinpai_more:
+            case R.id.rl_home_jinpai_more:
+                intent = new Intent(getActivity(), ActivityAdvisorList.class);
+                getActivity().startActivity(intent);
+                getActivity().overridePendingTransition(0,0);
                 break;
             case R.id.ll_home_zhibo:
+                MainActivityTabHost.setTabHost(2);
+                MainActivityTabHost.setIndex(2);
                 break;
             case R.id.ll_home_gkk:
+                MainActivityTabHost.setTabHost(2);
+                MainActivityTabHost.setIndex(3);
                 break;
             case R.id.ll_home_smk:
+                MainActivityTabHost.setTabHost(2);
+                MainActivityTabHost.setIndex(4);
                 break;
             case R.id.ll_home_bar:
+
                 intent = new Intent(getActivity(), ActivityBar.class);
                 getActivity().startActivity(intent);
                 getActivity().overridePendingTransition(0,0);
@@ -225,11 +248,16 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
                 getActivity().overridePendingTransition(0,0);
                 break;
             case R.id.ll_home_wenda:
-                intent = new Intent(getActivity(), ActivityZhengu.class);
-                getActivity().startActivity(intent);
-                getActivity().overridePendingTransition(0,0);
+//                intent = new Intent(getActivity(), ActivityZhengu.class);
+//                getActivity().startActivity(intent);
+//                getActivity().overridePendingTransition(0,0);
+                MainActivityTabHost.setTabHost(2);
+                MainActivityTabHost.setIndex(6);
                 break;
             case R.id.ll_home_moni:
+                intent = new Intent(getActivity(), ActivitySimulation.class);
+                getActivity().startActivity(intent);
+                getActivity().overridePendingTransition(0,0);
                 break;
             case R.id.ll_home_xiangmu:
             intent = new Intent(getActivity(), ActivityXiangMu.class);

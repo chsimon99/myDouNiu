@@ -2,10 +2,13 @@ package com.zfxf.douniu.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -13,6 +16,11 @@ import android.widget.Toast;
 
 import com.zfxf.douniu.base.BaseApplication;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 
 /**
@@ -194,4 +202,52 @@ public class CommonUtils {
         String telRegex = "[1][34578]\\d{9}";
         return username.matches(telRegex);
     }
+    private static boolean isLoging = true;
+    public static void logMes(String str){
+        if(isLoging){
+            Log.d("----isLoging----",""+str);
+        }
+    }
+    /**
+     * 保存图片到本地缓存
+     * @param bitmap
+     * @param str
+     */
+    public static void saveBitmapFile(Bitmap bitmap , String str){
+        File file = new File(getContext().getFilesDir(),str);//将要保存图片的路径
+        try {
+            if(file.exists()){
+                file.delete();
+            }
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            bos.flush();
+            bos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Bitmap getCacheFile(String str){
+        File file = new File(getContext().getFilesDir(),str);
+        if (file != null  && file.exists()) {
+            //文件存在
+            //把文件转换成bitmap
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+            //再往内存写
+            return bitmap;
+        } else {
+            //不存在
+            return null;
+        }
+    }
+
+    public static byte[] getBitMapByteArray(Bitmap bitmap){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] bytes=baos.toByteArray();
+
+        return bytes;
+    }
+
 }

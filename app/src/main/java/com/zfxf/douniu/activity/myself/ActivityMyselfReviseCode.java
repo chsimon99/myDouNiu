@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.internet.LoginInternetRequest;
+import com.zfxf.douniu.utils.CommonUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,7 +68,11 @@ public class ActivityMyselfReviseCode extends FragmentActivity implements View.O
                         password, newpassword, password_confirm, new LoginInternetRequest.ForResultListener() {
                             @Override
                             public void onResponseMessage(String code) {
-
+                                if(code.equals("成功")){
+                                    CommonUtils.toastMessage("修改密码成功");
+                                    finishAll();
+                                    finish();
+                                }
                             }
                         });
                 break;

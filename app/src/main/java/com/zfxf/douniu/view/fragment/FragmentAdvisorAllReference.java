@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.activity.advisor.ActivityAdvisorAllPublicDetail;
+import com.zfxf.douniu.activity.ActivityInformation;
 import com.zfxf.douniu.adapter.recycleView.AdvisorAllReferenceAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.utils.CommonUtils;
@@ -87,6 +87,7 @@ public class FragmentAdvisorAllReference extends BaseFragment{
 		mMyLunBO = mReferenceAdapter.getLunBo();
 	}
 	int num = 0;
+	boolean ispay = false;
 	@Override
 	public void initListener() {
 		super.initListener();
@@ -128,9 +129,14 @@ public class FragmentAdvisorAllReference extends BaseFragment{
 		mReferenceAdapter.setOnItemClickListener(new AdvisorAllReferenceAdapter.MyItemClickListener() {
 			@Override
 			public void onItemClick(View v, int positon) {
-				Intent intent = new Intent(CommonUtils.getContext(), ActivityAdvisorAllPublicDetail.class);
-				startActivity(intent);
-				getActivity().overridePendingTransition(0,0);
+				if(ispay){
+
+				}else{
+					Intent intent = new Intent(CommonUtils.getContext(), ActivityInformation.class);
+					intent.putExtra("type","参考详情");
+					startActivity(intent);
+					getActivity().overridePendingTransition(0,0);
+				}
 			}
 		});
 	}

@@ -32,7 +32,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginLeft="@dimen/dm020"
-                            android:text="在线首席"
+                            android:text="在线分析师"
                             android:textColor="@color/titleText"
                             android:textSize="@dimen/dm028"/>
                         <View

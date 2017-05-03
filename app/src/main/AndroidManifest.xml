@@ -67,9 +67,19 @@
         <activity android:name=".activity.ActivityReward"/>
         <activity android:name=".activity.ActivityGoldPond"/>
         <activity android:name=".activity.Activityhistory"/>
+        <activity android:name=".activity.ActivityAdvisorList"/>
+        <activity android:name=".activity.ActivityMatador"/>
+        <activity android:name=".activity.ActivityMarketResearch"/>
+        <activity android:name=".activity.ActivityWarning"/>
+        <activity android:name=".activity.ActivitySimulation"/>
+        <activity android:name=".activity.ActivitySimulationStock"/>
+        <activity android:name=".activity.ActivitysimulationQueryToday"/>
+        <activity android:name=".activity.ActivitysimulationQueryHistory"/>
+        <activity android:name=".activity.ActivityIntelligenceChoose"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 </manifest>

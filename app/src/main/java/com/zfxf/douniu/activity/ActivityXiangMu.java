@@ -62,7 +62,7 @@ public class ActivityXiangMu extends FragmentActivity implements View.OnClickLis
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addItemDecoration(
                 new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL,
-                        CommonUtils.dip2px(this,10), Color.parseColor("#f4f4f4")));
+                        CommonUtils.px2dip(this,40), Color.parseColor("#f4f4f4")));
         mRecyclerView.setFooterViewText("加载更多……");
 
     }

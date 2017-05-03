@@ -4,12 +4,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.adapter.recycleView.AdvisorHomeOneAdapter;
+import com.zfxf.douniu.adapter.recycleView.AdvisorHomeReferenceAdapter;
 import com.zfxf.douniu.base.BaseFragment;
-import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.RecycleViewDivider;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
@@ -20,19 +18,19 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class FragmentAdvisorHomeOne extends BaseFragment {
+public class FragmentAdvisorHomeReference extends BaseFragment {
 	private View view;
 
-	@BindView(R.id.rv_advisor_home_one)
+	@BindView(R.id.rv_advisor_home_capital)
 	PullLoadMoreRecyclerView mRecyclerView;
-	private AdvisorHomeOneAdapter mOneAdapter;
+	private AdvisorHomeReferenceAdapter mReferenceAdapter;
 	private List<String> datas = new ArrayList<String>();
 	private RecycleViewDivider mDivider;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
 		if (view == null) {
-			view = inflater.inflate(R.layout.fragment_advisor_home_one, null);
+			view = inflater.inflate(R.layout.fragment_advisor_home_capital, null);
 		}
 		ViewGroup parent = (ViewGroup) view.getParent();
 		if(parent !=null){
@@ -53,14 +51,13 @@ public class FragmentAdvisorHomeOne extends BaseFragment {
 			datas.add("1");
 			datas.add("2");
 			datas.add("3");
-			datas.add("4");
 		}
-		if(mOneAdapter == null){
-			mOneAdapter = new AdvisorHomeOneAdapter(getActivity(),datas);
+		if(mReferenceAdapter == null){
+			mReferenceAdapter = new AdvisorHomeReferenceAdapter(getActivity(),datas);
 		}
 
 		mRecyclerView.setLinearLayout();
-		mRecyclerView.setAdapter(mOneAdapter);
+		mRecyclerView.setAdapter(mReferenceAdapter);
 		if(mDivider == null){
 			mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
 			mRecyclerView.addItemDecoration(mDivider);
@@ -73,10 +70,10 @@ public class FragmentAdvisorHomeOne extends BaseFragment {
 	public void initListener() {
 		super.initListener();
 
-		mOneAdapter.setOnItemClickListener(new AdvisorHomeOneAdapter.MyItemClickListener() {
+		mReferenceAdapter.setOnItemClickListener(new AdvisorHomeReferenceAdapter.MyItemClickListener() {
 			@Override
 			public void onItemClick(View v, int positon) {
-				Toast.makeText(CommonUtils.getContext(),"点击了"+positon,Toast.LENGTH_SHORT).show();
+//				Toast.makeText(CommonUtils.getContext(),"点击了"+positon,Toast.LENGTH_SHORT).show();
 			}
 		});
 	}

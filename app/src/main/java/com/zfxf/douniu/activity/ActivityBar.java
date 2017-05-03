@@ -76,8 +76,8 @@ public class ActivityBar extends FragmentActivity implements View.OnClickListene
         mTabLayout.post(new Runnable() {//改变滑动条的长度
             @Override
             public void run() {
-                CommonUtils.setIndicator(mTabLayout, CommonUtils.dip2px(CommonUtils.getContext(),10)
-                        ,CommonUtils.dip2px(CommonUtils.getContext(),9));
+                CommonUtils.setIndicator(mTabLayout, CommonUtils.px2dip(CommonUtils.getContext(),60)
+                        ,CommonUtils.px2dip(CommonUtils.getContext(),60));
             }
         });
     }

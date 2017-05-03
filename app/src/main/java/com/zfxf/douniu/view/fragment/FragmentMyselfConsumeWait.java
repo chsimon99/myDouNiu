@@ -68,7 +68,7 @@ public class FragmentMyselfConsumeWait extends BaseFragment {
 		mRecyclerView.setAdapter(mConsumeWaitAdapter);
 		if(mDivider == null){
 			mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL,
-					CommonUtils.dip2px(getActivity(), 10), Color.parseColor("#f4f4f4"));
+					CommonUtils.px2dip(getActivity(), 40), Color.parseColor("#f4f4f4"));
 			mRecyclerView.addItemDecoration(mDivider);
 		}
 		mRecyclerView.setPullRefreshEnable(false);

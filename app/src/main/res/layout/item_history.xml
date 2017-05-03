@@ -12,7 +12,10 @@
             android:id="@+id/tv_history_item_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/dm020"
+            android:paddingLeft="@dimen/dm020"
+            android:paddingRight="@dimen/dm020"
+            android:paddingTop="@dimen/dm010"
+            android:paddingBottom="@dimen/dm010"
             android:text="2017年3月13日"
             android:textColor="@color/colorText"
             android:textSize="@dimen/dm024"/>

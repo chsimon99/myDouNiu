@@ -59,8 +59,7 @@ public class MyselfSubscribeCapitalAdapter extends RecyclerView.Adapter<MyselfSu
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private MyItemClickListener mListener;
         private ImageView img;
-        private TextView name;
-        private TextView detail;
+        private TextView from;
         private TextView title;
         private TextView count;
 
@@ -68,8 +67,7 @@ public class MyselfSubscribeCapitalAdapter extends RecyclerView.Adapter<MyselfSu
             super(itemView);
             this.mListener = listener;
             img = (ImageView) itemView.findViewById(R.id.iv_myself_subscrobe_capital_img);
-            name = (TextView) itemView.findViewById(R.id.tv_myself_subscrobe_capital_name);
-            detail = (TextView) itemView.findViewById(R.id.tv_myself_subscrobe_capital_detail);
+            from = (TextView) itemView.findViewById(R.id.tv_myself_subscrobe_capital_from);
             title = (TextView) itemView.findViewById(R.id.tv_myself_subscrobe_capital_title);
             count = (TextView) itemView.findViewById(R.id.tv_myself_subscrobe_capital_count);
             itemView.setOnClickListener(this);

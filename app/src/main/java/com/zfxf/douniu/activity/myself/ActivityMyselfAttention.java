@@ -41,6 +41,7 @@ public class ActivityMyselfAttention extends FragmentActivity implements View.On
     private List<String> list_title = new ArrayList<>();
     private Fragment mFragmentMyselfAttentionAdvisor;
     private Fragment mFragmentMyselfAttentionMatador;
+    private List<String> datas = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +56,20 @@ public class ActivityMyselfAttention extends FragmentActivity implements View.On
     }
 
     private void initdata() {
+
+        if(datas.size() == 0){
+            datas.add("1");
+            datas.add("2");
+            datas.add("3");
+            datas.add("1");
+            datas.add("2");
+            datas.add("3");
+            datas.add("1");
+            datas.add("2");
+        }
+
         if(mFragmentMyselfAttentionAdvisor == null){
-            mFragmentMyselfAttentionAdvisor = new FragmentMyselfAttentionAdvisor();
+            mFragmentMyselfAttentionAdvisor = new FragmentMyselfAttentionAdvisor(datas);
         }
         if(mFragmentMyselfAttentionMatador == null){
             mFragmentMyselfAttentionMatador = new FragmentMyselfAttentionMatador();
@@ -79,8 +92,8 @@ public class ActivityMyselfAttention extends FragmentActivity implements View.On
         mTabLayout.post(new Runnable() {//改变滑动条的长度
             @Override
             public void run() {
-                CommonUtils.setIndicator(mTabLayout, CommonUtils.dip2px(CommonUtils.getContext(),30)
-                        ,CommonUtils.dip2px(CommonUtils.getContext(),30));
+                CommonUtils.setIndicator(mTabLayout, CommonUtils.px2dip(CommonUtils.getContext(),60)
+                        ,CommonUtils.px2dip(CommonUtils.getContext(),60));
             }
         });
     }

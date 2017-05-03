@@ -65,7 +65,7 @@ public class FragmentBarBar extends BaseFragment {
 		}
 //		mRecyclerView.addItemDecoration(
 //				new RecycleViewDivider(getActivity(),LinearLayoutManager.HORIZONTAL,
-//						CommonUtils.dip2px(getActivity(),20), Color.parseColor("#f4f4f4")));
+//						CommonUtils.px2dip(getActivity(),20), Color.parseColor("#f4f4f4")));
 		mRecyclerView.setFooterViewText("加载更多……");
 
 

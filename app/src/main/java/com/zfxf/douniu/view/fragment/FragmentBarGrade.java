@@ -1,5 +1,6 @@
 package com.zfxf.douniu.view.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.ActivityMatador;
 import com.zfxf.douniu.adapter.recycleView.HomeAdvisorAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.view.FullyLinearLayoutManager;
@@ -131,5 +133,29 @@ public class FragmentBarGrade extends BaseFragment {
 	@Override
 	public void initListener() {
 		super.initListener();
-	}	
+		mCommendAdapter.setOnItemClickListener(new HomeAdvisorAdapter.MyItemClickListener() {
+			@Override
+			public void onItemClick(View v, int positon) {
+				Intent intent = new Intent(getActivity(), ActivityMatador.class);
+				startActivity(intent);
+				getActivity().overridePendingTransition(0,0);
+			}
+		});
+		mHumanAdapter.setOnItemClickListener(new HomeAdvisorAdapter.MyItemClickListener() {
+			@Override
+			public void onItemClick(View v, int positon) {
+				Intent intent = new Intent(getActivity(), ActivityMatador.class);
+				startActivity(intent);
+				getActivity().overridePendingTransition(0,0);
+			}
+		});
+		mIncomeAdapter.setOnItemClickListener(new HomeAdvisorAdapter.MyItemClickListener() {
+			@Override
+			public void onItemClick(View v, int positon) {
+				Intent intent = new Intent(getActivity(), ActivityMatador.class);
+				startActivity(intent);
+				getActivity().overridePendingTransition(0,0);
+			}
+		});
+	}
 }

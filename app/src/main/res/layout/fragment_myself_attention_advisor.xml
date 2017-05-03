@@ -14,6 +14,9 @@
         <com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView
             android:id="@+id/rv_myself_attention_advisor"
             android:layout_width="match_parent"
+            android:background="@color/colorWhite"
+            android:paddingLeft="@dimen/dm020"
+            android:paddingRight="@dimen/dm020"
             android:layout_height="wrap_content"/>
         <TextView
             android:id="@+id/tv_myself_attention_advisor"

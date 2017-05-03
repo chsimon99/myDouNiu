@@ -33,7 +33,8 @@ public class ActivityInformation extends FragmentActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_information);
         ButterKnife.bind(this);
-        title.setText("资讯");
+        String type_title = getIntent().getStringExtra("type");//传过来的标题
+        title.setText(type_title);
         infoTitle.getPaint().setFakeBoldText(true);
         initData();
         initListener();

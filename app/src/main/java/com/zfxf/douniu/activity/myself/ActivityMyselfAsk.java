@@ -79,8 +79,8 @@ public class ActivityMyselfAsk extends FragmentActivity implements View.OnClickL
         mTabLayout.post(new Runnable() {//改变滑动条的长度
             @Override
             public void run() {
-                CommonUtils.setIndicator(mTabLayout, CommonUtils.dip2px(CommonUtils.getContext(),30)
-                        ,CommonUtils.dip2px(CommonUtils.getContext(),30));
+                CommonUtils.setIndicator(mTabLayout, CommonUtils.px2dip(CommonUtils.getContext(),50)
+                        ,CommonUtils.px2dip(CommonUtils.getContext(),50));
             }
         });
     }

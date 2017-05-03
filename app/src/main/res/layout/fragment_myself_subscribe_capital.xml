@@ -19,7 +19,7 @@
             android:id="@+id/tv_myself_subscribe_capital"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="您没有订阅资本圈"
+            android:text="您没有订阅大参考"
             android:textColor="@color/titleText"
             android:textSize="@dimen/dm030"
             android:layout_centerInParent="true"

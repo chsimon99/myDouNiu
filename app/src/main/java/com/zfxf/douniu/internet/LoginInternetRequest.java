@@ -3,20 +3,26 @@ package com.zfxf.douniu.internet;
 import android.content.Context;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.EditUserInformationBean;
 import com.zfxf.douniu.bean.LoginResult;
+import com.zfxf.douniu.bean.UserDetail;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.utils.Constants;
 import com.zfxf.douniu.utils.SpTools;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
 import okhttp3.Call;
+import okhttp3.MediaType;
 
 /**
  * @author Admin
@@ -30,6 +36,7 @@ public class LoginInternetRequest {
     private static Context context;
     private static Gson mGson;
     private static ForResultListener mListener;
+    private static ForResultInfoListener mInfoListener;
     private static TimeCount timeCount;
     private static TextView mTextView;
     private static boolean isRun = false;
@@ -39,7 +46,12 @@ public class LoginInternetRequest {
         timeCount = new TimeCount(60000, 1000);
     }
 
-
+    /**
+     * 登陆
+     * @param phonenumber 电话号码
+     * @param password 密码
+     * @param listener listener
+     */
     public static void login(String phonenumber, String password, ForResultListener listener){
         mListener = listener;
         if(!CommonUtils.isNetworkAvailable(CommonUtils.getContext())){
@@ -65,7 +77,7 @@ public class LoginInternetRequest {
         }
         String url = context.getResources().getString(R.string.service_host_address)
                 .concat(context.getResources().getString(R.string.getLogin));
-        OkHttpUtils.get().url(url)
+        OkHttpUtils.post().url(url)
                 .addParams("sid","")
                 .addParams("ub_phone",phonenumber)
                 .addParams("index",(index++)+"")
@@ -76,11 +88,13 @@ public class LoginInternetRequest {
                 .build().execute(new StringCallback() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes(e+"");
                 CommonUtils.toastMessage("您网络信号不稳定，请稍后再试");
             }
 
             @Override
             public void onResponse(String response, int id) {
+                CommonUtils.logMes("login="+response);
                 LoginResult result = mGson.fromJson(response, LoginResult.class);
                 String code = result.result.code;
                 String info = result.result.info;
@@ -88,10 +102,12 @@ public class LoginInternetRequest {
                     SpTools.setString(context, Constants.userId, result.ub_id);//存储用户的ub_id
                     mListener.onResponseMessage("成功");
                 } else if (code.equals("20")) {
-                    if (info.equals("ub_phone error!")) {
+                    if (info.equals("手机长度不正确")) {
                         CommonUtils.toastMessage("您输入的手机号有误,请重新输入");
-                    } else if (info.endsWith("ud_pwd error!")) {
+                    } else if (info.endsWith("密码不正确")) {
                         CommonUtils.toastMessage("您输入的密码有误,请重新输入");
+                    }else if (info.endsWith("手机号不存在")) {
+                        CommonUtils.toastMessage("该手机号还没有注册");
                     }
                 }
             }
@@ -142,6 +158,7 @@ public class LoginInternetRequest {
 
             @Override
             public void onResponse(String response, int id) {
+                CommonUtils.logMes("verificationCode="+response);
                 LoginResult result = mGson.fromJson(response,LoginResult.class);
                 String code = result.result.code;
                 String info = result.result.info;
@@ -209,7 +226,7 @@ public class LoginInternetRequest {
             }
             @Override
             public void onResponse(String response, int id) {
-                Log.d("----------","RegisterUI="+response);
+                CommonUtils.logMes("register="+response);
                 LoginResult result = mGson.fromJson(response, LoginResult.class);
                 String code = result.result.code;
                 String info = result.result.info;
@@ -217,11 +234,11 @@ public class LoginInternetRequest {
                     reset();
                     mListener.onResponseMessage("成功");
                 }else if(code.equals("20")){
-                    if(info.equals("ub_phone error!")){
+                    if(info.equals("手机长度不正确")){
                         CommonUtils.toastMessage("您输入的手机号错误");
-                    }else if(info.equals("ub_phone exist!")){
+                    }else if(info.equals("手机号已存在！")){
                         CommonUtils.toastMessage("您输入的手机号已注册");
-                    }else if(info.equals("ud_pwd error!")){
+                    }else if(info.equals("密码长度不正确！")){
                         CommonUtils.toastMessage("您输入的密码位数不足6位");
                     }
                 }
@@ -302,10 +319,10 @@ public class LoginInternetRequest {
             }
             @Override
             public void onResponse(String response, int id) {
+                CommonUtils.logMes("forgetPassword="+response);
                 LoginResult result = mGson.fromJson(response, LoginResult.class);
                 String code = result.result.code;
                 String info = result.result.info;
-                Log.d("---------","ChangePswUI="+response);
                 if(code.equals("10")){
                     reset();
                     passport.setText("");
@@ -313,7 +330,11 @@ public class LoginInternetRequest {
                     mListener.onResponseMessage("成功");
 
                 }else if(code.equals("20")){
-                    CommonUtils.toastMessage("修改密码失败，请重新输入");
+                    if (info.endsWith("手机号不存在")) {
+                        CommonUtils.toastMessage("该手机号还没有注册");
+                    }else{
+                        CommonUtils.toastMessage("修改密码失败，请重新输入");
+                    }
                 }
             }
         });
@@ -321,7 +342,7 @@ public class LoginInternetRequest {
     }
 
     /**
-     *
+     *  重置密码
      * @param password 原密码
      * @param newpassword 新密码
      * @param confirmpassword 新密码确认
@@ -330,7 +351,7 @@ public class LoginInternetRequest {
      * @param editconfirm 确认密码的Editext
      * @param listener listener
      */
-    public static void reviseCode(String password, String newpassword, String confirmpassword, EditText editpass, EditText editnewpass, EditText editconfirm, ForResultListener listener) {
+    public static void reviseCode(String password, String newpassword, String confirmpassword, final EditText editpass, final EditText editnewpass, final EditText editconfirm, ForResultListener listener) {
         if(!CommonUtils.isNetworkAvailable(CommonUtils.getContext())){
             CommonUtils.toastMessage("您当前无网络，请联网再试");
             return;
@@ -373,28 +394,160 @@ public class LoginInternetRequest {
             }
             @Override
             public void onResponse(String response, int id) {
-                Log.d("----------","RegisterUI="+response);
+                CommonUtils.logMes("reviseCode="+response);
                 LoginResult result = mGson.fromJson(response, LoginResult.class);
                 String code = result.result.code;
                 String info = result.result.info;
                 if(code.equals("10")){
                     mListener.onResponseMessage("成功");
                 }else if(code.equals("20")){
-//                    if(info.equals("ub_phone error!")){
-//                        CommonUtils.toastMessage("您输入的手机号错误");
-//                    }else if(info.equals("ub_phone exist!")){
-//                        CommonUtils.toastMessage("您输入的手机号已注册");
-//                    }else if(info.equals("ud_pwd error!")){
-//                        CommonUtils.toastMessage("您输入的密码位数不足6位");
-//                    }
+                    if(info.equals("原密码不正确")){
+                        CommonUtils.toastMessage("您输入的原密码错误");
+                        editpass.setText("");
+                        editnewpass.setText("");
+                        editconfirm.setText("");
+                    }else if(info.equals("密码长度不够")){
+                        CommonUtils.toastMessage("您输入的密码位数不足6位");
+                    }
                 }
             }
         });
 
     }
 
+    /**
+     * 获取个人信息
+     * @param listener
+     */
+    public static void getUserInformation(ForResultInfoListener listener) {
+        String url = context.getResources().getString(R.string.service_host_address)
+                .concat(context.getResources().getString(R.string.mycount));
+        mInfoListener = listener;
+        final Map<String,String> map = new HashMap<>();
+        OkHttpUtils.post().url(url)
+                .addParams("sid","")
+                .addParams("index",(index++)+"")
+                .addParams("ub_id",SpTools.getString(context, Constants.userId,""))
+                .addParams("uo_long","")
+                .addParams("uo_lat","")
+                .addParams("uo_high","")
+                .build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getUserInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getUserInformation="+response);
+                LoginResult result = mGson.fromJson(response, LoginResult.class);
+                String ud_addr = result.user_detail.getUd_addr();
+                String ud_borth = result.user_detail.getUd_borth();
+                String ud_nickname = result.user_detail.getUd_nickname();
+                String ud_photo_fileid = result.user_detail.getUd_photo_fileid();
+                map.put("ud_addr",ud_addr);
+                map.put("ud_borth",ud_borth);
+                map.put("ud_nickname",ud_nickname);
+                map.put("ud_photo_fileid",ud_photo_fileid);
+                mInfoListener.onResponseMessage(map);
+            }
+        });
+    }
+
+    /**
+     * 上传头像
+     * @param picName  头像存储的名字
+     * @param listener
+     */
+    public static void uplodePicture(String picName, ForResultListener listener){
+        String url = context.getResources().getString(R.string.service_host_address)
+                .concat(context.getResources().getString(R.string.upload));
+        mListener = listener;
+        OkHttpUtils.post()
+                .addFile("image[]",picName,new File(context.getFilesDir(),picName))
+                .url(url)
+                .addParams("sid", "")
+                .addParams("index", (index++) + "")
+                .addParams("ub_id", SpTools.getString(CommonUtils.getContext(), Constants.userId ,""))
+                .addParams("uo_long","")
+                .addParams("uo_lat","")
+                .addParams("uo_high","")
+                .build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("uplodePicture   e  ="+e);
+                mListener.onResponseMessage("");
+            }
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("uplodePicture="+response);
+                LoginResult result = mGson.fromJson(response, LoginResult.class);
+                String picId = result.file_ids.get(0);
+                if(result.result.code.equals("10")){
+                    mListener.onResponseMessage(picId);
+                    CommonUtils.toastMessage("上传头像成功");
+                }
+            }
+        });
+    }
+
+    /**
+     * 编辑个人信息
+     * @param name 昵称
+     * @param date 时间
+     * @param address 地址
+     * @param id 上传图片成功后传递的图片id
+     * @param listener
+     */
+    public static void editUserInformation(String name, String date, String address, String id,ForResultListener listener) {
+        String url = context.getResources().getString(R.string.service_host_address)
+                .concat(context.getResources().getString(R.string.mycountEdit));
+        mListener = listener;
+        EditUserInformationBean informationBean = new EditUserInformationBean();
+        UserDetail detail = new UserDetail();
+        detail.setUd_addr(address);
+        detail.setUd_borth(date);
+        detail.setUd_nickname(name);
+        if(!TextUtils.isEmpty(id)){
+            detail.setUd_photo_fileid(id);
+        }
+
+        informationBean.setSid("");
+        informationBean.setIndex((index++)+"");
+        informationBean.setUb_id(Integer.parseInt(SpTools.getString(context, Constants.userId,"")));
+        informationBean.setUo_high("");
+        informationBean.setUo_lat("");
+        informationBean.setUo_long("");
+        informationBean.setUser_detail(detail);
+
+        String json = mGson.toJson(informationBean);
+        CommonUtils.logMes("response"+json);
+        OkHttpUtils.postString().url(url)
+                .content(json)
+                .mediaType(MediaType.parse("application/json; charset=utf-8"))
+                .build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("editUserInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("editUserInformation="+response);
+                LoginResult result = mGson.fromJson(response, LoginResult.class);
+                String code = result.result.code;
+                if(code.equals("10")){
+                    mListener.onResponseMessage("成功");
+                }
+            }
+        });
+    }
+
     public interface ForResultListener{
         void onResponseMessage(String code);
+    }
+    public interface ForResultInfoListener{
+        void onResponseMessage(Map<String,String> map);
     }
     /**
      * 验证码倒计时timecount

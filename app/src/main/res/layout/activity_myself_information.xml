@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBgGary"
+    android:id="@+id/ll_myself_information_content"
     android:orientation="vertical">
     <include layout="@layout/activity_base_title"/>
     <LinearLayout
@@ -41,7 +42,7 @@
         android:background="@color/colorWhite"
         android:orientation="vertical">
         <LinearLayout
-            android:id="@+id/ll_myself_she_contact"
+            android:id="@+id/ll_myself_information_name"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dm080"
             android:orientation="horizontal">
@@ -57,12 +58,28 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"/>
+            <EditText
+                android:id="@+id/et_myself_information_name"
+                android:layout_width="@dimen/dm200"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/dm020"
+                android:textColor="@color/titleTextGray"
+                android:textColorHint="@color/titleTextGray"
+                android:textSize="@dimen/dm024"
+                android:gravity="right"
+                android:background="@null"
+                android:visibility="gone"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:maxLines="1"
+                android:layout_height="wrap_content"/>
             <TextView
+                android:id="@+id/tv_myself_information_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginRight="@dimen/dm020"
-                android:text="刘刘老师"
+                android:text="请输入您的昵称"
                 android:textColor="@color/colorText"
                 android:textSize="@dimen/dm024"/>
         </LinearLayout>
@@ -93,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginRight="@dimen/dm020"
-                android:text="刘刘老师"
+                android:text="请输入您的生日"
                 android:textColor="@color/colorText"
                 android:textSize="@dimen/dm024"/>
         </LinearLayout>
@@ -125,7 +142,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginRight="@dimen/dm020"
-                android:text="刘刘老师"
+                android:text="请输入您的所在地"
                 android:textColor="@color/colorText"
                 android:textSize="@dimen/dm024"/>
         </LinearLayout>

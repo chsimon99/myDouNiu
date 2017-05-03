@@ -1,9 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" 
-    android:background="#F4F037">
-    
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/colorWhite"
+              android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm072"
+        android:background="@color/colorTitle">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/backgroud_bg_white_color"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/tv_fragment_market_market"
+                android:layout_width="@dimen/dm120"
+                android:layout_height="@dimen/dm050"
+                android:background="@drawable/backgroud_bg_white_left"
+                android:gravity="center"
+                android:text="行情"
+                android:textColor="@color/colorTitle"
+                android:textSize="@dimen/dm030"/>
+            <TextView
+                android:id="@+id/tv_fragment_market_select"
+                android:layout_width="@dimen/dm120"
+                android:layout_height="@dimen/dm050"
+                android:gravity="center"
+                android:text="自选"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/dm030"/>
+        </LinearLayout>
+        <RelativeLayout android:layout_width="@dimen/dm100"
+                        android:id="@+id/rl_fragment_market_search"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_height="match_parent">
+            <ImageView
+                android:layout_width="@dimen/dm040"
+                android:layout_height="@dimen/dm040"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dm020"
+                android:src="@drawable/icon_fangda_white"/>
+        </RelativeLayout>
 
+    </RelativeLayout>
+    <FrameLayout
+        android:id="@+id/fl_market"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
 </LinearLayout>

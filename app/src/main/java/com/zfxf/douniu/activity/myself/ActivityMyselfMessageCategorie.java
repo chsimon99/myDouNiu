@@ -36,14 +36,15 @@ public class ActivityMyselfMessageCategorie extends FragmentActivity implements 
     private NewNoticeAdapter mNoticeAdapter;
     private List<String> datas = new ArrayList<String>();
     private RecycleViewDivider mDivider;
+    private String mType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myself_message_categorie);
         ButterKnife.bind(this);
-        String type = getIntent().getStringExtra("type");
-        title.setText(type);
+        mType = getIntent().getStringExtra("type");
+        title.setText(mType);
         edit.setVisibility(View.INVISIBLE);
         initData();
         initListener();
@@ -116,6 +117,7 @@ public class ActivityMyselfMessageCategorie extends FragmentActivity implements 
             @Override
             public void onItemClick(View v, int positon) {
                 mIntent = new Intent(ActivityMyselfMessageCategorie.this, ActivityInformation.class);
+                mIntent.putExtra("type",mType+"详情");
                 startActivity(mIntent);
                 overridePendingTransition(0,0);
                 mIntent = null;

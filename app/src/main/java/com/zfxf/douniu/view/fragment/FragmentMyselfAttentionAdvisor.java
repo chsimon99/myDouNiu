@@ -8,7 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.adapter.recycleView.MyselfAttentionAdvisorAdapter;
+import com.zfxf.douniu.adapter.recycleView.HomeAdvisorAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.RecycleViewDivider;
@@ -29,9 +29,13 @@ public class FragmentMyselfAttentionAdvisor extends BaseFragment {
 
 	@BindView(R.id.rv_myself_attention_advisor)
 	PullLoadMoreRecyclerView mRecyclerView;
-	private MyselfAttentionAdvisorAdapter mAttentionAdvisorAdapter;
+	private HomeAdvisorAdapter mAttentionAdvisorAdapter;
 	private List<String> datas = new ArrayList<String>();
 	private RecycleViewDivider mDivider;
+
+	public FragmentMyselfAttentionAdvisor(List<String> data) {
+		datas = data;
+	}
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -53,19 +57,9 @@ public class FragmentMyselfAttentionAdvisor extends BaseFragment {
 	@Override
 	public void initdata() {
 		super.initdata();
-		if(datas.size() == 0){
-			datas.add("1");
-			datas.add("2");
-			datas.add("3");
-			datas.add("1");
-			datas.add("2");
-			datas.add("3");
-			datas.add("1");
-			datas.add("2");
-//			advisor.setVisibility(View.VISIBLE);
-		}
+
 		if(mAttentionAdvisorAdapter == null){
-			mAttentionAdvisorAdapter = new MyselfAttentionAdvisorAdapter(getActivity(),datas);
+			mAttentionAdvisorAdapter = new HomeAdvisorAdapter(getActivity(),datas);
 		}
 
 		mRecyclerView.setLinearLayout();
@@ -82,7 +76,7 @@ public class FragmentMyselfAttentionAdvisor extends BaseFragment {
 	public void initListener() {
 		super.initListener();
 
-		mAttentionAdvisorAdapter.setOnItemClickListener(new MyselfAttentionAdvisorAdapter.MyItemClickListener() {
+		mAttentionAdvisorAdapter.setOnItemClickListener(new HomeAdvisorAdapter.MyItemClickListener() {
 			@Override
 			public void onItemClick(View v, int positon) {
 				Toast.makeText(CommonUtils.getContext(),"点击了"+positon,Toast.LENGTH_SHORT).show();
