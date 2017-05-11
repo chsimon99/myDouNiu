@@ -104,4 +104,9 @@ public class MainActivityTabHost extends FragmentActivity {
 	public static int getIndex(){
 		return index;
 	}
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		CommonUtils.dismissProgressDialog();//保证没有加载数据，dialog也关闭
+	}
 }

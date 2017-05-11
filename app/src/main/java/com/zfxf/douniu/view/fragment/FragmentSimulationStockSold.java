@@ -20,7 +20,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:31
+ * @des    模拟炒股卖出
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 public class FragmentSimulationStockSold extends BaseFragment {
 	private View view;
 

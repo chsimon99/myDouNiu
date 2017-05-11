@@ -40,6 +40,7 @@
                             android:id="@+id/tv_headline_detail_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/dm016"
                             android:text="江南化工为何涨停?"
                             android:textColor="@color/titleText"
                             android:textSize="@dimen/dm032"/>
@@ -87,6 +88,10 @@
                             <View android:layout_width="0dp"
                                   android:layout_height="match_parent"
                                   android:layout_weight="1"/>
+                            <LinearLayout android:layout_width="wrap_content"
+                                          android:id="@+id/ll_headline_detail_zan"
+                                          android:layout_height="wrap_content"
+                            android:orientation="horizontal">
                             <ImageView
                                 android:layout_width="@dimen/dm030"
                                 android:layout_height="@dimen/dm025"
@@ -102,6 +107,7 @@
                                 android:text="赞26"
                                 android:textColor="@color/colorTitle"
                                 android:textSize="@dimen/dm026"/>
+                            </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>

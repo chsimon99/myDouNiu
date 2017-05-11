@@ -26,7 +26,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:25
+ * @des    看头条
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 public class ActivityHeadline extends FragmentActivity implements View.OnClickListener{
 
     @BindView(R.id.iv_base_back)
@@ -154,5 +160,11 @@ public class ActivityHeadline extends FragmentActivity implements View.OnClickLi
             isOnPause = false;
         }
         super.onResume();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        CommonUtils.dismissProgressDialog();//保证没有加载数据，dialog也关闭
     }
 }

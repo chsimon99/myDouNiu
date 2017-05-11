@@ -20,7 +20,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:40
+ * @des    微问答 更多精彩回答
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 public class ActivityAnswer extends FragmentActivity implements View.OnClickListener{
 
     @BindView(R.id.iv_base_back)

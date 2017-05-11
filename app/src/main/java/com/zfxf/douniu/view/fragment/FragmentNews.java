@@ -19,7 +19,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:21
+ * @des    资讯首页
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 public class FragmentNews extends BaseFragment implements View.OnClickListener{
 	private View view;
 

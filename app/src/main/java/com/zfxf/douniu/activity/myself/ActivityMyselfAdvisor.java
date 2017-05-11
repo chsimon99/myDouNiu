@@ -15,7 +15,13 @@ import com.zfxf.douniu.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:18
+ * @des    我的 投顾入驻
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 public class ActivityMyselfAdvisor extends FragmentActivity implements View.OnClickListener{
 
     @BindView(R.id.iv_base_back)
@@ -50,7 +56,7 @@ public class ActivityMyselfAdvisor extends FragmentActivity implements View.OnCl
         setContentView(R.layout.activity_myself_advisor);
         ButterKnife.bind(this);
 
-        title.setText("设置");
+        title.setText("投顾申请");
         edit.setVisibility(View.INVISIBLE);
 
         initdata();

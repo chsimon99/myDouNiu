@@ -208,8 +208,25 @@ public class DataCleanManager {
     }
 
 
-    public static String getCacheSize(File file) throws Exception {
-        return getFormatSize(getFolderSize(file));
+//    public static String getCacheSize(File file) throws Exception {
+//        return getFormatSize(getFolderSize(file));
+//    }
+
+    public static String getCacheSize(Context context){
+        long size = 0;
+        try {
+            size = getFolderSize(context.getExternalCacheDir())+
+                    getFolderSize(context.getFilesDir())+getFolderSize(context.getCacheDir());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return getFormatSize(size);
+    }
+
+    public static void deleteCache(Context context){
+        deleteFilesByDirectory(context.getExternalCacheDir());
+        deleteFilesByDirectory(context.getFilesDir());
+        deleteFolderFile(context.getCacheDir().getPath(),false);//暂时可以不删除这个
     }
 
 }

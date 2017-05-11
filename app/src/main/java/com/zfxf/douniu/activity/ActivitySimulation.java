@@ -21,7 +21,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:30
+ * @des    首页模拟炒股
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 public class ActivitySimulation extends FragmentActivity implements View.OnClickListener{
 
     @BindView(R.id.iv_base_back)

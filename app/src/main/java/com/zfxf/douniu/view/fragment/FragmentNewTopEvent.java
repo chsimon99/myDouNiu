@@ -11,16 +11,23 @@ import com.zfxf.douniu.R;
 import com.zfxf.douniu.activity.ActivityHeadLineDetail;
 import com.zfxf.douniu.adapter.recycleView.NewTopPolicyAdapter;
 import com.zfxf.douniu.base.BaseFragment;
+import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.RecycleViewDivider;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:25
+ * @des    头条 事件追踪
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 
 public class FragmentNewTopEvent extends BaseFragment {
 	private View view;
@@ -28,8 +35,10 @@ public class FragmentNewTopEvent extends BaseFragment {
 	@BindView(R.id.rv_fragment_new_top_event)
 	PullLoadMoreRecyclerView mRecyclerView;
 	private NewTopPolicyAdapter mNewTopPolicyAdapter;
-	private List<String> datas = new ArrayList<String>();
 	private RecycleViewDivider mDivider;
+
+	private int totlePage = 0;
+	private int currentPage = 1;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -51,28 +60,72 @@ public class FragmentNewTopEvent extends BaseFragment {
 	@Override
 	public void initdata() {
 		super.initdata();
-		if (datas.size() == 0) {
-			datas.add("1");
-			datas.add("2");
-			datas.add("3");
-			datas.add("4");
-			datas.add("4");
-			datas.add("4");
-			datas.add("4");
-		}
-		if (mNewTopPolicyAdapter == null) {
-			mNewTopPolicyAdapter = new NewTopPolicyAdapter(getActivity(), datas);
-		}
-
-		mRecyclerView.setLinearLayout();
-		mRecyclerView.setAdapter(mNewTopPolicyAdapter);
-		if(mDivider == null){
-			mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
-			mRecyclerView.addItemDecoration(mDivider);
-		}
-		mRecyclerView.setFooterViewText("加载更多……");
+		currentPage = 1;
+		mNewTopPolicyAdapter = null;
+		CommonUtils.showProgressDialog(getActivity(),"加载中……");
+		visitInternet();
 	}
-	int num = 0;
+
+	private void visitInternet() {
+		NewsInternetRequest.getHeadListInformation(1, currentPage + "", null, new NewsInternetRequest.ForResultEventInfoListener() {
+			@Override
+			public void onResponseMessage(List<Map<String, String>> lists, String totalpage) {
+
+				totlePage = Integer.parseInt(totalpage);
+				if (totlePage > 0 && currentPage <= totlePage){
+					if (currentPage == 1) {
+						if (mNewTopPolicyAdapter == null) {
+							mNewTopPolicyAdapter = new NewTopPolicyAdapter(getActivity(), lists);
+						}
+						mRecyclerView.setLinearLayout();
+						mRecyclerView.setAdapter(mNewTopPolicyAdapter);
+						if (mDivider == null) {
+							mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
+							mRecyclerView.addItemDecoration(mDivider);
+						}
+						mRecyclerView.setFooterViewText("加载更多……");
+						mRecyclerView.setPullRefreshEnable(false);//禁止上啦刷新
+
+						mNewTopPolicyAdapter.setOnItemClickListener(new NewTopPolicyAdapter.MyItemClickListener() {
+							@Override
+							public void onItemClick(View v, int infoId) {
+								Intent intent = new Intent(CommonUtils.getContext(), ActivityHeadLineDetail.class);
+								intent.putExtra("newsinfoId",infoId);
+								startActivity(intent);
+								getActivity().overridePendingTransition(0, 0);
+							}
+						});
+					} else {
+						mNewTopPolicyAdapter.addDatas(lists);
+						mRecyclerView.post(new Runnable() {
+							@Override
+							public void run() {
+								mNewTopPolicyAdapter.notifyDataSetChanged();
+							}
+						});
+						mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
+							@Override
+							public void run() {
+								mRecyclerView.setPullLoadMoreCompleted();
+							}
+						}, 1000);
+					}
+					currentPage++;
+					CommonUtils.dismissProgressDialog();
+				}else{
+					mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
+						@Override
+						public void run() {
+							mRecyclerView.setPullLoadMoreCompleted();
+						}
+					}, 1000);
+					CommonUtils.dismissProgressDialog();
+					return;
+				}
+			}
+		}, null);
+	}
+
 	@Override
 	public void initListener() {
 		super.initListener();
@@ -89,36 +142,12 @@ public class FragmentNewTopEvent extends BaseFragment {
 
 			@Override
 			public void onLoadMore() {
-				if (num > 1) {
+				if (currentPage > totlePage) {
 					Toast.makeText(CommonUtils.getContext(), "没有数据了", Toast.LENGTH_SHORT).show();
 					mRecyclerView.setPullLoadMoreCompleted();
 					return;
 				}
-				num++;
-				List<String> newdatas = new ArrayList<String>();
-				newdatas.add("7");
-				mNewTopPolicyAdapter.addDatas("");
-				mRecyclerView.post(new Runnable() {
-					@Override
-					public void run() {
-						mNewTopPolicyAdapter.notifyDataSetChanged();
-					}
-				});
-				mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
-					@Override
-					public void run() {
-						mRecyclerView.setPullLoadMoreCompleted();
-					}
-				}, 1000);
-			}
-		});
-
-		mNewTopPolicyAdapter.setOnItemClickListener(new NewTopPolicyAdapter.MyItemClickListener() {
-			@Override
-			public void onItemClick(View v, int positon) {
-				Intent intent = new Intent(CommonUtils.getContext(), ActivityHeadLineDetail.class);
-				startActivity(intent);
-				getActivity().overridePendingTransition(0, 0);
+				visitInternet();
 			}
 		});
 	}

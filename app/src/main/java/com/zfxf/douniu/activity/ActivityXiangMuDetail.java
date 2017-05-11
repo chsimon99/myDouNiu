@@ -6,11 +6,23 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.OtherResult;
+import com.zfxf.douniu.bean.ProjectListResult;
+import com.zfxf.douniu.internet.NewsInternetRequest;
+import com.zfxf.douniu.utils.CommonUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:32
+ * @des    好项目 详情
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 public class ActivityXiangMuDetail extends FragmentActivity implements View.OnClickListener{
 
     @BindView(R.id.iv_base_back)
@@ -35,25 +47,30 @@ public class ActivityXiangMuDetail extends FragmentActivity implements View.OnCl
     TextView human;//项目适合人群
     @BindView(R.id.tv_xiangmu_detail_qualify)
     TextView qualify;//项目资格
+    private int mNewsinfoId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_xiangmu_detail);
         ButterKnife.bind(this);
 
-        title.setText("好项目");
+        title.setText("好项目详情");
         edit.setVisibility(View.INVISIBLE);
-
+        mNewsinfoId = getIntent().getIntExtra("newsinfoId", 0);
         initdata();
         initListener();
     }
 
     private void initdata() {
-
+        if(mNewsinfoId == 0){
+            CommonUtils.toastMessage("获取详情信息失败，请重试");
+            return;
+        }
+        CommonUtils.showProgressDialog(this,"加载中……");
+        visitInternet();
     }
     private void initListener() {
         back.setOnClickListener(this);
-
     }
 
     @Override
@@ -68,5 +85,33 @@ public class ActivityXiangMuDetail extends FragmentActivity implements View.OnCl
 
     private void finishAll() {
 
+    }
+    private void visitInternet() {
+        NewsInternetRequest.getNewsInformation(mNewsinfoId, new NewsInternetRequest.ForResultNewsInfoListener() {
+            @Override
+            public void onResponseMessage(OtherResult otherResult) {
+                ProjectListResult projectInfo = otherResult.project_info;
+                Glide.with(ActivityXiangMuDetail.this).load(projectInfo.cc_fielid)
+                        .placeholder(R.drawable.xiangmu_img)
+                        .into(img);
+                name.setText(projectInfo.cc_title);
+                time.setText(projectInfo.cc_datetime);
+                if(Integer.parseInt(projectInfo.biaoshi) == 0){
+                    type.setImageResource(R.drawable.xiangmu_yure);
+                }else{
+                    type.setImageResource(R.drawable.xiangmu_ing);
+                }
+                content.setText(projectInfo.cc_description);
+                human.setText(projectInfo.shiyong);
+                qualify.setText("认购项目("+projectInfo.feiyong+"元起)");
+                CommonUtils.dismissProgressDialog();
+            }
+        },getResources().getString(R.string.projectinfo));
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        CommonUtils.dismissProgressDialog();
     }
 }

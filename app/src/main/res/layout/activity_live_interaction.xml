@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBgGary"
+    android:orientation="vertical">
+
+    <com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView
+        android:id="@+id/rv_live_interaction"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/dm005"
+        android:layout_weight="1"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm080"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/backgroud_bg_gray"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/et_live_interaction"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dm015"
+            android:layout_marginLeft="@dimen/dm020"
+            android:layout_marginRight="@dimen/dm020"
+            android:layout_marginTop="@dimen/dm015"
+            android:layout_weight="1"
+            android:background="@color/colorWhite"
+            android:hint="请输入文字"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:paddingLeft="@dimen/dm010"
+            android:paddingRight="@dimen/dm010"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/dm024"/>
+        <TextView
+            android:id="@+id/tv_live_interaction_send"
+            android:layout_width="@dimen/dm090"
+            android:layout_height="@dimen/dm050"
+            android:layout_gravity="center"
+            android:layout_marginRight="@dimen/dm020"
+            android:background="@drawable/backgroud_button_app_color"
+            android:gravity="center"
+            android:text="发送"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/dm028"/>
+    </LinearLayout>
+</LinearLayout>

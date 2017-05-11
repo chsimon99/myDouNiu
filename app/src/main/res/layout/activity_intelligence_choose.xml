@@ -144,12 +144,14 @@
                       android:layout_marginRight="@dimen/dm020"
                       android:orientation="horizontal">
             <TextView
+                android:id="@+id/tv_intelligence_choose_subscribe_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="订阅：2235"
                 android:textColor="@color/colorWhiteE"
                 android:textSize="@dimen/dm022"/>
             <TextView
+                android:id="@+id/tv_intelligence_choose_subscribe_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dm030"
@@ -158,13 +160,16 @@
                 android:textSize="@dimen/dm022"/>
         </LinearLayout>
         <TextView
+            android:id="@+id/tv_intelligence_choose_subscribe_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dm010"
             android:layout_marginLeft="@dimen/dm020"
             android:layout_marginRight="@dimen/dm020"
             android:layout_marginTop="@dimen/dm010"
-            android:text="通过大数据模型统计，分析抓取当前龙头企业"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="通过大数据模型统计，分析抓取当前龙头企业分析抓取当前龙头企业分析抓取当前龙头企业"
             android:textColor="@color/colorWhiteE"
             android:textSize="@dimen/dm022"/>
     </LinearLayout>
@@ -206,6 +211,7 @@
                     android:textColor="@color/colorText"
                     android:textSize="@dimen/dm024"/>
                 <TextView
+                    android:id="@+id/tv_intelligence_choose_stock_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

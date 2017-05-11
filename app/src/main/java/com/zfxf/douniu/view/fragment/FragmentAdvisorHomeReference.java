@@ -16,7 +16,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:13
+ * @des    首席个人主页大参考
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 
 public class FragmentAdvisorHomeReference extends BaseFragment {
 	private View view;

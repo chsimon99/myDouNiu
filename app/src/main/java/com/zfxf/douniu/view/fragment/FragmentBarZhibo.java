@@ -19,7 +19,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:27
+ * @des    斗牛直播室
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 
 public class FragmentBarZhibo extends BaseFragment {
 	private View view;

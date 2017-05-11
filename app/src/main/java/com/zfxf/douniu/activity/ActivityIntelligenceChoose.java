@@ -24,7 +24,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:14
+ * @des    智能选股王详情页
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 public class ActivityIntelligenceChoose extends FragmentActivity implements View.OnClickListener{
 
     @BindView(R.id.iv_base_back)
@@ -48,6 +54,14 @@ public class ActivityIntelligenceChoose extends FragmentActivity implements View
     TextView tv_ratio;
     @BindView(R.id.tv_intelligence_choose_data)
     TextView tv_data;
+    @BindView(R.id.tv_intelligence_choose_subscribe_count)
+    TextView tv_subscribe_count;
+    @BindView(R.id.tv_intelligence_choose_subscribe_time)
+    TextView tv_subscribe_time;
+    @BindView(R.id.tv_intelligence_choose_subscribe_content)
+    TextView tv_subscribe_content;
+    @BindView(R.id.tv_intelligence_choose_stock_count)
+    TextView tv_stock_count;
 
     @BindView(R.id.ll_intelligence_choose_history)
     LinearLayout history;

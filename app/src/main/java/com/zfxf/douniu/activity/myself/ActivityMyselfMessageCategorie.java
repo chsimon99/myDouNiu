@@ -61,7 +61,7 @@ public class ActivityMyselfMessageCategorie extends FragmentActivity implements 
             datas.add("4");
         }
         if (mNoticeAdapter == null) {
-            mNoticeAdapter = new NewNoticeAdapter(this, datas);
+            mNoticeAdapter = new NewNoticeAdapter(this, null);
         }
 
         mRecyclerView.setLinearLayout();
@@ -96,7 +96,7 @@ public class ActivityMyselfMessageCategorie extends FragmentActivity implements 
                 num++;
                 List<String> newdatas = new ArrayList<String>();
                 newdatas.add("7");
-                mNoticeAdapter.addDatas("");
+//                mNoticeAdapter.addDatas("");
                 mRecyclerView.post(new Runnable() {
                     @Override
                     public void run() {

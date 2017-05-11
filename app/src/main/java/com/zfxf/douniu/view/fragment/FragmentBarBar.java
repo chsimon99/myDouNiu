@@ -1,33 +1,50 @@
 package com.zfxf.douniu.view.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.ActivityBarBarDetail;
 import com.zfxf.douniu.adapter.recycleView.BarBarAdapter;
 import com.zfxf.douniu.base.BaseFragment;
+import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.RecycleViewDivider;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:26
+ * @des    斗牛吧
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 
-
-public class FragmentBarBar extends BaseFragment {
+public class FragmentBarBar extends BaseFragment implements View.OnClickListener{
 	private View view;
 	@BindView(R.id.rv_bar_bar)
 	PullLoadMoreRecyclerView mRecyclerView;
 	private BarBarAdapter mBarAdapter;
-	private List<String> datas = new ArrayList<String>();
 	private RecycleViewDivider mDivider;
-
+	@BindView(R.id.ll_bar_bar_hot)
+	LinearLayout ll_hot;
+	@BindView(R.id.ll_bar_bar_stock)
+	LinearLayout ll_stock;
+	@BindView(R.id.ll_bar_bar_other)
+	LinearLayout ll_other;
+	private int headType = 0;
+	private int totlePage = 0;
+	private int currentPage = 1;
 	@Override
 	public View initView(LayoutInflater inflater) {
 		if (view == null) {
@@ -47,41 +64,77 @@ public class FragmentBarBar extends BaseFragment {
 	}
 	@Override
 	public void initdata() {
-		if(datas.size() == 0){
-			datas.add("");
-			datas.add("");
-			datas.add("");
-			datas.add("");
-		}
-		if(mBarAdapter == null){
-			mBarAdapter = new BarBarAdapter(getActivity(),datas);
-		}
-
-		mRecyclerView.setLinearLayout();
-		mRecyclerView.setAdapter(mBarAdapter);
-		if(mDivider == null){//防止多次加载出现宽度变宽
-			mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
-			mRecyclerView.addItemDecoration(mDivider);
-		}
-//		mRecyclerView.addItemDecoration(
-//				new RecycleViewDivider(getActivity(),LinearLayoutManager.HORIZONTAL,
-//						CommonUtils.px2dip(getActivity(),20), Color.parseColor("#f4f4f4")));
-		mRecyclerView.setFooterViewText("加载更多……");
-
-
 		super.initdata();
-
+		CommonUtils.showProgressDialog(getActivity(),"加载中……");
+		visitInternet();
 	}
-	int num = 0;
-	@Override
-	public void initListener() {
-		mBarAdapter.setOnItemClickListener(new BarBarAdapter.MyItemClickListener() {
+
+	private void visitInternet() {
+		NewsInternetRequest.getBarListInformation(headType, currentPage+"", new NewsInternetRequest.ForResultPolicyInfoListener() {
 			@Override
-			public void onItemClick(View v, int positon) {
-				Toast.makeText(CommonUtils.getContext(),"点击了"+positon,Toast.LENGTH_SHORT).show();
+			public void onResponseMessage(List<Map<String, String>> lists, String totalpage) {
+				totlePage = Integer.parseInt(totalpage);
+				if(totlePage > 0 && currentPage <= totlePage){
+					if(currentPage == 1){
+						if(mBarAdapter == null){
+							mBarAdapter = new BarBarAdapter(getActivity(),lists);
+						}
+
+						mRecyclerView.setLinearLayout();
+						mRecyclerView.setAdapter(mBarAdapter);
+						if(mDivider == null){//防止多次加载出现宽度变宽
+							mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
+							mRecyclerView.addItemDecoration(mDivider);
+						}
+						mRecyclerView.setFooterViewText("加载更多……");
+						mRecyclerView.setPullRefreshEnable(false);//禁止上拉刷新
+
+						mBarAdapter.setOnItemClickListener(new BarBarAdapter.MyItemClickListener() {
+							@Override
+							public void onItemClick(View v, int id) {
+								Intent intent = new Intent(CommonUtils.getContext(), ActivityBarBarDetail.class);
+								intent.putExtra("newsinfoId",id);
+								startActivity(intent);
+								getActivity().overridePendingTransition(0, 0);
+							}
+						});
+					}else {
+						mBarAdapter.addDatas(lists);
+						mRecyclerView.post(new Runnable() {
+							@Override
+							public void run() {
+								mBarAdapter.notifyDataSetChanged();
+							}
+						});
+						mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
+							@Override
+							public void run() {
+								mRecyclerView.setPullLoadMoreCompleted();
+							}
+						},1000);
+					}
+					currentPage++;
+					CommonUtils.dismissProgressDialog();
+				}else{
+					mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
+						@Override
+						public void run() {
+							mRecyclerView.setPullLoadMoreCompleted();
+						}
+					}, 1000);
+					CommonUtils.dismissProgressDialog();
+					return;
+				}
 			}
 		});
+	}
 
+	@Override
+	public void initListener() {
+		super.initListener();
+		ll_hot.setOnClickListener(this);
+		ll_stock.setOnClickListener(this);
+		ll_other.setOnClickListener(this);
 		mRecyclerView.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
 			@Override
 			public void onRefresh() {
@@ -95,29 +148,31 @@ public class FragmentBarBar extends BaseFragment {
 
 			@Override
 			public void onLoadMore() {
-				if(num > 1){
+				if(currentPage > totlePage){
 					Toast.makeText(CommonUtils.getContext(),"没有数据了",Toast.LENGTH_SHORT).show();
 					mRecyclerView.setPullLoadMoreCompleted();
 					return;
 				}
-				num++;
-				List<String> newdatas = new ArrayList<String>();
-				newdatas.add("1");
-				mBarAdapter.addDatas(newdatas);
-				mRecyclerView.post(new Runnable() {
-					@Override
-					public void run() {
-						mBarAdapter.notifyDataSetChanged();
-					}
-				});
-				mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
-					@Override
-					public void run() {
-						mRecyclerView.setPullLoadMoreCompleted();
-					}
-				},1000);
+				visitInternet();
 			}
 		});
-		super.initListener();
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()){
+			case R.id.ll_bar_bar_hot:
+				headType = 0;
+				break;
+			case R.id.ll_bar_bar_stock:
+				headType = 1;
+				break;
+			case R.id.ll_bar_bar_other:
+				headType = 2;
+				break;
+		}
+		currentPage = 1;
+		mBarAdapter = null;
+		visitInternet();
 	}
 }

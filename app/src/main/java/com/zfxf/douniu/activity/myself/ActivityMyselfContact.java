@@ -11,7 +11,13 @@ import com.zfxf.douniu.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:20
+ * @des    联系我们
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 public class ActivityMyselfContact extends FragmentActivity implements View.OnClickListener{
 
     @BindView(R.id.iv_base_back)

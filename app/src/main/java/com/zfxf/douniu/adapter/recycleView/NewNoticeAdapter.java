@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.zfxf.douniu.R;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Admin
@@ -19,13 +20,13 @@ import java.util.List;
 public class NewNoticeAdapter extends RecyclerView.Adapter<NewNoticeAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<Map<String, String>> mDatas;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int positon);
+        void onItemClick(View v, int id);
     }
 
-    public NewNoticeAdapter(Context context, List<String> datas) {
+    public NewNoticeAdapter(Context context, List<Map<String, String>> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -50,8 +51,8 @@ public class NewNoticeAdapter extends RecyclerView.Adapter<NewNoticeAdapter.MyHo
     public int getItemCount() {
         return mDatas.size();
     }
-    public void addDatas(String data) {
-        mDatas.add(data);
+    public void addDatas(List<Map<String, String>> data) {
+        mDatas.addAll(data);
     }
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -70,12 +71,13 @@ public class NewNoticeAdapter extends RecyclerView.Adapter<NewNoticeAdapter.MyHo
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, Integer.parseInt(mDatas.get(getPosition()).get("cc_id")));
             }
         }
 
-        public void setRefreshData(String bean, int position) {
-
+        public void setRefreshData(Map<String, String> bean, int position) {
+            time.setText(bean.get("cc_datetime"));
+            content.setText(bean.get("cc_title"));
         }
     }
 }

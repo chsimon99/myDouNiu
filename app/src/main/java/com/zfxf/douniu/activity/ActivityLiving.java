@@ -13,15 +13,21 @@ import android.widget.TextView;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.adapter.viewPager.BarItemAdapter;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.view.fragment.FragmentLiveInteraction;
 import com.zfxf.douniu.view.fragment.FragmentLiveLiving;
-import com.zfxf.douniu.view.fragment.FragmentNewTopEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:34
+ * @des    直播（直播和互动）
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 public class ActivityLiving extends FragmentActivity implements View.OnClickListener{
 
     @BindView(R.id.iv_base_back)
@@ -41,7 +47,7 @@ public class ActivityLiving extends FragmentActivity implements View.OnClickList
     private FragmentPagerAdapter mAdapter;
     private List<String> list_title = new ArrayList<>();
     private Fragment mFragmentLiveLiving;
-    private Fragment mFragmentNewTopEvent;
+    private Fragment mFragmentLiveInteraction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +65,12 @@ public class ActivityLiving extends FragmentActivity implements View.OnClickList
         if(mFragmentLiveLiving == null){
             mFragmentLiveLiving = new FragmentLiveLiving();
         }
-        if(mFragmentNewTopEvent == null){
-            mFragmentNewTopEvent = new FragmentNewTopEvent();
+        if(mFragmentLiveInteraction == null){
+            mFragmentLiveInteraction = new FragmentLiveInteraction();
         }
         if(list_fragment.size() == 0){
             list_fragment.add(mFragmentLiveLiving);
-            list_fragment.add(mFragmentNewTopEvent);
+            list_fragment.add(mFragmentLiveInteraction);
         }
 
         if(list_title.size() == 0){
@@ -80,8 +86,8 @@ public class ActivityLiving extends FragmentActivity implements View.OnClickList
         mTabLayout.post(new Runnable() {//改变滑动条的长度
             @Override
             public void run() {
-                CommonUtils.setIndicator(mTabLayout, CommonUtils.px2dip(CommonUtils.getContext(),60)
-                        ,CommonUtils.px2dip(CommonUtils.getContext(),60));
+                CommonUtils.setIndicator(mTabLayout, CommonUtils.px2dip(CommonUtils.getContext(),100)
+                        ,CommonUtils.px2dip(CommonUtils.getContext(),100));
             }
         });
 

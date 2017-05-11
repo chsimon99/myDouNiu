@@ -20,7 +20,13 @@ import com.zfxf.douniu.utils.SpTools;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:20
+ * @des    登录主页
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 public class ActivityLogin extends FragmentActivity implements View.OnClickListener{
 
     @BindView(R.id.iv_base_back)

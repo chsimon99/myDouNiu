@@ -20,7 +20,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:42
+ * @des    自选股
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 
 public class FragmentMarketSelect extends BaseFragment implements View.OnClickListener{
 	private View view;

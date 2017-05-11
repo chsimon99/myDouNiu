@@ -13,12 +13,19 @@ import android.widget.TextView;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.DataCleanManager;
 import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.fragment.FragmentMyself;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:20
+ * @des    我的 设置
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 public class ActivityMyselfShezhi extends FragmentActivity implements View.OnClickListener{
 
     @BindView(R.id.iv_base_back)
@@ -51,6 +58,19 @@ public class ActivityMyselfShezhi extends FragmentActivity implements View.OnCli
         title.setText("设置");
         edit.setVisibility(View.INVISIBLE);
 
+        try {
+            long folderSize = DataCleanManager.getFolderSize(CommonUtils.getContext().getExternalCacheDir());
+            long FilesSize = DataCleanManager.getFolderSize(CommonUtils.getContext().getFilesDir());
+            long CacheSize = DataCleanManager.getFolderSize(CommonUtils.getContext().getCacheDir());
+//            CommonUtils.logMes("ExternalCache="+CommonUtils.getContext().getExternalCacheDir());
+//            CommonUtils.logMes("Files="+CommonUtils.getContext().getFilesDir());
+//            CommonUtils.logMes("Cache="+CommonUtils.getContext().getCacheDir());
+            CommonUtils.logMes("folderSize="+folderSize);
+            CommonUtils.logMes("FilesSize="+DataCleanManager.getFormatSize(FilesSize));
+            CommonUtils.logMes("CacheSize="+DataCleanManager.getFormatSize(CacheSize));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         initdata();
         initListener();
     }
@@ -92,6 +112,8 @@ public class ActivityMyselfShezhi extends FragmentActivity implements View.OnCli
                 overridePendingTransition(0, 0);
                 break;
             case R.id.ll_myself_she_cache:
+                DataCleanManager.deleteCache(CommonUtils.getContext());
+                CommonUtils.logMes("CacheSize="+DataCleanManager.getCacheSize(CommonUtils.getContext()));
                 break;
             case R.id.ll_myself_she_update:
                 break;

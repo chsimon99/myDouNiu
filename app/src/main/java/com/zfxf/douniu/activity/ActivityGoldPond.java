@@ -21,7 +21,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:37
+ * @des    金股池 详情
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 public class ActivityGoldPond extends FragmentActivity implements View.OnClickListener{
 
     @BindView(R.id.iv_base_back)

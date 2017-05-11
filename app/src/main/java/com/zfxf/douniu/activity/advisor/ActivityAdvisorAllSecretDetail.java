@@ -13,7 +13,13 @@ import com.zfxf.douniu.utils.CommonUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:36
+ * @des    私密课 详情
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 public class ActivityAdvisorAllSecretDetail extends FragmentActivity implements View.OnClickListener{
 
     @BindView(R.id.iv_base_back)

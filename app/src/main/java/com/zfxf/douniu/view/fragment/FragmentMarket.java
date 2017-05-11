@@ -16,7 +16,13 @@ import com.zfxf.douniu.base.BaseFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:42
+ * @des    主页 行情
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 
 public class FragmentMarket extends BaseFragment implements View.OnClickListener{
 	private View view;

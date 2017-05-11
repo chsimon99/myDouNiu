@@ -52,6 +52,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:21
+ * @des    个人中心
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 public class ActivityMyselfInformation extends FragmentActivity implements View.OnClickListener{
 
     @BindView(R.id.iv_base_back)
@@ -100,10 +107,12 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
     }
 
     private void initdata() {
+        CommonUtils.showProgressDialog(this,"加载中……");
         LoginInternetRequest.getUserInformation(new LoginInternetRequest.ForResultInfoListener() {
             @Override
             public void onResponseMessage(Map<String, String> map) {
                 if(map.isEmpty()){
+                    CommonUtils.dismissProgressDialog();
                     return;
                 }else {
                     String nickname = map.get("ud_nickname");
@@ -136,6 +145,7 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
                                     .bitmapTransform(new CropCircleTransformation(ActivityMyselfInformation.this))
                                     .into(img);
                         }
+                        CommonUtils.dismissProgressDialog();
                     }
                 }
             }
@@ -213,6 +223,16 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
             case R.id.btn_take_photo://拍照
                 MyPhotoUtil.picTyTakePhoto(this,PICK_CODE);
                 break;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(number>0){
+            confirm();
+        }else {
+            finishAll();
+            finish();
         }
     }
 

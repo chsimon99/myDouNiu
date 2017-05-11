@@ -97,6 +97,7 @@ public class ActivityRegister extends FragmentActivity implements View.OnClickLi
             public void onResponseMessage(String code) {
                 if(code.equals("成功")){
                     CommonUtils.toastMessage("注册成功");
+                    finish();
                 }
             }
         });

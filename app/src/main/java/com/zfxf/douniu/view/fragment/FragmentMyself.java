@@ -35,7 +35,13 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:16
+ * @des    我的界面
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 
 public class FragmentMyself extends BaseFragment implements View.OnClickListener{
 	private View view;
@@ -105,8 +111,9 @@ public class FragmentMyself extends BaseFragment implements View.OnClickListener
 						.placeholder(R.drawable.advisor_home_img)
 						.bitmapTransform(new CropCircleTransformation(getActivity()))
 						.into(img);
+				return;
 			}
-			return;
+
 		}
 		getUserInformation();
 	}
@@ -230,10 +237,12 @@ public class FragmentMyself extends BaseFragment implements View.OnClickListener
 	}
 
 	private void getUserInformation() {
+		CommonUtils.showProgressDialog(getActivity(),"加载中……");
 		LoginInternetRequest.getUserInformation(new LoginInternetRequest.ForResultInfoListener() {
 			@Override
 			public void onResponseMessage(Map<String, String> map) {
 				if (map.isEmpty()) {
+					CommonUtils.dismissProgressDialog();
 					return;
 				} else {
 					String nickname = map.get("ud_nickname");
@@ -270,6 +279,7 @@ public class FragmentMyself extends BaseFragment implements View.OnClickListener
 									.into(img);
 						}
 					}
+					CommonUtils.dismissProgressDialog();
 				}
 			}
 		});

@@ -20,7 +20,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:27
+ * @des    斗牛士评级
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 
 public class FragmentBarGrade extends BaseFragment {
 	private View view;

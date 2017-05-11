@@ -76,6 +76,8 @@
         <activity android:name=".activity.ActivitysimulationQueryToday"/>
         <activity android:name=".activity.ActivitysimulationQueryHistory"/>
         <activity android:name=".activity.ActivityIntelligenceChoose"/>
+        <activity android:name=".activity.ActivityBarBarDetail"/>
+        <activity android:name=".activity.ActivityPostBar"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

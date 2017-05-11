@@ -381,7 +381,7 @@ public class LoginInternetRequest {
         OkHttpUtils.post().url(url)
                 .addParams("sid","")
                 .addParams("index",(index++)+"")
-                .addParams("ub_id",SpTools.getString(context, Constants.userId,""))
+                .addParams("ub_id",SpTools.getString(context, Constants.userId,"0"))
                 .addParams("uo_long","")
                 .addParams("uo_lat","")
                 .addParams("uo_high","")
@@ -427,7 +427,7 @@ public class LoginInternetRequest {
         OkHttpUtils.post().url(url)
                 .addParams("sid","")
                 .addParams("index",(index++)+"")
-                .addParams("ub_id",SpTools.getString(context, Constants.userId,""))
+                .addParams("ub_id",SpTools.getString(context, Constants.userId,"0"))
                 .addParams("uo_long","")
                 .addParams("uo_lat","")
                 .addParams("uo_high","")
@@ -468,7 +468,7 @@ public class LoginInternetRequest {
                 .url(url)
                 .addParams("sid", "")
                 .addParams("index", (index++) + "")
-                .addParams("ub_id", SpTools.getString(CommonUtils.getContext(), Constants.userId ,""))
+                .addParams("ub_id", SpTools.getString(CommonUtils.getContext(), Constants.userId ,"0"))
                 .addParams("uo_long","")
                 .addParams("uo_lat","")
                 .addParams("uo_high","")
@@ -514,7 +514,7 @@ public class LoginInternetRequest {
 
         informationBean.setSid("");
         informationBean.setIndex((index++)+"");
-        informationBean.setUb_id(Integer.parseInt(SpTools.getString(context, Constants.userId,"")));
+        informationBean.setUb_id(Integer.parseInt(SpTools.getString(context, Constants.userId,"0")));
         informationBean.setUo_high("");
         informationBean.setUo_lat("");
         informationBean.setUo_long("");
@@ -529,6 +529,7 @@ public class LoginInternetRequest {
             @Override
             public void onError(Call call, Exception e, int id) {
                 CommonUtils.logMes("editUserInformation="+e);
+                CommonUtils.toastMessage("提交个人信息失败，请重新再试");
             }
 
             @Override

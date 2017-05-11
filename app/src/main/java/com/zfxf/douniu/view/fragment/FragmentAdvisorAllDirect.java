@@ -21,7 +21,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:34
+ * @des    首席 直播课
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 
 public class FragmentAdvisorAllDirect extends BaseFragment implements View.OnClickListener{
 	private View view;

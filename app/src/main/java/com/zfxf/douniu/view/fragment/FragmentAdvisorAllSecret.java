@@ -5,17 +5,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.activity.advisor.ActivityAdvisorAllSecretDetail;
 import com.zfxf.douniu.adapter.recycleView.AdvisorAllSecretAdapter;
-import com.zfxf.douniu.adapter.viewPager.PicPagerAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.utils.MyLunBo;
-import com.zfxf.douniu.view.InnerView;
 import com.zfxf.douniu.view.RecycleViewDivider;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
@@ -24,15 +21,17 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:36
+ * @des    首席 私密课
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 
 public class FragmentAdvisorAllSecret extends BaseFragment{
 	private View view;
 
-	@BindView(R.id.inwerview)
-	InnerView mViewPage;
-	@BindView(R.id.item_home_pic_ll)
-	LinearLayout mContainer;
 	private List<Integer> mDatas = new ArrayList<Integer>();
 	private MyLunBo mMyLunBO;
 
@@ -41,7 +40,6 @@ public class FragmentAdvisorAllSecret extends BaseFragment{
 	private AdvisorAllSecretAdapter mAllSecretAdapter;
 	private List<String> datas = new ArrayList<String>();
 	private RecycleViewDivider mDivider;
-	private PicPagerAdapter mPagerAdapter;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -69,16 +67,6 @@ public class FragmentAdvisorAllSecret extends BaseFragment{
 			mDatas.add(R.drawable.home_banner);
 			mDatas.add(R.drawable.home_banner);
 		}
-		if(mPagerAdapter ==null){
-			mPagerAdapter = new PicPagerAdapter(mDatas, CommonUtils.getContext(), new PicPagerAdapter.MyOnClickListener() {
-				@Override
-				public void onItemClick(int positon) {
-					CommonUtils.toastMessage("您点击的是第 " + (++positon) + " 个Item");
-				}
-			});
-		}
-		mViewPage.setAdapter(mPagerAdapter);
-
 
 		if(datas.size() == 0){
 			datas.add("");
@@ -89,7 +77,9 @@ public class FragmentAdvisorAllSecret extends BaseFragment{
 			datas.add("");
 		}
 		if(mAllSecretAdapter == null){
-			mAllSecretAdapter = new AdvisorAllSecretAdapter(getActivity(),datas);
+			mAllSecretAdapter = new AdvisorAllSecretAdapter(getActivity(),datas,mDatas);
+			View view = View.inflate(getActivity(),R.layout.item_lunbo_with_gray,null);
+			mAllSecretAdapter.setHeaderView(view);
 		}
 
 		mRecyclerView.setLinearLayout();
@@ -99,6 +89,7 @@ public class FragmentAdvisorAllSecret extends BaseFragment{
 			mRecyclerView.addItemDecoration(mDivider);
 		}
 		mRecyclerView.setFooterViewText("加载更多……");
+		mMyLunBO = mAllSecretAdapter.getLunBo();
 	}
 	int num = 0;
 	@Override
@@ -159,13 +150,9 @@ public class FragmentAdvisorAllSecret extends BaseFragment{
 	}
 	@Override
 	public void onResume() {
-		if (mMyLunBO == null) {
-			mMyLunBO = new MyLunBo(mContainer, mViewPage, mDatas);
-			mMyLunBO.startLunBO();
-		}
 		if (isOnPause) {//防止轮播图暂定不动
 			if (mMyLunBO != null)
-				mMyLunBO.restartLunBO();
+				mMyLunBO.restartLunBO();//不用restart是为了防止突然轮播的速度快
 			isOnPause = false;
 		}
 		super.onResume();

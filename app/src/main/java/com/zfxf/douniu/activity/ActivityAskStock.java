@@ -26,7 +26,13 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:40
+ * @des    问股 界面
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 public class ActivityAskStock extends FragmentActivity implements View.OnClickListener{
 
     @BindView(R.id.iv_base_back)

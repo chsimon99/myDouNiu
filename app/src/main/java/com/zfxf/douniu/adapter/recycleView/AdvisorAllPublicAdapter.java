@@ -53,10 +53,10 @@ public class AdvisorAllPublicAdapter extends RecyclerView.Adapter<AdvisorAllPubl
 
     @Override
     public MyHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = View.inflate(mContext, R.layout.item_advisor_all_public, null);
-        MyHolder myHolder = new MyHolder(view, mItemClickListener,mSubscribeClickListener);
         if(mHeaderView != null && viewType == TYPE_HEADER)
             return new MyHolder(mHeaderView , mItemClickListener , mSubscribeClickListener);
+        View view = View.inflate(mContext, R.layout.item_advisor_all_public, null);
+        MyHolder myHolder = new MyHolder(view, mItemClickListener,mSubscribeClickListener);
         return myHolder;
     }
 
@@ -81,8 +81,6 @@ public class AdvisorAllPublicAdapter extends RecyclerView.Adapter<AdvisorAllPubl
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private MyItemClickListener mListener;
         private MySubscribeClickListener mSubListener;
-        private PicPagerAdapter mPagerAdapter;
-        InnerView mViewPage;
         ImageView img;
         TextView time;
         TextView count;
@@ -91,6 +89,8 @@ public class AdvisorAllPublicAdapter extends RecyclerView.Adapter<AdvisorAllPubl
         TextView day;
         TextView type;
         LinearLayout mLayout;
+        InnerView mViewPage;
+        private PicPagerAdapter mPagerAdapter;
         private LinearLayout mLLayout;
 
         public MyHolder(View itemView, MyItemClickListener listener,MySubscribeClickListener subListener) {

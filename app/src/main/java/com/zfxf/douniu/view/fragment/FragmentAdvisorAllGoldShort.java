@@ -20,7 +20,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:37
+ * @des    金股池 短线
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 public class FragmentAdvisorAllGoldShort extends BaseFragment {
     private View view;
 

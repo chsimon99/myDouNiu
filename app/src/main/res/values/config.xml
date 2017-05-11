@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--主 -->
-    <string name="service_host_address">http://douniu.com/</string>
-
+    <string name="service_host_address">http://douniu.lchtime.cn:8001/</string>
     <!--登录-->
     <string name="getLogin">index.php/user/login/</string>
     <!--发送验证码-->
@@ -21,5 +20,28 @@
     <string name="mycountEdit">index.php/user/edit/</string>
     <!--上传-->
     <string name="upload">index.php/system/upload/</string>
+
+    <!--头条列表-->
+    <string name="headlist">index.php/cms/headlist</string>
+    <!--头条详情-->
+    <string name="headinfo">index.php/cms/headinfo</string>
+    <!--发表评论-->
+    <string name="newsfbpl">index.php/cms/newsfbpl</string>
+    <!--点赞-->
+    <string name="newsdz">index.php/cms/newsdz</string>
+    <!--好项目列表-->
+    <string name="projectlist">index.php/cms/projectlist</string>
+    <!--好项目详情-->
+    <string name="projectinfo">index.php/cms/projectinfo</string>
+    <!--资讯列表-->
+    <string name="zixunlist">index.php/cms/zixunlist</string>
+    <!--资讯详情-->
+    <string name="zixuninfo">index.php/cms/zixuninfo</string>
+    <!--斗牛吧斗牛吧列表-->
+    <string name="douniubarlist">index.php/cms/douniubarlist</string>
+    <!--斗牛吧斗牛吧详情-->
+    <string name="douniubarinfo">index.php/cms/douniubarinfo</string>
+    <!--斗牛吧发表帖子-->
+    <string name="newsfbtz">index.php/cms/newsfbtz</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package com.zfxf.douniu.view.fragment;
 
+import android.annotation.SuppressLint;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +20,14 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:29
+ * @des    首席分析师列表
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
+@SuppressLint("ValidFragment")
 public class FragmentMyselfAttentionAdvisor extends BaseFragment {
 	private View view;
 
@@ -36,7 +43,6 @@ public class FragmentMyselfAttentionAdvisor extends BaseFragment {
 	public FragmentMyselfAttentionAdvisor(List<String> data) {
 		datas = data;
 	}
-
 	@Override
 	public View initView(LayoutInflater inflater) {
 		if (view == null) {

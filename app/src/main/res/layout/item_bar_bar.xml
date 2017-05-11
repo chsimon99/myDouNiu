@@ -25,6 +25,8 @@
             android:textColor="@color/colorText"
             android:textSize="@dimen/dm024"/>
     </LinearLayout>
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,6 +38,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dm030"
             android:text="江南化工为何涨停?"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textColor="@color/titleText"
             android:textSize="@dimen/dm028"/>
 
@@ -46,12 +50,15 @@
             android:layout_marginRight="@dimen/dm027"
             android:layout_marginTop="@dimen/dm018"
             android:text="据日本华侨社报道，据日本华侨社报道据日本华侨"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:textColor="@color/colorText"
             android:textSize="@dimen/dm024"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dm025"
+            android:gravity="center|left"
             android:orientation="horizontal">
             <ImageView
                 android:layout_width="@dimen/dm020"
@@ -63,6 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="08:46"
+                android:gravity="center|left"
                 android:textColor="@color/titleTextGray"
                 android:layout_marginLeft="@dimen/dm010"
                 android:textSize="@dimen/dm022"/>
@@ -77,10 +85,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="1469"
+                android:gravity="center|left"
                 android:textColor="@color/titleTextGray"
                 android:layout_marginLeft="@dimen/dm010"
                 android:textSize="@dimen/dm022"/>
         </LinearLayout>
 
     </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

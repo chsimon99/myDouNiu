@@ -12,7 +12,13 @@ import com.zfxf.douniu.utils.CommonUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:39
+ * @des    微问答 回答详情
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 public class ActivityAnswerDetail extends FragmentActivity implements View.OnClickListener{
 
     @BindView(R.id.iv_base_back)

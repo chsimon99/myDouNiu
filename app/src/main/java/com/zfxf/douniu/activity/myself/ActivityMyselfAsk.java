@@ -21,7 +21,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:16
+ * @des    我的问股
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 public class ActivityMyselfAsk extends FragmentActivity implements View.OnClickListener{
 
     @BindView(R.id.iv_base_back)

@@ -1,5 +1,6 @@
 package com.zfxf.douniu.utils;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -15,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.zfxf.douniu.base.BaseApplication;
+import com.zfxf.douniu.view.LoadingDialog;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
@@ -205,7 +207,7 @@ public class CommonUtils {
     private static boolean isLoging = true;
     public static void logMes(String str){
         if(isLoging){
-            Log.d("----isLoging----",""+str);
+            Log.d("------test------",""+str);
         }
     }
     /**
@@ -250,4 +252,18 @@ public class CommonUtils {
         return bytes;
     }
 
+    private static Dialog progressDialog;
+    public static synchronized void showProgressDialog(Context comtext, String mes) {
+        if (progressDialog == null) {
+            progressDialog = LoadingDialog.createLoadingDialog(comtext,mes);
+        }
+        progressDialog.show();
+    }
+
+    public static void dismissProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        progressDialog = null;
+    }
 }

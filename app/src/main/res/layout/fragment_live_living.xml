@@ -29,8 +29,21 @@
             android:textColor="@color/titleText"
             android:textSize="@dimen/dm026"/>
     </LinearLayout>
-    <com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView
-        android:id="@+id/rv_live_living"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+        <com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView
+            android:id="@+id/rv_live_living"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/iv_live_living_shang"
+            android:layout_width="@dimen/dm100"
+            android:layout_height="@dimen/dm100"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/dm150"
+            android:layout_marginRight="@dimen/dm018"
+            android:src="@drawable/home_shang"/>
+    </RelativeLayout>
+
 </LinearLayout>

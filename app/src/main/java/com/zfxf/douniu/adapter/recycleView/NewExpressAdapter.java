@@ -2,6 +2,7 @@ package com.zfxf.douniu.adapter.recycleView;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import com.zfxf.douniu.R;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Admin
@@ -19,13 +21,13 @@ import java.util.List;
 public class NewExpressAdapter extends RecyclerView.Adapter<NewExpressAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<Map<String, String>> mDatas;
 
     public interface MyItemClickListener {
         void onItemClick(View v, int positon);
     }
 
-    public NewExpressAdapter(Context context, List<String> datas) {
+    public NewExpressAdapter(Context context, List<Map<String, String>> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -50,8 +52,18 @@ public class NewExpressAdapter extends RecyclerView.Adapter<NewExpressAdapter.My
     public int getItemCount() {
         return mDatas.size();
     }
-    public void addDatas(String data) {
-        mDatas.add(data);
+    public void addDatas(List<Map<String, String>> data) {
+        mDatas.addAll(data);
+    }
+    public void addTopDatas(Map<String, String> maps) {
+        mDatas.get(0).put("this_date","");
+        mDatas.add(0,maps);
+    }
+    public void deleteAll() {
+        mDatas.clear();
+    }
+    public String getLastId(){
+        return mDatas.get(mDatas.size()-1).get("cc_id");
     }
 
     /**
@@ -86,12 +98,16 @@ public class NewExpressAdapter extends RecyclerView.Adapter<NewExpressAdapter.My
             }
         }
 
-        public void setRefreshData(String bean, int position) {
-            if(position == 0){
-                data.setVisibility(View.VISIBLE);
-            }else{
+        public void setRefreshData(Map<String, String> bean, int position) {
+            String thisDate = bean.get("this_date");
+            if(TextUtils.isEmpty(thisDate)){
                 data.setVisibility(View.GONE);
+            }else {
+                data.setVisibility(View.VISIBLE);
+                data.setText(thisDate);
             }
+            time.setText(bean.get("cc_datetime"));
+            content.setText(bean.get("cc_context"));
         }
     }
 }

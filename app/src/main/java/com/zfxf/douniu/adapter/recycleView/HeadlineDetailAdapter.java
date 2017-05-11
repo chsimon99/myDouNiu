@@ -7,9 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.CommentInformationResult;
 
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * @author Admin
@@ -20,13 +24,13 @@ import java.util.List;
 public class HeadlineDetailAdapter extends RecyclerView.Adapter<HeadlineDetailAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<CommentInformationResult> mDatas;
 
     public interface MyItemClickListener {
         void onItemClick(View v, int positon);
     }
 
-    public HeadlineDetailAdapter(Context context, List<String> datas) {
+    public HeadlineDetailAdapter(Context context, List<CommentInformationResult> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -44,7 +48,10 @@ public class HeadlineDetailAdapter extends RecyclerView.Adapter<HeadlineDetailAd
 
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
-        holder.setRefreshData(position);
+        holder.setRefreshData(mDatas.get(position));
+    }
+    public void addDatas(CommentInformationResult data) {
+        mDatas.add(0,data);
     }
 
     @Override
@@ -76,8 +83,14 @@ public class HeadlineDetailAdapter extends RecyclerView.Adapter<HeadlineDetailAd
             }
         }
 
-        public void setRefreshData(int position) {
-
+        public void setRefreshData(CommentInformationResult result) {
+            Glide.with(mContext).load(result.ud_photo_fileid)
+                    .placeholder(R.drawable.home_adviosr_img)
+                    .bitmapTransform(new CropCircleTransformation(mContext))
+                    .into(img);
+            name.setText(result.ud_nickname);
+            detail.setText(result.ccp_info);
+            time.setText(result.ccp_time);
         }
     }
 }

@@ -23,7 +23,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:43
+ * @des    行情 搜索界面
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 public class ActivityMarketResearch extends FragmentActivity implements View.OnClickListener{
 
     @BindView(R.id.et_research)
@@ -101,14 +107,18 @@ public class ActivityMarketResearch extends FragmentActivity implements View.OnC
                 finish();
                 break;
             case R.id.et_research://从新获取焦点
-                research.setFocusable(true);
-                research.setFocusableInTouchMode(true);
-                research.requestFocus();
-                research.findFocus();
-                InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(0,InputMethodManager.SHOW_FORCED);
-                mResearchAdapter.deleteDatas();
-                mResearchAdapter.notifyDataSetChanged();
+                if(research.isFocusable()){
+
+                }else{
+                    research.setFocusable(true);
+                    research.setFocusableInTouchMode(true);
+                    research.requestFocus();
+                    research.findFocus();
+                    InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(0,InputMethodManager.SHOW_FORCED);
+                    mResearchAdapter.deleteDatas();
+                    mResearchAdapter.notifyDataSetChanged();
+                }
                 break;
         }
     }

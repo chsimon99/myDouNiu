@@ -1,5 +1,6 @@
 package com.zfxf.douniu.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -21,11 +22,19 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:26
+ * @des    斗牛吧
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 public class ActivityBar extends FragmentActivity implements View.OnClickListener{
 
     @BindView(R.id.iv_base_back)
     ImageView back;
+    @BindView(R.id.iv_base_edit)
+    ImageView edit;
 
     @BindView(R.id.tl_activity_bar)
     TabLayout mTabLayout;
@@ -76,13 +85,14 @@ public class ActivityBar extends FragmentActivity implements View.OnClickListene
         mTabLayout.post(new Runnable() {//改变滑动条的长度
             @Override
             public void run() {
-                CommonUtils.setIndicator(mTabLayout, CommonUtils.px2dip(CommonUtils.getContext(),60)
-                        ,CommonUtils.px2dip(CommonUtils.getContext(),60));
+                CommonUtils.setIndicator(mTabLayout, CommonUtils.px2dip(CommonUtils.getContext(),40)
+                        ,CommonUtils.px2dip(CommonUtils.getContext(),40));
             }
         });
     }
     private void initListener() {
         back.setOnClickListener(this);
+        edit.setOnClickListener(this);
     }
 
     @Override
@@ -92,6 +102,11 @@ public class ActivityBar extends FragmentActivity implements View.OnClickListene
                 finishAll();
                 finish();
                 break;
+            case R.id.iv_base_edit:
+                Intent intent = new Intent(this,ActivityPostBar.class);
+                startActivity(intent);
+                overridePendingTransition(0,0);
+                break;
         }
     }
 
@@ -99,5 +114,11 @@ public class ActivityBar extends FragmentActivity implements View.OnClickListene
         list_fragment = null;
         list_title = null;
         mAdapter = null;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        CommonUtils.dismissProgressDialog();
     }
 }

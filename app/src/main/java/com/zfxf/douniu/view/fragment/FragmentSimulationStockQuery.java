@@ -14,7 +14,13 @@ import com.zfxf.douniu.base.BaseFragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:31
+ * @des    模拟炒股查询
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 public class FragmentSimulationStockQuery extends BaseFragment implements View.OnClickListener{
 	private View view;
 

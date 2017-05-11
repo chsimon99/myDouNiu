@@ -18,7 +18,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:37
+ * @des    首席 金股池
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 
 public class FragmentAdvisorAllGoldPond extends BaseFragment {
     private View view;

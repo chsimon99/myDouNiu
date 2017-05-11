@@ -4,12 +4,15 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Admin
@@ -20,13 +23,13 @@ import java.util.List;
 public class XiangMuAdapter extends RecyclerView.Adapter<XiangMuAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<Map<String, String>> mDatas;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int positon);
+        void onItemClick(View v, int id);
     }
 
-    public XiangMuAdapter(Context context, List<String> datas) {
+    public XiangMuAdapter(Context context, List<Map<String, String>> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -51,7 +54,7 @@ public class XiangMuAdapter extends RecyclerView.Adapter<XiangMuAdapter.MyHolder
     public int getItemCount() {
         return mDatas.size();
     }
-    public void addDatas(List<String> data) {
+    public void addDatas(List<Map<String, String>> data) {
         mDatas.addAll(data);
     }
 
@@ -59,6 +62,7 @@ public class XiangMuAdapter extends RecyclerView.Adapter<XiangMuAdapter.MyHolder
         private MyItemClickListener mListener;
         ImageView type;
         ImageView bgImg;
+        Button look;
         TextView name;
         TextView time;
         public MyHolder(View itemView, MyItemClickListener listener) {
@@ -66,21 +70,30 @@ public class XiangMuAdapter extends RecyclerView.Adapter<XiangMuAdapter.MyHolder
             this.mListener = listener;
             type = (ImageView) itemView.findViewById(R.id.iv_xiangmu_item_type);
             bgImg = (ImageView) itemView.findViewById(R.id.iv_xiangmu_item_img);
+            look = (Button) itemView.findViewById(R.id.bt_xiangmu_item_look);
             name = (TextView) itemView.findViewById(R.id.tv_xiangmu_item_name);
             time = (TextView) itemView.findViewById(R.id.tv_xiangmu_item_time);
 
-            itemView.setOnClickListener(this);
+            look.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, Integer.parseInt(mDatas.get(getPosition()).get("cc_id")));
             }
         }
 
-        public void setRefreshData(String str) {
-
+        public void setRefreshData(Map<String, String> bean) {
+            if(Integer.parseInt(bean.get("biaoshi")) == 0){
+                type.setImageResource(R.drawable.xiangmu_yure);
+            }else{
+                type.setImageResource(R.drawable.xiangmu_ing);
+            }
+            name.setText(bean.get("cc_title"));
+            time.setText(bean.get("cc_datetime"));
+            Glide.with(mContext).load(bean.get("cc_fielid")).placeholder(R.drawable.xiangmu_img)
+                    .into(bgImg);
         }
     }
 }

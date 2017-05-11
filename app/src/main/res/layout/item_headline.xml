@@ -36,6 +36,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dm030"
             android:text="江南化工为何涨停?"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textColor="@color/titleText"
             android:textSize="@dimen/dm028"/>
 

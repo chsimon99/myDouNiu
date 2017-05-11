@@ -7,9 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
 
 import java.util.List;
+import java.util.Map;
+
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * @author Admin
@@ -20,13 +24,13 @@ import java.util.List;
 public class NewTopPolicyAdapter extends RecyclerView.Adapter<NewTopPolicyAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<Map<String, String>> mDatas;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int positon);
+        void onItemClick(View v, int infoId);
     }
 
-    public NewTopPolicyAdapter(Context context, List<String> datas) {
+    public NewTopPolicyAdapter(Context context, List<Map<String, String>> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -51,14 +55,14 @@ public class NewTopPolicyAdapter extends RecyclerView.Adapter<NewTopPolicyAdapte
     public int getItemCount() {
         return mDatas.size();
     }
-    public void addDatas(String data) {
-        mDatas.add(data);
+    public void addDatas(List<Map<String, String>> data) {
+        mDatas.addAll(data);
     }
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private MyItemClickListener mListener;
         ImageView img;
-        TextView content;
+        TextView count;
         TextView time;
         TextView name;
         TextView title;
@@ -68,7 +72,7 @@ public class NewTopPolicyAdapter extends RecyclerView.Adapter<NewTopPolicyAdapte
             super(itemView);
             this.mListener = listener;
             img = (ImageView) itemView.findViewById(R.id.iv_headline_img);
-            content = (TextView) itemView.findViewById(R.id.tv_headline_count);
+            count = (TextView) itemView.findViewById(R.id.tv_headline_count);
             time = (TextView) itemView.findViewById(R.id.tv_headline_time);
             name = (TextView) itemView.findViewById(R.id.tv_headline_name);
             title = (TextView) itemView.findViewById(R.id.tv_headline_title);
@@ -79,12 +83,20 @@ public class NewTopPolicyAdapter extends RecyclerView.Adapter<NewTopPolicyAdapte
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, Integer.parseInt(mDatas.get(getPosition()).get("cc_id")));
             }
         }
 
-        public void setRefreshData(String bean, int position) {
-
+        public void setRefreshData(Map<String, String> bean, int position) {
+            count.setText(bean.get("cc_count"));
+            time.setText(bean.get("cc_datetime"));
+            name.setText(bean.get("ud_nickname"));
+            title.setText(bean.get("cc_title"));
+            detail.setText(bean.get("cc_description"));
+            Glide.with(mContext).load(bean.get("headImg"))
+                    .placeholder(R.drawable.home_adviosr_img)
+                    .bitmapTransform(new CropCircleTransformation(mContext))
+                    .into(img);
         }
     }
 }

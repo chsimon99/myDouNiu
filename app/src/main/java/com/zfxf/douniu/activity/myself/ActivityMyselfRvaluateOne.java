@@ -15,7 +15,13 @@ import com.zfxf.douniu.utils.SpTools;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:19
+ * @des    我的 评估报告第一题
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 public class ActivityMyselfRvaluateOne extends FragmentActivity implements View.OnClickListener{
 
     @BindView(R.id.iv_base_back)

@@ -2,15 +2,18 @@ package com.zfxf.douniu.adapter.recycleView;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
 
 import java.util.List;
+import java.util.Map;
+
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * @author Admin
@@ -21,13 +24,13 @@ import java.util.List;
 public class BarBarAdapter extends RecyclerView.Adapter<BarBarAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<Map<String, String>> mDatas;
 
     public interface MyItemClickListener {
         void onItemClick(View v, int positon);
     }
 
-    public BarBarAdapter(Context context, List<String> datas) {
+    public BarBarAdapter(Context context, List<Map<String, String>> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -52,7 +55,7 @@ public class BarBarAdapter extends RecyclerView.Adapter<BarBarAdapter.MyHolder> 
     public int getItemCount() {
         return mDatas.size();
     }
-    public void addDatas(List<String> data) {
+    public void addDatas(List<Map<String, String>> data) {
         mDatas.addAll(data);
     }
 
@@ -80,14 +83,20 @@ public class BarBarAdapter extends RecyclerView.Adapter<BarBarAdapter.MyHolder> 
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, Integer.parseInt(mDatas.get(getPosition()).get("cc_id")));
             }
         }
 
-        public void setRefreshData(String str) {
-            if(!TextUtils.isEmpty(str)){
-                title.setText("这个是新加载的数据");
-            }
+        public void setRefreshData(Map<String, String> bean) {
+            time.setText(bean.get("cc_datetime"));
+            count.setText(bean.get("cc_count"));
+            name.setText(bean.get("ud_nickname"));
+            title.setText(bean.get("cc_title"));
+            detail.setText(bean.get("cc_description"));
+            Glide.with(mContext).load(bean.get("headImg"))
+                    .placeholder(R.drawable.home_adviosr_img)
+                    .bitmapTransform(new CropCircleTransformation(mContext))
+                    .into(imageView);
         }
     }
 }

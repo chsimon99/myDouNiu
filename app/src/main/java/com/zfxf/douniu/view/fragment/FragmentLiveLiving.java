@@ -1,13 +1,16 @@
 package com.zfxf.douniu.view.fragment;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.ActivityReward;
 import com.zfxf.douniu.adapter.recycleView.LiveLivingAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.utils.CommonUtils;
@@ -19,13 +22,21 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+/**
+ * @author IMXU
+ * @time   2017/5/3 13:34
+ * @des    直播
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 
-
-public class FragmentLiveLiving extends BaseFragment {
+public class FragmentLiveLiving extends BaseFragment implements View.OnClickListener{
     private View view;
 
     @BindView(R.id.tv_live_living_title)
     TextView title;
+    @BindView(R.id.iv_live_living_shang)
+    ImageView iv_shang;
     @BindView(R.id.rv_live_living)
     PullLoadMoreRecyclerView mRecyclerView;
     private LiveLivingAdapter mLivingAdapter;
@@ -75,6 +86,7 @@ public class FragmentLiveLiving extends BaseFragment {
     @Override
     public void initListener() {
         super.initListener();
+        iv_shang.setOnClickListener(this);
         mRecyclerView.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
             @Override
             public void onRefresh() {
@@ -128,5 +140,16 @@ public class FragmentLiveLiving extends BaseFragment {
                 }
             }
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.iv_live_living_shang:
+                Intent intent = new Intent(getActivity(),ActivityReward.class);
+                startActivity(intent);
+                getActivity().overridePendingTransition(0,0);
+                break;
+        }
     }
 }
