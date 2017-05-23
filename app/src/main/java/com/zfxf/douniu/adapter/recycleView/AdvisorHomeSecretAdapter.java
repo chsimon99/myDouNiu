@@ -7,9 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Admin
@@ -20,13 +22,13 @@ import java.util.List;
 public class AdvisorHomeSecretAdapter extends RecyclerView.Adapter<AdvisorHomeSecretAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<Map<String, String>> mDatas;
 
     public interface MyItemClickListener {
         void onItemClick(View v, int positon);
     }
 
-    public AdvisorHomeSecretAdapter(Context context, List<String> datas) {
+    public AdvisorHomeSecretAdapter(Context context, List<Map<String, String>> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -52,7 +54,7 @@ public class AdvisorHomeSecretAdapter extends RecyclerView.Adapter<AdvisorHomeSe
         return mDatas.size();
     }
 
-    public void addDatas(List<String> data) {
+    public void addDatas(List<Map<String, String>> data) {
         mDatas.addAll(data);
     }
 
@@ -60,9 +62,8 @@ public class AdvisorHomeSecretAdapter extends RecyclerView.Adapter<AdvisorHomeSe
         private MyItemClickListener mListener;
         private ImageView img;
         private TextView title;
-        private TextView day;
         private TextView time;
-        private TextView count;
+        private TextView myCount;
         private TextView money;
 
         public MyHolder(View itemView, MyItemClickListener listener) {
@@ -70,24 +71,34 @@ public class AdvisorHomeSecretAdapter extends RecyclerView.Adapter<AdvisorHomeSe
             this.mListener = listener;
             img = (ImageView) itemView.findViewById(R.id.iv_advisor_home_secret_img);
             title = (TextView) itemView.findViewById(R.id.tv_advisor_home_secret_title);
-            day = (TextView) itemView.findViewById(R.id.tv_advisor_home_secret_day);
             time = (TextView) itemView.findViewById(R.id.tv_advisor_home_secret_time);
-            count = (TextView) itemView.findViewById(R.id.tv_advisor_home_secret_count);
+            myCount = (TextView) itemView.findViewById(R.id.tv_advisor_home_secret_count);
             money = (TextView) itemView.findViewById(R.id.tv_advisor_home_secret_money);
 
             money.getPaint().setFakeBoldText(true);//加粗
-//            ll.setOnClickListener(this);
+            itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, Integer.parseInt(mDatas.get(getPosition()).get("cc_id")));
             }
         }
 
-        public void setRefreshData(String str, int position) {
-
+        public void setRefreshData(Map<String, String> bean, int position) {
+            Glide.with(mContext).load(bean.get("cc_fielid"))
+                    .placeholder(R.drawable.public_img).into(img);
+            title.setText(bean.get("cc_title"));
+            myCount.setText(bean.get("buy_count"));
+            time.setText(bean.get("cc_datetime"));
+            money.setText("￥"+bean.get("cc_fee")+"元");
+            if(bean.get("has_buy").equals("0")){
+                money.setTextColor(mContext.getResources().getColor(R.color.colorTitle));
+            }else{
+                money.setTextColor(mContext.getResources().getColor(R.color.gray));
+            }
         }
     }
+
 }

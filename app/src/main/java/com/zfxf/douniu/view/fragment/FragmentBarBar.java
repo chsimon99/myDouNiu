@@ -150,7 +150,12 @@ public class FragmentBarBar extends BaseFragment implements View.OnClickListener
 			public void onLoadMore() {
 				if(currentPage > totlePage){
 					Toast.makeText(CommonUtils.getContext(),"没有数据了",Toast.LENGTH_SHORT).show();
-					mRecyclerView.setPullLoadMoreCompleted();
+					mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
+						@Override
+						public void run() {
+							mRecyclerView.setPullLoadMoreCompleted();
+						}
+					}, 200);
 					return;
 				}
 				visitInternet();

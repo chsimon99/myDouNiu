@@ -8,13 +8,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.adapter.viewPager.PicPagerAdapter;
+import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.utils.MyLunBo;
 import com.zfxf.douniu.view.InnerView;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Admin
@@ -26,19 +29,19 @@ public class AdvisorAllPublicAdapter extends RecyclerView.Adapter<AdvisorAllPubl
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
     private MySubscribeClickListener mSubscribeClickListener = null;
-    private List<String> mDatas;
+    private List<Map<String, String>> mDatas;
     private List<Integer> mLunboDatas;
     private View mHeaderView;
     private MyLunBo mMyLunBO;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int positon);
+        void onItemClick(View v, int id,int isYd);
     }
     public interface MySubscribeClickListener {
-        void onItemClick(View v, int positon, String type);
+        void onItemClick(View v, int id, String type);
     }
 
-    public AdvisorAllPublicAdapter(Context context, List<String> datas,List<Integer> lunboDatas) {
+    public AdvisorAllPublicAdapter(Context context, List<Map<String, String>> datas, List<Integer> lunboDatas) {
         mContext = context;
         mDatas = datas;
         mLunboDatas = lunboDatas;
@@ -74,8 +77,8 @@ public class AdvisorAllPublicAdapter extends RecyclerView.Adapter<AdvisorAllPubl
     public int getItemCount() {
         return mHeaderView == null ?mDatas.size() : mDatas.size()+1;
     }
-    public void addDatas(String data) {
-        mDatas.add(data);
+    public void addDatas(List<Map<String, String>> data) {
+        mDatas.addAll(data);
     }
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -83,10 +86,9 @@ public class AdvisorAllPublicAdapter extends RecyclerView.Adapter<AdvisorAllPubl
         private MySubscribeClickListener mSubListener;
         ImageView img;
         TextView time;
-        TextView count;
+        TextView myCount;
         TextView title;
         TextView from;
-        TextView day;
         TextView type;
         LinearLayout mLayout;
         InnerView mViewPage;
@@ -107,9 +109,8 @@ public class AdvisorAllPublicAdapter extends RecyclerView.Adapter<AdvisorAllPubl
             img = (ImageView) itemView.findViewById(R.id.iv_advisor_all_public_img);
             title = (TextView) itemView.findViewById(R.id.tv_advisor_all_public_title);
             from = (TextView) itemView.findViewById(R.id.tv_advisor_all_public_from);
-            day = (TextView) itemView.findViewById(R.id.tv_advisor_all_public_day);
             time = (TextView) itemView.findViewById(R.id.tv_advisor_all_public_time);
-            count = (TextView) itemView.findViewById(R.id.tv_advisor_all_public_count);
+            myCount = (TextView) itemView.findViewById(R.id.tv_advisor_all_public_count);
             type = (TextView) itemView.findViewById(R.id.tv_advisor_all_public_type);
             mLayout = (LinearLayout) itemView.findViewById(R.id.ll_advisor_all_public);
             type.getPaint().setFakeBoldText(true);//加粗
@@ -132,20 +133,49 @@ public class AdvisorAllPublicAdapter extends RecyclerView.Adapter<AdvisorAllPubl
                         type.setBackgroundResource(R.drawable.backgroud_button_app_color);
                     }
                     if(mSubListener !=null){
-                        mSubListener.onItemClick(v,getPosition(),type.getText().toString());
+                        mSubListener.onItemClick(v,Integer.parseInt(mDatas.get(getRealPosition(this)).get("cc_id"))
+                                ,type.getText().toString());
+                        if (type.getText().toString().equals("已预约")) {
+                            subscribeInternet(0);
+                        } else {
+                            subscribeInternet(1);
+                        }
                     }
                     break;
             }
             if(!isNext){
                 if (mListener != null) {
-                    mListener.onItemClick(v, getPosition());
+                    mListener.onItemClick(v, Integer.parseInt(mDatas.get(getRealPosition(this)).get("cc_id")),
+                            Integer.parseInt(mDatas.get(getRealPosition(this)).get("has_dy")));
                 }
             }
 
         }
 
-        public void setRefreshData(String bean, int position) {
+        private void subscribeInternet(int type) {
+            NewsInternetRequest.subscribeAndCannel(mDatas.get(getRealPosition(this)).get("cc_id")
+                    , 0, type, new NewsInternetRequest.ForResultListener() {
+                @Override
+                public void onResponseMessage(String count) {
+                    myCount.setText(count);
+                }
+            },mContext.getResources().getString(R.string.userdy));
+        }
 
+        public void setRefreshData(Map<String, String> bean, int position) {
+            Glide.with(mContext).load(bean.get("cc_fielid"))
+                    .placeholder(R.drawable.public_img).into(img);
+            title.setText(bean.get("cc_title"));
+            from.setText(bean.get("cc_auth"));
+            myCount.setText(bean.get("dy_count"));
+            time.setText(bean.get("cc_datetime"));
+            if(bean.get("has_dy").equals("0")){
+                type.setText("预约");
+                type.setBackgroundResource(R.drawable.backgroud_button_app_color);
+            }else{
+                type.setText("已预约");
+                type.setBackgroundResource(R.drawable.backgroud_button_gary_color);
+            }
         }
 
         public void setRefreshLunboData(List<Integer> datas, int position) {

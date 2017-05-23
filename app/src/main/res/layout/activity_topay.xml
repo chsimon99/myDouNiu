@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginRight="@dimen/dm020"
-                android:text="刘刘老师"
+                android:text=""
                 android:textColor="@color/colorText"
                 android:textSize="@dimen/dm024"/>
         </LinearLayout>

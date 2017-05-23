@@ -43,5 +43,39 @@
     <string name="douniubarinfo">index.php/cms/douniubarinfo</string>
     <!--斗牛吧发表帖子-->
     <string name="newsfbtz">index.php/cms/newsfbtz</string>
+    <!--大参考列表-->
+    <string name="cankaolist">index.php/cms/cankaolist</string>
+    <!--公开课列表-->
+    <string name="gongkelist">index.php/cms/gongkelist</string>
+    <!--公开课详情-->
+    <string name="gongkeinfo">index.php/cms/gongkeinfo</string>
+    <!--私密课列表-->
+    <string name="sikelist">index.php/cms/sikelist</string>
+    <!--私密课详情-->
+    <string name="sikeinfo">index.php/cms/sikeinfo</string>
+    <!--直播课列表-->
+    <string name="zhibolist">index.php/zhibo/zhibolist</string>
+    <!--直播课详情-->
+    <string name="zhiboinfo">index.php/zhibo/zhiboinfo</string>
+    <!--直播课互动详情-->
+    <string name="zhibopl">index.php/zhibo/zhibopl</string>
+    <!--直播课互动评论-->
+    <string name="zhibofbpl">index.php/zhibo/zhibofbpl</string>
+
+    <!--订阅、取消订阅-->
+    <string name="userdy">index.php/user/userdy</string>
+    <!--首席分析师列表-->
+    <string name="shouxilist">index.php/user/shouxilist</string>
+    <!--首席主页信息-->
+    <string name="shouxiinfo">index.php/user/shouxiinfo</string>
+
+    <!--主页列表-->
+    <string name="index">index.php/dn/index</string>
+    <!--选股王详情-->
+    <string name="xuanguinfo">index.php/dn/xuanguinfo</string>
+    <!--选股王子项详情-->
+    <string name="zixianginfo">index.php/dn/zixianginfo</string>
+    <!--选股王历史详情-->
+    <string name="historygupiao">index.php/dn/historygupiao</string>
 
 </resources>

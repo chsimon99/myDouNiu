@@ -41,7 +41,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/dm016"
-                            android:text="江南化工为何涨停?"
+                            android:text=" "
                             android:textColor="@color/titleText"
                             android:textSize="@dimen/dm032"/>
                         <LinearLayout
@@ -55,7 +55,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="江南户"
+                                android:text="      "
                                 android:textColor="@color/titleText"
                                 android:textSize="@dimen/dm024"/>
                             <ImageView
@@ -69,7 +69,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/dm010"
-                                android:text="08:46"
+                                android:text="       "
                                 android:textColor="@color/colorText"
                                 android:textSize="@dimen/dm022"/>
                             <ImageView
@@ -83,7 +83,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/dm010"
-                                android:text="1469"
+                                android:text="      "
                                 android:textColor="@color/colorText"
                                 android:textSize="@dimen/dm022"/>
                             <View android:layout_width="0dp"
@@ -105,7 +105,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/dm010"
                                 android:layout_marginRight="@dimen/dm020"
-                                android:text="赞26"
+                                android:text="赞0"
                                 android:textColor="@color/colorTitle"
                                 android:textSize="@dimen/dm026"/>
                             </LinearLayout>
@@ -123,7 +123,7 @@
                         android:id="@+id/tv_headline_detail_detail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="江南户"
+                        android:text=" "
                         android:textColor="@color/colorText"
                         android:textSize="@dimen/dm024"/>
                 </LinearLayout>

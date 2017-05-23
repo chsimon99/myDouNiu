@@ -10,6 +10,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.XuanguGupiaoDetail;
+import com.zfxf.douniu.bean.XuanguHistoryDetail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +25,17 @@ import java.util.List;
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<XuanguHistoryDetail> mDatas;
+
+    public void addDatas(List<XuanguHistoryDetail> news_list) {
+        mDatas.addAll(news_list);
+    }
 
     public interface MyItemClickListener {
         void onItemClick(View v, int positon);
     }
 
-    public HistoryAdapter(Context context, List<String> datas) {
+    public HistoryAdapter(Context context, List<XuanguHistoryDetail> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -47,19 +53,18 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyHolder
 
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
-        holder.setRefreshData(position);
+        holder.setRefreshData(mDatas.get(position));
     }
 
     @Override
     public int getItemCount() {
         return mDatas.size();
     }
-
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private List<XuanguGupiaoDetail> datas = new ArrayList<XuanguGupiaoDetail>();
         private MyItemClickListener mListener;
         TextView time;
         ListView  mListView;
-        private List<String> datas = new ArrayList<String>();
         private MyListViewAdapter mListViewAdapter;
 
         public MyHolder(View itemView, MyItemClickListener listener) {
@@ -78,44 +83,28 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyHolder
             }
         }
 
-        public void setRefreshData(int position) {
-            if(position == 0){
-                time.setText("2017年3月18日");
-            }else if(position == 1){
-                time.setText("2017年3月16日");
-            }else{
-                time.setText("2017年3月13日");
-            }
-            if (datas.size() == 0) {
-                datas.add("");
-                datas.add("");
-                datas.add("");
-                datas.add("");
-                datas.add("");
-                datas.add("");
-            }
-            if(mListViewAdapter == null){
-                mListViewAdapter = new MyListViewAdapter(datas);
-            }
+        public void setRefreshData(XuanguHistoryDetail bean) {
+            time.setText(bean.date);
+            datas = bean.list;
+            mListViewAdapter = new MyListViewAdapter(datas);
             mListView.setAdapter(mListViewAdapter);
             setListViewHeightBasedOnChildren(mListView);
         }
     }
     class MyListViewAdapter extends BaseAdapter{
-        private List<String> datas = new ArrayList<>();
-
-        public MyListViewAdapter(List<String> datas) {
-            this.datas = datas;
+        private List<XuanguGupiaoDetail> lists;
+        public MyListViewAdapter(List<XuanguGupiaoDetail> list) {
+            lists = list;
         }
 
         @Override
         public int getCount() {
-            return datas.size();
+            return lists.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return datas.get(position);
+            return lists.get(position);
         }
 
         @Override
@@ -131,22 +120,22 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyHolder
                 convertView = View.inflate(mContext,R.layout.item_history_detail,null);
                 holder.stock_name = (TextView) convertView.findViewById(R.id.tv_history_detail_item_name);
                 holder.price = (TextView) convertView.findViewById(R.id.tv_history_detail_item_price);
-                holder.highprice = (TextView) convertView.findViewById(R.id.tv_history_detail_item_highprice);
+                holder.highPrice = (TextView) convertView.findViewById(R.id.tv_history_detail_item_highprice);
                 holder.rise = (TextView) convertView.findViewById(R.id.tv_history_detail_item_rise);
                 convertView.setTag(holder);
             }else{
                 holder = (ViewHolder) convertView.getTag();
             }
-//            holder.stock_name.setText("");
-//            holder.price.setText("");
-//            holder.highprice.setText("");
-//            holder.rise.setText("");
+            holder.stock_name.setText(lists.get(position).zg_mg_name+"\n"+lists.get(position).zg_mg_code);
+            holder.price.setText(lists.get(position).zg_rxj);
+            holder.highPrice.setText(lists.get(position).zg_rxj);
+            holder.rise.setText(lists.get(position).zg_zgzf+"%");
             return convertView;
         }
         class ViewHolder{
             public TextView stock_name;
             public TextView price;
-            public TextView highprice;
+            public TextView highPrice;
             public TextView rise;
         }
     }

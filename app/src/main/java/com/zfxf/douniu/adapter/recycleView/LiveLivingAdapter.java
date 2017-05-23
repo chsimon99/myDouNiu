@@ -7,9 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.LivingContent;
+import com.zfxf.douniu.bean.LivingContentDetail;
+import com.zfxf.douniu.bean.LivingContentDetailType;
 
 import java.util.List;
 
@@ -22,19 +26,19 @@ import java.util.List;
 public class LiveLivingAdapter extends RecyclerView.Adapter {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<LivingContentDetail> mDatas;
 
     private int living_text = 1;
     private int living_sound = 2;
 
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int positon);
+        void onItemClick(View v, int positon , LivingContentDetailType type ,ImageView view);
     }
 
-    public LiveLivingAdapter(Context context, List<String> datas) {
+    public LiveLivingAdapter(Context context, LivingContent datas) {
         mContext = context;
-        mDatas = datas;
+        mDatas = datas.context_list;
     }
 
     public void setOnItemClickListener(MyItemClickListener listener) {
@@ -70,13 +74,13 @@ public class LiveLivingAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return mDatas.size();
     }
-    public void addDatas(String data) {
-        mDatas.add(data);
+    public void addDatas(LivingContent data) {
+        mDatas.addAll(data.context_list);
     }
 
     @Override
     public int getItemViewType(int position) {
-        if(position % 2 == 0){
+        if(mDatas.get(position).zc_context.type.equals("0")){
             return living_text;
         }else{
             return living_sound;
@@ -99,12 +103,13 @@ public class LiveLivingAdapter extends RecyclerView.Adapter {
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, getPosition(),mDatas.get(getPosition()).zc_context,null);
             }
         }
 
-        public void setRefreshData(String bean, int position) {
-
+        public void setRefreshData(LivingContentDetail bean, int position) {
+            time.setText(bean.zc_time);
+            content.setText(bean.zc_context.text);
         }
     }
     class MySoundHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -112,6 +117,7 @@ public class LiveLivingAdapter extends RecyclerView.Adapter {
         TextView sound_time;
         TextView time;
         FrameLayout mLayout;
+        ImageView mView;
         ViewGroup.LayoutParams mParams;
         private int mMinItemWidth; //最小的item宽度
         private int mMaxItemWidth; //最大的item宽度
@@ -128,6 +134,7 @@ public class LiveLivingAdapter extends RecyclerView.Adapter {
             sound_time = (TextView) itemView.findViewById(R.id.tv_live_living_sound_soundtime);
             time = (TextView) itemView.findViewById(R.id.tv_live_living_sound_time);
             mLayout = (FrameLayout) itemView.findViewById(R.id.fl_live_living_sound);
+            mView = (ImageView) itemView.findViewById(R.id.iv_live_living_sound);
             mParams =  mLayout.getLayoutParams();
 
             itemView.setOnClickListener(this);
@@ -136,17 +143,21 @@ public class LiveLivingAdapter extends RecyclerView.Adapter {
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, getPosition(),mDatas.get(getPosition()).zc_context,mView);
             }
         }
 
-        public void setRefreshData(String bean, int position) {
-            if(position %3 ==0){
-                mParams.width = mMinItemWidth;
-            }else if(position %5 ==0){
-                mParams.width = (int) (mMaxItemWidth *0.8);
-            }else{
-                mParams.width = mMinItemWidth*2;
+        public void setRefreshData(LivingContentDetail bean, int position) {
+            time.setText(bean.zc_time);
+            sound_time.setText(bean.zc_context.length);
+            String length = bean.zc_context.length;
+            if(length.contains("’")){//超过一分钟的就一样显示
+                mParams.width = (int) (mMaxItemWidth *0.9);
+            }else{//低于一分钟的按比例显示
+                int i = length.indexOf("”");
+                String str = length.substring(0, i);
+                int addLength = (int) ((mMaxItemWidth*0.8 - mMinItemWidth) * Integer.parseInt(str) / 60);
+                mParams.width = mMinItemWidth +addLength;
             }
         }
     }

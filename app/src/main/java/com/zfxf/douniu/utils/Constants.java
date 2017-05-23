@@ -14,6 +14,10 @@ public interface Constants {
     String rvaluateSuccess = "RVALUATESUCCESS";
     String isLogin = "ISLOGIN";
     String nickname = "NICKNAME";
+    String imgurl = "IMGURL";
+    String buy = "BUY";
+    String subscribe = "SUBSCRIBE";
     int resultCodeLogin	= 1;
     int resultCodeEditInfor	= 2;
+    String getIndexInformation = "GETINDEXINFORMATION";
 }

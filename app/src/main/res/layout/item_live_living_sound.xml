@@ -49,6 +49,7 @@
                         android:layout_height="@dimen/dm072"
                         android:background="@drawable/icon_sound_bg"/>
                     <ImageView
+                        android:id="@+id/iv_live_living_sound"
                         android:layout_width="@dimen/dm020"
                         android:src="@drawable/icon_sound"
                         android:layout_marginLeft="@dimen/dm035"

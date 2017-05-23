@@ -74,14 +74,17 @@ public class PullLoadMoreRecyclerView extends LinearLayout {
 
     }
 
-
+    private LinearLayoutManager mLinearLayoutManager;
     /**
      * LinearLayoutManager
      */
     public void setLinearLayout() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(linearLayoutManager);
+        mLinearLayoutManager = new LinearLayoutManager(mContext);
+        mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+    }
+    public LinearLayoutManager getLinearLayoutManager(){
+        return mLinearLayoutManager;
     }
 
     /**

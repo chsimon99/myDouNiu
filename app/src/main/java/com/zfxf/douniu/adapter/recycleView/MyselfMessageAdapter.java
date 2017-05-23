@@ -60,7 +60,6 @@ public class MyselfMessageAdapter extends RecyclerView.Adapter<MyselfMessageAdap
         private ImageView img;
         private TextView title;
         private TextView from;
-        private TextView day;
         private TextView time;
         private TextView count;
         private TextView money;
@@ -71,7 +70,6 @@ public class MyselfMessageAdapter extends RecyclerView.Adapter<MyselfMessageAdap
             img = (ImageView) itemView.findViewById(R.id.iv_advisor_all_secret_img);
             title = (TextView) itemView.findViewById(R.id.tv_advisor_all_secret_title);
             from = (TextView) itemView.findViewById(R.id.tv_advisor_all_secret_from);
-            day = (TextView) itemView.findViewById(R.id.tv_advisor_all_secret_day);
             time = (TextView) itemView.findViewById(R.id.tv_advisor_all_secret_time);
             count = (TextView) itemView.findViewById(R.id.tv_advisor_all_secret_count);
             money = (TextView) itemView.findViewById(R.id.tv_advisor_all_secret_money);

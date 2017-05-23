@@ -6,55 +6,10 @@
     android:background="@color/colorWhite"
     android:orientation="vertical">
     <include layout="@layout/activity_base_title"/>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dm025"
-        android:layout_marginLeft="@dimen/dm015"
-        android:layout_marginRight="@dimen/dm015"
-        android:layout_marginTop="@dimen/dm025"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="标题"
-            android:textColor="@color/titleText"
-            android:textSize="@dimen/dm028"/>
-        <EditText
-            android:id="@+id/et_post_bar_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dm015"
-            android:background="@null"
-            android:hint="请输入标题"
-            android:textColorHint="@color/titleTextGray"
-            android:textSize="@dimen/dm028"/>
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="@dimen/dm015"
-        android:layout_marginRight="@dimen/dm015"
-        android:background="@color/gray"/>
-    <EditText
-        android:id="@+id/et_post_bar_content"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dm500"
-        android:layout_margin="@dimen/dm015"
-        android:background="@null"
-        android:hint="快来分享你的观点吧"
-        android:gravity="left"
-        android:textColorHint="@color/titleTextGray"
-        android:textSize="@dimen/dm022"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="@dimen/dm015"
-        android:layout_marginRight="@dimen/dm015"
-        android:background="@color/gray"/>
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:layout_marginTop="@dimen/dm025"
+                  android:layout_marginBottom="@dimen/dm025"
                   android:layout_marginLeft="@dimen/dm015"
                   android:layout_marginRight="@dimen/dm015"
                   android:orientation="horizontal">
@@ -135,4 +90,51 @@
                 android:textSize="@dimen/dm028"/>
         </LinearLayout>
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/dm015"
+        android:layout_marginRight="@dimen/dm015"
+        android:background="@color/gray"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dm025"
+        android:layout_marginLeft="@dimen/dm015"
+        android:layout_marginRight="@dimen/dm015"
+        android:layout_marginTop="@dimen/dm025"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="标题"
+            android:textColor="@color/titleText"
+            android:textSize="@dimen/dm028"/>
+        <EditText
+            android:id="@+id/et_post_bar_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dm015"
+            android:background="@null"
+            android:maxLines="1"
+            android:hint="请输入标题"
+            android:textColorHint="@color/titleTextGray"
+            android:textSize="@dimen/dm028"/>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/dm015"
+        android:layout_marginRight="@dimen/dm015"
+        android:background="@color/gray"/>
+    <EditText
+        android:id="@+id/et_post_bar_content"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm500"
+        android:layout_margin="@dimen/dm015"
+        android:background="@null"
+        android:hint="快来分享你的观点吧"
+        android:gravity="left"
+        android:textColorHint="@color/titleTextGray"
+        android:textSize="@dimen/dm022"/>
 </LinearLayout>

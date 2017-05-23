@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.activity.ActivityAdvisorHome;
@@ -27,6 +28,8 @@ import com.zfxf.douniu.adapter.recycleView.HomeAdvisorAdapter;
 import com.zfxf.douniu.adapter.recycleView.HomeChooseAdapter;
 import com.zfxf.douniu.adapter.recycleView.HomeZhiboAdapter;
 import com.zfxf.douniu.base.BaseFragment;
+import com.zfxf.douniu.bean.IndexResult;
+import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.utils.MyLunBo;
 import com.zfxf.douniu.view.FullyLinearLayoutManager;
@@ -102,10 +105,6 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
 
     private List<Integer> mDatas = new ArrayList<Integer>();
     private MyLunBo mMyLunBO;
-    private List<String> advisorDatas = new ArrayList<String>();
-    private List<String> chooseDatas = new ArrayList<String>();
-    private List<String> zhiboDatas = new ArrayList<String>();
-
     private RecycleViewDivider mDivider;
 
     @Override
@@ -138,55 +137,75 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
         }
         mViewPage.setAdapter(new myPicAdapter());
 
-        if (advisorDatas.size() == 0) {
-            advisorDatas.add("");
-            advisorDatas.add("");
-        }
-        if(mAdvisorManager == null){
-            mAdvisorManager = new FullyLinearLayoutManager(getActivity());
-        }
-        if(mAdvisorAdapter == null){
-            mAdvisorAdapter = new HomeAdvisorAdapter(getActivity(), advisorDatas);
-        }
+        visitInternet();
 
-        if(chooseDatas.size() == 0){
-            chooseDatas.add("");
-            chooseDatas.add("");
-            chooseDatas.add("");
-            chooseDatas.add("");
-            chooseDatas.add("");
-        }
-        if(mChooseManager == null){
-            mChooseManager = new FullyLinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
-        }
-        if(mChooseAdapter == null){
-            mChooseAdapter = new HomeChooseAdapter(getActivity(), chooseDatas);
-        }
-
-        if(zhiboDatas.size() == 0){
-            zhiboDatas.add("");
-            zhiboDatas.add("");
-        }
-        if(mZhiboManager == null){
-            mZhiboManager = new FullyLinearLayoutManager(getActivity());
-        }
-        if(mZhiboAdapter == null){
-            mZhiboAdapter = new HomeZhiboAdapter(getActivity(), zhiboDatas);
-        }
-
-        mAdvisorRecyclerView.setLayoutManager(mAdvisorManager);
-        mAdvisorRecyclerView.setAdapter(mAdvisorAdapter);
-        if(mDivider == null){//防止多次加载出现宽度变宽
-            mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
-            mAdvisorRecyclerView.addItemDecoration(mDivider);
-        }
-
-        mChooseRecyclerView.setLayoutManager(mChooseManager);
-        mChooseRecyclerView.setAdapter(mChooseAdapter);
-
-        mZhiboRecyclerView.setLayoutManager(mZhiboManager);
-        mZhiboRecyclerView.setAdapter(mZhiboAdapter);
         super.initdata();
+    }
+
+    private void visitInternet() {
+        CommonUtils.showProgressDialog(getActivity(),"加载中……");
+        NewsInternetRequest.getIndexInformation(new NewsInternetRequest.ForResultIndexListener() {
+            @Override
+            public void onResponseMessage(IndexResult indexResult) {
+                if(indexResult == null){
+                    CommonUtils.dismissProgressDialog();
+                    CommonUtils.toastMessage("网络不稳定，加载数据失败，请重试");
+                    return;
+                }
+
+                if(mAdvisorManager == null){
+                    mAdvisorManager = new FullyLinearLayoutManager(getActivity());
+                }
+                if(mAdvisorAdapter == null){
+                    mAdvisorAdapter = new HomeAdvisorAdapter(getActivity(), indexResult.shouxi_list);
+                }
+                mAdvisorRecyclerView.setLayoutManager(mAdvisorManager);
+                mAdvisorRecyclerView.setAdapter(mAdvisorAdapter);
+                if(mDivider == null){//防止多次加载出现宽度变宽
+                    mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
+                    mAdvisorRecyclerView.addItemDecoration(mDivider);
+                }
+                mAdvisorAdapter.setOnItemClickListener(new HomeAdvisorAdapter.MyItemClickListener() {
+                    @Override
+                    public void onItemClick(View v, int id) {
+                        Intent intent = new Intent(getActivity(), ActivityAdvisorHome.class);
+                        intent.putExtra("id",id);
+                        getActivity().startActivity(intent);
+                        getActivity().overridePendingTransition(0,0);
+                    }
+                });
+
+                if(mChooseManager == null){
+                    mChooseManager = new FullyLinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
+                }
+                if(mChooseAdapter == null){
+                    mChooseAdapter = new HomeChooseAdapter(getActivity(), indexResult.xuangu_list);
+                }
+                mChooseRecyclerView.setLayoutManager(mChooseManager);
+                mChooseRecyclerView.setAdapter(mChooseAdapter);
+                mChooseAdapter.setOnItemClickListener(new HomeChooseAdapter.MyItemClickListener() {
+                    @Override
+                    public void onItemClick(View v, int id) {
+                        Intent intent = new Intent(getActivity(), ActivityIntelligenceChoose.class);
+                        intent.putExtra("id",id);
+                        getActivity().startActivity(intent);
+                        getActivity().overridePendingTransition(0,0);
+                    }
+                });
+
+
+                if(mZhiboManager == null){
+                    mZhiboManager = new FullyLinearLayoutManager(getActivity());
+                }
+                if(mZhiboAdapter == null){
+                    mZhiboAdapter = new HomeZhiboAdapter(getActivity(), indexResult.zhibo_list);
+                }
+                mZhiboRecyclerView.setLayoutManager(mZhiboManager);
+                mZhiboRecyclerView.setAdapter(mZhiboAdapter);
+
+                CommonUtils.dismissProgressDialog();
+            }
+        });
     }
 
     @Override
@@ -203,22 +222,6 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
         ll_xiangmu.setOnClickListener(this);
         message.setOnClickListener(this);
         research.setOnClickListener(this);
-        mAdvisorAdapter.setOnItemClickListener(new HomeAdvisorAdapter.MyItemClickListener() {
-            @Override
-            public void onItemClick(View v, int positon) {
-                Intent intent = new Intent(getActivity(), ActivityAdvisorHome.class);
-                getActivity().startActivity(intent);
-                getActivity().overridePendingTransition(0,0);
-            }
-        });
-        mChooseAdapter.setOnItemClickListener(new HomeChooseAdapter.MyItemClickListener() {
-            @Override
-            public void onItemClick(View v, int positon) {
-                Intent intent = new Intent(getActivity(), ActivityIntelligenceChoose.class);
-                getActivity().startActivity(intent);
-                getActivity().overridePendingTransition(0,0);
-            }
-        });
     }
     Intent intent;
     @Override
@@ -266,9 +269,9 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
                 getActivity().overridePendingTransition(0,0);
                 break;
             case R.id.ll_home_xiangmu:
-            intent = new Intent(getActivity(), ActivityXiangMu.class);
-            getActivity().startActivity(intent);
-            getActivity().overridePendingTransition(0,0);
+                intent = new Intent(getActivity(), ActivityXiangMu.class);
+                getActivity().startActivity(intent);
+                getActivity().overridePendingTransition(0,0);
                 break;
             case R.id.iv_home_message:
                 intent = new Intent(CommonUtils.getContext(), ActivityMyselfMessage.class);
@@ -317,7 +320,7 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
         }
     }
     public void itemClick(int pos){
-        //        Toast.makeText(getActivity(),"您点击的是第 "+ (++pos) +" 个Item",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(),"您点击的是第 "+ (++pos) +" 个Item",Toast.LENGTH_SHORT).show();
     }
 
     private boolean isOnPause = false;

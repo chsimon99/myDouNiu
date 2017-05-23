@@ -46,9 +46,9 @@
             android:textColor="@color/titleText"
             android:textSize="@dimen/dm028"/>
     </LinearLayout>
-    <android.support.v7.widget.RecyclerView
+    <com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView
         android:id="@+id/rv_history"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    </android.support.v7.widget.RecyclerView>
+    </com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView>
 </LinearLayout>

@@ -6,18 +6,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.activity.ActivityLiving;
 import com.zfxf.douniu.adapter.recycleView.AdvisorAllDirectAdapter;
 import com.zfxf.douniu.base.BaseFragment;
+import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.RecycleViewDivider;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +37,6 @@ public class FragmentAdvisorAllDirect extends BaseFragment implements View.OnCli
 	@BindView(R.id.rv_advisor_all_direct)
 	PullLoadMoreRecyclerView mRecyclerView;
 	private AdvisorAllDirectAdapter mAllDirectAdapter;
-	private List<String> datas = new ArrayList<String>();
 	private RecycleViewDivider mDivider;
 
 	@BindView(R.id.ll_advisor_all_direct_hudong)
@@ -44,6 +45,16 @@ public class FragmentAdvisorAllDirect extends BaseFragment implements View.OnCli
 	LinearLayout renqi;
 	@BindView(R.id.ll_advisor_all_direct_guandian)
 	LinearLayout guandian;
+	@BindView(R.id.tv_advisor_all_direct_hudong)
+	TextView tv_hudong;
+	@BindView(R.id.tv_advisor_all_direct_renqi)
+	TextView tv_renqi;
+	@BindView(R.id.tv_advisor_all_direct_guandian)
+	TextView tv_guandian;
+
+	private int headType = 0;
+	private int totlePage = 0;
+	private int currentPage = 1;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -65,27 +76,66 @@ public class FragmentAdvisorAllDirect extends BaseFragment implements View.OnCli
 	@Override
 	public void initdata() {
 		super.initdata();
-		if(datas.size() == 0){
-			datas.add("");
-			datas.add("");
-			datas.add("");
-			datas.add("");
-			datas.add("");
-			datas.add("");
-		}
-		if(mAllDirectAdapter == null){
-			mAllDirectAdapter = new AdvisorAllDirectAdapter(getActivity(),datas);
-		}
-
-		mRecyclerView.setLinearLayout();
-		mRecyclerView.setAdapter(mAllDirectAdapter);
-		if(mDivider == null){
-			mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
-			mRecyclerView.addItemDecoration(mDivider);
-		}
-		mRecyclerView.setFooterViewText("加载更多……");
+		currentPage = 1;
+		mAllDirectAdapter = null;
+		CommonUtils.showProgressDialog(getActivity(),"加载中……");
+		visitInternet();
 	}
-	int num = 0;
+	private void visitInternet(){
+		NewsInternetRequest.getLivingListInformation(headType, currentPage+"", null, new NewsInternetRequest.ForResultEventInfoListener() {
+			@Override
+			public void onResponseMessage(List<Map<String, String>> lists, String totalpage) {
+				totlePage = Integer.parseInt(totalpage);
+				if (totlePage > 0 && currentPage <= totlePage){
+					if(currentPage == 1){
+						if(mAllDirectAdapter == null){
+							mAllDirectAdapter = new AdvisorAllDirectAdapter(getActivity(),lists);
+						}
+
+						mRecyclerView.setLinearLayout();
+						mRecyclerView.setAdapter(mAllDirectAdapter);
+						if(mDivider == null){
+							mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
+							mRecyclerView.addItemDecoration(mDivider);
+						}
+						mRecyclerView.setFooterViewText("加载更多……");
+
+						mAllDirectAdapter.setOnItemClickListener(new AdvisorAllDirectAdapter.MyItemClickListener() {
+							@Override
+							public void onItemClick(View v, int id) {
+								Intent intent = new Intent(CommonUtils.getContext(), ActivityLiving.class);
+								intent.putExtra("id",id);
+								startActivity(intent);
+								getActivity().overridePendingTransition(0,0);
+							}
+						});
+					}else {
+						if(lists !=null){
+							mAllDirectAdapter.addDatas(lists);
+						}
+						mRecyclerView.post(new Runnable() {
+							@Override
+							public void run() {
+								mAllDirectAdapter.notifyDataSetChanged();
+							}
+						});
+						mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
+							@Override
+							public void run() {
+								mRecyclerView.setPullLoadMoreCompleted();
+							}
+						},1000);
+					}
+					currentPage++;
+					CommonUtils.dismissProgressDialog();
+				}else {
+					CommonUtils.dismissProgressDialog();
+					return;
+				}
+			}
+		},getActivity().getResources().getString(R.string.zhibolist));
+
+	}
 	@Override
 	public void initListener() {
 		super.initListener();
@@ -95,6 +145,10 @@ public class FragmentAdvisorAllDirect extends BaseFragment implements View.OnCli
 		mRecyclerView.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
 			@Override
 			public void onRefresh() {
+				currentPage = 1;
+				mAllDirectAdapter = null;
+				CommonUtils.showProgressDialog(getActivity(),"加载中……");
+				visitInternet();
 				mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
 					@Override
 					public void run() {
@@ -105,48 +159,46 @@ public class FragmentAdvisorAllDirect extends BaseFragment implements View.OnCli
 
 			@Override
 			public void onLoadMore() {
-				if(num > 1){
+				if(currentPage > totlePage){
 					Toast.makeText(CommonUtils.getContext(),"没有数据了",Toast.LENGTH_SHORT).show();
-					mRecyclerView.setPullLoadMoreCompleted();
+					mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
+						@Override
+						public void run() {
+							mRecyclerView.setPullLoadMoreCompleted();
+						}
+					}, 200);
 					return;
 				}
-				num++;
-				mAllDirectAdapter.addDatas("2");
-				mRecyclerView.post(new Runnable() {
-					@Override
-					public void run() {
-						mAllDirectAdapter.notifyDataSetChanged();
-					}
-				});
-				mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
-					@Override
-					public void run() {
-						mRecyclerView.setPullLoadMoreCompleted();
-					}
-				},1000);
-			}
-		});
-
-		mAllDirectAdapter.setOnItemClickListener(new AdvisorAllDirectAdapter.MyItemClickListener() {
-			@Override
-			public void onItemClick(View v, int positon) {
-				Intent intent = new Intent(CommonUtils.getContext(), ActivityLiving.class);
-				startActivity(intent);
-				getActivity().overridePendingTransition(0,0);
+				visitInternet();
 			}
 		});
 	}
 
 	@Override
 	public void onClick(View v) {
+		reset();
 		switch (v.getId()){
 			case R.id.ll_advisor_all_direct_hudong:
-				CommonUtils.toastMessage("互动点击");
+				headType = 0;
+				tv_hudong.setTextColor(getResources().getColor(R.color.colorTitle));
 				break;
 			case R.id.ll_advisor_all_direct_renqi:
+				headType = 1;
+				tv_renqi.setTextColor(getResources().getColor(R.color.colorPhone));
 				break;
 			case R.id.ll_advisor_all_direct_guandian:
+				headType = 2;
+				tv_guandian.setTextColor(getResources().getColor(R.color.advisorType));
 				break;
 		}
+		currentPage = 1;
+		mAllDirectAdapter = null;
+		visitInternet();
+	}
+
+	private void reset() {
+		tv_hudong.setTextColor(getResources().getColor(R.color.colorText));
+		tv_renqi.setTextColor(getResources().getColor(R.color.colorText));
+		tv_guandian.setTextColor(getResources().getColor(R.color.colorText));
 	}
 }

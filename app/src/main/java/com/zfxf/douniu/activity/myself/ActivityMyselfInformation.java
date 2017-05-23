@@ -131,6 +131,7 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
 
                     if(TextUtils.isEmpty(photoUrl)){
                         img.setImageResource(R.drawable.advisor_home_img);
+                        CommonUtils.dismissProgressDialog();
                     }else {
                         Bitmap cacheBitmap = CommonUtils.getCacheFile("myicon.jpg");
                         if(cacheBitmap == null){
@@ -162,10 +163,7 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 switch(actionId){
                     case EditorInfo.IME_ACTION_DONE:
-                        textName.setVisibility(View.VISIBLE);
-                        editName.setVisibility(View.GONE);
-                        textName.setText(editName.getText().toString());
-                        number++;
+                        saveText();
                         break;
                 }
                 return false;
@@ -206,9 +204,11 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
                 }
                 break;
             case R.id.ll_myself_information_date:
+                saveText();
                 getTime();
                 break;
             case R.id.ll_myself_information_address:
+                saveText();
                 getAddress();
                 break;
             case R.id.ll_myself_information_name:
@@ -226,8 +226,16 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
         }
     }
 
+    private void saveText() {
+        textName.setVisibility(View.VISIBLE);
+        editName.setVisibility(View.GONE);
+        textName.setText(editName.getText().toString());
+        number++;
+    }
+
     @Override
     public void onBackPressed() {
+        CommonUtils.dismissProgressDialog();
         if(number>0){
             confirm();
         }else {

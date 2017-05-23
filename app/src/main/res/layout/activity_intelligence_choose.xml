@@ -31,7 +31,7 @@
                     android:id="@+id/tv_intelligence_choose_average_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="34.67%"
+                    android:text="%"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/dm048"/>
             </LinearLayout>
@@ -56,7 +56,7 @@
                     android:id="@+id/tv_intelligence_choose_sucess_ratio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="80%"
+                    android:text="%"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/dm048"/>
             </LinearLayout>
@@ -83,7 +83,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dm015"
-                    android:text="-15%"
+                    android:text="%"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/dm038"/>
             </LinearLayout>
@@ -104,7 +104,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dm015"
-                    android:text="15%"
+                    android:text="%"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/dm038"/>
             </LinearLayout>
@@ -125,7 +125,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dm015"
-                    android:text="90天"
+                    android:text="天"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/dm038"/>
             </LinearLayout>
@@ -147,7 +147,7 @@
                 android:id="@+id/tv_intelligence_choose_subscribe_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="订阅：2235"
+                android:text="订阅："
                 android:textColor="@color/colorWhiteE"
                 android:textSize="@dimen/dm022"/>
             <TextView
@@ -155,7 +155,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dm030"
-                android:text="2017年3月19日更新"
+                android:text=""
                 android:textColor="@color/colorWhiteE"
                 android:textSize="@dimen/dm022"/>
         </LinearLayout>
@@ -169,7 +169,7 @@
             android:layout_marginTop="@dimen/dm010"
             android:maxLines="1"
             android:ellipsize="end"
-            android:text="通过大数据模型统计，分析抓取当前龙头企业分析抓取当前龙头企业分析抓取当前龙头企业"
+            android:text=""
             android:textColor="@color/colorWhiteE"
             android:textSize="@dimen/dm022"/>
     </LinearLayout>
@@ -215,7 +215,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="10股"
+                    android:text=""
                     android:textColor="@color/colorText"
                     android:textSize="@dimen/dm024"/>
                 <View

@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -68,8 +70,10 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
         edit.setVisibility(View.INVISIBLE);
         String pay_type = getIntent().getStringExtra("type");
         String count = getIntent().getStringExtra("count");
+        String from = getIntent().getStringExtra("from");
         money.setText("￥"+count);
         type.setText(pay_type);
+        towho.setText(from);
         initData();
         initListener();
     }
@@ -95,7 +99,9 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
                 finishAll();
                 finish();
                 break;
-            case R.id.rl_topay_pay:
+            case R.id.rl_topay_pay://暂时是直接支付成功
+                SpTools.setBoolean(this, Constants.buy,true);
+                finish();
                 break;
             case R.id.ll_topay_niubi:
                 reset();

@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.IndexStockListInfo;
 
 import java.util.List;
 
@@ -20,13 +22,13 @@ import java.util.List;
 public class HomeChooseAdapter extends RecyclerView.Adapter<HomeChooseAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<IndexStockListInfo> mDatas;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int positon);
+        void onItemClick(View v, int id);
     }
 
-    public HomeChooseAdapter(Context context, List<String> datas) {
+    public HomeChooseAdapter(Context context, List<IndexStockListInfo> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -79,16 +81,18 @@ public class HomeChooseAdapter extends RecyclerView.Adapter<HomeChooseAdapter.My
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, Integer.parseInt(mDatas.get(getPosition()).zf_id));
             }
         }
 
-        public void setRefreshData(String str, int position) {
-            if(position % 2 ==0){
-                img.setImageResource(R.drawable.home_choose);
-            }else{
-                img.setImageResource(R.drawable.home_choose1);
-            }
+        public void setRefreshData(IndexStockListInfo bean, int position) {
+            Glide.with(mContext).load(bean.zf_fieldid)
+                    .placeholder(R.drawable.home_choose).into(img);
+            type.setText(bean.zf_title);
+            income.setText(bean.zf_pjsy+"%");
+            scale.setText(bean.zf_xgcgl+"%");
+            days.setText(bean.zf_cgzq+"天");
+            subscriber.setText(bean.zf_dys+"人订阅");
         }
     }
 }

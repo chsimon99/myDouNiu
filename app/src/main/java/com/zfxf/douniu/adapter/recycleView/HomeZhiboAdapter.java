@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.IndexLivingListInfo;
 
 import java.util.List;
 
@@ -20,13 +22,13 @@ import java.util.List;
 public class HomeZhiboAdapter extends RecyclerView.Adapter<HomeZhiboAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<IndexLivingListInfo> mDatas;
 
     public interface MyItemClickListener {
         void onItemClick(View v, int positon);
     }
 
-    public HomeZhiboAdapter(Context context, List<String> datas) {
+    public HomeZhiboAdapter(Context context, List<IndexLivingListInfo> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -75,8 +77,11 @@ public class HomeZhiboAdapter extends RecyclerView.Adapter<HomeZhiboAdapter.MyHo
             }
         }
 
-        public void setRefreshData(String str, int position) {
-
+        public void setRefreshData(IndexLivingListInfo bean, int position) {
+            Glide.with(mContext).load(bean.zt_fileid)
+                    .placeholder(R.drawable.home_zhibo_bg).into(bg);
+            name.setText(bean.ud_nickname);
+            count.setText(bean.zt_clicks+"人参与");
         }
     }
 }

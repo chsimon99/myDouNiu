@@ -12,8 +12,8 @@
         android:text="强势异动A"
         android:layout_marginLeft="@dimen/dm016"
         android:layout_marginRight="@dimen/dm016"
-        android:layout_marginTop="@dimen/dm035"
-        android:layout_marginBottom="@dimen/dm035"
+        android:layout_marginTop="@dimen/dm030"
+        android:layout_marginBottom="@dimen/dm030"
         android:textColor="@color/item_text_color_selector"
         android:textSize="@dimen/dm028"/>
 

@@ -11,13 +11,17 @@ import com.zfxf.douniu.R;
 import com.zfxf.douniu.activity.advisor.ActivityAdvisorAllSecretDetail;
 import com.zfxf.douniu.adapter.recycleView.AdvisorAllSecretAdapter;
 import com.zfxf.douniu.base.BaseFragment;
+import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
 import com.zfxf.douniu.utils.MyLunBo;
+import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.RecycleViewDivider;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,8 +42,9 @@ public class FragmentAdvisorAllSecret extends BaseFragment{
 	@BindView(R.id.rv_advisor_all_secret)
 	PullLoadMoreRecyclerView mRecyclerView;
 	private AdvisorAllSecretAdapter mAllSecretAdapter;
-	private List<String> datas = new ArrayList<String>();
 	private RecycleViewDivider mDivider;
+	private int totlePage = 0;
+	private int currentPage = 1;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -68,36 +73,80 @@ public class FragmentAdvisorAllSecret extends BaseFragment{
 			mDatas.add(R.drawable.home_banner);
 		}
 
-		if(datas.size() == 0){
-			datas.add("");
-			datas.add("");
-			datas.add("");
-			datas.add("");
-			datas.add("");
-			datas.add("");
-		}
-		if(mAllSecretAdapter == null){
-			mAllSecretAdapter = new AdvisorAllSecretAdapter(getActivity(),datas,mDatas);
-			View view = View.inflate(getActivity(),R.layout.item_lunbo_with_gray,null);
-			mAllSecretAdapter.setHeaderView(view);
-		}
+		currentPage = 1;
+		mAllSecretAdapter = null;
+		CommonUtils.showProgressDialog(getActivity(),"加载中……");
+		visitInternet();
 
-		mRecyclerView.setLinearLayout();
-		mRecyclerView.setAdapter(mAllSecretAdapter);
-		if(mDivider == null){
-			mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
-			mRecyclerView.addItemDecoration(mDivider);
-		}
-		mRecyclerView.setFooterViewText("加载更多……");
-		mMyLunBO = mAllSecretAdapter.getLunBo();
 	}
-	int num = 0;
+
+	private void visitInternet(){
+		NewsInternetRequest.getSimikeListInformation(currentPage + "", null, new NewsInternetRequest.ForResultPointInfoListener() {
+			@Override
+			public void onResponseMessage(List<Map<String, String>> lists, String totalpage) {
+				totlePage = Integer.parseInt(totalpage);
+				if (totlePage > 0 && currentPage <= totlePage){
+					if(currentPage == 1){
+						if(mAllSecretAdapter == null){
+							mAllSecretAdapter = new AdvisorAllSecretAdapter(getActivity(),lists,mDatas);
+							View view = View.inflate(getActivity(),R.layout.item_lunbo_with_gray,null);
+							mAllSecretAdapter.setHeaderView(view);
+						}
+
+						mRecyclerView.setLinearLayout();
+						mRecyclerView.setAdapter(mAllSecretAdapter);
+						if(mDivider == null){
+							mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
+							mRecyclerView.addItemDecoration(mDivider);
+						}
+						mRecyclerView.setFooterViewText("加载更多……");
+						mMyLunBO = mAllSecretAdapter.getLunBo();
+
+						mAllSecretAdapter.setOnItemClickListener(new AdvisorAllSecretAdapter.MyItemClickListener() {
+							@Override
+							public void onItemClick(View v, int id) {
+								Intent intent = new Intent(CommonUtils.getContext(), ActivityAdvisorAllSecretDetail.class);
+								intent.putExtra("id",id);
+								startActivity(intent);
+								getActivity().overridePendingTransition(0,0);
+							}
+						});
+					}else {
+						mAllSecretAdapter.addDatas(lists);
+						mRecyclerView.post(new Runnable() {
+							@Override
+							public void run() {
+								mAllSecretAdapter.notifyDataSetChanged();
+							}
+						});
+						mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
+							@Override
+							public void run() {
+								mRecyclerView.setPullLoadMoreCompleted();
+							}
+						},1000);
+					}
+					currentPage++;
+					CommonUtils.dismissProgressDialog();
+				}else {
+					CommonUtils.dismissProgressDialog();
+					return;
+				}
+
+			}
+		},getActivity().getResources().getString(R.string.sikelist));
+	}
+
 	@Override
 	public void initListener() {
 		super.initListener();
 		mRecyclerView.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
 			@Override
 			public void onRefresh() {
+				currentPage = 1;
+				mAllSecretAdapter = null;
+				CommonUtils.showProgressDialog(getActivity(),"加载中……");
+				visitInternet();
 				mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
 					@Override
 					public void run() {
@@ -108,34 +157,17 @@ public class FragmentAdvisorAllSecret extends BaseFragment{
 
 			@Override
 			public void onLoadMore() {
-				if(num > 1){
+				if(currentPage > totlePage){
 					Toast.makeText(CommonUtils.getContext(),"没有数据了",Toast.LENGTH_SHORT).show();
-					mRecyclerView.setPullLoadMoreCompleted();
+					mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
+						@Override
+						public void run() {
+							mRecyclerView.setPullLoadMoreCompleted();
+						}
+					}, 200);
 					return;
 				}
-				num++;
-				mAllSecretAdapter.addDatas("2");
-				mRecyclerView.post(new Runnable() {
-					@Override
-					public void run() {
-						mAllSecretAdapter.notifyDataSetChanged();
-					}
-				});
-				mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
-					@Override
-					public void run() {
-						mRecyclerView.setPullLoadMoreCompleted();
-					}
-				},1000);
-			}
-		});
-
-		mAllSecretAdapter.setOnItemClickListener(new AdvisorAllSecretAdapter.MyItemClickListener() {
-			@Override
-			public void onItemClick(View v, int positon) {
-				Intent intent = new Intent(CommonUtils.getContext(), ActivityAdvisorAllSecretDetail.class);
-				startActivity(intent);
-				getActivity().overridePendingTransition(0,0);
+				visitInternet();
 			}
 		});
 	}
@@ -154,6 +186,13 @@ public class FragmentAdvisorAllSecret extends BaseFragment{
 			if (mMyLunBO != null)
 				mMyLunBO.restartLunBO();//不用restart是为了防止突然轮播的速度快
 			isOnPause = false;
+		}
+		if(SpTools.getBoolean(getActivity(), Constants.buy,false)){//如果已经支付成功，重新刷新数据
+			currentPage = 1;
+			mAllSecretAdapter = null;
+			CommonUtils.showProgressDialog(getActivity(),"加载中……");
+			SpTools.setBoolean(getActivity(), Constants.buy,false);
+			visitInternet();
 		}
 		super.onResume();
 	}

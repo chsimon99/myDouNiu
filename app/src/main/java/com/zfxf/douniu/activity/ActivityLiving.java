@@ -110,4 +110,9 @@ public class ActivityLiving extends FragmentActivity implements View.OnClickList
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        CommonUtils.dismissProgressDialog();
+    }
 }

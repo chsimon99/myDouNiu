@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.base.BaseApplication;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.fragment.FragmentAdvisor;
 import com.zfxf.douniu.view.fragment.FragmentHome;
 import com.zfxf.douniu.view.fragment.FragmentMarket;
@@ -87,6 +89,7 @@ public class MainActivityTabHost extends FragmentActivity {
 				exitTime = System.currentTimeMillis();
 			} else {
 				BaseApplication.getThreadPool().shutdownNow();//关闭线程池
+				SpTools.setString(this, Constants.getIndexInformation,"");
 				finish();
 				System.exit(0);
 			}

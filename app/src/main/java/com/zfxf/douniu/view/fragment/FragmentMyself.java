@@ -258,6 +258,7 @@ public class FragmentMyself extends BaseFragment implements View.OnClickListener
 					if (TextUtils.isEmpty(photoUrl)) {
 						img.setImageResource(R.drawable.advisor_home_img);
 					} else {
+						SpTools.setString(getActivity(),Constants.imgurl,photoUrl);
 						Bitmap cacheBitmap = CommonUtils.getCacheFile("myicon.jpg");
 						if (cacheBitmap == null) {
 							Glide.with(getActivity()).load(photoUrl)

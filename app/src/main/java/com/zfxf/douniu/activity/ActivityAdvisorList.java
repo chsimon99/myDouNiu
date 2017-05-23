@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.adapter.viewPager.BarItemAdapter;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.view.fragment.FragmentAdvisorShouxi;
 import com.zfxf.douniu.view.fragment.FragmentMyselfAttentionAdvisor;
 
 import java.util.ArrayList;
@@ -47,8 +48,6 @@ public class ActivityAdvisorList extends FragmentActivity implements View.OnClic
     private Fragment mFragmentMyselfAttentionAdvisor;
     private Fragment mFragmentMyselfAttentionMatador;
 
-    private List<String> data1s = new ArrayList<String>();
-    private List<String> data2s = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,31 +62,12 @@ public class ActivityAdvisorList extends FragmentActivity implements View.OnClic
     }
 
     private void initdata() {
-        if(data1s.size() == 0){
-            data1s.add("1");
-            data1s.add("2");
-            data1s.add("3");
-            data1s.add("1");
-            data1s.add("2");
-            data1s.add("3");
-            data1s.add("1");
-            data1s.add("2");
-        }
-        if(data2s.size() == 0){
-            data2s.add("1");
-            data2s.add("2");
-            data2s.add("3");
-            data2s.add("1");
-            data2s.add("2");
-            data2s.add("3");
-            data2s.add("1");
-            data2s.add("2");
-        }
+
         if(mFragmentMyselfAttentionAdvisor == null){
-            mFragmentMyselfAttentionAdvisor = new FragmentMyselfAttentionAdvisor(data1s);
+            mFragmentMyselfAttentionAdvisor = new FragmentMyselfAttentionAdvisor(2);
         }
         if(mFragmentMyselfAttentionMatador == null){
-            mFragmentMyselfAttentionMatador = new FragmentMyselfAttentionAdvisor(data2s);
+            mFragmentMyselfAttentionMatador = new FragmentAdvisorShouxi(1);
         }
         if(list_fragment.size() == 0){
             list_fragment.add(mFragmentMyselfAttentionAdvisor);
@@ -129,5 +109,11 @@ public class ActivityAdvisorList extends FragmentActivity implements View.OnClic
 
     private void finishAll() {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        CommonUtils.dismissProgressDialog();
     }
 }

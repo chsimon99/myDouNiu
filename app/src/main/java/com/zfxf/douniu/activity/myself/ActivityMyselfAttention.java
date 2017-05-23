@@ -75,7 +75,7 @@ public class ActivityMyselfAttention extends FragmentActivity implements View.On
         }
 
         if(mFragmentMyselfAttentionAdvisor == null){
-            mFragmentMyselfAttentionAdvisor = new FragmentMyselfAttentionAdvisor(datas);
+            mFragmentMyselfAttentionAdvisor = new FragmentMyselfAttentionAdvisor(2);
         }
         if(mFragmentMyselfAttentionMatador == null){
             mFragmentMyselfAttentionMatador = new FragmentMyselfAttentionMatador();

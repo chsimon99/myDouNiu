@@ -89,7 +89,7 @@ public class FragmentBarGrade extends BaseFragment {
 			mCommendManager = new FullyLinearLayoutManager(getActivity());
 		}
 		if(mCommendAdapter == null){
-			mCommendAdapter = new HomeAdvisorAdapter(getActivity(), commendDatas);
+//			mCommendAdapter = new HomeAdvisorAdapter(getActivity(), commendDatas);
 		}
 		mCommendRecyclerView.setLayoutManager(mCommendManager);
 		mCommendRecyclerView.setAdapter(mCommendAdapter);
@@ -106,7 +106,7 @@ public class FragmentBarGrade extends BaseFragment {
 			mHumanManager = new FullyLinearLayoutManager(getActivity());
 		}
 		if(mHumanAdapter == null){
-			mHumanAdapter = new HomeAdvisorAdapter(getActivity(), humanDatas);
+//			mHumanAdapter = new HomeAdvisorAdapter(getActivity(), humanDatas);
 		}
 		mHumanRecyclerView.setLayoutManager(mHumanManager);
 		mHumanRecyclerView.setAdapter(mHumanAdapter);
@@ -122,7 +122,7 @@ public class FragmentBarGrade extends BaseFragment {
 			mIncomeManager = new FullyLinearLayoutManager(getActivity());
 		}
 		if(mIncomeAdapter == null){
-			mIncomeAdapter = new HomeAdvisorAdapter(getActivity(), incomeDatas);
+//			mIncomeAdapter = new HomeAdvisorAdapter(getActivity(), incomeDatas);
 		}
 		mIncomeRecyclerView.setLayoutManager(mIncomeManager);
 		mIncomeRecyclerView.setAdapter(mIncomeAdapter);

@@ -40,14 +40,6 @@
                     android:text="2017/04/01"
                     android:textColor="@color/colorText"
                     android:textSize="@dimen/dm024"/>
-                <TextView
-                    android:id="@+id/tv_advisor_home_public_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dm020"
-                    android:text="20:00"
-                    android:textColor="@color/colorText"
-                    android:textSize="@dimen/dm024"/>
             </LinearLayout>
         </LinearLayout>
         <View
@@ -87,7 +79,7 @@
                 android:background="@drawable/backgroud_button_app_color"
                 android:gravity="center"
                 android:layout_height="@dimen/dm045"
-                android:text="订阅"
+                android:text="预约"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/dm024"/>
         </LinearLayout>

@@ -21,12 +21,13 @@
                 android:layout_marginTop="@dimen/dm024"
                 android:src="@drawable/advisor_hudong"/>
             <TextView
+                android:id="@+id/tv_advisor_all_direct_hudong"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="@dimen/dm024"
                 android:text="互动多"
-                android:textColor="@color/colorText"
+                android:textColor="@color/colorTitle"
                 android:textSize="@dimen/dm028"/>
         </LinearLayout>
         <LinearLayout
@@ -43,6 +44,7 @@
                 android:layout_marginTop="@dimen/dm024"
                 android:src="@drawable/advisor_renqi"/>
             <TextView
+                android:id="@+id/tv_advisor_all_direct_renqi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -65,6 +67,7 @@
                 android:layout_marginTop="@dimen/dm024"
                 android:src="@drawable/advisor_guandian"/>
             <TextView
+                android:id="@+id/tv_advisor_all_direct_guandian"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

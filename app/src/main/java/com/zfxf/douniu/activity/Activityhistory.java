@@ -2,18 +2,17 @@ package com.zfxf.douniu.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.adapter.recycleView.HistoryAdapter;
-import com.zfxf.douniu.view.FullyLinearLayoutManager;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.zfxf.douniu.bean.XuanguDetail;
+import com.zfxf.douniu.internet.NewsInternetRequest;
+import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,11 +33,12 @@ public class Activityhistory extends FragmentActivity implements View.OnClickLis
     TextView title;
 
     @BindView(R.id.rv_history)
-    RecyclerView mRecyclerView;
-    private LinearLayoutManager mAdvisorManager;
+    PullLoadMoreRecyclerView mRecyclerView;
     private HistoryAdapter mHistoryAdapter;
-    private List<String> mDatas = new ArrayList<String>();
-//    private RecycleViewDivider mDivider;
+    private int mId;
+    private int totlePage = 0;
+    private int currentPage = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,27 +46,78 @@ public class Activityhistory extends FragmentActivity implements View.OnClickLis
         ButterKnife.bind(this);
         title.setText("历史数据");
         edit.setVisibility(View.INVISIBLE);
+        mId = getIntent().getIntExtra("id", 0);
         initData();
         initListener();
     }
 
     private void initData() {
-        if (mDatas.size() == 0) {
-            mDatas.add("");
-            mDatas.add("");
-            mDatas.add("");
-        }
-        if(mAdvisorManager == null){
-            mAdvisorManager = new FullyLinearLayoutManager(this);
-        }
-        if(mHistoryAdapter == null){
-            mHistoryAdapter = new HistoryAdapter(this, mDatas);
-        }
-        mRecyclerView.setLayoutManager(mAdvisorManager);
-        mRecyclerView.setAdapter(mHistoryAdapter);
+        currentPage = 1;
+        mHistoryAdapter = null;
+        CommonUtils.showProgressDialog(this,"加载中……");
+        visitInternet();
     }
+
+    private void visitInternet() {
+        NewsInternetRequest.getXuanGuHistoryInformation(mId, currentPage + "", new NewsInternetRequest.ForResultXuanGuDetailListener() {
+            @Override
+            public void onResponseMessage(XuanguDetail result) {
+                totlePage = Integer.parseInt(result.total);
+                if (totlePage > 0 && currentPage <= totlePage){
+                    if(currentPage == 1){
+                        if(mHistoryAdapter == null){
+                            mHistoryAdapter = new HistoryAdapter(Activityhistory.this, result.news_list);
+                        }
+                        mRecyclerView.setLinearLayout();
+                        mRecyclerView.setAdapter(mHistoryAdapter);
+                        mRecyclerView.setPullRefreshEnable(false);//下拉刷新
+                        mRecyclerView.setFooterViewText("加载更多……");
+                    }else {
+                        mHistoryAdapter.addDatas(result.news_list);
+                        mRecyclerView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mHistoryAdapter.notifyDataSetChanged();
+                            }
+                        });
+                        mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
+                            @Override
+                            public void run() {
+                                mRecyclerView.setPullLoadMoreCompleted();
+                            }
+                        },1000);
+                    }
+                    currentPage++;
+                    CommonUtils.dismissProgressDialog();
+                }else {
+                    CommonUtils.dismissProgressDialog();
+                    return;
+                }
+            }
+        });
+    }
+
     private void initListener() {
         back.setOnClickListener(this);
+        mRecyclerView.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
+            @Override
+            public void onRefresh() {
+            }
+            @Override
+            public void onLoadMore() {
+                if(currentPage > totlePage){
+                    Toast.makeText(CommonUtils.getContext(),"没有数据了",Toast.LENGTH_SHORT).show();
+                    mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
+                        @Override
+                        public void run() {
+                            mRecyclerView.setPullLoadMoreCompleted();
+                        }
+                    }, 200);
+                    return;
+                }
+                visitInternet();
+            }
+        });
     }
 
     @Override

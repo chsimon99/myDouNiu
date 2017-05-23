@@ -70,7 +70,7 @@
                             android:id="@+id/tv_advisor_home_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="百变股神"
+                            android:text=""
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/dm028"/>
                         <TextView
@@ -83,6 +83,20 @@
                             android:background="@drawable/backgroud_gold_hollow"
                             android:gravity="center"
                             android:text="金牌"
+                            android:visibility="gone"
+                            android:textColor="@color/advisorType"
+                            android:textSize="@dimen/dm020"/>
+                        <TextView
+                            android:id="@+id/tv_advisor_home_type1"
+                            android:layout_marginTop="@dimen/dm012"
+                            android:layout_width="@dimen/dm060"
+                            android:layout_height="@dimen/dm028"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="@dimen/dm020"
+                            android:background="@drawable/backgroud_gold_hollow"
+                            android:gravity="center"
+                            android:text="首席"
+                            android:visibility="gone"
                             android:textColor="@color/advisorType"
                             android:textSize="@dimen/dm020"/>
                     </LinearLayout>
@@ -102,7 +116,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/dm015"
-                            android:text="690"
+                            android:text=""
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/dm022"/>
                     </LinearLayout>
@@ -122,7 +136,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/dm015"
-                            android:text="7.86%"
+                            android:text=""
                             android:textColor="@color/colorWhite"
                             android:textSize="@dimen/dm022"/>
                     </LinearLayout>
@@ -134,7 +148,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dm018"
-                android:text="从业9年，中方信富签约顾问中方信富签约顾问 中方信富签约顾问中方信富签约顾问!"
+                android:text=""
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/dm023"/>
         </LinearLayout>
@@ -173,11 +187,13 @@
             android:gravity="center"
             android:orientation="horizontal">
             <ImageView
+                android:id="@+id/iv_advisor_home_guanzhu"
                 android:layout_width="@dimen/dm033"
                 android:layout_height="@dimen/dm033"
                 android:layout_marginRight="@dimen/dm015"
                 android:src="@drawable/icon_guanzhu"/>
             <TextView
+                android:id="@+id/tv_advisor_home_guanzhu"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:gravity="center"

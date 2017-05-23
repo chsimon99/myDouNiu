@@ -7,9 +7,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Admin
@@ -20,13 +22,13 @@ import java.util.List;
 public class AdvisorHomeReferenceAdapter extends RecyclerView.Adapter<AdvisorHomeReferenceAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<Map<String, String>> mDatas;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int positon);
+        void onItemClick(View v, int id, Map<String, String> buy);
     }
 
-    public AdvisorHomeReferenceAdapter(Context context, List<String> datas) {
+    public AdvisorHomeReferenceAdapter(Context context, List<Map<String, String>> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -52,7 +54,7 @@ public class AdvisorHomeReferenceAdapter extends RecyclerView.Adapter<AdvisorHom
         return mDatas.size();
     }
 
-    public void addDatas(List<String> data) {
+    public void addDatas(List<Map<String, String>> data) {
         mDatas.addAll(data);
     }
 
@@ -79,12 +81,22 @@ public class AdvisorHomeReferenceAdapter extends RecyclerView.Adapter<AdvisorHom
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, Integer.parseInt(mDatas.get(getPosition()).get("cc_id"))
+                        ,mDatas.get(getPosition()));
             }
         }
 
-        public void setRefreshData(String str, int position) {
-
+        public void setRefreshData(Map<String, String> bean, int position) {
+            Glide.with(mContext).load(bean.get("cc_fielid"))
+                    .placeholder(R.drawable.public_img).into(img);
+            title.setText(bean.get("cc_title"));
+            count.setText(bean.get("buy_count"));
+            price.setText("￥"+bean.get("cc_fee"));
+            if(bean.get("has_buy").equals("0")){
+                lock.setVisibility(View.VISIBLE);
+            }else{
+                lock.setVisibility(View.INVISIBLE);
+            }
         }
     }
 }

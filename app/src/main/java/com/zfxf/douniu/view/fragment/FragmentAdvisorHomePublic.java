@@ -1,5 +1,6 @@
 package com.zfxf.douniu.view.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,14 +8,18 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.advisor.ActivityAdvisorAllPublicDetail;
 import com.zfxf.douniu.adapter.recycleView.AdvisorHomePublicAdapter;
 import com.zfxf.douniu.base.BaseFragment;
+import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.RecycleViewDivider;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,8 +37,11 @@ public class FragmentAdvisorHomePublic extends BaseFragment {
 	@BindView(R.id.rv_advisor_home_public)
 	PullLoadMoreRecyclerView mRecyclerView;
 	private AdvisorHomePublicAdapter mPublicAdapter;
-	private List<String> datas = new ArrayList<String>();
 	private RecycleViewDivider mDivider;
+
+	private int totlePage = 0;
+	private int currentPage = 1;
+	private int mId;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -45,6 +53,7 @@ public class FragmentAdvisorHomePublic extends BaseFragment {
 			parent.removeView(view);
 		}
 		ButterKnife.bind(this,view);
+		mId = getActivity().getIntent().getIntExtra("id", 0);
 		return view;
 	}
 
@@ -55,26 +64,78 @@ public class FragmentAdvisorHomePublic extends BaseFragment {
 	@Override
 	public void initdata() {
 		super.initdata();
-		if(datas.size() == 0){
-			datas.add("1");
-			datas.add("2");
-			datas.add("3");
-			datas.add("4");
-			datas.add("4");
-		}
-		if(mPublicAdapter == null){
-			mPublicAdapter = new AdvisorHomePublicAdapter(getActivity(),datas);
-		}
-
-		mRecyclerView.setLinearLayout();
-		mRecyclerView.setAdapter(mPublicAdapter);
-		if(mDivider == null){
-			mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
-			mRecyclerView.addItemDecoration(mDivider);
-		}
-		mRecyclerView.setFooterViewText("加载更多……");
+		currentPage = 1;
+		mPublicAdapter = null;
+		CommonUtils.showProgressDialog(getActivity(),"加载中……");
+		visitInternet();
 	}
-	int num = 0;
+
+	private void visitInternet() {
+		NewsInternetRequest.getListInformation(currentPage + "", mId + "", new NewsInternetRequest.ForResultPolicyInfoListener() {
+			@Override
+			public void onResponseMessage(List<Map<String, String>> lists, String totalpage) {
+				totlePage = Integer.parseInt(totalpage);
+				if (totlePage > 0 && currentPage <= totlePage){
+					if(currentPage == 1){
+						if(mPublicAdapter == null){
+							mPublicAdapter = new AdvisorHomePublicAdapter(getActivity(),lists);
+						}
+
+						mRecyclerView.setLinearLayout();
+						mRecyclerView.setAdapter(mPublicAdapter);
+						if(mDivider == null){
+							mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
+							mRecyclerView.addItemDecoration(mDivider);
+						}
+						mRecyclerView.setPullRefreshEnable(false);//下拉刷新
+						mRecyclerView.setFooterViewText("加载更多……");
+
+						mPublicAdapter.setOnItemClickListener(new AdvisorHomePublicAdapter.MyItemClickListener() {
+							@Override
+							public void onItemClick(View v, int id,int isYd) {
+								Intent intent = new Intent(CommonUtils.getContext(), ActivityAdvisorAllPublicDetail.class);
+								intent.putExtra("id",id);
+								startActivity(intent);
+								getActivity().overridePendingTransition(0,0);
+							}
+						});
+						mPublicAdapter.setOnSubscribeClickListener(new AdvisorHomePublicAdapter.MySubscribeClickListener() {
+							@Override
+							public void onItemClick(View v, int id, String type) {
+								if(type.equals("已预约")){
+									CommonUtils.toastMessage("预约成功");
+								}else if(type.equals("预约")){
+									CommonUtils.toastMessage("取消预约成功");
+								}
+							}
+						});
+
+					}else {
+						mPublicAdapter.addDatas(lists);
+						mRecyclerView.post(new Runnable() {
+							@Override
+							public void run() {
+								mPublicAdapter.notifyDataSetChanged();
+							}
+						});
+						mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
+							@Override
+							public void run() {
+								mRecyclerView.setPullLoadMoreCompleted();
+							}
+						},1000);
+					}
+					currentPage++;
+					CommonUtils.dismissProgressDialog();
+				}else {
+					CommonUtils.dismissProgressDialog();
+					return;
+				}
+
+			}
+		},getActivity().getResources().getString(R.string.gongkelist));
+	}
+
 	@Override
 	public void initListener() {
 		super.initListener();
@@ -91,35 +152,30 @@ public class FragmentAdvisorHomePublic extends BaseFragment {
 
 			@Override
 			public void onLoadMore() {
-				if(num > 1){
+				if(currentPage > totlePage){
 					Toast.makeText(CommonUtils.getContext(),"没有数据了",Toast.LENGTH_SHORT).show();
-					mRecyclerView.setPullLoadMoreCompleted();
+					mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
+						@Override
+						public void run() {
+							mRecyclerView.setPullLoadMoreCompleted();
+						}
+					}, 200);
 					return;
 				}
-				num++;
-				List<String> newdatas = new ArrayList<String>();
-				newdatas.add("7");
-				mPublicAdapter.addDatas(newdatas);
-				mRecyclerView.post(new Runnable() {
-					@Override
-					public void run() {
-						mPublicAdapter.notifyDataSetChanged();
-					}
-				});
-				mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
-					@Override
-					public void run() {
-						mRecyclerView.setPullLoadMoreCompleted();
-					}
-				},1000);
+				visitInternet();
 			}
 		});
+	}
 
-		mPublicAdapter.setOnItemClickListener(new AdvisorHomePublicAdapter.MyItemClickListener() {
-			@Override
-			public void onItemClick(View v, int positon) {
-//				Toast.makeText(CommonUtils.getContext(),"点击了"+positon,Toast.LENGTH_SHORT).show();
-			}
-		});
+	@Override
+	public void onResume() {
+		if(SpTools.getBoolean(getActivity(), Constants.subscribe,false)){//如果已经支付成功，重新刷新数据
+			currentPage = 1;
+			mPublicAdapter = null;
+			CommonUtils.showProgressDialog(getActivity(),"加载中……");
+			SpTools.setBoolean(getActivity(), Constants.subscribe,false);
+			visitInternet();
+		}
+		super.onResume();
 	}
 }

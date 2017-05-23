@@ -8,10 +8,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.bean.TestBean;
 import com.zfxf.douniu.utils.CommonUtils;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Admin
@@ -22,13 +22,13 @@ import java.util.List;
 public class AdvisorHomeDirectAdapter extends RecyclerView.Adapter<AdvisorHomeDirectAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<TestBean> mDatas;
+    private List<Map<String, String>> mDatas;
 
     public interface MyItemClickListener {
         void onItemClick(View v, int positon);
     }
 
-    public AdvisorHomeDirectAdapter(Context context, List<TestBean> datas) {
+    public AdvisorHomeDirectAdapter(Context context, List<Map<String, String>> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -53,8 +53,8 @@ public class AdvisorHomeDirectAdapter extends RecyclerView.Adapter<AdvisorHomeDi
     public int getItemCount() {
         return mDatas.size();
     }
-    public void addDatas(TestBean data) {
-        mDatas.add(data);
+    public void addDatas(List<Map<String, String>> data) {
+        mDatas.addAll(data);
     }
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -83,19 +83,22 @@ public class AdvisorHomeDirectAdapter extends RecyclerView.Adapter<AdvisorHomeDi
             }
         }
 
-        public void setRefreshData(TestBean bean, int position) {
-
-            if(bean.isFlag()){
+        public void setRefreshData(Map<String, String> bean, int position) {
+            if(bean.get("status").equals("1")){//正在直播
                 time.setTextColor(CommonUtils.getContext().getResources().getColor(R.color.colorTitle));
-               count.setTextColor(CommonUtils.getContext().getResources().getColor(R.color.colorShort));
+                count.setTextColor(CommonUtils.getContext().getResources().getColor(R.color.colorShort));
                 type.setImageResource(R.drawable.icon_eyes);
-                content.setText("语言文字直播中");
+                img.setImageResource(R.drawable.icon_play);
+                time.setText("语言文字直播中");
             }else {
-                content.setText(bean.getStr());
                 time.setTextColor(CommonUtils.getContext().getResources().getColor(R.color.titleTextGray));
                 count.setTextColor(CommonUtils.getContext().getResources().getColor(R.color.titleTextGray));
                 type.setImageResource(R.drawable.icon_eye);
+                time.setText(bean.get("zt_start"));
+                img.setImageResource(R.drawable.bar_time);
             }
+            count.setText(bean.get("zt_clicks"));
+            content.setText(bean.get("zt_name"));
         }
     }
 }

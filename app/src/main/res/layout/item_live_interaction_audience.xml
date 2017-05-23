@@ -52,6 +52,7 @@
             android:gravity="center|left"
             android:paddingLeft="@dimen/dm020"
             android:text="啊花"
+            android:paddingRight="@dimen/dm030"
             android:textColor="@color/colorText"
             android:textSize="@dimen/dm024"/>
     </RelativeLayout>

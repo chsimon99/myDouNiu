@@ -7,9 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.LivingInteract;
 
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * @author Admin
@@ -20,13 +24,13 @@ import java.util.List;
 public class LiveInteractionAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<LivingInteract> mDatas;
 
     public interface MyItemClickListener {
         void onItemClick(View v, int positon);
     }
 
-    public LiveInteractionAdapter(Context context, List<String> datas) {
+    public LiveInteractionAdapter(Context context, List<LivingInteract> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -61,8 +65,11 @@ public class LiveInteractionAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public int getItemCount() {
         return mDatas.size();
     }
-    public void addDatas(List<String> data) {
+    public void addDatas(List<LivingInteract> data) {
         mDatas.addAll(0,data);
+    }
+    public void addNewDatas(LivingInteract data) {
+        mDatas.add(data);
     }
 
     class MyAudienceHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -87,8 +94,14 @@ public class LiveInteractionAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
         }
 
-        public void setRefreshData(String str) {
-
+        public void setRefreshData(LivingInteract bean) {
+            Glide.with(mContext).load(bean.headImg)
+                    .placeholder(R.drawable.home_adviosr_img)
+                    .bitmapTransform(new CropCircleTransformation(mContext))
+                    .into(imageView);
+            name.setText(bean.ud_nickname);
+            time.setText(bean.zp_date);
+            content.setText(bean.zp_pl);
         }
     }
     class MyAnchorHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -115,15 +128,21 @@ public class LiveInteractionAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             }
         }
 
-        public void setRefreshData(String str) {
-
+        public void setRefreshData(LivingInteract bean) {
+            Glide.with(mContext).load(bean.headImg)
+                    .placeholder(R.drawable.home_adviosr_img)
+                    .bitmapTransform(new CropCircleTransformation(mContext))
+                    .into(imageView);
+            name.setText(bean.ud_nickname);
+            time.setText(bean.zp_date);
+            content.setText(bean.zp_pl);
         }
     }
     public static final int TYPE_ANCHOR = 0;
     public static final int TYPE_AUDIENCE = 1;
     @Override
     public int getItemViewType(int position) {
-        if(mDatas.get(position).equals("1")){
+        if(mDatas.get(position).role.equals("0")){
             return TYPE_ANCHOR;
         }else {
             return TYPE_AUDIENCE;

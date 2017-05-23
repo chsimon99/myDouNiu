@@ -1,7 +1,9 @@
 package com.zfxf.douniu.view.fragment;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +15,11 @@ import com.zfxf.douniu.R;
 import com.zfxf.douniu.activity.ActivityReward;
 import com.zfxf.douniu.adapter.recycleView.LiveLivingAdapter;
 import com.zfxf.douniu.base.BaseFragment;
+import com.zfxf.douniu.bean.LivingContent;
+import com.zfxf.douniu.bean.LivingContentDetailType;
+import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,8 +41,9 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
     @BindView(R.id.rv_live_living)
     PullLoadMoreRecyclerView mRecyclerView;
     private LiveLivingAdapter mLivingAdapter;
-    private List<String> datas = new ArrayList<String>();
-
+    private int mId;
+    private int totlePage = 0;
+    private int currentPage = 1;
     @Override
     public View initView(LayoutInflater inflater) {
         if (view == null) {
@@ -52,6 +54,7 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
             parent.removeView(view);
         }
         ButterKnife.bind(this, view);
+        mId = getActivity().getIntent().getIntExtra("id", 0);
         return view;
     }
 
@@ -63,26 +66,100 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
     @Override
     public void initdata() {
         super.initdata();
-        if (datas.size() == 0) {
-            datas.add("1");
-            datas.add("2");
-            datas.add("3");
-            datas.add("4");
-            datas.add("4");
-            datas.add("4");
-            datas.add("4");
+        if(mId !=0){
+            CommonUtils.showProgressDialog(getActivity(),"加载中……");
+            visitInternet();
         }
-        if (mLivingAdapter == null) {
-            mLivingAdapter = new LiveLivingAdapter(getActivity(), datas);
-        }
-
-        mRecyclerView.setLinearLayout();
-        mRecyclerView.setAdapter(mLivingAdapter);
-        mRecyclerView.setFooterViewText("加载更多……");
     }
+    private MediaPlayer mPlayer;
+    private void visitInternet() {
+        NewsInternetRequest.getLivingInformation(currentPage + "", 0, mId, new NewsInternetRequest.ForResultLivingInfoListener() {
+            @Override
+            public void onResponseMessage(LivingContent content) {
+                totlePage = Integer.parseInt(content.total);
+                title.setText(content.zt_name);
+                if (totlePage > 0 && currentPage <= totlePage){
+                    if(currentPage == 1){
+                        if (mLivingAdapter == null) {
+                            mLivingAdapter = new LiveLivingAdapter(getActivity(), content);
+                        }
 
-    int num = 0;
+                        mRecyclerView.setLinearLayout();
+                        mRecyclerView.setAdapter(mLivingAdapter);
+                        mRecyclerView.setFooterViewText("加载更多……");
 
+                        mLivingAdapter.setOnItemClickListener(new LiveLivingAdapter.MyItemClickListener() {
+                            int currentPos = -1;
+                            ImageView currentView;
+                            @Override
+                            public void onItemClick(View v, int positon, LivingContentDetailType type, final ImageView view) {
+                                if(type.type.equals("1")){
+                                    if(currentPos == positon){
+                                        stopAnimation(view);
+                                        mPlayer.stop();
+                                        mPlayer.release();
+                                        currentPos = -1;
+                                        mPlayer = null;
+                                    }else{
+                                        if(mPlayer != null){
+                                            stopAnimation(currentView);
+                                            mPlayer.stop();
+                                            mPlayer.release();
+                                            mPlayer = null;
+                                        }
+                                        currentPos = positon;
+                                        currentView = view;
+
+                                        mPlayer = MediaPlayer.create(CommonUtils.getContext(), Uri.parse(type.url));
+
+                                        mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                                            @Override
+                                            public void onCompletion(MediaPlayer mp) {
+                                                stopAnimation(currentView);
+                                                mPlayer.release();
+                                                mPlayer = null;
+                                            }
+                                        });
+                                        startAnimation(view);
+                                        mPlayer.start();
+                                    }
+                                }
+                            }
+                        });
+                    }else {
+                        mLivingAdapter.addDatas(content);
+                        mRecyclerView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mLivingAdapter.notifyDataSetChanged();
+                            }
+                        });
+                        mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
+                            @Override
+                            public void run() {
+                                mRecyclerView.setPullLoadMoreCompleted();
+                            }
+                        }, 1000);
+                    }
+                    currentPage++;
+                    CommonUtils.dismissProgressDialog();
+                }else {
+                    CommonUtils.dismissProgressDialog();
+                    return;
+                }
+            }
+        });
+    }
+    private AnimationDrawable voiceAnimation = null;
+    public void stopAnimation(ImageView view){
+        voiceAnimation.stop();
+        view.setImageResource(R.drawable.icon_sound);
+    }
+    public void startAnimation(ImageView view){
+        view.setImageResource(R.drawable.voiceanimation);
+        voiceAnimation = (AnimationDrawable) view.getDrawable();
+        voiceAnimation.start();
+    }
     @Override
     public void initListener() {
         super.initListener();
@@ -100,44 +177,17 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
 
             @Override
             public void onLoadMore() {
-                if (num > 1) {
+                if (currentPage > totlePage) {
                     Toast.makeText(CommonUtils.getContext(), "没有数据了", Toast.LENGTH_SHORT).show();
-                    mRecyclerView.setPullLoadMoreCompleted();
+                    mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
+                        @Override
+                        public void run() {
+                            mRecyclerView.setPullLoadMoreCompleted();
+                        }
+                    }, 200);
                     return;
                 }
-                num++;
-                List<String> newdatas = new ArrayList<String>();
-                newdatas.add("7");
-                mLivingAdapter.addDatas("");
-                mRecyclerView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mLivingAdapter.notifyDataSetChanged();
-                    }
-                });
-                mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
-                    @Override
-                    public void run() {
-                        mRecyclerView.setPullLoadMoreCompleted();
-                    }
-                }, 1000);
-            }
-        });
-
-        mLivingAdapter.setOnItemClickListener(new LiveLivingAdapter.MyItemClickListener() {
-            MediaPlayer mPlayer = MediaPlayer.create(CommonUtils.getContext(), R.raw.by2);
-            @Override
-            public void onItemClick(View v, int positon) {
-                if(positon == 1){
-                    mPlayer.start();
-                }else{
-                    mPlayer.stop();
-                    try {
-                        mPlayer.prepare();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+                visitInternet();
             }
         });
     }
@@ -150,6 +200,16 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
                 startActivity(intent);
                 getActivity().overridePendingTransition(0,0);
                 break;
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(mPlayer !=null){
+            mPlayer.stop();
+            mPlayer.release();
+            mPlayer = null;
         }
     }
 }

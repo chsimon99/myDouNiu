@@ -7,9 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
 
 import java.util.List;
+import java.util.Map;
+
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * @author Admin
@@ -20,13 +24,13 @@ import java.util.List;
 public class AdvisorAllDirectAdapter extends RecyclerView.Adapter<AdvisorAllDirectAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<Map<String, String>> mDatas;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int positon);
+        void onItemClick(View v, int id);
     }
 
-    public AdvisorAllDirectAdapter(Context context, List<String> datas) {
+    public AdvisorAllDirectAdapter(Context context, List<Map<String, String>> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -51,8 +55,8 @@ public class AdvisorAllDirectAdapter extends RecyclerView.Adapter<AdvisorAllDire
     public int getItemCount() {
         return mDatas.size();
     }
-    public void addDatas(String data) {
-        mDatas.add(data);
+    public void addDatas(List<Map<String, String>> data) {
+        mDatas.addAll(data);
     }
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -75,12 +79,18 @@ public class AdvisorAllDirectAdapter extends RecyclerView.Adapter<AdvisorAllDire
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, Integer.parseInt(mDatas.get(getPosition()).get("zt_id")));
             }
         }
 
-        public void setRefreshData(String bean, int position) {
-
+        public void setRefreshData(Map<String, String> bean, int position) {
+            Glide.with(mContext).load(bean.get("headImg"))
+                    .placeholder(R.drawable.home_adviosr_img)
+                    .bitmapTransform(new CropCircleTransformation(mContext))
+                    .into(img);
+            title.setText(bean.get("zt_name"));
+            name.setText(bean.get("ud_nickname"));
+            count.setText(bean.get("zt_clicks"));
         }
     }
 }

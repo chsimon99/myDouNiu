@@ -16,7 +16,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.adapter.recycleView.MarketMarketAdapter;
+import com.zfxf.douniu.adapter.recycleView.XuanGuAdapter;
+import com.zfxf.douniu.bean.XuanguDetail;
+import com.zfxf.douniu.bean.XuanguItemList;
+import com.zfxf.douniu.bean.XuanguResult;
+import com.zfxf.douniu.internet.NewsInternetRequest;
+import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.FullyLinearLayoutManager;
 
 import java.util.ArrayList;
@@ -24,14 +29,14 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 /**
  * @author IMXU
- * @time   2017/5/3 13:14
- * @des    智能选股王详情页
+ * @time 2017/5/3 13:14
+ * @des 智能选股王详情页
  * 邮箱：butterfly_xu@sina.com
- *
-*/
-public class ActivityIntelligenceChoose extends FragmentActivity implements View.OnClickListener{
+ */
+public class ActivityIntelligenceChoose extends FragmentActivity implements View.OnClickListener {
 
     @BindView(R.id.iv_base_back)
     ImageView back;
@@ -73,10 +78,10 @@ public class ActivityIntelligenceChoose extends FragmentActivity implements View
 
     @BindView(R.id.rv_intelligence_choose)
     RecyclerView mRecyclerView;
-    private MarketMarketAdapter mMarketAdapter;
+    private XuanGuAdapter mXuanGuAdapter;
     private LinearLayoutManager mManager;
-    private List<String> datas = new ArrayList<String>();
-
+    private int mId;
+    private int historyId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +91,7 @@ public class ActivityIntelligenceChoose extends FragmentActivity implements View
         title.setText(type_title);
         edit.setVisibility(View.INVISIBLE);
         share.setVisibility(View.VISIBLE);
+        mId = getIntent().getIntExtra("id", 0);
         average_price.getPaint().setFakeBoldText(true);//加粗
         tv_data.getPaint().setFakeBoldText(true);//加粗
         tv_fall.getPaint().setFakeBoldText(true);//加粗
@@ -97,34 +103,51 @@ public class ActivityIntelligenceChoose extends FragmentActivity implements View
     }
 
     private void initData() {
-        if (listviewDatas.size() == 0) {
-            listviewDatas.add("");
-            listviewDatas.add("");
-            listviewDatas.add("");
-            listviewDatas.add("");
-            listviewDatas.add("");
-            listviewDatas.add("");
-            listviewDatas.add("");
-        }
-        if(mAdapter == null){
-            mAdapter = new MyListViewAdapter(this);
-        }
-        mListView.setAdapter(mAdapter);
-
-        if(datas.size() == 0){
-            datas.add("1");
-            datas.add("2");
-        }
-        if(mMarketAdapter == null){
-            mMarketAdapter = new MarketMarketAdapter(this,datas);
-        }
-        if(mManager == null){
-            mManager = new FullyLinearLayoutManager(this);
-        }
-        mRecyclerView.setLayoutManager(mManager);
-        mRecyclerView.setAdapter(mMarketAdapter);
-
+        CommonUtils.showProgressDialog(this,"加载中……");
+        visitInternet();
     }
+
+    private void visitInternet() {
+        NewsInternetRequest.getXuanGuDetailInformation(mId, new NewsInternetRequest.ForResultXuanGuListener() {
+            @Override
+            public void onResponseMessage(XuanguResult result) {
+                title.setText(result.news_info.zf_title);
+                average_price.setText(result.news_info.zf_pjsy+"%");
+                tv_ratio.setText(result.news_info.zf_xgcgl+"%");
+                tv_fall.setText(result.news_info.zf_zsx+"%");
+                tv_rise.setText(result.news_info.zf_fdzy+"%");
+                tv_data.setText(result.news_info.zf_cgzq+"天");
+                tv_subscribe_count.setText("订阅："+result.news_info.zf_dys);
+                tv_subscribe_time.setText(result.news_info.zf_date+"更新");
+                tv_subscribe_content.setText(result.news_info.zf_info);
+                tv_stock_count.setText(result.item_info.zi_tjgps+"股");
+                historyId = Integer.parseInt(result.item_info.zi_id);
+                if(result.news_info.has_dy.equals("0")){
+                    tv_subscribe.setText("立即订阅");
+                }else{
+                    tv_subscribe.setText("已订阅");
+                }
+                listviewDatas = result.news_info.item_list;
+
+                if (mAdapter == null) {
+                    mAdapter = new MyListViewAdapter(ActivityIntelligenceChoose.this);
+                }
+                mListView.setAdapter(mAdapter);
+
+                if (mXuanGuAdapter == null) {
+                    mXuanGuAdapter = new XuanGuAdapter(ActivityIntelligenceChoose.this, result.item_info.gupiao_list);
+                }
+                if (mManager == null) {
+                    mManager = new FullyLinearLayoutManager(ActivityIntelligenceChoose.this);
+                }
+                mRecyclerView.setLayoutManager(mManager);
+                mRecyclerView.setAdapter(mXuanGuAdapter);
+
+                CommonUtils.dismissProgressDialog();
+            }
+        });
+    }
+
     private void initListener() {
         back.setOnClickListener(this);
         share.setOnClickListener(this);
@@ -132,22 +155,28 @@ public class ActivityIntelligenceChoose extends FragmentActivity implements View
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                CommonUtils.showProgressDialog(ActivityIntelligenceChoose.this,"加载中……");
                 mCurrentPositon = position;
-                if(datas.size()>0){
-                    datas.clear();
-                    for (int i = 0;i < position + 2;i++){
-                        datas.add("1");
+                NewsInternetRequest.getXuanGuDetailList(listviewDatas.get(position).zi_id, new NewsInternetRequest.ForResultXuanGuDetailListener() {
+                    @Override
+                    public void onResponseMessage(XuanguDetail result) {
+                        tv_stock_count.setText(result.zi_tjgps+"股");
+                        historyId = Integer.parseInt(result.zi_id);
+                        mXuanGuAdapter.changeDatas(result.gupiao_list);
+
+                        mXuanGuAdapter.notifyDataSetChanged();
+                        mAdapter.notifyDataSetChanged();
+                        CommonUtils.dismissProgressDialog();
                     }
-                }
-                mMarketAdapter.notifyDataSetChanged();
-                mAdapter.notifyDataSetChanged();
+                });
+
             }
         });
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.iv_base_back:
                 finishAll();
                 finish();
@@ -156,9 +185,10 @@ public class ActivityIntelligenceChoose extends FragmentActivity implements View
 
                 break;
             case R.id.ll_intelligence_choose_history:
-                Intent intent = new Intent(this,Activityhistory.class);
+                Intent intent = new Intent(this, Activityhistory.class);
+                intent.putExtra("id",historyId);
                 startActivity(intent);
-                overridePendingTransition(0,0);
+                overridePendingTransition(0, 0);
                 break;
         }
     }
@@ -166,50 +196,59 @@ public class ActivityIntelligenceChoose extends FragmentActivity implements View
     private void finishAll() {
 
     }
-    private List<String> listviewDatas = new ArrayList<>();
 
-     class MyListViewAdapter extends BaseAdapter{
-         private Context mContext;
-         public MyListViewAdapter(Context context) {
-             mContext = context;
-         }
+    private List<XuanguItemList> listviewDatas = new ArrayList<>();
 
-         @Override
-         public int getCount() {
-             return listviewDatas.size();
-         }
+    class MyListViewAdapter extends BaseAdapter {
+        private Context mContext;
 
-         @Override
-         public Object getItem(int position) {
-             return listviewDatas.get(position);
-         }
+        public MyListViewAdapter(Context context) {
+            mContext = context;
+        }
 
-         @Override
-         public long getItemId(int position) {
-             return position;
-         }
+        @Override
+        public int getCount() {
+            return listviewDatas.size();
+        }
 
-         @Override
-         public View getView(int position, View convertView, ViewGroup parent) {
-             ViewHolder holder;
-             if(convertView == null){
-                 holder = new ViewHolder();
-                 convertView = View.inflate(mContext,R.layout.item_list_intelligence_choose,null);
-                 holder.tv_name = (TextView) convertView.findViewById(R.id.tv_list_intelligence_choose_name);
-                 convertView.setTag(holder);
-             }else{
-                 holder = (ViewHolder) convertView.getTag();
-             }
-             if(mCurrentPositon == position){
-                 holder.tv_name.setTextColor(mContext.getResources().getColor(R.color.colorTitle));
-             }else{
-                 holder.tv_name.setTextColor(mContext.getResources().getColor(R.color.titleText));
-             }
-             holder.tv_name.setText("强势异动"+position);
-             return convertView;
-         }
-         class ViewHolder{
-             public TextView tv_name;
-         }
-     }
+        @Override
+        public Object getItem(int position) {
+            return listviewDatas.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+            if (convertView == null) {
+                holder = new ViewHolder();
+                convertView = View.inflate(mContext, R.layout.item_list_intelligence_choose, null);
+                holder.tv_name = (TextView) convertView.findViewById(R.id.tv_list_intelligence_choose_name);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            if (mCurrentPositon == position) {
+                holder.tv_name.setTextColor(mContext.getResources().getColor(R.color.colorTitle));
+            } else {
+                holder.tv_name.setTextColor(mContext.getResources().getColor(R.color.titleText));
+            }
+            holder.tv_name.setText(listviewDatas.get(position).zi_title);
+            return convertView;
+        }
+    }
+
+    class ViewHolder {
+        public TextView tv_name;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        CommonUtils.dismissProgressDialog();
+    }
 }

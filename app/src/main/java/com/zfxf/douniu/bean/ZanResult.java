@@ -10,5 +10,6 @@ public class ZanResult {
     public BasicResult result;//基础结果
     public String cc_agr;//点赞数量
     public String cc_aga;//反对数量
+    public String dy_count;//订阅数量
 
 }

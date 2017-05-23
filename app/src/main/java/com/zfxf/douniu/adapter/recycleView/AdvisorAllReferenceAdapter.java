@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.adapter.viewPager.PicPagerAdapter;
 import com.zfxf.douniu.utils.CommonUtils;
@@ -15,6 +16,7 @@ import com.zfxf.douniu.utils.MyLunBo;
 import com.zfxf.douniu.view.InnerView;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Admin
@@ -26,19 +28,19 @@ public class AdvisorAllReferenceAdapter extends RecyclerView.Adapter<AdvisorAllR
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
     private MySubscribeClickListener mSubscribeClickListener = null;
-    private List<String> mDatas;
+    private List<Map<String, String>> mDatas;
     private List<Integer> mLunboDatas;
     private View mHeaderView;
     private MyLunBo mMyLunBO;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int positon);
+        void onItemClick(View v, int cc_id, Map<String, String> buy);
     }
     public interface MySubscribeClickListener {
-        void onItemClick(View v, int positon, String type);
+        void onItemClick(View v, int id, Map<String, String> map);
     }
 
-    public AdvisorAllReferenceAdapter(Context context, List<String> datas, List<Integer> lunboDatas) {
+    public AdvisorAllReferenceAdapter(Context context, List<Map<String, String>> datas, List<Integer> lunboDatas) {
         mContext = context;
         mDatas = datas;
         mLunboDatas = lunboDatas;
@@ -74,8 +76,8 @@ public class AdvisorAllReferenceAdapter extends RecyclerView.Adapter<AdvisorAllR
     public int getItemCount() {
         return mHeaderView == null ?mDatas.size() : mDatas.size()+1;
     }
-    public void addDatas(String data) {
-        mDatas.add(data);
+    public void addDatas(List<Map<String, String>> data) {
+        mDatas.addAll(data);
     }
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -115,13 +117,24 @@ public class AdvisorAllReferenceAdapter extends RecyclerView.Adapter<AdvisorAllR
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, Integer.parseInt(mDatas.get(getRealPosition(this)).get("cc_id"))
+                        ,mDatas.get(getRealPosition(this)));
             }
 
         }
 
-        public void setRefreshData(String bean, int position) {
-
+        public void setRefreshData(Map<String, String> bean, int position) {
+            Glide.with(mContext).load(bean.get("cc_fielid"))
+                    .placeholder(R.drawable.public_img).into(img);
+            title.setText(bean.get("cc_title"));
+            from.setText(bean.get("cc_from"));
+            count.setText(bean.get("buy_count"));
+            price.setText("￥"+bean.get("cc_fee"));
+            if(bean.get("has_buy").equals("0")){
+                lock.setVisibility(View.VISIBLE);
+            }else{
+                lock.setVisibility(View.INVISIBLE);
+            }
         }
 
         public void setRefreshLunboData(List<Integer> datas, int position) {

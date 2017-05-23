@@ -21,6 +21,7 @@
                 android:layout_marginTop="@dimen/dm008"
                 android:text="微软股票只占财富的12%，为啥世界首富一直是他？"
                 android:maxLines="2"
+                android:lines="2"
                 android:ellipsize="end"
                 android:textColor="@color/titleText"
                 android:textSize="@dimen/dm028"/>

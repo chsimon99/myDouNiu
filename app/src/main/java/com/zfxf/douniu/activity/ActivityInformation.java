@@ -87,8 +87,8 @@ public class ActivityInformation extends FragmentActivity implements View.OnClic
         initListener();
     }
     private void initData() {
-        CommonUtils.showProgressDialog(this,"加载中……");
         if(mNewsinfoId != 0){
+            CommonUtils.showProgressDialog(this,"加载中……");
             NewsInternetRequest.getNewsInformation(mNewsinfoId, new NewsInternetRequest.ForResultNewsInfoListener() {
                 @Override
                 public void onResponseMessage(OtherResult otherResult) {
