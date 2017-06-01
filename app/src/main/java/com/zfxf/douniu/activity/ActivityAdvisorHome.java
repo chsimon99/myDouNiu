@@ -221,4 +221,10 @@ public class ActivityAdvisorHome extends FragmentActivity implements View.OnClic
             }
         },getResources().getString(R.string.userdy));
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        CommonUtils.dismissProgressDialog();
+    }
 }

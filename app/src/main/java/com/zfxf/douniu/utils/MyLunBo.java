@@ -8,19 +8,16 @@ import android.widget.LinearLayout;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.view.InnerView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MyLunBo {
     private AutoScrollTask mTask;
     private LinearLayout mLayout;
     private InnerView mInnerView;
-    private List<Integer> mLists = new ArrayList<Integer>();
+    private int size = 0;
 
-    public MyLunBo(LinearLayout layout, InnerView innerView, List<Integer> lists) {
+    public MyLunBo(LinearLayout layout, InnerView innerView, int sizes) {
         mLayout = layout;
         mInnerView = innerView;
-        mLists = lists;
+        size = sizes;
     }
 
     public void startLunBO(){
@@ -47,7 +44,7 @@ public class MyLunBo {
     private void reFreshHolder() {
 
         // 添加小点
-        for (int i = 0; i < mLists.size(); i++) {
+        for (int i = 0; i < size; i++) {
             View indicatorView = new View(CommonUtils.getContext());
             indicatorView.setBackgroundResource(R.drawable.point_gray);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(CommonUtils.dip2px(CommonUtils.getContext(),10)
@@ -69,8 +66,8 @@ public class MyLunBo {
             }
             @Override
             public void onPageSelected(int position) {
-                position = position % mLists.size();
-                for (int i = 0; i < mLists.size(); i++) {
+                position = position % size;
+                for (int i = 0; i < size; i++) {
                     View indicatorView = mLayout.getChildAt(i);
                     // 还原背景
                     indicatorView.setBackgroundResource(R.drawable.point_gray);
@@ -85,7 +82,7 @@ public class MyLunBo {
             }
         });
         // 设置curItem为count/2
-        int diff = Integer.MAX_VALUE / 2 % mLists.size();
+        int diff = Integer.MAX_VALUE / 2 % size;
         int index = Integer.MAX_VALUE / 2;
         mInnerView.setCurrentItem(index - diff);
 

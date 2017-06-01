@@ -94,6 +94,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/dm010"
                 android:text="据日本华侨社报道，据日本华侨社报道据日本华侨"
+                android:maxLines="2"
+                android:ellipsize="end"
                 android:textColor="@color/colorText"
                 android:textSize="@dimen/dm023"/>
         </LinearLayout>

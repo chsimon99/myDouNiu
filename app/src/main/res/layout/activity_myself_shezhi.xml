@@ -118,6 +118,15 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/tv_myself_shezhi_cache"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/dm020"
+                android:text="0M"
+                android:textColor="@color/titleText"
+                android:textSize="@dimen/dm028"/>
             <ImageView
                 android:layout_width="@dimen/dm014"
                 android:layout_height="@dimen/dm028"

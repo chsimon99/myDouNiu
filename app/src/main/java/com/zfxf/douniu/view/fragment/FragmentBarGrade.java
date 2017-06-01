@@ -6,17 +6,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.activity.ActivityMatador;
-import com.zfxf.douniu.adapter.recycleView.HomeAdvisorAdapter;
+import com.zfxf.douniu.activity.ActivityMatadorList;
+import com.zfxf.douniu.adapter.recycleView.MatadorAdapter;
 import com.zfxf.douniu.base.BaseFragment;
+import com.zfxf.douniu.bean.MatadorResult;
+import com.zfxf.douniu.internet.NewsInternetRequest;
+import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.FullyLinearLayoutManager;
 import com.zfxf.douniu.view.RecycleViewDivider;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,25 +30,27 @@ import butterknife.ButterKnife;
  *
 */
 
-public class FragmentBarGrade extends BaseFragment {
+public class FragmentBarGrade extends BaseFragment implements View.OnClickListener{
 	private View view;
 	@BindView(R.id.rv_bar_grade_commend)
 	RecyclerView mCommendRecyclerView;//斗牛士推荐recycleview
 	private LinearLayoutManager mCommendManager;
-	private HomeAdvisorAdapter mCommendAdapter;
-	private List<String> commendDatas = new ArrayList<String>();
+	private MatadorAdapter mCommendAdapter;
 
 	@BindView(R.id.rv_bar_grade_human)
-	RecyclerView mHumanRecyclerView;//人气最高recycleview
+	RecyclerView mHumanRecyclerView;//周排行recycleview
 	private LinearLayoutManager mHumanManager;
-	private HomeAdvisorAdapter mHumanAdapter;
-	private List<String> humanDatas = new ArrayList<String>();
+	private MatadorAdapter mHumanAdapter;
 
 	@BindView(R.id.rv_bar_grade_income)
-	RecyclerView mIncomeRecyclerView;//收益最好recycleview
+	RecyclerView mIncomeRecyclerView;//月排行recycleview
 	private LinearLayoutManager mIncomeManager;
-	private HomeAdvisorAdapter mIncomeAdapter;
-	private List<String> incomeDatas = new ArrayList<String>();
+	private MatadorAdapter mIncomeAdapter;
+
+	@BindView(R.id.rv_bar_grade_all)
+	RecyclerView mALLRecyclerView;//总排行recycleview
+	private LinearLayoutManager mALLManager;
+	private MatadorAdapter mALLAdapter;
 
 	@BindView(R.id.tv_bar_grade_commend)
 	TextView commend;
@@ -54,6 +58,14 @@ public class FragmentBarGrade extends BaseFragment {
 	TextView income;
 	@BindView(R.id.tv_bar_grade_human)
 	TextView human;
+	@BindView(R.id.tv_bar_grade_all)
+	TextView all;
+	@BindView(R.id.ll_bar_grade_human)
+	LinearLayout iv_zhou;
+	@BindView(R.id.ll_bar_grade_income)
+	LinearLayout iv_yue;
+	@BindView(R.id.ll_bar_grade_all)
+	LinearLayout iv_all;
 	private RecycleViewDivider mDivider;
 
 	@Override
@@ -69,6 +81,7 @@ public class FragmentBarGrade extends BaseFragment {
 		commend.getPaint().setFakeBoldText(true);//加粗
 		human.getPaint().setFakeBoldText(true);//加粗
 		income.getPaint().setFakeBoldText(true);//加粗
+		all.getPaint().setFakeBoldText(true);//加粗
 		return view;
 	}
 
@@ -78,90 +91,133 @@ public class FragmentBarGrade extends BaseFragment {
 	}
 	@Override
 	public void initdata() {
-		/**
-		 * 斗牛士推荐
-		 */
-		if (commendDatas.size() == 0) {
-			commendDatas.add("");
-			commendDatas.add("");
-		}
-		if(mCommendManager == null){
-			mCommendManager = new FullyLinearLayoutManager(getActivity());
-		}
-		if(mCommendAdapter == null){
-//			mCommendAdapter = new HomeAdvisorAdapter(getActivity(), commendDatas);
-		}
-		mCommendRecyclerView.setLayoutManager(mCommendManager);
-		mCommendRecyclerView.setAdapter(mCommendAdapter);
-
-		/**
-		 * 人气最高
-		 */
-		if (humanDatas.size() == 0) {
-			humanDatas.add("");
-			humanDatas.add("");
-			humanDatas.add("");
-		}
-		if(mHumanManager == null){
-			mHumanManager = new FullyLinearLayoutManager(getActivity());
-		}
-		if(mHumanAdapter == null){
-//			mHumanAdapter = new HomeAdvisorAdapter(getActivity(), humanDatas);
-		}
-		mHumanRecyclerView.setLayoutManager(mHumanManager);
-		mHumanRecyclerView.setAdapter(mHumanAdapter);
-
-		/**
-		 * 收益最好
-		 */
-		if (incomeDatas.size() == 0) {
-			incomeDatas.add("");
-			incomeDatas.add("");
-		}
-		if(mIncomeManager == null){
-			mIncomeManager = new FullyLinearLayoutManager(getActivity());
-		}
-		if(mIncomeAdapter == null){
-//			mIncomeAdapter = new HomeAdvisorAdapter(getActivity(), incomeDatas);
-		}
-		mIncomeRecyclerView.setLayoutManager(mIncomeManager);
-		mIncomeRecyclerView.setAdapter(mIncomeAdapter);
-
-		if(mDivider ==null){
-			mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
-			mCommendRecyclerView.addItemDecoration(mDivider);
-			mHumanRecyclerView.addItemDecoration(mDivider);
-			mIncomeRecyclerView.addItemDecoration(mDivider);
-		}
+		visitInternet();
 		super.initdata();
+	}
+
+	private void visitInternet() {
+		CommonUtils.showProgressDialog(getActivity(),"加载中……");
+		NewsInternetRequest.getMatadorIndexInformation(new NewsInternetRequest.ForResultMatadorIndexListener() {
+			@Override
+			public void onResponseMessage(MatadorResult result) {
+				/**
+				 * 斗牛士推荐
+				 */
+				if(mCommendManager == null){
+					mCommendManager = new FullyLinearLayoutManager(getActivity());
+				}
+				if (mCommendAdapter == null) {
+					mCommendAdapter = new MatadorAdapter(getActivity(), result.t_list);
+				}
+				mCommendRecyclerView.setLayoutManager(mCommendManager);
+				mCommendRecyclerView.setAdapter(mCommendAdapter);
+				/**
+				 * 周排行
+				 */
+				if(mHumanManager == null){
+					mHumanManager = new FullyLinearLayoutManager(getActivity());
+				}
+				if(mHumanAdapter == null){
+					mHumanAdapter = new MatadorAdapter(getActivity(), result.w_list);
+				}
+				mHumanRecyclerView.setLayoutManager(mHumanManager);
+				mHumanRecyclerView.setAdapter(mHumanAdapter);
+				/**
+				 * 月排行
+				 */
+				if(mIncomeManager == null){
+					mIncomeManager = new FullyLinearLayoutManager(getActivity());
+				}
+				if(mIncomeAdapter == null){
+					mIncomeAdapter = new MatadorAdapter(getActivity(), result.m_list);
+				}
+				mIncomeRecyclerView.setLayoutManager(mIncomeManager);
+				mIncomeRecyclerView.setAdapter(mIncomeAdapter);
+				/**
+				 * 总排行
+				 */
+				if(mALLManager == null){
+					mALLManager = new FullyLinearLayoutManager(getActivity());
+				}
+				if(mALLAdapter == null){
+					mALLAdapter = new MatadorAdapter(getActivity(), result.z_list);
+				}
+				mALLRecyclerView.setLayoutManager(mALLManager);
+				mALLRecyclerView.setAdapter(mALLAdapter);
+
+				if(mDivider ==null){
+					mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
+					mCommendRecyclerView.addItemDecoration(mDivider);
+					mHumanRecyclerView.addItemDecoration(mDivider);
+					mIncomeRecyclerView.addItemDecoration(mDivider);
+					mALLRecyclerView.addItemDecoration(mDivider);
+				}
+
+				mCommendAdapter.setOnItemClickListener(new MatadorAdapter.MyItemClickListener() {
+					@Override
+					public void onItemClick(View v, int positon) {
+						Intent intent = new Intent(getActivity(), ActivityMatador.class);
+						startActivity(intent);
+						getActivity().overridePendingTransition(0,0);
+					}
+				});
+				mHumanAdapter.setOnItemClickListener(new MatadorAdapter.MyItemClickListener() {
+					@Override
+					public void onItemClick(View v, int positon) {
+						Intent intent = new Intent(getActivity(), ActivityMatador.class);
+						startActivity(intent);
+						getActivity().overridePendingTransition(0,0);
+					}
+				});
+				mIncomeAdapter.setOnItemClickListener(new MatadorAdapter.MyItemClickListener() {
+					@Override
+					public void onItemClick(View v, int positon) {
+						Intent intent = new Intent(getActivity(), ActivityMatador.class);
+						startActivity(intent);
+						getActivity().overridePendingTransition(0,0);
+					}
+				});
+				mALLAdapter.setOnItemClickListener(new MatadorAdapter.MyItemClickListener() {
+					@Override
+					public void onItemClick(View v, int positon) {
+						Intent intent = new Intent(getActivity(), ActivityMatador.class);
+						startActivity(intent);
+						getActivity().overridePendingTransition(0,0);
+					}
+				});
+				CommonUtils.dismissProgressDialog();
+			}
+		});
 	}
 
 	@Override
 	public void initListener() {
 		super.initListener();
-		mCommendAdapter.setOnItemClickListener(new HomeAdvisorAdapter.MyItemClickListener() {
-			@Override
-			public void onItemClick(View v, int positon) {
-				Intent intent = new Intent(getActivity(), ActivityMatador.class);
+		iv_zhou.setOnClickListener(this);
+		iv_yue.setOnClickListener(this);
+		iv_all.setOnClickListener(this);
+	}
+	Intent intent;
+	@Override
+	public void onClick(View v) {
+		intent = new Intent(getActivity(), ActivityMatadorList.class);
+		switch (v.getId()){
+			case R.id.ll_bar_grade_human:
+				intent.putExtra("id",1);
 				startActivity(intent);
 				getActivity().overridePendingTransition(0,0);
-			}
-		});
-		mHumanAdapter.setOnItemClickListener(new HomeAdvisorAdapter.MyItemClickListener() {
-			@Override
-			public void onItemClick(View v, int positon) {
-				Intent intent = new Intent(getActivity(), ActivityMatador.class);
+				break;
+			case R.id.ll_bar_grade_income:
+				intent.putExtra("id",2);
 				startActivity(intent);
 				getActivity().overridePendingTransition(0,0);
-			}
-		});
-		mIncomeAdapter.setOnItemClickListener(new HomeAdvisorAdapter.MyItemClickListener() {
-			@Override
-			public void onItemClick(View v, int positon) {
-				Intent intent = new Intent(getActivity(), ActivityMatador.class);
+				break;
+			case R.id.ll_bar_grade_all:
+				intent.putExtra("id",3);
 				startActivity(intent);
 				getActivity().overridePendingTransition(0,0);
-			}
-		});
+				break;
+		}
+		intent = null;
 	}
 }

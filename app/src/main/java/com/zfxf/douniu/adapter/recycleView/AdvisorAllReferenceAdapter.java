@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.adapter.viewPager.PicPagerAdapter;
+import com.zfxf.douniu.bean.LunBoListInfo;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.utils.MyLunBo;
 import com.zfxf.douniu.view.InnerView;
@@ -29,7 +30,7 @@ public class AdvisorAllReferenceAdapter extends RecyclerView.Adapter<AdvisorAllR
     private MyItemClickListener mItemClickListener = null;
     private MySubscribeClickListener mSubscribeClickListener = null;
     private List<Map<String, String>> mDatas;
-    private List<Integer> mLunboDatas;
+    private List<LunBoListInfo> mLunboDatas;
     private View mHeaderView;
     private MyLunBo mMyLunBO;
 
@@ -40,7 +41,7 @@ public class AdvisorAllReferenceAdapter extends RecyclerView.Adapter<AdvisorAllR
         void onItemClick(View v, int id, Map<String, String> map);
     }
 
-    public AdvisorAllReferenceAdapter(Context context, List<Map<String, String>> datas, List<Integer> lunboDatas) {
+    public AdvisorAllReferenceAdapter(Context context, List<Map<String, String>> datas, List<LunBoListInfo> lunboDatas) {
         mContext = context;
         mDatas = datas;
         mLunboDatas = lunboDatas;
@@ -137,7 +138,7 @@ public class AdvisorAllReferenceAdapter extends RecyclerView.Adapter<AdvisorAllR
             }
         }
 
-        public void setRefreshLunboData(List<Integer> datas, int position) {
+        public void setRefreshLunboData(List<LunBoListInfo> datas, int position) {
             if(mPagerAdapter ==null){
                 mPagerAdapter = new PicPagerAdapter(datas, mContext, new PicPagerAdapter.MyOnClickListener() {
                     @Override
@@ -148,7 +149,7 @@ public class AdvisorAllReferenceAdapter extends RecyclerView.Adapter<AdvisorAllR
                 mViewPage.setAdapter(mPagerAdapter);
             }
             if(mMyLunBO == null){
-                mMyLunBO = new MyLunBo(mLLayout, mViewPage, datas);
+                mMyLunBO = new MyLunBo(mLLayout, mViewPage, mLunboDatas.size());
                 mMyLunBO.startLunBO();
             }
         }

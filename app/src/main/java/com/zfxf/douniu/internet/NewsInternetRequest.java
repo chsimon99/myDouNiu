@@ -10,6 +10,9 @@ import com.zfxf.douniu.bean.IndexResult;
 import com.zfxf.douniu.bean.LivingContent;
 import com.zfxf.douniu.bean.LivingInfoResult;
 import com.zfxf.douniu.bean.LivingSendMsg;
+import com.zfxf.douniu.bean.LunBoListInfo;
+import com.zfxf.douniu.bean.MatadorResult;
+import com.zfxf.douniu.bean.MyContentResult;
 import com.zfxf.douniu.bean.NewsListResult;
 import com.zfxf.douniu.bean.NewsNewsResult;
 import com.zfxf.douniu.bean.NewsResult;
@@ -54,6 +57,11 @@ public class NewsInternetRequest {
     private static ForResultListener resultListener;
     private static ForResultXuanGuListener xuanGuListener;
     private static ForResultXuanGuDetailListener xuanGuDetailListener;
+    private static ForResultAnswerIndexListener answerIndexListener;
+    private static ForResultMyPublicListener myPublicListener;
+    private static ForResultMySecretListener mySecretListener;
+    private static ForResultMyReferenceListener myReferenceListener;
+    private static ForResultMatadorIndexListener matadorIndexListener;
     static {
         mGson = new Gson();
         context = CommonUtils.getContext();
@@ -90,7 +98,7 @@ public class NewsInternetRequest {
                     map.put("biaoshi",list.biaoshi);
                     result_lists.add(map);
                 }
-                policyInfoListener.onResponseMessage(result_lists,total);
+                policyInfoListener.onResponseMessage(result_lists,total, result.lunbo_list);
             }
         });
         baseInternetRequest.post(context.getResources().getString(R.string.projectlist),true,params);
@@ -124,11 +132,11 @@ public class NewsInternetRequest {
             public void onError(Call call, Exception e, int id) {
                 CommonUtils.logMes("getHeadListInformation="+e);
                 if(headType == 0){
-                    policyInfoListener.onResponseMessage(null,0+"");
+                    policyInfoListener.onResponseMessage(null,0+"",null);
                 }else if(headType == 1){
-                    eventInfoListener.onResponseMessage(null,0+"");
+                    eventInfoListener.onResponseMessage(null,0+"",null);
                 }else if(headType == 2){
-                    pointInfoListener.onResponseMessage(null,0+"");
+                    pointInfoListener.onResponseMessage(null,0+"",null);
                 }
             }
             @Override
@@ -149,11 +157,11 @@ public class NewsInternetRequest {
                     result_lists.add(map);
                 }
                 if(headType == 0){
-                    policyInfoListener.onResponseMessage(result_lists,total);
+                    policyInfoListener.onResponseMessage(result_lists,total,null);
                 }else if(headType == 1){
-                    eventInfoListener.onResponseMessage(result_lists,total);
+                    eventInfoListener.onResponseMessage(result_lists,total,null);
                 }else if(headType == 2){
-                    pointInfoListener.onResponseMessage(result_lists,total);
+                    pointInfoListener.onResponseMessage(result_lists,total,null);
                 }
             }
         }).post(context.getResources().getString(R.string.headlist),true,params);
@@ -216,7 +224,7 @@ public class NewsInternetRequest {
     }
 
     /**
-     * 点赞
+     * 新闻的点赞
      * @param newsinfoId 新闻ID
      * @param listener
      */
@@ -243,6 +251,28 @@ public class NewsInternetRequest {
                 }
             }
         }).post(context.getResources().getString(R.string.newsdz),true,params);
+    }
+
+    public static void dianZanAnswer(int id,ForResultListener listener) {
+        resultListener = listener;
+        Map<String ,String> params = new HashMap<>();
+        params.put("zc_id",id+"");
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("dianZan="+e);
+                CommonUtils.toastMessage("点赞失败，请重试");
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("dianZan="+response);
+                ZanResult zanResult = mGson.fromJson(response, ZanResult.class);
+                if(zanResult.result.code.equals("10")){
+                    resultListener.onResponseMessage(zanResult.dz_count);
+                }
+            }
+        }).post(context.getResources().getString(R.string.dzBright),true,params);
     }
 
     /**
@@ -275,11 +305,11 @@ public class NewsInternetRequest {
             public void onError(Call call, Exception e, int id) {
                 CommonUtils.logMes("getNewsListInformation="+e);
                 if(headType == 0){
-                    policyInfoListener.onResponseMessage(null,0+"");
+                    policyInfoListener.onResponseMessage(null,0+"",null);
                 }else if(headType == 1){
-                    eventInfoListener.onResponseMessage(null,0+"");
+                    eventInfoListener.onResponseMessage(null,0+"",null);
                 }else if(headType == 2){
-                    pointInfoListener.onResponseMessage(null,0+"");
+                    pointInfoListener.onResponseMessage(null,0+"",null);
                 }
             }
 
@@ -301,11 +331,11 @@ public class NewsInternetRequest {
                     result_lists.add(map);
                 }
                 if(headType == 0){
-                    policyInfoListener.onResponseMessage(result_lists,total);
+                    policyInfoListener.onResponseMessage(result_lists,total,null);
                 }else if(headType == 1){
-                    eventInfoListener.onResponseMessage(result_lists,total);
+                    eventInfoListener.onResponseMessage(result_lists,total,null);
                 }else if(headType == 2){
-                    pointInfoListener.onResponseMessage(result_lists,total);
+                    pointInfoListener.onResponseMessage(result_lists,total,null);
                 }
             }
         }).post(context.getResources().getString(R.string.zixunlist),true,params);
@@ -327,7 +357,7 @@ public class NewsInternetRequest {
             @Override
             public void onError(Call call, Exception e, int id) {
                 CommonUtils.logMes("getBarListInformation="+e);
-                policyInfoListener.onResponseMessage(null,0+"");
+                policyInfoListener.onResponseMessage(null,0+"", null);
             }
 
             @Override
@@ -347,7 +377,7 @@ public class NewsInternetRequest {
                     map.put("cc_description",list.cc_description);
                     result_lists.add(map);
                 }
-                policyInfoListener.onResponseMessage(result_lists,total);
+                policyInfoListener.onResponseMessage(result_lists,total, result.lunbo_list);
             }
         }).post(context.getResources().getString(R.string.douniubarlist),true,params);
     }
@@ -407,12 +437,11 @@ public class NewsInternetRequest {
             public void onResponse(String response, int id) {
                 CommonUtils.logMes("getListInformation="+response);
                 OtherResult result = mGson.fromJson(response, OtherResult.class);
+                String total = result.total;
                 if(result.result.info.equals("没有数据")){
-                    CommonUtils.toastMessage("没有加载到数据，请您重新再试");
                     return;
                 }
                 List<NewsListResult> lists = result.news_list;
-                String total = result.total;
                 for (NewsListResult list :lists) {
                     Map<String,String> map = new HashMap<>();
                     map.put("cc_id",list.cc_id);
@@ -428,10 +457,118 @@ public class NewsInternetRequest {
                     map.put("dy_count",list.dy_count);
                     result_lists.add(map);
                 }
-                policyInfoListener.onResponseMessage(result_lists,total);
+                policyInfoListener.onResponseMessage(result_lists,total,result.lunbo_list);
             }
         });
         baseInternetRequest.post(html,true,params);
+    }
+
+    /**
+     * 微问答主页信息
+     * @param listener
+     */
+    public static void getAnswerIndexInformation(ForResultAnswerIndexListener listener){
+        answerIndexListener = listener;
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getAnswerIndexInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getAnswerIndexInformation="+response);
+                IndexResult result = mGson.fromJson(response, IndexResult.class);
+                if(result.result.code.equals("10")){
+                    answerIndexListener.onResponseMessage(result);
+                }else {
+                    CommonUtils.toastMessage("网络出现问题，请重新刷新");
+                }
+            }
+        }).post(context.getResources().getString(R.string.answerindex),true,null);
+    }
+
+    /**
+     * 在线分析师列表
+     * @param page 页数
+     * @param listener
+     */
+    public static void getAnswerAdvisorListInformation(int page,ForResultAnswerIndexListener listener){
+        answerIndexListener = listener;
+        Map<String ,String> params = new HashMap<>();
+        params.put("page",page+"");
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getAnswerAdvisorListInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getAnswerAdvisorListInformation="+response);
+                IndexResult result = mGson.fromJson(response, IndexResult.class);
+                if(result.result.code.equals("10")){
+                    answerIndexListener.onResponseMessage(result);
+                }
+            }
+        }).post(context.getResources().getString(R.string.analystList),true,params);
+    }
+
+    /**
+     * 精彩回答列表
+     * @param page 页数
+     * @param id 首席的id，默认null为全部
+     * @param listener
+     */
+    public static void getAnswerLIstInformation(int page,String id,ForResultAnswerIndexListener listener){
+        answerIndexListener = listener;
+        Map<String ,String> params = new HashMap<>();
+        if(!TextUtils.isEmpty(id)){
+            params.put("df_ub_id",id);
+        }
+        params.put("page",page+"");
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getAnswerLIstInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getAnswerLIstInformation="+response);
+                IndexResult result = mGson.fromJson(response, IndexResult.class);
+                if(result.result.code.equals("10")){
+                    answerIndexListener.onResponseMessage(result);
+                }
+            }
+        }).post(context.getResources().getString(R.string.brightList),true,params);
+
+    }
+
+    /**
+     * 微问答回答详情
+     * @param id 精彩回答id
+     * @param listener
+     */
+    public static void getAnswerDetailInformation(String id,ForResultAnswerIndexListener listener){
+        answerIndexListener = listener;
+        Map<String ,String> params = new HashMap<>();
+        params.put("zc_id",id);
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getAnswerDetailInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getAnswerDetailInformation="+response);
+                IndexResult result = mGson.fromJson(response, IndexResult.class);
+                if(result.result.code.equals("10")){
+                    answerIndexListener.onResponseMessage(result);
+                }
+            }
+        }).post(context.getResources().getString(R.string.stockInfo),true,params);
     }
     /**
      * 列表选项 私密课
@@ -458,12 +595,8 @@ public class NewsInternetRequest {
             public void onResponse(String response, int id) {
                 CommonUtils.logMes("getSimikeListInformation="+response);
                 OtherResult result = mGson.fromJson(response, OtherResult.class);
-                if(result.result.info.equals("没有数据")){
-                    CommonUtils.toastMessage("没有加载到数据，请您重新再试");
-                    return;
-                }
-                List<NewsListResult> lists = result.news_list;
                 String total = result.total;
+                List<NewsListResult> lists = result.news_list;
                 for (NewsListResult list :lists) {
                     Map<String,String> map = new HashMap<>();
                     map.put("cc_id",list.cc_id);
@@ -479,7 +612,7 @@ public class NewsInternetRequest {
                     map.put("dy_count",list.dy_count);
                     result_lists.add(map);
                 }
-                pointInfoListener.onResponseMessage(result_lists,total);
+                pointInfoListener.onResponseMessage(result_lists,total,result.lunbo_list);
             }
         });
         baseInternetRequest.post(html,true,params);
@@ -514,8 +647,7 @@ public class NewsInternetRequest {
                 List<NewsListResult> lists = result.news_list;
                 String total = result.total;
                 if(result.result.info.equals("没有数据")){
-                    CommonUtils.toastMessage("没有加载到数据，请您重新再试");
-                    eventInfoListener.onResponseMessage(null,total);
+                    eventInfoListener.onResponseMessage(null,total,null);
                     return;
                 }
                 for (NewsListResult list :lists) {
@@ -530,7 +662,7 @@ public class NewsInternetRequest {
                     map.put("status",list.status);
                     result_lists.add(map);
                 }
-                eventInfoListener.onResponseMessage(result_lists,total);
+                eventInfoListener.onResponseMessage(result_lists,total,null);
             }
         });
         baseInternetRequest.post(html,true,params);
@@ -547,6 +679,40 @@ public class NewsInternetRequest {
         Map<String ,String> params = new HashMap<>();
         params.put("id_param",infoId);
         params.put("type",type+"");
+        params.put("action",action+"");
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("subscribeAndCannel="+e);
+                CommonUtils.toastMessage("失败，请重试");
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("subscribeAndCannel="+response);
+                ZanResult zanResult = mGson.fromJson(response, ZanResult.class);
+                if(zanResult.result.code.equals("02")){
+                    CommonUtils.toastMessage("失败，请重试");
+                }else{
+                    resultListener.onResponseMessage(zanResult.dy_count);
+                }
+            }
+        }).post(html,true,params);
+    }
+
+    /**
+     * 智能选股王订阅
+     * @param infoId 选股王id
+     * @param fee 费用
+     * @param action 0订阅 1取消
+     * @param listener
+     * @param html
+     */
+    public static void XuanGusubscribeAndCannel(String infoId,int fee,int action,ForResultListener listener,String html){
+        resultListener = listener;
+        Map<String ,String> params = new HashMap<>();
+        params.put("zf_id",infoId);
+        params.put("zs_fee",fee+"");
         params.put("action",action+"");
         new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
             @Override
@@ -594,16 +760,16 @@ public class NewsInternetRequest {
 
     /**
      * 直播列表
-     * @param page 访问页数
+     * @param id 请求的最后一个评论的id，刷新的时候传最上面的id，请求历史的时候传最下面的id
      * @param type 类型 0从列表进入 1自动刷新，不增加访问量
-     * @param id 直播id
+     * @param zt_id 直播id
      * @param listener
      */
-    public static void getLivingInformation(String page,int type,int id,ForResultLivingInfoListener listener){
+    public static void getLivingInformation(String type,int zt_id,int id,ForResultLivingInfoListener listener){
         livingInfoListener = listener;
         Map<String ,String> params = new HashMap<>();
-        params.put("zt_id",id+"");
-        params.put("page",page);
+        params.put("zt_id",zt_id+"");
+        params.put("last_id",id+"");
         params.put("type",type+"");
         new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
             @Override
@@ -615,9 +781,7 @@ public class NewsInternetRequest {
             public void onResponse(String response, int id) {
                 CommonUtils.logMes("getLivingInformation="+response);
                 LivingInfoResult result = mGson.fromJson(response, LivingInfoResult.class);
-                if(result.result.info.equals("没有数据")){
-                    CommonUtils.toastMessage("网络出现问题，请重新刷新");
-                }else{
+                if(result.result.code.equals("10")){
                     livingInfoListener.onResponseMessage(result.news_info);
                 }
             }
@@ -626,15 +790,17 @@ public class NewsInternetRequest {
 
     /**
      * 直播互动列表
-     * @param page 访问页数
-     * @param id 直播id
+     * @param type 0请求新数据 1请假历史数据
+     * @param zt_id 直播id
+     * @param id 请求的最后一个评论的id，刷新的时候传最下面的id，请求历史的时候传最上面的id
      * @param listener
      */
-    public static void getLivingInteractInformation(String page,int id,ForResultLivingInteractInfoListener listener){
+    public static void getLivingInteractInformation(String type,int zt_id,int id,ForResultLivingInteractInfoListener listener){
         livingInteractInfoListener = listener;
         Map<String ,String> params = new HashMap<>();
-        params.put("zt_id",id+"");
-        params.put("page",page);
+        params.put("zt_id",zt_id+"");
+        params.put("type",type);
+        params.put("last_id",id+"");
         new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
             @Override
             public void onError(Call call, Exception e, int id) {
@@ -699,13 +865,15 @@ public class NewsInternetRequest {
             @Override
             public void onResponse(String response, int id) {
                 CommonUtils.logMes("getIndexInformation="+response);
+                IndexResult result = mGson.fromJson(response, IndexResult.class);
                 if(TextUtils.isEmpty(str)){
-                    IndexResult result = mGson.fromJson(response, IndexResult.class);
                     if(result.result.info.equals("显示数据")){
                         indexListener.onResponseMessage(result);
                     }
                 }
-                SpTools.setString(context, Constants.getIndexInformation,response);
+                if(result.result.info.equals("显示数据")){
+                    SpTools.setString(context, Constants.getIndexInformation,response);
+                }
             }
         }).post(context.getResources().getString(R.string.index),true,null);
 
@@ -713,7 +881,7 @@ public class NewsInternetRequest {
 
     /**
      * 获取分析师列表
-     * @param type 1首席 2金牌
+     * @param type 1首席 2金牌 3我的关注
      * @param page 页数
      * @param sxListener
      * @param jpListener
@@ -743,12 +911,35 @@ public class NewsInternetRequest {
                         advisorSXListener.onResponseMessage(result);
                     }else if(type == 2){
                         advisorJPListener.onResponseMessage(result);
+                    }else if(type == 3){
+                        advisorJPListener.onResponseMessage(result);
                     }
                 }
             }
         }).post(context.getResources().getString(R.string.shouxilist),true,params);
     }
+    public static void getMySubscribeMadatorListInformation(int page,ForResultMatadorIndexListener listener){
+        matadorIndexListener = listener;
+        Map<String ,String> params = new HashMap<>();
+        params.put("page",page+"");
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getMySubscribeMadatorListInformation="+e);
+            }
 
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getMySubscribeMadatorListInformation="+response);
+                MatadorResult result = mGson.fromJson(response, MatadorResult.class);
+                if(result.result.code.equals("10")){
+                    matadorIndexListener.onResponseMessage(result);
+                }else {
+                    CommonUtils.toastMessage("网络出现问题，请重新刷新");
+                }
+            }
+        }).post(context.getResources().getString(R.string.attention),true,null);
+    }
     /**
      * 首席首页个人详细信息
      * @param id 首席的id
@@ -836,6 +1027,12 @@ public class NewsInternetRequest {
         }).post(context.getResources().getString(R.string.zixianginfo),true,params);
     }
 
+    /**
+     * 智能选股王历史数据
+     * @param id 数据源id
+     * @param page 页数
+     * @param listener
+     */
     public static void getXuanGuHistoryInformation(int id,String page,ForResultXuanGuDetailListener listener){
         xuanGuDetailListener = listener;
         Map<String ,String> params = new HashMap<>();
@@ -861,15 +1058,148 @@ public class NewsInternetRequest {
         }).post(context.getResources().getString(R.string.historygupiao),true,params);
     }
 
+    /**
+     * 我的订阅智能选股王
+     * @param type
+     * @param listener
+     */
+    public static void getMyXuanGuListInformation(int type,ForResultXuanGuListener listener){
+        xuanGuListener = listener;
+        Map<String ,String> params = new HashMap<>();
+        params.put("type",type+"");
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getMyXuanGuListInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getMyXuanGuListInformation="+response);
+                XuanguResult result = mGson.fromJson(response, XuanguResult.class);
+                if(result.result.code.equals("10")){
+                    xuanGuListener.onResponseMessage(result);
+                }else {
+                    CommonUtils.toastMessage("网络出现问题，请重新刷新");
+                }
+
+            }
+        }).post(context.getResources().getString(R.string.xuangulist),true,params);
+    }
+
+    /**
+     * 我的订阅，公开课、私密课、参考
+     * @param type 0公共课 1私密课 2参考
+     * @param listener 公共课
+     * @param listeners 私密课
+     * @param listenert 参考
+     */
+    public static void getMySubscribeListInfromation(final int type, ForResultMyPublicListener listener
+            , ForResultMySecretListener listeners, ForResultMyReferenceListener listenert){
+        if(listener !=null){
+            myPublicListener = listener;
+        }
+        if(listeners !=null){
+            mySecretListener = listeners;
+        }
+        if(listenert !=null){
+            myReferenceListener = listenert;
+        }
+        Map<String ,String> params = new HashMap<>();
+        params.put("type",type+"");
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getMySubscribeListInfromation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getMySubscribeListInfromation="+response);
+                MyContentResult result = mGson.fromJson(response, MyContentResult.class);
+                if(result.result.code.equals("10")){
+                    if(type == 0){
+                        myPublicListener.onResponseMessage(result);
+                    }else if (type == 1){
+                        mySecretListener.onResponseMessage(result);
+                    }else if (type == 2){
+                        myReferenceListener.onResponseMessage(result);
+                    }
+                }else {
+                    CommonUtils.toastMessage("网络出现问题，请重新刷新");
+                }
+
+            }
+        }).post(context.getResources().getString(R.string.dingyuelist),true,params);
+
+    }
+
+    /**
+     * 斗牛士评级信息
+     * @param listener
+     */
+    public static void getMatadorIndexInformation(ForResultMatadorIndexListener listener){
+        matadorIndexListener = listener;
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getMatadorIndexInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getMatadorIndexInformation="+response);
+                MatadorResult result = mGson.fromJson(response, MatadorResult.class);
+                if(result.result.info.equals("显示数据")){
+                    matadorIndexListener.onResponseMessage(result);
+                }else {
+                    CommonUtils.toastMessage("网络出现问题，请重新刷新");
+                }
+            }
+        }).post(context.getResources().getString(R.string.matadorlist),true,null);
+
+    }
+
+    /**
+     * 斗牛士排行
+     * @param type 0周排行 1月排行 2总排行
+     * @param page 页数
+     * @param listener
+     */
+    public static void getMatadorListInformation(int type,int page,ForResultMatadorIndexListener listener){
+        matadorIndexListener = listener;
+        Map<String ,String> params = new HashMap<>();
+        params.put("type",type+"");
+        params.put("page",type+"");
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getMatadorListInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getMatadorListInformation="+response);
+                MatadorResult result = mGson.fromJson(response, MatadorResult.class);
+                if(result.result.code.equals("10")){
+                    matadorIndexListener.onResponseMessage(result);
+                }else {
+                    CommonUtils.toastMessage("网络出现问题，请重新刷新");
+                }
+
+            }
+        }).post(context.getResources().getString(R.string.matadororder),true,params);
+    }
+
 
     public interface ForResultPolicyInfoListener {
-        void onResponseMessage(List<Map<String,String>> lists, String totalpage);
+        void onResponseMessage(List<Map<String, String>> lists, String totalpage, List<LunBoListInfo> lunbo_list);
     }
     public interface ForResultEventInfoListener {
-        void onResponseMessage(List<Map<String,String>> lists, String totalpage);
+        void onResponseMessage(List<Map<String,String>> lists, String totalpage, List<LunBoListInfo> lunbo_list);
     }
     public interface ForResultPointInfoListener {
-        void onResponseMessage(List<Map<String,String>> lists, String totalpage);
+        void onResponseMessage(List<Map<String,String>> lists, String totalpage, List<LunBoListInfo> lunbo_list);
     }
     public interface ForResultLivingInfoListener {
         void onResponseMessage(LivingContent content);
@@ -903,5 +1233,20 @@ public class NewsInternetRequest {
     }
     public interface ForResultXuanGuDetailListener{
         void onResponseMessage(XuanguDetail result);
+    }
+    public interface ForResultAnswerIndexListener{
+        void onResponseMessage(IndexResult result);
+    }
+    public interface ForResultMyPublicListener{
+        void onResponseMessage(MyContentResult result);
+    }
+    public interface ForResultMySecretListener{
+        void onResponseMessage(MyContentResult result);
+    }
+    public interface ForResultMyReferenceListener{
+        void onResponseMessage(MyContentResult result);
+    }
+    public interface ForResultMatadorIndexListener{
+        void onResponseMessage(MatadorResult result);
     }
 }

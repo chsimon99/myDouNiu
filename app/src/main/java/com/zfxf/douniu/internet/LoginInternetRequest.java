@@ -10,6 +10,8 @@ import com.google.gson.Gson;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.bean.EditUserInformationBean;
 import com.zfxf.douniu.bean.LoginResult;
+import com.zfxf.douniu.bean.TouGuDetail;
+import com.zfxf.douniu.bean.TouGuInformationBean;
 import com.zfxf.douniu.bean.UserDetail;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.utils.Constants;
@@ -542,6 +544,56 @@ public class LoginInternetRequest {
                 }
             }
         });
+    }
+
+    public static void applyTouGu(String s_name, String s_phone, String s_number, String s_year,ForResultListener listener){
+        String url = context.getResources().getString(R.string.service_host_address)
+                .concat(context.getResources().getString(R.string.tougu));
+        mListener = listener;
+        TouGuInformationBean informationBean = new TouGuInformationBean();
+        TouGuDetail touGuDetail = new TouGuDetail();
+        touGuDetail.setDt_xm(s_name);
+        touGuDetail.setDt_phone(s_phone);
+        touGuDetail.setDt_zgzs(s_number);
+        touGuDetail.setDt_cynx(s_year);
+
+        informationBean.setSid("");
+        informationBean.setIndex((index++)+"");
+        informationBean.setUb_id(Integer.parseInt(SpTools.getString(context, Constants.userId,"0")));
+        informationBean.setUo_high("");
+        informationBean.setUo_lat("");
+        informationBean.setUo_long("");
+        informationBean.setDn_tougu(touGuDetail);
+
+        String json = mGson.toJson(informationBean);
+        CommonUtils.logMes("response"+json);
+        OkHttpUtils.postString().url(url)
+                .content(json)
+                .mediaType(MediaType.parse("application/json; charset=utf-8"))
+                .build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("applyTouGu="+e);
+                CommonUtils.toastMessage("提交个人信息失败，请重新再试");
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("applyTouGu="+response);
+                LoginResult result = mGson.fromJson(response, LoginResult.class);
+                String code = result.result.code;
+                if(code.equals("10")){
+                    mListener.onResponseMessage("成功");
+                }else if(code.equals("02")){
+                    if(result.result.info.equals("申请已通过")){
+                        CommonUtils.toastMessage("您的申请已通过");
+                    }else{
+                        CommonUtils.toastMessage("您已经申请过，请耐心等待");
+                    }
+                }
+            }
+        });
+
     }
 
     public interface ForResultListener{

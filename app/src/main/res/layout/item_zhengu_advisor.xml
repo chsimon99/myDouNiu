@@ -49,6 +49,19 @@
                 android:layout_toRightOf="@id/rl_zhengu_advisor_img"
                 android:background="@drawable/backgroud_home_advisor_midder"
                 android:gravity="center"
+                android:text="首席"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/dm022"/>
+            <TextView
+                android:id="@+id/tv_zhengu_advisor_gold"
+                android:layout_width="@dimen/dm072"
+                android:layout_height="@dimen/dm032"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dm015"
+                android:layout_marginTop="@dimen/dm055"
+                android:layout_toRightOf="@id/rl_zhengu_advisor_img"
+                android:background="@drawable/backgroud_home_advisor_super"
+                android:gravity="center"
                 android:text="金牌"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/dm022"/>

@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.MyContentList;
 
 import java.util.List;
 
@@ -20,13 +22,13 @@ import java.util.List;
 public class MyselfSubscribeSecretAdapter extends RecyclerView.Adapter<MyselfSubscribeSecretAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<MyContentList> mDatas;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int positon);
+        void onItemClick(View v, int id);
     }
 
-    public MyselfSubscribeSecretAdapter(Context context, List<String> datas) {
+    public MyselfSubscribeSecretAdapter(Context context, List<MyContentList> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -52,7 +54,7 @@ public class MyselfSubscribeSecretAdapter extends RecyclerView.Adapter<MyselfSub
         return mDatas.size();
     }
 
-    public void addDatas(List<String> data) {
+    public void addDatas(List<MyContentList> data) {
         mDatas.addAll(data);
     }
 
@@ -62,7 +64,6 @@ public class MyselfSubscribeSecretAdapter extends RecyclerView.Adapter<MyselfSub
         private TextView title;
         private TextView from;
         private TextView day;
-        private TextView time;
         private TextView count;
         private TextView money;
 
@@ -73,7 +74,6 @@ public class MyselfSubscribeSecretAdapter extends RecyclerView.Adapter<MyselfSub
             title = (TextView) itemView.findViewById(R.id.tv_myself_subscribe_public_title);
             from = (TextView) itemView.findViewById(R.id.tv_myself_subscribe_public_from);
             day = (TextView) itemView.findViewById(R.id.tv_myself_subscribe_public_day);
-            time = (TextView) itemView.findViewById(R.id.tv_myself_subscribe_public_time);
             count = (TextView) itemView.findViewById(R.id.tv_myself_subscribe_public_count);
             money = (TextView) itemView.findViewById(R.id.tv_myself_subscribe_public_money);
             money.getPaint().setFakeBoldText(true);//加粗
@@ -83,12 +83,18 @@ public class MyselfSubscribeSecretAdapter extends RecyclerView.Adapter<MyselfSub
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, Integer.parseInt(mDatas.get(getPosition()).cc_id));
             }
         }
 
-        public void setRefreshData(String str, int position) {
-
+        public void setRefreshData(MyContentList bean, int position) {
+            Glide.with(mContext).load(bean.cc_fielid)
+                    .placeholder(R.drawable.public_img).into(img);
+            title.setText(bean.cc_title);
+            from.setText(bean.ud_nickname);
+            day.setText(bean.cc_datetime);
+            count.setText(bean.dy_count);
+            money.setText("￥"+bean.cc_fee+"元");
         }
     }
 }

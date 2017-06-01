@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.adapter.recycleView.ZhenguAdvisorAdapter;
 import com.zfxf.douniu.adapter.recycleView.ZhenguAnswerAdapter;
+import com.zfxf.douniu.bean.AnswerListInfo;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.FullyGridLayoutManager;
 import com.zfxf.douniu.view.FullyLinearLayoutManager;
@@ -85,7 +86,7 @@ public class ActivityZhengu extends FragmentActivity implements View.OnClickList
             mAdvisorManager = new FullyGridLayoutManager(this,2);
         }
         if(mAdvisorAdapter == null){
-            mAdvisorAdapter = new ZhenguAdvisorAdapter(this, advisorDatas);
+//            mAdvisorAdapter = new ZhenguAdvisorAdapter(this, advisorDatas);
         }
         mAdvisorRecyclerView.setLayoutManager(mAdvisorManager);
         mAdvisorRecyclerView.setAdapter(mAdvisorAdapter);
@@ -104,7 +105,7 @@ public class ActivityZhengu extends FragmentActivity implements View.OnClickList
             mAnswerManager = new FullyLinearLayoutManager(this);
         }
         if(mAnswerAdapter == null){
-            mAnswerAdapter = new ZhenguAnswerAdapter(this, answerDatas);
+//            mAnswerAdapter = new ZhenguAnswerAdapter(this, answerDatas);
         }
         mAnswerRecyclerView.setLayoutManager(mAnswerManager);
         mAnswerRecyclerView.setAdapter(mAnswerAdapter);
@@ -127,7 +128,7 @@ public class ActivityZhengu extends FragmentActivity implements View.OnClickList
         });
         mAnswerAdapter.setOnItemClickListener(new ZhenguAnswerAdapter.MyItemClickListener() {
             @Override
-            public void onItemClick(View v, int positon) {
+            public void onItemClick(View v, int positon,AnswerListInfo bean) {
                 Intent intent = new Intent(CommonUtils.getContext(), ActivityAnswerDetail.class);
                 startActivity(intent);
                 overridePendingTransition(0,0);

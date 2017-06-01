@@ -141,6 +141,13 @@ public class ActivityAdvisorAllSecretDetail extends FragmentActivity implements 
         super.onResume();
         if(SpTools.getBoolean(this, Constants.buy,false)){
             buySuccess();
+            SpTools.setBoolean(this, Constants.buy,false);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        CommonUtils.dismissProgressDialog();
     }
 }

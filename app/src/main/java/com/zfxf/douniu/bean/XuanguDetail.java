@@ -21,6 +21,7 @@ public class XuanguDetail {
     public String zf_info;//详情
     public List<XuanguItemList> item_list;
     public String has_dy;//是否订阅
+    public String zf_fieldid;//图片
 
     public String zi_id;//id
     public String zi_title;//标题

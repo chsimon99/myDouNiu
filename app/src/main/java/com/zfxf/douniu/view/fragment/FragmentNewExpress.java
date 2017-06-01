@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.adapter.recycleView.NewExpressAdapter;
 import com.zfxf.douniu.base.BaseFragment;
+import com.zfxf.douniu.bean.LunBoListInfo;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
@@ -98,7 +99,7 @@ public class FragmentNewExpress extends BaseFragment {
 	private void visitInternet() {
 		NewsInternetRequest.getNewsListInformation(1, currentPage + "", mLastId ,null,new NewsInternetRequest.ForResultEventInfoListener() {
 			@Override
-			public void onResponseMessage(List<Map<String, String>> lists, String totalpage) {
+			public void onResponseMessage(List<Map<String, String>> lists, String totalpage, List<LunBoListInfo> lunbo_list) {
 				totlePage = Integer.parseInt(totalpage);
 				if (totlePage > 0 && currentPage <= totlePage){
 					if(currentPage == 1){

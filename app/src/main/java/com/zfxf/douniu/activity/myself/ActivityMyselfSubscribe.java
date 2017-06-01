@@ -127,4 +127,10 @@ public class ActivityMyselfSubscribe extends FragmentActivity implements View.On
     private void finishAll() {
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        CommonUtils.dismissProgressDialog();
+    }
 }

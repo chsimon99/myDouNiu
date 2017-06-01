@@ -165,7 +165,7 @@ public class FragmentNewTop extends BaseFragment {
     @Override
     public void onResume() {
         if (mMyLunBO == null) {
-            mMyLunBO = new MyLunBo(mContainer, mViewPage, mDatas);
+            mMyLunBO = new MyLunBo(mContainer, mViewPage, 4);
             mMyLunBO.startLunBO();
         }
         if (isOnPause) {//防止轮播图暂定不动

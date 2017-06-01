@@ -15,16 +15,19 @@ import com.zfxf.douniu.activity.ActivityAnswer;
 import com.zfxf.douniu.activity.ActivityAnswerDetail;
 import com.zfxf.douniu.activity.ActivityAskAdvisor;
 import com.zfxf.douniu.activity.ActivityAskStock;
+import com.zfxf.douniu.activity.ActivityToPay;
 import com.zfxf.douniu.adapter.recycleView.ZhenguAdvisorAdapter;
 import com.zfxf.douniu.adapter.recycleView.ZhenguAnswerAdapter;
 import com.zfxf.douniu.base.BaseFragment;
+import com.zfxf.douniu.bean.AnswerListInfo;
+import com.zfxf.douniu.bean.IndexResult;
+import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.FullyGridLayoutManager;
 import com.zfxf.douniu.view.FullyLinearLayoutManager;
 import com.zfxf.douniu.view.RecycleViewDivider;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,13 +57,11 @@ public class FragmentAdvisorAllAsking extends BaseFragment implements View.OnCli
 	RecyclerView mAdvisorRecyclerView;//在线分析师recycleview
 	private LinearLayoutManager mAdvisorManager;
 	private ZhenguAdvisorAdapter mAdvisorAdapter;
-	private List<String> advisorDatas = new ArrayList<String>();
 
 	@BindView(R.id.rv_zhengu_answer)
 	RecyclerView mAnswerRecyclerView;//精彩回答recycleview
 	private LinearLayoutManager mAnswerManager;
 	private ZhenguAnswerAdapter mAnswerAdapter;
-	private List<String> answerDatas = new ArrayList<String>();
 	private RecycleViewDivider mDivider;
 
 	@Override
@@ -85,46 +86,71 @@ public class FragmentAdvisorAllAsking extends BaseFragment implements View.OnCli
 	@Override
 	public void initdata() {
 		super.initdata();
-		/**
-		 * 在线首席
-		 */
-		if (advisorDatas.size() == 0) {
-			advisorDatas.add("百变股神");
-			advisorDatas.add("孙悟空");
-			advisorDatas.add("柯南");
-			advisorDatas.add("小魔女");
-		}
-		if(mAdvisorManager == null){
-			mAdvisorManager = new FullyGridLayoutManager(getActivity(),2);
-		}
-		if(mAdvisorAdapter == null){
-			mAdvisorAdapter = new ZhenguAdvisorAdapter(getActivity(), advisorDatas);
-		}
-		mAdvisorRecyclerView.setLayoutManager(mAdvisorManager);
-		mAdvisorRecyclerView.setAdapter(mAdvisorAdapter);
+		visitInternet();
+	}
 
-		/**
-		 * 精彩回答
-		 */
-		if (answerDatas.size() == 0) {
-			answerDatas.add("1");
-			answerDatas.add("2");
-			answerDatas.add("3");
-			answerDatas.add("4");
-			answerDatas.add("5");
-		}
-		if(mAnswerManager == null){
-			mAnswerManager = new FullyLinearLayoutManager(getActivity());
-		}
-		if(mAnswerAdapter == null){
-			mAnswerAdapter = new ZhenguAnswerAdapter(getActivity(), answerDatas);
-		}
-		mAnswerRecyclerView.setLayoutManager(mAnswerManager);
-		mAnswerRecyclerView.setAdapter(mAnswerAdapter);
-		if(mDivider == null){
-			mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
-			mAnswerRecyclerView.addItemDecoration(mDivider);
-		}
+	private void visitInternet() {
+		CommonUtils.showProgressDialog(getActivity(),"加载中……");
+		NewsInternetRequest.getAnswerIndexInformation(new NewsInternetRequest.ForResultAnswerIndexListener() {
+			@Override
+			public void onResponseMessage(final IndexResult result) {
+				/**
+				 * 在线首席
+				 */
+				if(mAdvisorManager == null){
+					mAdvisorManager = new FullyGridLayoutManager(getActivity(),2);
+				}
+				if(mAdvisorAdapter == null){
+					mAdvisorAdapter = new ZhenguAdvisorAdapter(getActivity(), result.online_chief);
+				}
+				mAdvisorRecyclerView.setLayoutManager(mAdvisorManager);
+				mAdvisorRecyclerView.setAdapter(mAdvisorAdapter);
+				mAdvisorAdapter.setOnItemClickListener(new ZhenguAdvisorAdapter.MyItemClickListener() {
+					@Override
+					public void onItemClick(View v, int positon) {
+						Intent intent = new Intent(CommonUtils.getContext(), ActivityAskStock.class);
+						intent.putExtra("name",result.online_chief.get(positon).ud_nickname);
+						startActivity(intent);
+						getActivity().overridePendingTransition(0,0);
+					}
+				});
+
+				/**
+				 * 精彩回答
+				 */
+				if(mAnswerManager == null){
+					mAnswerManager = new FullyLinearLayoutManager(getActivity());
+				}
+				if(mAnswerAdapter == null){
+					mAnswerAdapter = new ZhenguAnswerAdapter(getActivity(), result.bright_answer);
+				}
+				mAnswerRecyclerView.setLayoutManager(mAnswerManager);
+				mAnswerRecyclerView.setAdapter(mAnswerAdapter);
+				if(mDivider == null){
+					mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
+					mAnswerRecyclerView.addItemDecoration(mDivider);
+				}
+				mAnswerAdapter.setOnItemClickListener(new ZhenguAnswerAdapter.MyItemClickListener() {
+					@Override
+					public void onItemClick(View v, int positon,AnswerListInfo bean) {
+						if (bean.zc_sfjf.equals("0")){
+							Intent intent = new Intent(CommonUtils.getContext(), ActivityToPay.class);
+							intent.putExtra("type","问股");
+							intent.putExtra("count",bean.zc_fee);
+							intent.putExtra("from",bean.ud_nickname);
+							startActivity(intent);
+							getActivity().overridePendingTransition(0,0);
+						}else{
+							Intent intent = new Intent(CommonUtils.getContext(), ActivityAnswerDetail.class);
+							intent.putExtra("id",bean.zc_id);
+							startActivity(intent);
+							getActivity().overridePendingTransition(0,0);
+						}
+					}
+				});
+				CommonUtils.dismissProgressDialog();
+			}
+		});
 	}
 
 	@Override
@@ -133,23 +159,6 @@ public class FragmentAdvisorAllAsking extends BaseFragment implements View.OnCli
 		advisor_detail.setOnClickListener(this);
 		answer_detail.setOnClickListener(this);
 		ask.setOnClickListener(this);
-		mAdvisorAdapter.setOnItemClickListener(new ZhenguAdvisorAdapter.MyItemClickListener() {
-			@Override
-			public void onItemClick(View v, int positon) {
-				Intent intent = new Intent(CommonUtils.getContext(), ActivityAskStock.class);
-				intent.putExtra("name",advisorDatas.get(positon).toString());
-				startActivity(intent);
-				getActivity().overridePendingTransition(0,0);
-			}
-		});
-		mAnswerAdapter.setOnItemClickListener(new ZhenguAnswerAdapter.MyItemClickListener() {
-			@Override
-			public void onItemClick(View v, int positon) {
-				Intent intent = new Intent(CommonUtils.getContext(), ActivityAnswerDetail.class);
-				startActivity(intent);
-				getActivity().overridePendingTransition(0,0);
-			}
-		});
 	}
 
 	@Override
@@ -176,5 +185,16 @@ public class FragmentAdvisorAllAsking extends BaseFragment implements View.OnCli
 	private void finishAll() {
 		mAdvisorManager = null;
 		mAdvisorAdapter = null;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if(SpTools.getBoolean(getActivity(), Constants.buy,false)){
+			mAdvisorManager = null;
+			mAdvisorAdapter = null;
+			visitInternet();
+			SpTools.setBoolean(getActivity(), Constants.buy,false);
+		}
 	}
 }

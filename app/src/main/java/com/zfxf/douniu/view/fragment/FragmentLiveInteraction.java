@@ -1,5 +1,6 @@
 package com.zfxf.douniu.view.fragment;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,7 @@ import com.zfxf.douniu.bean.LivingInteract;
 import com.zfxf.douniu.bean.LivingSendMsg;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
-import com.zfxf.douniu.utils.Constants;
-import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,9 +33,10 @@ public class FragmentLiveInteraction extends BaseFragment {
     PullLoadMoreRecyclerView mRecyclerView;
     private LiveInteractionAdapter mInteractionAdapter;
     private int mId;
-    private int totlePage = 0;
-    private int currentPage = 1;
-
+    private int type = 0;
+    private int lastID = 0;//列表显示的评论中最上面的评论id
+    private int firstID = 0;//列表显示的评论中最下面的评论id
+    private String earliestID = "0";//是否有历史数据 0有1没有
     @Override
     public View initView(LayoutInflater inflater) {
         if (view == null) {
@@ -64,17 +61,16 @@ public class FragmentLiveInteraction extends BaseFragment {
         super.initdata();
         if(mId !=0){
             CommonUtils.showProgressDialog(getActivity(),"加载中……");
-            visitInternet();
+            visitInternet(lastID);
         }
     }
     int maxLine=0;
-    private void visitInternet() {
-        NewsInternetRequest.getLivingInteractInformation(currentPage + "", mId, new NewsInternetRequest.ForResultLivingInteractInfoListener() {
+    private void visitInternet(int refreshId) {
+        NewsInternetRequest.getLivingInteractInformation(type + "", mId, refreshId,new NewsInternetRequest.ForResultLivingInteractInfoListener() {
             @Override
             public void onResponseMessage(final LivingContent content) {
-                totlePage = Integer.parseInt(content.total);
-                if (totlePage > 0 && currentPage <= totlePage){
-                    if(currentPage == 1){
+                if (earliestID.equals("0")){
+                    if(type == 0 && lastID == 0){
                         if(mInteractionAdapter == null){
                             mInteractionAdapter = new LiveInteractionAdapter(getActivity(),content.pl_list);
                         }
@@ -88,6 +84,8 @@ public class FragmentLiveInteraction extends BaseFragment {
                                 mRecyclerView.getRecyclerView().smoothScrollToPosition(mInteractionAdapter.getItemCount());//显示到最底部
                             }
                         });
+                        type = 1;
+                        firstID = Integer.parseInt(content.pl_list.get(content.pl_list.size()-1).zp_id);
                     }else{
                         final int itemPosition = mRecyclerView.getLinearLayoutManager().findLastVisibleItemPosition();
                         maxLine = content.pl_list.size() > maxLine ? content.pl_list.size() : maxLine;
@@ -102,11 +100,14 @@ public class FragmentLiveInteraction extends BaseFragment {
                             }
                         });
                     }
-                    currentPage++;
+                    lastID = Integer.parseInt(content.pl_list.get(0).zp_id);
                     CommonUtils.dismissProgressDialog();
                 }else {
                     CommonUtils.dismissProgressDialog();
                     return;
+                }
+                if(!TextUtils.isEmpty(content.is_earliest)){
+                    earliestID = content.is_earliest;
                 }
             }
         });
@@ -118,7 +119,7 @@ public class FragmentLiveInteraction extends BaseFragment {
         mRecyclerView.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
             @Override
             public void onRefresh() {
-                if(currentPage > totlePage){
+                if(earliestID.equals("1")){
                     Toast.makeText(CommonUtils.getContext(),"没有数据了",Toast.LENGTH_SHORT).show();
                     mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
                         @Override
@@ -128,7 +129,7 @@ public class FragmentLiveInteraction extends BaseFragment {
                     }, 200);
                     return;
                 }
-                visitInternet();
+                visitInternet(lastID);
             }
 
             @Override
@@ -142,38 +143,40 @@ public class FragmentLiveInteraction extends BaseFragment {
                 if(mInteractionAdapter == null){
                     return;
                 }
-                SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
-                String nowTime = df.format(new Date());
-                LivingInteract interact = new LivingInteract();
-                interact.setUd_nickname(SpTools.getString(getContext(), Constants.nickname,"请您去设置昵称"));
-                interact.setZp_date(nowTime);
-                interact.setHeadImg(SpTools.getString(getContext(), Constants.imgurl,""));
+                CommonUtils.showProgressDialog(getActivity(),"发表评论中……");
                 String contents = et_interaction.getText().toString();
-                interact.setZp_pl(contents);
-                interact.setRole("1");
-                int count = mInteractionAdapter.getItemCount();
-                mInteractionAdapter.addNewDatas(interact);
-                mInteractionAdapter.notifyItemInserted(count);
-                mRecyclerView.getRecyclerView().smoothScrollToPosition(mInteractionAdapter.getItemCount());//显示到最底部
-                et_interaction.setText("");
+//                SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
+//                String nowTime = df.format(new Date());
+//                LivingInteract interact = new LivingInteract();
+//                interact.setUd_nickname(SpTools.getString(getContext(), Constants.nickname,"请您去设置昵称"));
+//                interact.setZp_date(nowTime);
+//                interact.setHeadImg(SpTools.getString(getContext(), Constants.imgurl,""));
+//                interact.setZp_pl(contents);
+//                interact.setRole("1");
+//                int count = mInteractionAdapter.getItemCount();
+//                mInteractionAdapter.addNewDatas(interact);
+//                mInteractionAdapter.notifyItemInserted(count);
+//                mRecyclerView.getRecyclerView().smoothScrollToPosition(mInteractionAdapter.getItemCount());//显示到最底部
+//                et_interaction.setText("");
 
                 NewsInternetRequest.sendInteractInformation(contents
                         , mId, new NewsInternetRequest.ForResultSendInteractInfoListener() {
                     @Override
                     public void onResponseMessage(LivingSendMsg sendMsg) {
-//                        if(sendMsg !=null){
-//                            et_interaction.setText("");
-//                            LivingInteract interact = new LivingInteract();
-//                            interact.setUd_nickname(sendMsg.zp_ud_nickname);
-//                            interact.setZp_date(sendMsg.zp_date);
-//                            interact.setHeadImg(sendMsg.headImg);
-//                            interact.setZp_pl(sendMsg.zp_pl);
-//                            interact.setRole("1");
-//                            int count = mInteractionAdapter.getItemCount();
-//                            mInteractionAdapter.addNewDatas(interact);
-//                            mInteractionAdapter.notifyItemInserted(count);
-//                            mRecyclerView.getRecyclerView().smoothScrollToPosition(mInteractionAdapter.getItemCount());//显示到最底部
-//                        }
+                        if(sendMsg !=null){
+                            et_interaction.setText("");
+                            LivingInteract interact = new LivingInteract();
+                            interact.setUd_nickname(sendMsg.zp_ud_nickname);
+                            interact.setZp_date(sendMsg.zp_date);
+                            interact.setHeadImg(sendMsg.headImg);
+                            interact.setZp_pl(sendMsg.zp_pl);
+                            interact.setRole("1");
+                            int count = mInteractionAdapter.getItemCount();
+                            mInteractionAdapter.addNewDatas(interact);
+                            mInteractionAdapter.notifyItemInserted(count);
+                            mRecyclerView.getRecyclerView().smoothScrollToPosition(mInteractionAdapter.getItemCount());//显示到最底部
+                        }
+                        CommonUtils.dismissProgressDialog();
                     }
                 });
             }

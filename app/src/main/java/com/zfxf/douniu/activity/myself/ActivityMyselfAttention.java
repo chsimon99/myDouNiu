@@ -47,7 +47,6 @@ public class ActivityMyselfAttention extends FragmentActivity implements View.On
     private List<String> list_title = new ArrayList<>();
     private Fragment mFragmentMyselfAttentionAdvisor;
     private Fragment mFragmentMyselfAttentionMatador;
-    private List<String> datas = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,19 +62,8 @@ public class ActivityMyselfAttention extends FragmentActivity implements View.On
 
     private void initdata() {
 
-        if(datas.size() == 0){
-            datas.add("1");
-            datas.add("2");
-            datas.add("3");
-            datas.add("1");
-            datas.add("2");
-            datas.add("3");
-            datas.add("1");
-            datas.add("2");
-        }
-
         if(mFragmentMyselfAttentionAdvisor == null){
-            mFragmentMyselfAttentionAdvisor = new FragmentMyselfAttentionAdvisor(2);
+            mFragmentMyselfAttentionAdvisor = new FragmentMyselfAttentionAdvisor(3);
         }
         if(mFragmentMyselfAttentionMatador == null){
             mFragmentMyselfAttentionMatador = new FragmentMyselfAttentionMatador();
@@ -120,5 +108,11 @@ public class ActivityMyselfAttention extends FragmentActivity implements View.On
 
     private void finishAll() {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        CommonUtils.dismissProgressDialog();
     }
 }

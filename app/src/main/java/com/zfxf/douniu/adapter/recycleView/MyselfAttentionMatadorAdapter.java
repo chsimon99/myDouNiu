@@ -7,9 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.IndexAdvisorListInfo;
 
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * @author Admin
@@ -20,13 +24,13 @@ import java.util.List;
 public class MyselfAttentionMatadorAdapter extends RecyclerView.Adapter<MyselfAttentionMatadorAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<IndexAdvisorListInfo> mDatas;
 
     public interface MyItemClickListener {
         void onItemClick(View v, int positon);
     }
 
-    public MyselfAttentionMatadorAdapter(Context context, List<String> datas) {
+    public MyselfAttentionMatadorAdapter(Context context, List<IndexAdvisorListInfo> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -52,7 +56,7 @@ public class MyselfAttentionMatadorAdapter extends RecyclerView.Adapter<MyselfAt
         return mDatas.size();
     }
 
-    public void addDatas(List<String> data) {
+    public void addDatas(List<IndexAdvisorListInfo> data) {
         mDatas.addAll(data);
     }
 
@@ -85,8 +89,19 @@ public class MyselfAttentionMatadorAdapter extends RecyclerView.Adapter<MyselfAt
             }
         }
 
-        public void setRefreshData(String str, int position) {
-
+        public void setRefreshData(IndexAdvisorListInfo bean, int position) {
+            Glide.with(mContext).load(bean.headImg)
+                    .placeholder(R.drawable.home_adviosr_img)
+                    .bitmapTransform(new CropCircleTransformation(mContext)).into(img);
+            name.setText(bean.ud_nickname);
+            month.setText(bean.mf_bysy+"%");
+            week.setText(bean.mf_bzsy+"%");
+            number.setText(bean.mf_zpm);
+            if(bean.mf_status.equals("1")){
+                type.setImageResource(R.drawable.myself_up);
+            }else {
+                type.setImageResource(R.drawable.myself_up_down);
+            }
         }
     }
 }

@@ -5,12 +5,21 @@
               android:paddingLeft="@dimen/dm020"
               android:paddingRight="@dimen/dm020"
               android:orientation="horizontal">
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/iv_myself_subscribe_choice_img"
+            android:layout_width="@dimen/dm610"
+            android:layout_height="@dimen/dm430"
+            android:layout_marginTop="@dimen/dm010"
+            android:layout_marginBottom="@dimen/dm010"
+            android:scaleType="fitXY"
+            android:src="@drawable/myself_choice_bg"/>
     <LinearLayout
         android:layout_width="@dimen/dm610"
         android:layout_height="@dimen/dm430"
         android:layout_marginTop="@dimen/dm010"
         android:layout_marginBottom="@dimen/dm010"
-        android:background="@drawable/myself_choice_bg"
         android:orientation="vertical">
         <TextView
             android:id="@+id/tv_myself_subscribe_choice_type"
@@ -79,4 +88,5 @@
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/dm022"/>
     </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

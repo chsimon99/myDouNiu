@@ -20,4 +20,5 @@ public class OtherResult {
     public DaShangInformationResult ds_info;//打赏信息
     public List<CommentInformationResult> pl_info;//评论列表数据
     public CommentResult cms_contextpl;//发表评论成功信息
+    public List<LunBoListInfo> lunbo_list;//轮播图
 }

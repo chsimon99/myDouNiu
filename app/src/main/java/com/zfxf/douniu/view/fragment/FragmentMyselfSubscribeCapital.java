@@ -10,12 +10,11 @@ import android.widget.Toast;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.adapter.recycleView.MyselfSubscribeCapitalAdapter;
 import com.zfxf.douniu.base.BaseFragment;
+import com.zfxf.douniu.bean.MyContentResult;
+import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.RecycleViewDivider;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,7 +29,6 @@ public class FragmentMyselfSubscribeCapital extends BaseFragment {
 	@BindView(R.id.rv_myself_subscribe_capital)
 	PullLoadMoreRecyclerView mRecyclerView;
 	private MyselfSubscribeCapitalAdapter mSubscribeCapitalAdapter;
-	private List<String> datas = new ArrayList<String>();
 	private RecycleViewDivider mDivider;
 
 	@Override
@@ -53,37 +51,44 @@ public class FragmentMyselfSubscribeCapital extends BaseFragment {
 	@Override
 	public void initdata() {
 		super.initdata();
-		if(datas.size() == 0){
-			datas.add("1");
-			datas.add("2");
-			datas.add("2");
-			datas.add("2");
-			datas.add("2");
-//			wait.setVisibility(View.VISIBLE);
-		}
-		if(mSubscribeCapitalAdapter == null){
-			mSubscribeCapitalAdapter = new MyselfSubscribeCapitalAdapter(getActivity(),datas);
-		}
+		visitInternet();
+	}
 
-		mRecyclerView.setLinearLayout();
-		mRecyclerView.setAdapter(mSubscribeCapitalAdapter);
-		if(mDivider == null){
-			mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
-			mRecyclerView.addItemDecoration(mDivider);
-		}
-		mRecyclerView.setPullRefreshEnable(false);
-		mRecyclerView.setPushRefreshEnable(false);
+	private void visitInternet() {
+		CommonUtils.showProgressDialog(getActivity(),"加载中……");
+		NewsInternetRequest.getMySubscribeListInfromation(2, null, null, new NewsInternetRequest.ForResultMyReferenceListener() {
+			@Override
+			public void onResponseMessage(MyContentResult result) {
+				if(result.news_list.size()==0){
+					wait.setVisibility(View.VISIBLE);
+				}else{
+					if(mSubscribeCapitalAdapter == null){
+						mSubscribeCapitalAdapter = new MyselfSubscribeCapitalAdapter(getActivity(),result.news_list);
+					}
+
+					mRecyclerView.setLinearLayout();
+					mRecyclerView.setAdapter(mSubscribeCapitalAdapter);
+					if(mDivider == null){
+						mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
+						mRecyclerView.addItemDecoration(mDivider);
+					}
+					mRecyclerView.setPullRefreshEnable(false);
+					mRecyclerView.setPushRefreshEnable(false);
+
+					mSubscribeCapitalAdapter.setOnItemClickListener(new MyselfSubscribeCapitalAdapter.MyItemClickListener() {
+						@Override
+						public void onItemClick(View v, int positon) {
+							Toast.makeText(CommonUtils.getContext(),"点击了"+positon,Toast.LENGTH_SHORT).show();
+						}
+					});
+				}
+				CommonUtils.dismissProgressDialog();
+			}
+		});
 	}
 
 	@Override
 	public void initListener() {
 		super.initListener();
-
-		mSubscribeCapitalAdapter.setOnItemClickListener(new MyselfSubscribeCapitalAdapter.MyItemClickListener() {
-			@Override
-			public void onItemClick(View v, int positon) {
-				Toast.makeText(CommonUtils.getContext(),"点击了"+positon,Toast.LENGTH_SHORT).show();
-			}
-		});
 	}
 }

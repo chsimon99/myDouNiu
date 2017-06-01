@@ -39,14 +39,6 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"/>
-                <ImageView
-                    android:id="@+id/iv_bar_grade_commend"
-                    android:layout_width="@dimen/dm014"
-                    android:layout_height="@dimen/dm028"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="@dimen/dm025"
-                    android:layout_marginRight="@dimen/dm020"
-                    android:src="@drawable/home_jiantou"/>
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
@@ -85,21 +77,30 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/dm020"
-                    android:text="人气最高"
+                    android:text="周排行"
                     android:textColor="#32384d"
                     android:textSize="@dimen/dm028"/>
                 <View
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"/>
-                <ImageView
-                    android:id="@+id/iv_bar_grade_human"
+                <LinearLayout
+                    android:id="@+id/ll_bar_grade_human"
+                    android:layout_width="@dimen/dm120"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
+                    <ImageView
                     android:layout_width="@dimen/dm014"
                     android:layout_height="@dimen/dm028"
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/dm025"
                     android:layout_marginRight="@dimen/dm020"
                     android:src="@drawable/home_jiantou"/>
+                </LinearLayout>
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
@@ -131,28 +132,37 @@
                     android:layout_height="@dimen/dm035"
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/dm025"
-                    android:src="@drawable/bar_grade_income"/>
+                    android:src="@drawable/bar_grade_human"/>
                 <TextView
                     android:id="@+id/tv_bar_grade_income"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/dm020"
-                    android:text="收益最好"
+                    android:text="月排行"
                     android:textColor="#32384d"
                     android:textSize="@dimen/dm028"/>
                 <View
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"/>
+                <LinearLayout
+                    android:id="@+id/ll_bar_grade_income"
+                    android:layout_width="@dimen/dm120"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
                 <ImageView
-                    android:id="@+id/iv_bar_grade_income"
                     android:layout_width="@dimen/dm014"
                     android:layout_height="@dimen/dm028"
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/dm025"
                     android:layout_marginRight="@dimen/dm020"
                     android:src="@drawable/home_jiantou"/>
+                </LinearLayout>
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
@@ -164,6 +174,67 @@
                 android:descendantFocusability="blocksDescendants">
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_bar_grade_income"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm020"
+                    android:layout_marginRight="@dimen/dm020"/>
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm016"
+                android:background="@color/colorBgGary"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm065"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="@dimen/dm040"
+                    android:layout_height="@dimen/dm035"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dm025"
+                    android:src="@drawable/bar_grade_human"/>
+                <TextView
+                    android:id="@+id/tv_bar_grade_all"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dm020"
+                    android:text="总排行"
+                    android:textColor="#32384d"
+                    android:textSize="@dimen/dm028"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+                <LinearLayout
+                    android:id="@+id/ll_bar_grade_all"
+                    android:layout_width="@dimen/dm120"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"/>
+                <ImageView
+                    android:layout_width="@dimen/dm014"
+                    android:layout_height="@dimen/dm028"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dm025"
+                    android:layout_marginRight="@dimen/dm020"
+                    android:src="@drawable/home_jiantou"/>
+                </LinearLayout>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:descendantFocusability="blocksDescendants">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_bar_grade_all"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dm020"

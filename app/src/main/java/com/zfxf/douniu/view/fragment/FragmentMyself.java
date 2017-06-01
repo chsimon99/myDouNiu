@@ -35,6 +35,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
+
 /**
  * @author IMXU
  * @time   2017/5/3 13:16
@@ -248,7 +249,7 @@ public class FragmentMyself extends BaseFragment implements View.OnClickListener
 					String nickname = map.get("ud_nickname");
 					String address = map.get("ud_addr");
 					String borth = map.get("ud_borth");
-					String photoUrl = map.get("ud_photo_fileid");
+					final String photoUrl = map.get("ud_photo_fileid");
 					if (TextUtils.isEmpty(nickname)) {
 						name.setText("请您去设置昵称");
 					} else {
@@ -265,12 +266,19 @@ public class FragmentMyself extends BaseFragment implements View.OnClickListener
 									.placeholder(R.drawable.advisor_home_img)
 									.bitmapTransform(new CropCircleTransformation(getActivity()))
 									.into(img);
-							try {
-								Bitmap bitmap = Glide.with(getActivity()).load(photoUrl).asBitmap().into(500, 500).get();//保存图片到本地
-								CommonUtils.saveBitmapFile(bitmap,"myicon.jpg");
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
+
+								new Thread(new Runnable() {
+									@Override
+									public void run() {
+										Bitmap bitmap = null;//保存图片到本地
+										try {
+											bitmap = Glide.with(getActivity()).load(photoUrl).asBitmap().into(500, 500).get();
+											CommonUtils.saveBitmapFile(bitmap,"myicon.jpg");
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
+									}
+								}).start();
 
 						} else {
 							byte[] bytes = CommonUtils.getBitMapByteArray(cacheBitmap);

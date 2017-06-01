@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,8 +43,10 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
     PullLoadMoreRecyclerView mRecyclerView;
     private LiveLivingAdapter mLivingAdapter;
     private int mId;
-    private int totlePage = 0;
-    private int currentPage = 1;
+    private int type = 0;
+    private int lastID = 0;//列表显示的直播中最下面的直播id
+    private int firstID = 0;//列表显示的评论中最上面的直播id
+    private String earliestID = "0";//是否有历史数据 0有1没有
     @Override
     public View initView(LayoutInflater inflater) {
         if (view == null) {
@@ -68,18 +71,17 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
         super.initdata();
         if(mId !=0){
             CommonUtils.showProgressDialog(getActivity(),"加载中……");
-            visitInternet();
+            visitInternet(lastID);
         }
     }
     private MediaPlayer mPlayer;
-    private void visitInternet() {
-        NewsInternetRequest.getLivingInformation(currentPage + "", 0, mId, new NewsInternetRequest.ForResultLivingInfoListener() {
+    private void visitInternet(int refreshId) {
+        NewsInternetRequest.getLivingInformation(type + "", mId, refreshId, new NewsInternetRequest.ForResultLivingInfoListener() {
             @Override
             public void onResponseMessage(LivingContent content) {
-                totlePage = Integer.parseInt(content.total);
                 title.setText(content.zt_name);
-                if (totlePage > 0 && currentPage <= totlePage){
-                    if(currentPage == 1){
+                if (earliestID.equals("0")){
+                    if(type == 0 && lastID == 0){
                         if (mLivingAdapter == null) {
                             mLivingAdapter = new LiveLivingAdapter(getActivity(), content);
                         }
@@ -126,6 +128,8 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
                                 }
                             }
                         });
+                        type = 1;
+                        firstID = Integer.parseInt(content.context_list.get(0).zc_id);
                     }else {
                         mLivingAdapter.addDatas(content);
                         mRecyclerView.post(new Runnable() {
@@ -141,11 +145,14 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
                             }
                         }, 1000);
                     }
-                    currentPage++;
+                    lastID = Integer.parseInt(content.context_list.get(content.context_list.size()-1).zc_id);
                     CommonUtils.dismissProgressDialog();
                 }else {
                     CommonUtils.dismissProgressDialog();
                     return;
+                }
+                if(!TextUtils.isEmpty(content.is_earliest)){
+                    earliestID = content.is_earliest;
                 }
             }
         });
@@ -167,6 +174,7 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
         mRecyclerView.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
             @Override
             public void onRefresh() {
+                visitInternet(firstID);
                 mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
                     @Override
                     public void run() {
@@ -177,7 +185,7 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
 
             @Override
             public void onLoadMore() {
-                if (currentPage > totlePage) {
+                if (earliestID.equals("1")) {
                     Toast.makeText(CommonUtils.getContext(), "没有数据了", Toast.LENGTH_SHORT).show();
                     mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
                         @Override
@@ -187,7 +195,7 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
                     }, 200);
                     return;
                 }
-                visitInternet();
+                visitInternet(lastID);
             }
         });
     }

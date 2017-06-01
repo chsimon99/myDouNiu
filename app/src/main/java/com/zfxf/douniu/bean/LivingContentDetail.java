@@ -8,5 +8,6 @@ package com.zfxf.douniu.bean;
 
 public class LivingContentDetail {
     public String zc_time;//直播时间
+    public String zc_id;//直播内容id
     public LivingContentDetailType zc_context;//直播内容类型
 }

@@ -6,12 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.activity.ActivityBarBarDetail;
 import com.zfxf.douniu.adapter.recycleView.BarBarAdapter;
 import com.zfxf.douniu.base.BaseFragment;
+import com.zfxf.douniu.bean.LunBoListInfo;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.RecycleViewDivider;
@@ -42,6 +44,14 @@ public class FragmentBarBar extends BaseFragment implements View.OnClickListener
 	LinearLayout ll_stock;
 	@BindView(R.id.ll_bar_bar_other)
 	LinearLayout ll_other;
+
+	@BindView(R.id.tv_bar_bar_hot)
+	TextView tv_hot;
+	@BindView(R.id.tv_bar_bar_stock)
+	TextView tv_stock;
+	@BindView(R.id.tv_bar_bar_other)
+	TextView tv_other;
+
 	private int headType = 0;
 	private int totlePage = 0;
 	private int currentPage = 1;
@@ -72,7 +82,7 @@ public class FragmentBarBar extends BaseFragment implements View.OnClickListener
 	private void visitInternet() {
 		NewsInternetRequest.getBarListInformation(headType, currentPage+"", new NewsInternetRequest.ForResultPolicyInfoListener() {
 			@Override
-			public void onResponseMessage(List<Map<String, String>> lists, String totalpage) {
+			public void onResponseMessage(List<Map<String, String>> lists, String totalpage, List<LunBoListInfo> lunbo_list) {
 				totlePage = Integer.parseInt(totalpage);
 				if(totlePage > 0 && currentPage <= totlePage){
 					if(currentPage == 1){
@@ -165,19 +175,28 @@ public class FragmentBarBar extends BaseFragment implements View.OnClickListener
 
 	@Override
 	public void onClick(View v) {
+		reset();
 		switch (v.getId()){
 			case R.id.ll_bar_bar_hot:
 				headType = 0;
+				tv_hot.setTextColor(getResources().getColor(R.color.colorTitle));
 				break;
 			case R.id.ll_bar_bar_stock:
 				headType = 1;
+				tv_stock.setTextColor(getResources().getColor(R.color.colorPhone));
 				break;
 			case R.id.ll_bar_bar_other:
 				headType = 2;
+				tv_other.setTextColor(getResources().getColor(R.color.advisorType));
 				break;
 		}
 		currentPage = 1;
 		mBarAdapter = null;
 		visitInternet();
+	}
+	private void reset() {
+		tv_hot.setTextColor(getResources().getColor(R.color.colorText));
+		tv_stock.setTextColor(getResources().getColor(R.color.colorText));
+		tv_other.setTextColor(getResources().getColor(R.color.colorText));
 	}
 }

@@ -49,14 +49,6 @@
                     android:text="2017/04/01"
                     android:textColor="@color/colorText"
                     android:textSize="@dimen/dm024"/>
-                <TextView
-                    android:id="@+id/tv_myself_subscribe_public_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dm020"
-                    android:text="20:00"
-                    android:textColor="@color/colorText"
-                    android:textSize="@dimen/dm024"/>
             </LinearLayout>
         </LinearLayout>
         <View
@@ -72,6 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dm007"
+                android:layout_gravity="right"
                 android:orientation="horizontal">
                 <TextView
                     android:id="@+id/tv_myself_subscribe_public_count"

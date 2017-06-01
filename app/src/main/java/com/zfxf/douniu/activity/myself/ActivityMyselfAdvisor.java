@@ -2,6 +2,7 @@ package com.zfxf.douniu.activity.myself;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -12,6 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.internet.LoginInternetRequest;
+import com.zfxf.douniu.utils.CommonUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -80,6 +83,40 @@ public class ActivityMyselfAdvisor extends FragmentActivity implements View.OnCl
                 finish();
                 break;
             case R.id.rl_myself_advisor_confirm:
+                String s_phone = phone.getText().toString();
+                String s_name = name.getText().toString();
+                String s_number = number.getText().toString();
+                String s_year = year.getText().toString();
+                if(IsEmpty(s_phone,s_name,s_number)){
+                    if(!CommonUtils.isMobilePhone(s_phone)){
+                        CommonUtils.toastMessage("您输入的手机号有误");
+                        s_phone = "";
+                        return ;
+                    }
+                    int year = 0;
+                    if(s_year.equals("0 - 1年")){
+                        year = 1;
+                    }else if(s_year.equals("1 - 3年")){
+                        year = 2;
+                    }else if(s_year.equals("3 - 5年")){
+                        year = 3;
+                    }else if(s_year.equals("5 - 10年")){
+                        year = 4;
+                    }else if(s_year.equals("10年以上")){
+                        year = 5;
+                    }
+                    LoginInternetRequest.applyTouGu(s_name, s_phone, s_number, year+"", new LoginInternetRequest.ForResultListener() {
+                        @Override
+                        public void onResponseMessage(String code) {
+                            if(code.equals("成功")){
+                                CommonUtils.toastMessage("投顾申请已经提交,请等待客服与您联系");
+                                finish();
+                            }
+                        }
+                    });
+                }else {
+
+                }
                 //提交申请
                 break;
             case R.id.ll_myself_advisor_year:
@@ -111,6 +148,23 @@ public class ActivityMyselfAdvisor extends FragmentActivity implements View.OnCl
                 break;
         }
     }
+
+    private boolean IsEmpty(String s_phone, String s_name, String s_number) {
+        if(TextUtils.isEmpty(s_name)){
+            CommonUtils.toastMessage("请输入姓名");
+            return false;
+        }
+        if(TextUtils.isEmpty(s_phone)){
+            CommonUtils.toastMessage("请输入手机号");
+            return false;
+        }
+        if(TextUtils.isEmpty(s_number)){
+            CommonUtils.toastMessage("请输入资格证号");
+            return false;
+        }
+        return true;
+    }
+
     private PopupWindow mPopWindow;
 
     private void showPopupWindow() {

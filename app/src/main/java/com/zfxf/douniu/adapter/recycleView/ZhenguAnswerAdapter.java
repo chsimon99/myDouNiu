@@ -7,9 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.AnswerListInfo;
 
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * @author Admin
@@ -20,13 +24,13 @@ import java.util.List;
 public class ZhenguAnswerAdapter extends RecyclerView.Adapter<ZhenguAnswerAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<AnswerListInfo> mDatas;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int positon);
+        void onItemClick(View v, int positon,AnswerListInfo bean);
     }
 
-    public ZhenguAnswerAdapter(Context context, List<String> datas) {
+    public ZhenguAnswerAdapter(Context context, List<AnswerListInfo> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -51,7 +55,7 @@ public class ZhenguAnswerAdapter extends RecyclerView.Adapter<ZhenguAnswerAdapte
     public int getItemCount() {
         return mDatas.size();
     }
-    public void addDatas(List<String> data) {
+    public void addDatas(List<AnswerListInfo> data) {
         mDatas.addAll(data);
     }
 
@@ -83,26 +87,25 @@ public class ZhenguAnswerAdapter extends RecyclerView.Adapter<ZhenguAnswerAdapte
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, getPosition(),mDatas.get(getPosition()));
             }
         }
 
-        public void setRefreshData(String str) {
-            if(str.equals("1")){
-                name.setText("孙悟空");
-                title.setText("看我72变");
+        public void setRefreshData(AnswerListInfo bean) {
+            Glide.with(mContext).load(bean.url)
+                    .bitmapTransform(new CropCircleTransformation(mContext))
+                    .placeholder(R.drawable.home_adviosr_img).into(imageView);
+            name.setText(bean.ud_nickname);
+            title.setText(bean.zc_context);
+            detail.setText(bean.zc_pl);
+            time.setText(bean.zc_date);
+            count.setText(bean.zc_count);
+            if(bean.zc_sfjf.equals("0")){
+                lock.setVisibility(View.VISIBLE);
+                unlock.setVisibility(View.GONE);
+            }else {
                 lock.setVisibility(View.GONE);
                 unlock.setVisibility(View.VISIBLE);
-            }else if(str.equals("2")){
-                name.setText(str);
-                title.setText(str);
-                unlock.setVisibility(View.GONE);
-                lock.setVisibility(View.VISIBLE);
-            }else{
-                name.setText(str);
-                title.setText(str);
-                unlock.setVisibility(View.GONE);
-                lock.setVisibility(View.VISIBLE);
             }
         }
     }

@@ -11,6 +11,7 @@ import com.zfxf.douniu.R;
 import com.zfxf.douniu.activity.advisor.ActivityAdvisorAllSecretDetail;
 import com.zfxf.douniu.adapter.recycleView.AdvisorAllSecretAdapter;
 import com.zfxf.douniu.base.BaseFragment;
+import com.zfxf.douniu.bean.LunBoListInfo;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.utils.Constants;
@@ -19,7 +20,6 @@ import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.RecycleViewDivider;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,7 +36,6 @@ import butterknife.ButterKnife;
 public class FragmentAdvisorAllSecret extends BaseFragment{
 	private View view;
 
-	private List<Integer> mDatas = new ArrayList<Integer>();
 	private MyLunBo mMyLunBO;
 
 	@BindView(R.id.rv_advisor_all_secret)
@@ -66,13 +65,6 @@ public class FragmentAdvisorAllSecret extends BaseFragment{
 	@Override
 	public void initdata() {
 		super.initdata();
-		if (mDatas.size() == 0) {
-			mDatas.add(R.drawable.home_banner);
-			mDatas.add(R.drawable.home_banner);
-			mDatas.add(R.drawable.home_banner);
-			mDatas.add(R.drawable.home_banner);
-		}
-
 		currentPage = 1;
 		mAllSecretAdapter = null;
 		CommonUtils.showProgressDialog(getActivity(),"加载中……");
@@ -83,12 +75,12 @@ public class FragmentAdvisorAllSecret extends BaseFragment{
 	private void visitInternet(){
 		NewsInternetRequest.getSimikeListInformation(currentPage + "", null, new NewsInternetRequest.ForResultPointInfoListener() {
 			@Override
-			public void onResponseMessage(List<Map<String, String>> lists, String totalpage) {
+			public void onResponseMessage(List<Map<String, String>> lists, String totalpage, List<LunBoListInfo> lunbo_list) {
 				totlePage = Integer.parseInt(totalpage);
 				if (totlePage > 0 && currentPage <= totlePage){
 					if(currentPage == 1){
 						if(mAllSecretAdapter == null){
-							mAllSecretAdapter = new AdvisorAllSecretAdapter(getActivity(),lists,mDatas);
+							mAllSecretAdapter = new AdvisorAllSecretAdapter(getActivity(),lists,lunbo_list);
 							View view = View.inflate(getActivity(),R.layout.item_lunbo_with_gray,null);
 							mAllSecretAdapter.setHeaderView(view);
 						}

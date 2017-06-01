@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.AnswerListInfo;
 
 import java.util.List;
 
@@ -20,13 +21,13 @@ import java.util.List;
 public class AdvisorHomeAskingAdapter extends RecyclerView.Adapter<AdvisorHomeAskingAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<AnswerListInfo> mDatas;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int positon);
+        void onItemClick(View v, int positon,AnswerListInfo bean);
     }
 
-    public AdvisorHomeAskingAdapter(Context context, List<String> datas) {
+    public AdvisorHomeAskingAdapter(Context context, List<AnswerListInfo> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -52,7 +53,7 @@ public class AdvisorHomeAskingAdapter extends RecyclerView.Adapter<AdvisorHomeAs
         return mDatas.size();
     }
 
-    public void addDatas(List<String> data) {
+    public void addDatas(List<AnswerListInfo> data) {
         mDatas.addAll(data);
     }
 
@@ -72,6 +73,8 @@ public class AdvisorHomeAskingAdapter extends RecyclerView.Adapter<AdvisorHomeAs
             unlock = (ImageView) itemView.findViewById(R.id.iv_advisor_home_asking_unlock_yy);
             title = (TextView) itemView.findViewById(R.id.tv_advisor_home_asking_title);
             count = (TextView) itemView.findViewById(R.id.tv_advisor_home_asking_count);
+            time = (TextView) itemView.findViewById(R.id.tv_advisor_home_asking_time);
+            detail = (TextView) itemView.findViewById(R.id.tv_advisor_home_asking_detail);
 
             itemView.setOnClickListener(this);
         }
@@ -79,12 +82,22 @@ public class AdvisorHomeAskingAdapter extends RecyclerView.Adapter<AdvisorHomeAs
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, getPosition(),mDatas.get(getPosition()));
             }
         }
 
-        public void setRefreshData(String str, int position) {
-
+        public void setRefreshData(AnswerListInfo bean, int position) {
+            title.setText(bean.zc_context);
+            detail.setText(bean.zc_pl);
+            time.setText(bean.zc_date);
+            count.setText(bean.zc_count);
+            if(bean.zc_sfjf.equals("0")){
+                lock.setVisibility(View.VISIBLE);
+                unlock.setVisibility(View.GONE);
+            }else {
+                lock.setVisibility(View.GONE);
+                unlock.setVisibility(View.VISIBLE);
+            }
         }
     }
 }

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.adapter.recycleView.XiangMuAdapter;
+import com.zfxf.douniu.bean.LunBoListInfo;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.RecycleViewDivider;
@@ -110,7 +111,7 @@ public class ActivityXiangMu extends FragmentActivity implements View.OnClickLis
     private void visitInternet(){
         NewsInternetRequest.getProjectListInformation(currentPage + "", new NewsInternetRequest.ForResultPolicyInfoListener() {
             @Override
-            public void onResponseMessage(List<Map<String, String>> lists, String totalpage) {
+            public void onResponseMessage(List<Map<String, String>> lists, String totalpage, List<LunBoListInfo> lunbo_list) {
                 totlePage = Integer.parseInt(totalpage);
                 if (totlePage > 0 && currentPage <= totlePage){
                     if(currentPage == 1){

@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.activity.ActivityAdvisorHome;
 import com.zfxf.douniu.activity.ActivityAdvisorList;
@@ -29,6 +30,7 @@ import com.zfxf.douniu.adapter.recycleView.HomeChooseAdapter;
 import com.zfxf.douniu.adapter.recycleView.HomeZhiboAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.bean.IndexResult;
+import com.zfxf.douniu.bean.LunBoListInfo;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.utils.MyLunBo;
@@ -36,11 +38,11 @@ import com.zfxf.douniu.view.FullyLinearLayoutManager;
 import com.zfxf.douniu.view.InnerView;
 import com.zfxf.douniu.view.RecycleViewDivider;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 /**
  * @author IMXU
  * @time   2017/5/3 13:09
@@ -103,9 +105,9 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
     private LinearLayoutManager mZhiboManager;
     private HomeZhiboAdapter mZhiboAdapter;
 
-    private List<Integer> mDatas = new ArrayList<Integer>();
     private MyLunBo mMyLunBO;
     private RecycleViewDivider mDivider;
+    private myPicAdapter mPicAdapter;
 
     @Override
     public View initView(LayoutInflater inflater) {
@@ -129,19 +131,10 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
     }
     @Override
     public void initdata() {
-        if (mDatas.size() == 0) {
-            mDatas.add(R.drawable.home_banner);
-            mDatas.add(R.drawable.home_banner);
-            mDatas.add(R.drawable.home_banner);
-            mDatas.add(R.drawable.home_banner);
-        }
-        mViewPage.setAdapter(new myPicAdapter());
-
         visitInternet();
-
         super.initdata();
     }
-
+    int LunboSize = 1;
     private void visitInternet() {
         CommonUtils.showProgressDialog(getActivity(),"加载中……");
         NewsInternetRequest.getIndexInformation(new NewsInternetRequest.ForResultIndexListener() {
@@ -152,6 +145,16 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
                     CommonUtils.toastMessage("网络不稳定，加载数据失败，请重试");
                     return;
                 }
+
+                if(mPicAdapter == null){
+                    mPicAdapter = new myPicAdapter(indexResult.lunbo_list);
+                }
+                LunboSize = indexResult.lunbo_list.size();
+                if(mMyLunBO == null){
+                    mMyLunBO = new MyLunBo(mContainer, mViewPage, LunboSize);
+                    mMyLunBO.startLunBO();
+                }
+                mViewPage.setAdapter(mPicAdapter);
 
                 if(mAdvisorManager == null){
                     mAdvisorManager = new FullyLinearLayoutManager(getActivity());
@@ -288,6 +291,11 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
     }
 
     class myPicAdapter extends PagerAdapter {
+        private List<LunBoListInfo> mDatas;
+        public myPicAdapter(List<LunBoListInfo> lunbo_list) {
+            mDatas = lunbo_list;
+        }
+
         @Override
         public int getCount() {
             if(mDatas !=null){
@@ -303,7 +311,8 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
         public Object instantiateItem(ViewGroup container, final int position) {
             int pos = position % mDatas.size();
             ImageView iv = new ImageView(getActivity());
-            iv.setImageResource(mDatas.get(pos));
+            Glide.with(getActivity()).load(mDatas.get(pos).image)
+                    .placeholder(R.drawable.home_banner).into(iv);
             iv.setScaleType(ImageView.ScaleType.FIT_XY);
             container.addView(iv);
             iv.setOnClickListener(new View.OnClickListener() {
@@ -332,10 +341,7 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
     }
     @Override
     public void onResume() {
-        if(mMyLunBO == null){
-            mMyLunBO = new MyLunBo(mContainer, mViewPage, mDatas);
-            mMyLunBO.startLunBO();
-        }
+
         if(isOnPause){//防止轮播图暂定不动
             if(mMyLunBO !=null) mMyLunBO.restartLunBO();
             isOnPause = false;

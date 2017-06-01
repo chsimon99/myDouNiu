@@ -1,5 +1,6 @@
 package com.zfxf.douniu.view.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.ActivityStockInfo;
 import com.zfxf.douniu.adapter.recycleView.MarketMarketAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.view.FullyLinearLayoutManager;
@@ -133,6 +135,20 @@ public class FragmentMarketMarket extends BaseFragment implements View.OnClickLi
 	@Override
 	public void initListener() {
 		super.initListener();
+		mRiseAdapter.setOnItemClickListener(new MarketMarketAdapter.MyItemClickListener() {
+			@Override
+			public void onItemClick(View v, int positon) {
+				Intent intent = new Intent(getActivity(), ActivityStockInfo.class);
+				startActivity(intent);
+				getActivity().overridePendingTransition(0,0);
+			}
+		});
+		mFallAdapter.setOnItemClickListener(new MarketMarketAdapter.MyItemClickListener() {
+			@Override
+			public void onItemClick(View v, int positon) {
+
+			}
+		});
 	}
 	@Override
 	public void onClick(View v) {

@@ -27,12 +27,13 @@
                 android:layout_marginTop="@dimen/dm024"
                 android:src="@drawable/bar_hot"/>
             <TextView
+                android:id="@+id/tv_bar_bar_hot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="@dimen/dm024"
                 android:text="热门"
-                android:textColor="@color/colorText"
+                android:textColor="@color/colorTitle"
                 android:textSize="@dimen/dm028"/>
         </LinearLayout>
         <LinearLayout
@@ -49,6 +50,7 @@
                 android:layout_marginTop="@dimen/dm024"
                 android:src="@drawable/bar_stock"/>
             <TextView
+                android:id="@+id/tv_bar_bar_stock"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -71,6 +73,7 @@
                 android:layout_marginTop="@dimen/dm024"
                 android:src="@drawable/bar_talk"/>
             <TextView
+                android:id="@+id/tv_bar_bar_other"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

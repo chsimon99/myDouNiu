@@ -1,8 +1,10 @@
 package com.zfxf.douniu.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -10,12 +12,12 @@ import android.widget.Toast;
 
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.adapter.recycleView.AdvisorAdapter;
+import com.zfxf.douniu.bean.AnswerChiefListInfo;
+import com.zfxf.douniu.bean.IndexResult;
+import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.RecycleViewDivider;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,10 +40,9 @@ public class ActivityAskAdvisor extends FragmentActivity implements View.OnClick
     @BindView(R.id.rv_advisor)
     PullLoadMoreRecyclerView mRecyclerView;
     private AdvisorAdapter mAdapter;
-    private List<String> datas = new ArrayList<String>();
 
-
-
+    private int totlePage = 0;
+    private int currentPage = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,35 +55,67 @@ public class ActivityAskAdvisor extends FragmentActivity implements View.OnClick
     }
 
     private void initdata() {
-        if(datas.size() == 0){
-            datas.add("");
-            datas.add("");
-            datas.add("");
-            datas.add("");
-            datas.add("");
-            datas.add("");
-            datas.add("");
-            datas.add("");
-        }
-        if(mAdapter == null){
-            mAdapter = new AdvisorAdapter(this,datas);
-        }
-        mRecyclerView.setLinearLayout();
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addItemDecoration(new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL));
-        mRecyclerView.setFooterViewText("加载更多……");
-
+        currentPage = 1;
+        mAdapter = null;
+        CommonUtils.showProgressDialog(this,"加载中……");
+        visitInternet();
     }
-    int num = 0;
-    private void initListener() {
-        back.setOnClickListener(this);
-        mAdapter.setOnItemClickListener(new AdvisorAdapter.MyItemClickListener() {
+
+    private void visitInternet() {
+        NewsInternetRequest.getAnswerAdvisorListInformation(currentPage, new NewsInternetRequest.ForResultAnswerIndexListener() {
             @Override
-            public void onItemClick(View v, int positon) {
-                CommonUtils.toastMessage("点击了"+positon);
+            public void onResponseMessage(IndexResult result) {
+                if(!TextUtils.isEmpty(result.total)){
+                    totlePage = Integer.parseInt(result.total);
+                }
+                if (totlePage > 0 && currentPage <= totlePage){
+                    if(currentPage == 1){
+                        if(mAdapter == null){
+                            mAdapter = new AdvisorAdapter(ActivityAskAdvisor.this,result.online_chief);
+                        }
+                        mRecyclerView.setLinearLayout();
+                        mRecyclerView.setAdapter(mAdapter);
+                        mRecyclerView.setPullRefreshEnable(false);//下拉刷新
+                        mRecyclerView.addItemDecoration(new RecycleViewDivider(ActivityAskAdvisor.this, LinearLayoutManager.HORIZONTAL));
+                        mRecyclerView.setFooterViewText("加载更多……");
+
+                        mAdapter.setOnItemClickListener(new AdvisorAdapter.MyItemClickListener() {
+                            @Override
+                            public void onItemClick(View v, int positon,AnswerChiefListInfo bean) {
+                                Intent intent = new Intent(CommonUtils.getContext(), ActivityAskStock.class);
+                                intent.putExtra("name",bean.ud_nickname);
+                                startActivity(intent);
+                                overridePendingTransition(0,0);
+                            }
+                        });
+
+                    }else {
+                        mAdapter.addDatas(result.online_chief);
+                        mRecyclerView.post(new Runnable() {//避免出现adapter异常
+                            @Override
+                            public void run() {
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        });
+                        mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
+                            @Override
+                            public void run() {
+                                mRecyclerView.setPullLoadMoreCompleted();
+                            }
+                        },1000);
+                    }
+                    currentPage++;
+                    CommonUtils.dismissProgressDialog();
+                }else {
+                    CommonUtils.dismissProgressDialog();
+                    return;
+                }
             }
         });
+    }
 
+    private void initListener() {
+        back.setOnClickListener(this);
         mRecyclerView.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
             @Override
             public void onRefresh() {
@@ -96,27 +129,17 @@ public class ActivityAskAdvisor extends FragmentActivity implements View.OnClick
 
             @Override
             public void onLoadMore() {
-                if(num > 1){
+                if(currentPage > totlePage){
                     Toast.makeText(CommonUtils.getContext(),"没有数据了",Toast.LENGTH_SHORT).show();
-                    mRecyclerView.setPullLoadMoreCompleted();
+                    mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
+                        @Override
+                        public void run() {
+                            mRecyclerView.setPullLoadMoreCompleted();
+                        }
+                    }, 200);
                     return;
                 }
-                num++;
-                List<String> newdatas = new ArrayList<String>();
-                newdatas.add("1");
-                mAdapter.addDatas(newdatas);
-                mRecyclerView.post(new Runnable() {//避免出现adapter异常
-                    @Override
-                    public void run() {
-                        mAdapter.notifyDataSetChanged();
-                    }
-                });
-                mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
-                    @Override
-                    public void run() {
-                        mRecyclerView.setPullLoadMoreCompleted();
-                    }
-                },1000);
+                visitInternet();
             }
         });
     }

@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.MyContentList;
 
 import java.util.List;
 
@@ -20,13 +22,13 @@ import java.util.List;
 public class MyselfSubscribeCapitalAdapter extends RecyclerView.Adapter<MyselfSubscribeCapitalAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<MyContentList> mDatas;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int positon);
+        void onItemClick(View v, int id);
     }
 
-    public MyselfSubscribeCapitalAdapter(Context context, List<String> datas) {
+    public MyselfSubscribeCapitalAdapter(Context context, List<MyContentList> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -52,7 +54,7 @@ public class MyselfSubscribeCapitalAdapter extends RecyclerView.Adapter<MyselfSu
         return mDatas.size();
     }
 
-    public void addDatas(List<String> data) {
+    public void addDatas(List<MyContentList> data) {
         mDatas.addAll(data);
     }
 
@@ -76,12 +78,16 @@ public class MyselfSubscribeCapitalAdapter extends RecyclerView.Adapter<MyselfSu
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, Integer.parseInt(mDatas.get(getPosition()).cc_id));
             }
         }
 
-        public void setRefreshData(String str, int position) {
-
+        public void setRefreshData(MyContentList bean, int position) {
+            Glide.with(mContext).load(bean.cc_fielid)
+                    .placeholder(R.drawable.public_img).into(img);
+            title.setText(bean.cc_title);
+            from.setText(bean.ud_nickname);
+            count.setText(bean.dy_count);
         }
     }
 }

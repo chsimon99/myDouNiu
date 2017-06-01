@@ -35,6 +35,9 @@ public class ActivityMyselfShezhi extends FragmentActivity implements View.OnCli
     @BindView(R.id.tv_base_title)
     TextView title;
 
+    @BindView(R.id.tv_myself_shezhi_cache)
+    TextView tv_cache;
+
     @BindView(R.id.ll_myself_she_contact)
     LinearLayout contact;//联系我们
     @BindView(R.id.ll_myself_she_question)
@@ -58,19 +61,15 @@ public class ActivityMyselfShezhi extends FragmentActivity implements View.OnCli
         title.setText("设置");
         edit.setVisibility(View.INVISIBLE);
 
-        try {
-            long folderSize = DataCleanManager.getFolderSize(CommonUtils.getContext().getExternalCacheDir());
-            long FilesSize = DataCleanManager.getFolderSize(CommonUtils.getContext().getFilesDir());
-            long CacheSize = DataCleanManager.getFolderSize(CommonUtils.getContext().getCacheDir());
-//            CommonUtils.logMes("ExternalCache="+CommonUtils.getContext().getExternalCacheDir());
-//            CommonUtils.logMes("Files="+CommonUtils.getContext().getFilesDir());
-//            CommonUtils.logMes("Cache="+CommonUtils.getContext().getCacheDir());
-            CommonUtils.logMes("folderSize="+folderSize);
-            CommonUtils.logMes("FilesSize="+DataCleanManager.getFormatSize(FilesSize));
-            CommonUtils.logMes("CacheSize="+DataCleanManager.getFormatSize(CacheSize));
-        } catch (Exception e) {
-            e.printStackTrace();
+        String cacheSize = DataCleanManager.getCacheSize(this);
+        if(cacheSize.contains("KB")){
+            tv_cache.setText("0MB");
+        }else if(cacheSize.contains("Byte")){
+            tv_cache.setText("0MB");
+        }else {
+            tv_cache.setText(cacheSize);
         }
+
         initdata();
         initListener();
     }
@@ -112,14 +111,27 @@ public class ActivityMyselfShezhi extends FragmentActivity implements View.OnCli
                 overridePendingTransition(0, 0);
                 break;
             case R.id.ll_myself_she_cache:
-                DataCleanManager.deleteCache(CommonUtils.getContext());
-                CommonUtils.logMes("CacheSize="+DataCleanManager.getCacheSize(CommonUtils.getContext()));
+                AlertDialog.Builder builder_dialog = new AlertDialog.Builder(this);
+                builder_dialog.setTitle("清除缓存")
+                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                DataCleanManager.deleteCache(CommonUtils.getContext());
+                                tv_cache.setText("0MB");
+                                dialog.dismiss();
+                            }
+                        })
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
                 break;
             case R.id.ll_myself_she_update:
                 break;
             case R.id.ll_myself_she_quit:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                AlertDialog dialog = builder.create();
                 builder.setTitle("是否退出登录")
                         .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                             @Override

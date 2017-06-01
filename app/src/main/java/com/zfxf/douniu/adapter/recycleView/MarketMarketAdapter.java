@@ -63,7 +63,7 @@ public class MarketMarketAdapter extends RecyclerView.Adapter<MarketMarketAdapte
             name = (TextView) itemView.findViewById(R.id.tv_item_market_market_name);
             price = (TextView) itemView.findViewById(R.id.tv_item_market_market_price);
             ratio = (TextView) itemView.findViewById(R.id.tv_item_market_market_ratio);
-//            itemView.setOnClickListener(this);
+            itemView.setOnClickListener(this);
         }
 
         @Override

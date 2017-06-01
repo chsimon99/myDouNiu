@@ -39,15 +39,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginRight="@dimen/dm015"
                 android:text="本月收益"
                 android:textColor="@color/colorText"
                 android:textSize="@dimen/dm024"/>
             <TextView
                 android:id="@+id/tv_myself_attention_matador_month"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/dm100"
                 android:layout_height="wrap_content"
                 android:text="8.34%"
+                android:gravity="right"
                 android:textColor="@color/colorTitle"
                 android:textSize="@dimen/dm028"/>
         </LinearLayout>
@@ -87,15 +87,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginRight="@dimen/dm015"
                 android:text="本周收益"
                 android:textColor="@color/colorText"
                 android:textSize="@dimen/dm024"/>
             <TextView
                 android:id="@+id/tv_myself_attention_matador_week"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/dm100"
                 android:layout_height="wrap_content"
-                android:text="8.34%"
+                android:text="%"
+                android:gravity="right"
                 android:textColor="@color/colorTitle"
                 android:textSize="@dimen/dm028"/>
         </LinearLayout>

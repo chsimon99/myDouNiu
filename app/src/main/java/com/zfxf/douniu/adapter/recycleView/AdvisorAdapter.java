@@ -7,9 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.AnswerChiefListInfo;
 
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * @author Admin
@@ -20,13 +24,13 @@ import java.util.List;
 public class AdvisorAdapter extends RecyclerView.Adapter<AdvisorAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<AnswerChiefListInfo> mDatas;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int positon);
+        void onItemClick(View v, int positon,AnswerChiefListInfo bean);
     }
 
-    public AdvisorAdapter(Context context, List<String> datas) {
+    public AdvisorAdapter(Context context, List<AnswerChiefListInfo> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -51,7 +55,7 @@ public class AdvisorAdapter extends RecyclerView.Adapter<AdvisorAdapter.MyHolder
     public int getItemCount() {
         return mDatas.size();
     }
-    public void addDatas(List<String> data) {
+    public void addDatas(List<AnswerChiefListInfo> data) {
         mDatas.addAll(data);
     }
 
@@ -61,6 +65,8 @@ public class AdvisorAdapter extends RecyclerView.Adapter<AdvisorAdapter.MyHolder
         TextView name;
         TextView count;
         TextView price;
+        TextView type;
+        TextView gold;
         public MyHolder(View itemView, MyItemClickListener listener) {
             super(itemView);
             this.mListener = listener;
@@ -68,6 +74,8 @@ public class AdvisorAdapter extends RecyclerView.Adapter<AdvisorAdapter.MyHolder
             name = (TextView) itemView.findViewById(R.id.tv_advisor_name);
             price = (TextView) itemView.findViewById(R.id.tv_advisor_price);
             count = (TextView) itemView.findViewById(R.id.tv_advisor_count);
+            type = (TextView) itemView.findViewById(R.id.tv_advisor_type);
+            gold = (TextView) itemView.findViewById(R.id.tv_advisor_gold);
 
             itemView.setOnClickListener(this);
         }
@@ -75,12 +83,24 @@ public class AdvisorAdapter extends RecyclerView.Adapter<AdvisorAdapter.MyHolder
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, getPosition(),mDatas.get(getPosition()));
             }
         }
 
-        public void setRefreshData(String str) {
-
+        public void setRefreshData(AnswerChiefListInfo bean) {
+            Glide.with(mContext).load(bean.url)
+                    .bitmapTransform(new CropCircleTransformation(mContext))
+                    .placeholder(R.drawable.home_adviosr_img).into(imageView);
+            name.setText(bean.ud_nickname);
+            price.setText(bean.df_fee+"/次");
+            count.setText("已回答"+bean.df_count+"人次");
+            if(bean.df_sfsx.equals("首席")){
+                type.setVisibility(View.VISIBLE);
+                gold.setVisibility(View.GONE);
+            }else {
+                type.setVisibility(View.GONE);
+                gold.setVisibility(View.VISIBLE);
+            }
         }
     }
 }

@@ -6,6 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.LunBoListInfo;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,11 +20,11 @@ import java.util.List;
  */
 
 public class PicPagerAdapter extends PagerAdapter {
-    private List<Integer> mDatas = new ArrayList<Integer>();
+    private List<LunBoListInfo> mDatas = new ArrayList<LunBoListInfo>();
     private Context mContext;
     private MyOnClickListener mListener;
 
-    public PicPagerAdapter(List<Integer> datas, Context context, MyOnClickListener listener) {
+    public PicPagerAdapter(List<LunBoListInfo> datas, Context context, MyOnClickListener listener) {
         mDatas = datas;
         mContext = context;
         mListener = listener;
@@ -43,7 +47,8 @@ public class PicPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, final int position) {
         int pos = position % mDatas.size();
         ImageView iv = new ImageView(mContext);
-        iv.setImageResource(mDatas.get(pos));
+        Glide.with(mContext).load(mDatas.get(pos).image)
+                .placeholder(R.drawable.home_banner).into(iv);
         iv.setScaleType(ImageView.ScaleType.FIT_XY);
         container.addView(iv);
         iv.setOnClickListener(new View.OnClickListener() {

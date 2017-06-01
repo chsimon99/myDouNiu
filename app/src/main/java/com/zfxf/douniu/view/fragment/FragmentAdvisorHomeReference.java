@@ -12,6 +12,7 @@ import com.zfxf.douniu.activity.ActivityInformation;
 import com.zfxf.douniu.activity.ActivityToPay;
 import com.zfxf.douniu.adapter.recycleView.AdvisorHomeReferenceAdapter;
 import com.zfxf.douniu.base.BaseFragment;
+import com.zfxf.douniu.bean.LunBoListInfo;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.utils.Constants;
@@ -76,7 +77,7 @@ public class FragmentAdvisorHomeReference extends BaseFragment {
 	private void visitInternet() {
 		NewsInternetRequest.getListInformation(currentPage + "", mId + "", new NewsInternetRequest.ForResultPolicyInfoListener() {
 			@Override
-			public void onResponseMessage(List<Map<String, String>> lists, String totalpage) {
+			public void onResponseMessage(List<Map<String, String>> lists, String totalpage, List<LunBoListInfo> lunbo_list) {
 				totlePage = Integer.parseInt(totalpage);
 				if (totlePage > 0 && currentPage <= totlePage){
 					if(currentPage == 1){

@@ -10,12 +10,11 @@ import android.widget.Toast;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.adapter.recycleView.MyselfAttentionMatadorAdapter;
 import com.zfxf.douniu.base.BaseFragment;
+import com.zfxf.douniu.bean.MatadorResult;
+import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.RecycleViewDivider;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,8 +29,9 @@ public class FragmentMyselfAttentionMatador extends BaseFragment {
 	@BindView(R.id.rv_myself_attention_matador)
 	PullLoadMoreRecyclerView mRecyclerView;
 	private MyselfAttentionMatadorAdapter mAttentionAdvisorAdapter;
-	private List<String> datas = new ArrayList<String>();
 	private RecycleViewDivider mDivider;
+	private int totlePage = 0;
+	private int currentPage = 1;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -53,35 +53,84 @@ public class FragmentMyselfAttentionMatador extends BaseFragment {
 	@Override
 	public void initdata() {
 		super.initdata();
-		if(datas.size() == 0){
-			datas.add("1");
-			datas.add("2");
-			datas.add("3");
-			datas.add("1");
-//			matador.setVisibility(View.VISIBLE);
-		}
-		if(mAttentionAdvisorAdapter == null){
-			mAttentionAdvisorAdapter = new MyselfAttentionMatadorAdapter(getActivity(),datas);
-		}
+		CommonUtils.showProgressDialog(getActivity(),"加载中……");
+		visitInternet();
+	}
 
-		mRecyclerView.setLinearLayout();
-		mRecyclerView.setAdapter(mAttentionAdvisorAdapter);
-		if(mDivider == null){
-			mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
-			mRecyclerView.addItemDecoration(mDivider);
-		}
-		mRecyclerView.setPullRefreshEnable(false);
-		mRecyclerView.setPushRefreshEnable(false);
+	private void visitInternet() {
+		NewsInternetRequest.getMySubscribeMadatorListInformation(currentPage,new NewsInternetRequest.ForResultMatadorIndexListener() {
+			@Override
+			public void onResponseMessage(MatadorResult result) {
+				if(result.user_list.size()==0){
+					matador.setVisibility(View.VISIBLE);
+				}else{
+					totlePage = Integer.parseInt(result.total);
+					if (totlePage > 0 && currentPage <= totlePage){
+						if(currentPage == 1){
+							if(mAttentionAdvisorAdapter == null){
+								mAttentionAdvisorAdapter = new MyselfAttentionMatadorAdapter(getActivity(),result.user_list);
+							}
+
+							mRecyclerView.setLinearLayout();
+							mRecyclerView.setAdapter(mAttentionAdvisorAdapter);
+							if(mDivider == null){
+								mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
+								mRecyclerView.addItemDecoration(mDivider);
+							}
+							mRecyclerView.setPullRefreshEnable(false);
+							mAttentionAdvisorAdapter.setOnItemClickListener(new MyselfAttentionMatadorAdapter.MyItemClickListener() {
+								@Override
+								public void onItemClick(View v, int positon) {
+									Toast.makeText(CommonUtils.getContext(),"点击了"+positon,Toast.LENGTH_SHORT).show();
+								}
+							});
+
+						}else {
+							mAttentionAdvisorAdapter.addDatas(result.user_list);
+							mRecyclerView.post(new Runnable() {
+								@Override
+								public void run() {
+									mAttentionAdvisorAdapter.notifyDataSetChanged();
+								}
+							});
+							mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
+								@Override
+								public void run() {
+									mRecyclerView.setPullLoadMoreCompleted();
+								}
+							},1000);
+						}
+					}else {
+
+					}
+				}
+				CommonUtils.dismissProgressDialog();
+			}
+		});
 	}
 
 	@Override
 	public void initListener() {
 		super.initListener();
-
-		mAttentionAdvisorAdapter.setOnItemClickListener(new MyselfAttentionMatadorAdapter.MyItemClickListener() {
+		mRecyclerView.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
 			@Override
-			public void onItemClick(View v, int positon) {
-				Toast.makeText(CommonUtils.getContext(),"点击了"+positon,Toast.LENGTH_SHORT).show();
+			public void onRefresh() {
+
+			}
+
+			@Override
+			public void onLoadMore() {
+				if(currentPage > totlePage){
+					Toast.makeText(CommonUtils.getContext(),"没有数据了",Toast.LENGTH_SHORT).show();
+					mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
+						@Override
+						public void run() {
+							mRecyclerView.setPullLoadMoreCompleted();
+						}
+					},200);
+					return;
+				}
+				visitInternet();
 			}
 		});
 	}

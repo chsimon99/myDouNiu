@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dm020"
-                android:text="江南化工为何涨停了？江南化工为何涨停了？江南化工为何涨停了？江南化工为何涨停了？江南化工为何涨停了？江南化工为何涨停了？"
+                android:text=""
                 android:textColor="@color/titleText"
                 android:textSize="@dimen/dm028"/>
         </LinearLayout>
@@ -45,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dm016"
-                android:text="08/31 14:30"
+                android:text=""
                 android:textColor="@color/colorText"
                 android:textSize="@dimen/dm024"/>
         </LinearLayout>
@@ -63,8 +63,7 @@
             android:layout_width="@dimen/dm100"
             android:layout_height="@dimen/dm100"
             android:layout_marginLeft="@dimen/dm020"
-            android:layout_marginTop="@dimen/dm024"
-            android:src="@drawable/home_adviosr_img"/>
+            android:layout_marginTop="@dimen/dm024"/>
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -75,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dm016"
                 android:layout_marginTop="@dimen/dm036"
-                android:text="李逍遥"
+                android:text=""
                 android:textColor="@color/titleText"
                 android:textSize="@dimen/dm028"/>
             <LinearLayout
@@ -94,7 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dm016"
-                    android:text="08:40"
+                    android:text=""
                     android:textColor="@color/colorText"
                     android:textSize="@dimen/dm024"/>
             </LinearLayout>
@@ -103,28 +102,35 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"/>
-        <ImageView
-            android:layout_width="@dimen/dm030"
-            android:layout_height="@dimen/dm026"
-            android:layout_marginTop="@dimen/dm036"
-            android:src="@drawable/heart"/>
-        <TextView
-            android:id="@+id/tv_answer_zan"
+        <LinearLayout
+            android:id="@+id/ll_answer_zan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dm016"
-            android:layout_marginRight="@dimen/dm018"
-            android:layout_marginTop="@dimen/dm034"
-            android:text="赞(26)"
-            android:textColor="@color/colorTitle"
-            android:textSize="@dimen/dm024"/>
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/dm030"
+                android:layout_height="@dimen/dm026"
+                android:layout_marginTop="@dimen/dm036"
+                android:src="@drawable/heart"/>
+            <TextView
+                android:id="@+id/tv_answer_zan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dm016"
+                android:layout_marginRight="@dimen/dm018"
+                android:layout_marginTop="@dimen/dm034"
+                android:text=""
+                android:textColor="@color/colorTitle"
+                android:textSize="@dimen/dm024"/>
+        </LinearLayout>
     </LinearLayout>
     <TextView
         android:id="@+id/tv_answer_detail_answer_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/dm020"
-        android:text="很棒的平台，很好的老师，很好的文章。很棒的平台，很好的老师，很好的文章。很棒的平台，很好的老师，很好的文章。很棒的平台，很好的老师，很好的文章。很棒的平台，很好的老师，很好的文章。很棒的平台，很好的老师，很好的文章。很棒的平台，很好的老师，很好的文章。很棒的平台，很好的老师，很好的文章。很棒的平台，很好的老师，很好的文章。很棒的平台，很好的老师，很好的文章。很棒的平台，很好的老师，很好的文章。"
+        android:text=""
         android:textColor="@color/colorText"
         android:textSize="@dimen/dm024"/>
     <LinearLayout

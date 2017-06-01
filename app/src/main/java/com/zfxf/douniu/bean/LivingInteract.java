@@ -13,6 +13,11 @@ public class LivingInteract {
     public String zp_pl;//内容
     public String zp_date;//时间
     public String headImg;//图片地址
+    public String zp_id;//发帖的id
+
+    public void setZp_id(String zp_id) {
+        this.zp_id = zp_id;
+    }
 
     public void setUd_nickname(String ud_nickname) {
         this.ud_nickname = ud_nickname;

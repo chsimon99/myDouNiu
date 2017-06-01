@@ -80,7 +80,7 @@ public class ActivityHeadline extends FragmentActivity implements View.OnClickLi
             mDatas.add(R.drawable.home_banner);
         }
         if(mPagerAdapter ==null){
-            mPagerAdapter = new PicPagerAdapter(mDatas, CommonUtils.getContext(), new PicPagerAdapter.MyOnClickListener() {
+            mPagerAdapter = new PicPagerAdapter(null, CommonUtils.getContext(), new PicPagerAdapter.MyOnClickListener() {
                 @Override
                 public void onItemClick(int positon) {
                     CommonUtils.toastMessage("您点击的是第 " + (++positon) + " 个Item");
@@ -151,7 +151,7 @@ public class ActivityHeadline extends FragmentActivity implements View.OnClickLi
     @Override
     public void onResume() {
         if (mMyLunBO == null) {
-            mMyLunBO = new MyLunBo(mContainer, mViewPage, mDatas);
+            mMyLunBO = new MyLunBo(mContainer, mViewPage, 4);
             mMyLunBO.startLunBO();
         }
         if (isOnPause) {//防止轮播图暂定不动

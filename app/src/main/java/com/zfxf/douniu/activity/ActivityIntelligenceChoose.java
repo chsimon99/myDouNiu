@@ -152,6 +152,7 @@ public class ActivityIntelligenceChoose extends FragmentActivity implements View
         back.setOnClickListener(this);
         share.setOnClickListener(this);
         history.setOnClickListener(this);
+        tv_subscribe.setOnClickListener(this);
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -184,6 +185,13 @@ public class ActivityIntelligenceChoose extends FragmentActivity implements View
             case R.id.iv_base_share:
 
                 break;
+            case R.id.tv_intelligence_choose_subscribe:
+                if(tv_subscribe.getText().toString().equals("立即订阅")){
+                    subscribeInternet(0);
+                }else {
+                    subscribeInternet(1);
+                }
+                break;
             case R.id.ll_intelligence_choose_history:
                 Intent intent = new Intent(this, Activityhistory.class);
                 intent.putExtra("id",historyId);
@@ -192,7 +200,21 @@ public class ActivityIntelligenceChoose extends FragmentActivity implements View
                 break;
         }
     }
-
+    private void subscribeInternet(final int type) {
+        NewsInternetRequest.XuanGusubscribeAndCannel(mId+"", 0, type, new NewsInternetRequest.ForResultListener() {
+                    @Override
+                    public void onResponseMessage(String count) {
+                        tv_subscribe_count.setText("订阅："+count);
+                        if(type == 0){
+                            tv_subscribe.setText("已订阅");
+                            CommonUtils.toastMessage("订阅成功");
+                        }else {
+                            tv_subscribe.setText("立即订阅");
+                            CommonUtils.toastMessage("取消订阅成功");
+                        }
+                    }
+                },getResources().getString(R.string.xuangudy));
+    }
     private void finishAll() {
 
     }
