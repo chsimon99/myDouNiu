@@ -243,6 +243,13 @@ public class CommonUtils {
             return null;
         }
     }
+    public static void deleteBitmap(String str){
+        File file = new File(getContext().getFilesDir(),str);
+        if(file != null  && file.exists()){
+            file.delete();
+        }
+
+    }
     public static Bitmap getBitmap (String path){
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;

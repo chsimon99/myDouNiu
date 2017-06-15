@@ -24,7 +24,7 @@ public class AdvisorHomeGoldAdapter extends RecyclerView.Adapter<AdvisorHomeGold
     private List<StockChiInfo> mDatas;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int id);
+        void onItemClick(View v, int id,int jgc);
     }
 
     public AdvisorHomeGoldAdapter(Context context, List<StockChiInfo> datas) {
@@ -94,7 +94,8 @@ public class AdvisorHomeGoldAdapter extends RecyclerView.Adapter<AdvisorHomeGold
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, Integer.parseInt(mDatas.get(getPosition()).ud_ub_id));
+                mListener.onItemClick(v, Integer.parseInt(mDatas.get(getPosition()).ud_ub_id)
+                        ,Integer.parseInt(mDatas.get(getPosition()).djf_id));
             }
         }
 

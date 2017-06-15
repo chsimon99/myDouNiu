@@ -138,5 +138,7 @@
 
     <!--金股池首页主页-->
     <string name="gp">index.php/gp</string>
+    <!--金股池详情页-->
+    <string name="gpinfo">index.php/gp/gpinfo</string>
 
 </resources>

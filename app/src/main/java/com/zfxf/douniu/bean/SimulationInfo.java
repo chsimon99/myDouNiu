@@ -24,4 +24,9 @@ public class SimulationInfo {
     public void setSelect(boolean select) {
         isSelect = select;
     }
+
+    public String djf_id;//id
+    public String mg_rxjg;//入选价
+    public String mg_zgj;//最高价
+    public String mg_tjly;//推荐理由
 }

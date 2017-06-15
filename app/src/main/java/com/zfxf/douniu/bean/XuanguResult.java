@@ -13,4 +13,11 @@ public class XuanguResult {
     public XuanguDetail news_info;//详情信息
     public XuanguItemDetail item_info;//选股详情
     public List<XuanguDetail> news_list;//我的选股王列表
+
+
+    public List<SimulationInfo> ls_jgc;//历史金股池
+    public List<SimulationInfo> rx_jgc;//入选金股池
+    public String status;//状态 0未购买  1已购买
+    public StockChiInfo dn_jgc;//金股池详情信息
+    public String jgc_count;//入选股数量
 }

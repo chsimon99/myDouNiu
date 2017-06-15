@@ -13,11 +13,11 @@ import android.widget.TextView;
 
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.adapter.recycleView.AdvisorAllGoldPondHistoryAdapter;
+import com.zfxf.douniu.bean.XuanguResult;
+import com.zfxf.douniu.internet.NewsInternetRequest;
+import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.FullyLinearLayoutManager;
 import com.zfxf.douniu.view.RecycleViewDivider;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,10 +74,11 @@ public class ActivityGoldPond extends FragmentActivity implements View.OnClickLi
     private LinearLayoutManager mChooseManager;
     private AdvisorAllGoldPondHistoryAdapter mGoldPondStockAdapter;
 
-    private List<String> advisorDatas = new ArrayList<String>();
-    private List<String> chooseDatas = new ArrayList<String>();
     private RecycleViewDivider mHistoryDivider;
     private RecycleViewDivider mStockDivider;
+    private int mSx_id;
+    private int mJgcId;
+    private String mStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +92,8 @@ public class ActivityGoldPond extends FragmentActivity implements View.OnClickLi
         tv_money.getPaint().setFakeBoldText(true);//加粗
         tv_confirm.getPaint().setFakeBoldText(true);//加粗
 
+        mSx_id = getIntent().getIntExtra("id", 0);
+        mJgcId = getIntent().getIntExtra("jgcId", 0);
         rv_stock.setVisibility(View.GONE);
         pay_info_view.setVisibility(View.GONE);
 
@@ -99,48 +102,75 @@ public class ActivityGoldPond extends FragmentActivity implements View.OnClickLi
     }
 
     private void initData() {
-        if (advisorDatas.size() == 0) {
-            advisorDatas.add("");
-            advisorDatas.add("");
-        }
-        if(mHistoryManager == null){
-            mHistoryManager = new FullyLinearLayoutManager(this);
-        }
-        if(mGoldPondHistoryAdapter == null){
-            mGoldPondHistoryAdapter = new AdvisorAllGoldPondHistoryAdapter(this, advisorDatas);
-        }
-
-        if(chooseDatas.size() == 0){
-            chooseDatas.add("");
-            chooseDatas.add("");
-            chooseDatas.add("");
-        }
-        if(mChooseManager == null){
-            mChooseManager = new FullyLinearLayoutManager(this);
-        }
-        if(mGoldPondStockAdapter == null){
-            mGoldPondStockAdapter = new AdvisorAllGoldPondHistoryAdapter(this, chooseDatas);
-        }
-        rv_history.setLayoutManager(mHistoryManager);
-        rv_history.setAdapter(mGoldPondHistoryAdapter);
-        if(mHistoryDivider == null){//防止多次加载出现宽度变宽
-            mHistoryDivider = new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL);
-            rv_history.addItemDecoration(mHistoryDivider);
-        }
-        rv_stock.setLayoutManager(mChooseManager);
-        rv_stock.setAdapter(mGoldPondStockAdapter);
-        if(mStockDivider == null){//防止多次加载出现宽度变宽
-            mStockDivider = new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL);
-            rv_stock.addItemDecoration(mStockDivider);
-        }
+        CommonUtils.showProgressDialog(this,"加载中……");
+        visitInternet();
     }
+
+    private void visitInternet() {
+        NewsInternetRequest.getGoldPondDetailInformation(mSx_id, mJgcId, new NewsInternetRequest.ForResultXuanGuListener() {
+            @Override
+            public void onResponseMessage(XuanguResult result) {
+                //历史战绩
+                if(mHistoryManager == null){
+                    mHistoryManager = new FullyLinearLayoutManager(ActivityGoldPond.this);
+                }
+                if(mGoldPondHistoryAdapter == null){
+                    mGoldPondHistoryAdapter = new AdvisorAllGoldPondHistoryAdapter(ActivityGoldPond.this, result.ls_jgc);
+                }
+                rv_history.setLayoutManager(mHistoryManager);
+                rv_history.setAdapter(mGoldPondHistoryAdapter);
+                if(mHistoryDivider == null){//防止多次加载出现宽度变宽
+                    mHistoryDivider = new RecycleViewDivider(ActivityGoldPond.this, LinearLayoutManager.HORIZONTAL);
+                    rv_history.addItemDecoration(mHistoryDivider);
+                }
+
+                //当前股票
+                if(mChooseManager == null){
+                    mChooseManager = new FullyLinearLayoutManager(ActivityGoldPond.this);
+                }
+                if(mGoldPondStockAdapter == null){
+                    mGoldPondStockAdapter = new AdvisorAllGoldPondHistoryAdapter(ActivityGoldPond.this, result.rx_jgc);
+                }
+                rv_stock.setLayoutManager(mChooseManager);
+                rv_stock.setAdapter(mGoldPondStockAdapter);
+                if(mStockDivider == null){//防止多次加载出现宽度变宽
+                    mStockDivider = new RecycleViewDivider(ActivityGoldPond.this, LinearLayoutManager.HORIZONTAL);
+                    rv_stock.addItemDecoration(mStockDivider);
+                }
+                String dj_type = result.dn_jgc.dj_type;
+                tv_name.setText(result.dn_jgc.ud_nickname+"的金股池");
+                tv_subscribe.setText(result.dn_jgc.dy_count);
+                tv_money.setText("￥"+result.dn_jgc.dy_fee);
+                tv_time.setText("发布周期:"+result.dn_jgc.jgcfa_date);
+                tv_people.setText(result.dn_jgc.djf_syrq);
+                tv_brief.setText(result.dn_jgc.djf_fxts);
+                tv_count.setText(result.jgc_count+"股");
+                mStatus = result.status;
+                if(mStatus.equals("1")){
+                    pay_info.setVisibility(View.INVISIBLE);
+                    tv_confirm.setVisibility(View.GONE);
+                    rv_stock.setVisibility(View.VISIBLE);
+                    pay_info_view.setVisibility(View.VISIBLE);
+
+                }else{
+                    pay_info.setVisibility(View.VISIBLE);
+                    tv_confirm.setVisibility(View.VISIBLE);
+                    rv_stock.setVisibility(View.GONE);
+                    pay_info_view.setVisibility(View.GONE);
+
+                }
+                CommonUtils.dismissProgressDialog();
+            }
+        });
+    }
+
     private void initListener() {
         back.setOnClickListener(this);
         share.setOnClickListener(this);
         rl_history.setOnClickListener(this);
         rl_stock.setOnClickListener(this);
     }
-    boolean isBuy = false;//后期放在服务器上获取是否购买信息
+//    boolean isBuy = false;//后期放在服务器上获取是否购买信息
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -158,14 +188,13 @@ public class ActivityGoldPond extends FragmentActivity implements View.OnClickLi
 
                 break;
             case R.id.rl_gold_pond_detail_stock:
-                if(!isBuy){
-                    isBuy = !isBuy;
+                if(mStatus.equals("1")){
                     pay_info.setVisibility(View.INVISIBLE);
                     rv_stock.setVisibility(View.VISIBLE);
                     pay_info_view.setVisibility(View.VISIBLE);
 
                 }else{
-                    isBuy = !isBuy;
+                    CommonUtils.toastMessage("去购买");
                     pay_info.setVisibility(View.VISIBLE);
                     rv_stock.setVisibility(View.GONE);
                     pay_info_view.setVisibility(View.GONE);
@@ -179,4 +208,9 @@ public class ActivityGoldPond extends FragmentActivity implements View.OnClickLi
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        CommonUtils.dismissProgressDialog();
+    }
 }

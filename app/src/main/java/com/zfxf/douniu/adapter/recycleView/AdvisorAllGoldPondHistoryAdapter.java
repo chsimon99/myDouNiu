@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.SimulationInfo;
 
 import java.util.List;
 
@@ -19,13 +20,13 @@ import java.util.List;
 public class AdvisorAllGoldPondHistoryAdapter extends RecyclerView.Adapter<AdvisorAllGoldPondHistoryAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<SimulationInfo> mDatas;
 
     public interface MyItemClickListener {
         void onItemClick(View v, int positon);
     }
 
-    public AdvisorAllGoldPondHistoryAdapter(Context context, List<String> datas) {
+    public AdvisorAllGoldPondHistoryAdapter(Context context, List<SimulationInfo> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -50,8 +51,8 @@ public class AdvisorAllGoldPondHistoryAdapter extends RecyclerView.Adapter<Advis
     public int getItemCount() {
         return mDatas.size();
     }
-    public void addDatas(String data) {
-        mDatas.add(data);
+    public void addDatas(List<SimulationInfo> data) {
+        mDatas.addAll(data);
     }
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -83,8 +84,13 @@ public class AdvisorAllGoldPondHistoryAdapter extends RecyclerView.Adapter<Advis
             }
         }
 
-        public void setRefreshData(String bean, int position) {
-
+        public void setRefreshData(SimulationInfo bean, int position) {
+            name.setText(bean.mg_name);
+            number.setText(bean.mg_code);
+            price.setText(bean.mg_rxjg);
+            highprice.setText(bean.mg_zgj);
+            highrise.setText(bean.mg_zfz);
+            reason.setText("推荐理由："+bean.mg_tjly);
         }
     }
 }

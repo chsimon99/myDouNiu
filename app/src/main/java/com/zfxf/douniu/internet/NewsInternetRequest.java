@@ -598,6 +598,13 @@ public class NewsInternetRequest {
         }).post(context.getResources().getString(R.string.stockInfo),true,params);
     }
 
+    /**
+     * 金股池首页信息
+     * @param id 首席id 没有时传""
+     * @param type 0短线  1中线
+     * @param shortStockListener 短线的接口
+     * @param longStockListener 中线的接口
+     */
     public static void getGoldPondListInformation(String id, int type
             , final ForResultGoldPoneShortStockListener shortStockListener, final ForResultGoldPoneLongStockListener longStockListener){
         if(shortStockListener !=null){
@@ -628,6 +635,34 @@ public class NewsInternetRequest {
                 }
             }
         }).post(context.getResources().getString(R.string.gp),true,params);
+    }
+
+    /**
+     * 金股池详情页信息
+     * @param sx_id 首席的id
+     * @param jgc_id 方案的id
+     * @param listener
+     */
+    public static void getGoldPondDetailInformation(int sx_id,int jgc_id,ForResultXuanGuListener listener){
+        xuanGuListener = listener;
+        Map<String ,String> params = new HashMap<>();
+        params.put("djf_id",jgc_id+"");
+        params.put("sx_ub_id",sx_id+"");
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getGoldPondDetailInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getGoldPondDetailInformation="+response);
+                XuanguResult result = mGson.fromJson(response, XuanguResult.class);
+                if(result.result.code.equals("10")){
+                    xuanGuListener.onResponseMessage(result);
+                }
+            }
+        }).post(context.getResources().getString(R.string.gpinfo),true,params);
     }
     /**
      * 列表选项 私密课

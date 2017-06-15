@@ -30,7 +30,7 @@
                             android:id="@+id/tv_gold_pond_detail_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="某某某的金股池"
+                            android:text="金股池"
                             android:textColor="@color/colorTitle"
                             android:textSize="@dimen/dm028"/>
                         <View
@@ -41,7 +41,7 @@
                             android:id="@+id/tv_gold_pond_detail_subscribe"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="469"
+                            android:text=""
                             android:textColor="@color/colorTitle"
                             android:textSize="@dimen/dm024"/>
                         <TextView
@@ -60,7 +60,7 @@
                             android:id="@+id/tv_gold_pond_detail_time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="发布周期:03/08-03/11"
+                            android:text="发布周期:"
                             android:textColor="@color/colorText"
                             android:textSize="@dimen/dm024"/>
                         <View
@@ -71,7 +71,7 @@
                             android:id="@+id/tv_gold_pond_detail_money"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="999/每月"
+                            android:text=""
                             android:textColor="@color/colorTitle"
                             android:textSize="@dimen/dm028"/>
                     </LinearLayout>
@@ -162,7 +162,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginLeft="@dimen/dm020"
-                            android:text="10股"
+                            android:text=""
                             android:textColor="@color/colorTitle"
                             android:textSize="@dimen/dm028"/>
                         <View
@@ -256,7 +256,7 @@
                         android:layout_marginTop="@dimen/dm020"
                         android:layout_marginBottom="@dimen/dm020"
                         android:layout_marginLeft="@dimen/dm020"
-                        android:text="资金量50万以上拥有成熟投资理念的客户"
+                        android:text=""
                         android:textColor="@color/colorText"
                         android:textSize="@dimen/dm024"/>
                 </LinearLayout>
@@ -297,7 +297,7 @@
                         android:layout_marginTop="@dimen/dm020"
                         android:layout_marginBottom="@dimen/dm020"
                         android:layout_marginLeft="@dimen/dm020"
-                        android:text="资金量50万以上拥有成熟投资理念的客户"
+                        android:text=""
                         android:textColor="@color/colorText"
                         android:textSize="@dimen/dm024"/>
                 </LinearLayout>

@@ -83,8 +83,10 @@ public class FragmentAdvisorHomeGold extends BaseFragment {
                     mRecyclerView.setPushRefreshEnable(false);//禁止上拉加载
                     mGoldAdapter.setOnItemClickListener(new AdvisorHomeGoldAdapter.MyItemClickListener() {
                         @Override
-                        public void onItemClick(View v, int positon) {
+                        public void onItemClick(View v, int id,int jgc) {
                             Intent intent = new Intent(CommonUtils.getContext(), ActivityGoldPond.class);
+                            intent.putExtra("id",mId);
+                            intent.putExtra("jgcId",jgc);
                             startActivity(intent);
                             getActivity().overridePendingTransition(0,0);
                         }
