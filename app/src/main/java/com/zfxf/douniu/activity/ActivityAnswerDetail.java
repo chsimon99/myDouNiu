@@ -14,6 +14,8 @@ import com.zfxf.douniu.R;
 import com.zfxf.douniu.bean.IndexResult;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -99,6 +101,7 @@ public class ActivityAnswerDetail extends FragmentActivity implements View.OnCli
                 sx_id = result.context_info.sx_ub_id;
                 sx_fee = result.context_info.sx_fee;
                 mIsZan = result.context_info.is_zan;
+                SpTools.setBoolean(ActivityAnswerDetail.this, Constants.read,true);
                 CommonUtils.dismissProgressDialog();
             }
         });
@@ -142,6 +145,8 @@ public class ActivityAnswerDetail extends FragmentActivity implements View.OnCli
             case R.id.tv_answer_detail_ask:
                 intent = new Intent(CommonUtils.getContext(), ActivityAskStock.class);
                 intent.putExtra("name",name.getText().toString());
+                intent.putExtra("fee",sx_fee);
+                intent.putExtra("sx_id",sx_id);
                 startActivity(intent);
                 overridePendingTransition(0,0);
                 break;

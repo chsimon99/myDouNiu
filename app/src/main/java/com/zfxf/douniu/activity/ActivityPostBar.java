@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 /**
  * @author IMXU
  * @time   2017/5/3 13:41
- * @des    新闻 详情
+ * @des    斗牛吧发表观点
  * 邮箱：butterfly_xu@sina.com
  *
 */

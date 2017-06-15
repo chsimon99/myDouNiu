@@ -26,6 +26,10 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
+import com.luck.picture.lib.PictureSelector;
+import com.luck.picture.lib.config.PictureConfig;
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.entity.LocalMedia;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.bean.address.City;
 import com.zfxf.douniu.bean.address.CityPickerDialog;
@@ -34,7 +38,6 @@ import com.zfxf.douniu.bean.address.Province;
 import com.zfxf.douniu.internet.LoginInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.utils.Constants;
-import com.zfxf.douniu.utils.MyPhotoUtil;
 import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.SelectPicPopupWindow;
 
@@ -74,6 +77,8 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
     LinearLayout address;
     @BindView(R.id.ll_myself_information_name)
     LinearLayout name;
+    @BindView(R.id.ll_myself_information_info)
+    LinearLayout info;
 
 
     @BindView(R.id.tv_myself_information_date)
@@ -82,8 +87,12 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
     TextView textAddress;
     @BindView(R.id.tv_myself_information_name)
     TextView textName;
+    @BindView(R.id.tv_myself_information_info)
+    TextView textInfo;
     @BindView(R.id.et_myself_information_name)
     EditText editName;
+    @BindView(R.id.et_myself_information_info)
+    EditText editInfo;
 
     @BindView(R.id.iv_myself_information_img)
     ImageView img;
@@ -119,6 +128,7 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
                     String address = map.get("ud_addr");
                     String borth = map.get("ud_borth");
                     String photoUrl = map.get("ud_photo_fileid");
+                    String memo = map.get("ud_memo");
                     if(!TextUtils.isEmpty(nickname)){
                         textName.setText(nickname);
                     }
@@ -127,6 +137,9 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
                     }
                     if(!TextUtils.isEmpty(borth)){
                         textDate.setText(borth);
+                    }
+                    if(!TextUtils.isEmpty(memo)){
+                        textInfo.setText(memo);
                     }
 
                     if(TextUtils.isEmpty(photoUrl)){
@@ -157,8 +170,20 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
         date.setOnClickListener(this);
         address.setOnClickListener(this);
         name.setOnClickListener(this);
+        info.setOnClickListener(this);
         img.setOnClickListener(this);
         editName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                switch(actionId){
+                    case EditorInfo.IME_ACTION_DONE:
+                        saveText();
+                        break;
+                }
+                return false;
+            }
+        });
+        editInfo.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 switch(actionId){
@@ -184,6 +209,21 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
                 return false;
             }
         });
+        editInfo.setOnClickListener(new View.OnClickListener() {//设置这个为了点击时光标在最右边
+            @Override
+            public void onClick(View v) {
+                editInfo.requestFocus();
+                editInfo.setSelection(editInfo.getText().length());
+            }
+        });
+        editInfo.setOnTouchListener(new View.OnTouchListener() {//设置这个为了点击时光标在最右边
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                editInfo.requestFocus();
+                editInfo.setSelection(editInfo.getText().length());
+                return false;
+            }
+        });
     }
     private static final int		TAKE_CODE	= 100;
     private static final int		PICK_CODE	= 101;
@@ -196,6 +236,7 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
         }
         switch (v.getId()){
             case R.id.iv_base_back:
+                saveText();
                 if(number>0){
                     confirm();
                 }else {
@@ -214,23 +255,55 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
             case R.id.ll_myself_information_name:
                 getUserName(v);
                 break;
+            case R.id.ll_myself_information_info:
+                getInfo(v);
+                break;
             case R.id.iv_myself_information_img:
                 mPopupWindow = getPicPopupWindow(this, this, content);
                 break;
             case R.id.btn_pick_photo://本地
-                MyPhotoUtil.pickPhoto(this,TAKE_CODE);
+//                MyPhotoUtil.pickPhoto(this,TAKE_CODE);
+                PictureSelector.create(this).openGallery(PictureMimeType.ofImage())
+                        .selectionMode(PictureConfig.SINGLE)//多选 or 单选
+                        .enableCrop(true)//是否裁剪
+                        .compress(true)//是否压缩
+                        .freeStyleCropEnabled(true)// 裁剪框是否可拖拽
+                        .compressMode(PictureConfig.LUBAN_COMPRESS_MODE)
+                        //系统自带 or 鲁班压缩 PictureConfig.SYSTEM_COMPRESS_MODE or LUBAN_COMPRESS_MODE
+                        .previewImage(false)// 是否可预览图片
+                        .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
                 break;
             case R.id.btn_take_photo://拍照
-                MyPhotoUtil.picTyTakePhoto(this,PICK_CODE);
+//                MyPhotoUtil.picTyTakePhoto(this,PICK_CODE);
+                PictureSelector.create(this).openCamera(PictureMimeType.ofImage())
+                        .selectionMode(PictureConfig.SINGLE)//多选 or 单选
+                        .enableCrop(true)//是否裁剪
+                        .compress(true)//是否压缩
+                        .freeStyleCropEnabled(true)// 裁剪框是否可拖拽
+                        .compressMode(PictureConfig.LUBAN_COMPRESS_MODE)
+                        .previewImage(false)// 是否可预览图片
+                        .forResult(PictureConfig.CHOOSE_REQUEST);//结果回调onActivityResult code
                 break;
+
         }
     }
-
+    private boolean isText = false;
+    private boolean isInfo = false;
     private void saveText() {
-        textName.setVisibility(View.VISIBLE);
-        editName.setVisibility(View.GONE);
-        textName.setText(editName.getText().toString());
-        number++;
+        if(isText){
+            isText = false;
+            textName.setVisibility(View.VISIBLE);
+            editName.setVisibility(View.GONE);
+            textName.setText(editName.getText().toString());
+            number++;
+        }
+        if(isInfo){
+            isInfo = false;
+            textInfo.setVisibility(View.VISIBLE);
+            editInfo.setVisibility(View.GONE);
+            textInfo.setText(editInfo.getText().toString());
+            number++;
+        }
     }
 
     @Override
@@ -245,6 +318,7 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
     }
 
     private void getUserName(View v) {
+        isText = true;
         if(textName.isShown()){
             textName.setVisibility(View.GONE);
             editName.setVisibility(View.VISIBLE);
@@ -253,6 +327,20 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
             editName.setFocusableInTouchMode(true);
             editName.requestFocus();
             editName.findFocus();
+            InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(0,InputMethodManager.SHOW_FORCED);
+        }
+    }
+    private void getInfo(View v) {
+        isInfo = true;
+        if(textInfo.isShown()){
+            textInfo.setVisibility(View.GONE);
+            editInfo.setVisibility(View.VISIBLE);
+            editInfo.setText(textInfo.getText().toString());
+            editInfo.setFocusable(true);
+            editInfo.setFocusableInTouchMode(true);
+            editInfo.requestFocus();
+            editInfo.findFocus();
             InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.toggleSoftInput(0,InputMethodManager.SHOW_FORCED);
         }
@@ -354,11 +442,12 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
 
     }
 
-    public SelectPicPopupWindow getPicPopupWindow(Context context, View.OnClickListener itemsOnClick, View viewAttach) {
+    public SelectPicPopupWindow getPicPopupWindow(Context context, View.OnClickListener itemsOnClick
+            , View viewAttach) {
         //实例化SelectPicPopupWindow
         SelectPicPopupWindow menuWindow = new SelectPicPopupWindow(context, itemsOnClick);
-        //显示窗口
-        menuWindow.showAtLocation(viewAttach, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0); //设置layout在PopupWindow中显示的位置
+        //显示窗口,设置layout在PopupWindow中显示的位置
+        menuWindow.showAtLocation(viewAttach, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
         return menuWindow;
     }
     private String MYICON = "myicon.jpg";
@@ -366,39 +455,81 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
     private String picID = "";
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode){
-            case TAKE_CODE:// 从相册选择好之后的结果
-                MyPhotoUtil.onPhotoFromPick(this,data,ZOOM_CODE);
-                break;
-            case PICK_CODE:// 拍照完成之后会来到这个地方
-                MyPhotoUtil.onPhotoFromCamera(this,data,ZOOM_CODE);
-                break;
-            case ZOOM_CODE:// 缩放完成之后会来到这个地方
-                Bitmap zoomBitMap = MyPhotoUtil.getZoomBitMap(this);
-                CommonUtils.saveBitmapFile(zoomBitMap,MYICON);//先保存文件到本地
-                LoginInternetRequest.uplodePicture(MYICON,new LoginInternetRequest.ForResultListener() {
-                    @Override
-                    public void onResponseMessage(String code) {
-                        if(TextUtils.isEmpty(code)){
-                           return;
-                        }else {
-                            picID = code;
-                        }
+//        switch (requestCode){
+//            case TAKE_CODE:// 从相册选择好之后的结果
+//                MyPhotoUtil.onPhotoFromPick(this,data,ZOOM_CODE);
+//                break;
+//            case PICK_CODE:// 拍照完成之后会来到这个地方
+//                MyPhotoUtil.onPhotoFromCamera(this,data,ZOOM_CODE);
+//                break;
+//            case ZOOM_CODE:// 缩放完成之后会来到这个地方
+//                Bitmap zoomBitMap = MyPhotoUtil.getZoomBitMap(this);
+//                CommonUtils.saveBitmapFile(zoomBitMap,MYICON);//先保存文件到本地
+//                LoginInternetRequest.uplodePicture(MYICON,new LoginInternetRequest.ForResultListener() {
+//                    @Override
+//                    public void onResponseMessage(String code) {
+//                        if(TextUtils.isEmpty(code)){
+//                           return;
+//                        }else {
+//                            picID = code;
+//                        }
+//                    }
+//                });
+//                if(zoomBitMap!= null){
+//                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                    zoomBitMap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+//                    byte[] bytes=baos.toByteArray();
+//                    Glide.with(this).load(bytes)
+//                            .placeholder(R.drawable.advisor_home_img)
+//                            .bitmapTransform(new CropCircleTransformation(this))
+//                            .into(img);
+//                    number++;
+//                }else{
+//                    img.setImageResource(R.drawable.advisor_home_img);
+//                }
+//                break;
+//        }
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case PictureConfig.CHOOSE_REQUEST:
+                    // 图片选择结果回调
+                    LocalMedia media = PictureSelector.obtainMultipleResult(data).get(0);
+                    // 例如 LocalMedia 里面返回三种path
+                    // 1.media.getPath(); 为原图path
+                    // 2.media.getCutPath();为裁剪后path，需判断media.isCut();是否为true
+                    // 3.media.getCompressPath();为压缩后path，需判断media.isCompressed();是否为true
+                    // 如果裁剪并压缩了，以取压缩路径为准，因为是先裁剪后压缩的
+                    final Bitmap zoomBitMap = CommonUtils.getBitmap(media.getCompressPath());
+                    if(zoomBitMap!=null){
+                        CommonUtils.saveBitmapFile(zoomBitMap,MYICON);//先保存文件到本地
+                        LoginInternetRequest.uplodePicture(MYICON,new LoginInternetRequest.ForResultListener() {
+                            @Override
+                            public void onResponseMessage(String code) {
+                                if(TextUtils.isEmpty(code)){
+                                    return;
+                                }else {
+                                    picID = code;
+                                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                    zoomBitMap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                                    byte[] bytes=baos.toByteArray();
+                                    Glide.with(ActivityMyselfInformation.this).load(bytes)
+                                            .placeholder(R.drawable.advisor_home_img)
+                                            .bitmapTransform(new CropCircleTransformation(ActivityMyselfInformation.this))
+                                            .into(img);
+                                    number++;
+                                }
+                            }
+                        });
+                    }else {
+                        Bitmap cacheBitmap = CommonUtils.getCacheFile("myicon.jpg");
+                            byte[] bytes=CommonUtils.getBitMapByteArray(cacheBitmap);
+                            Glide.with(ActivityMyselfInformation.this).load(bytes)
+                                    .placeholder(R.drawable.advisor_home_img)
+                                    .bitmapTransform(new CropCircleTransformation(ActivityMyselfInformation.this))
+                                    .into(img);
                     }
-                });
-                if(zoomBitMap!= null){
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    zoomBitMap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-                    byte[] bytes=baos.toByteArray();
-                    Glide.with(this).load(bytes)
-                            .placeholder(R.drawable.advisor_home_img)
-                            .bitmapTransform(new CropCircleTransformation(this))
-                            .into(img);
-                    number++;
-                }else{
-                    img.setImageResource(R.drawable.advisor_home_img);
-                }
-                break;
+                    break;
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -414,6 +545,7 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
                         String name = textName.getText().toString();
                         String address = textAddress.getText().toString();
                         String date = textDate.getText().toString();
+                        String info = textInfo.getText().toString();
                         if(name.equals("请输入您的昵称")){
                             name = "";
                         }
@@ -422,8 +554,11 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
                         }if(date.equals("请输入您的生日")){
                             date = "";
                         }
+                        if(info.equals("请输入您的简介")){
+                            info = "";
+                        }
                         final String finalName = name;
-                        LoginInternetRequest.editUserInformation(name, date, address, picID, new LoginInternetRequest.ForResultListener() {
+                        LoginInternetRequest.editUserInformation(name, date, address,info, picID, new LoginInternetRequest.ForResultListener() {
                             @Override
                             public void onResponseMessage(String code) {
                                 if(code.equals("成功")){

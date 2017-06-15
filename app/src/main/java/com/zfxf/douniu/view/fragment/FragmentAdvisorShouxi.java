@@ -114,11 +114,8 @@ public class FragmentAdvisorShouxi extends BaseFragment {
 						},1000);
 					}
 					currentPage++;
-					CommonUtils.dismissProgressDialog();
-				}else {
-					CommonUtils.dismissProgressDialog();
-					return;
 				}
+				CommonUtils.dismissProgressDialog();
 			}
 		},null);
 	}

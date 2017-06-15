@@ -1,6 +1,7 @@
 package com.zfxf.douniu.adapter.recycleView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +11,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.adapter.viewPager.PicPagerAdapter;
 import com.zfxf.douniu.bean.LunBoListInfo;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
 import com.zfxf.douniu.utils.MyLunBo;
+import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.InnerView;
 
 import java.util.List;
@@ -125,14 +129,12 @@ public class AdvisorAllPublicAdapter extends RecyclerView.Adapter<AdvisorAllPubl
             boolean isNext = false;
             switch (v.getId()) {
                 case R.id.tv_advisor_all_public_type:
-                    isNext = true;
-                    if (type.getText().toString().equals("预约")) {
-                        type.setText("已预约");
-                        type.setBackgroundResource(R.drawable.backgroud_button_gary_color);
-                    } else {
-                        type.setText("预约");
-                        type.setBackgroundResource(R.drawable.backgroud_button_app_color);
+                    if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+                        Intent intent = new Intent(mContext, ActivityLogin.class);
+                        mContext.startActivity(intent);
+                        return;
                     }
+                    isNext = true;
                     if(mSubListener !=null){
                         mSubListener.onItemClick(v,Integer.parseInt(mDatas.get(getRealPosition(this)).get("cc_id"))
                                 ,type.getText().toString());
@@ -153,14 +155,21 @@ public class AdvisorAllPublicAdapter extends RecyclerView.Adapter<AdvisorAllPubl
 
         }
 
-        private void subscribeInternet(int type) {
+        private void subscribeInternet(int mtype) {
             NewsInternetRequest.subscribeAndCannel(mDatas.get(getRealPosition(this)).get("cc_id")
-                    , 0, type, new NewsInternetRequest.ForResultListener() {
-                @Override
-                public void onResponseMessage(String count) {
-                    myCount.setText(count);
-                }
-            },mContext.getResources().getString(R.string.userdy));
+                    , 0, mtype, new NewsInternetRequest.ForResultListener() {
+                        @Override
+                        public void onResponseMessage(String count) {
+                            if (type.getText().toString().equals("预约")) {
+                                type.setText("已预约");
+                                type.setBackgroundResource(R.drawable.backgroud_button_gary_color);
+                            } else {
+                                type.setText("预约");
+                                type.setBackgroundResource(R.drawable.backgroud_button_app_color);
+                            }
+                            myCount.setText(count);
+                        }
+                    },mContext.getResources().getString(R.string.userdy));
         }
 
         public void setRefreshData(Map<String, String> bean, int position) {

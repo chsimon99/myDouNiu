@@ -94,10 +94,13 @@ public class KChartTabView extends RelativeLayout implements View.OnClickListene
      *
      * @param text 选项卡文字
      */
-    public void addTab(String text) {
+    public void addTab(String text, boolean isShowTabIndicator) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.item_tab, null);
         TextView textView = (TextView) view.findViewById(R.id.tab_text);
         textView.setText(text);
+        if (isShowTabIndicator) {
+            view.findViewById(R.id.tab_indicator).setVisibility(View.VISIBLE);
+        }
         view.setOnClickListener(this);
         mLlContainer.addView(view);
         //第一个默认选中

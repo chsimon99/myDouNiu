@@ -6,11 +6,11 @@
     android:background="@color/colorBgGary"
     android:orientation="vertical">
     <com.zfxf.douniu.view.MyScrollview android:layout_width="match_parent"
+                                       android:id="@+id/sv_simulation_buy"
                                        android:layout_height="match_parent"
                                        android:scrollbars="none">
         <LinearLayout android:layout_width="match_parent"
                       android:layout_height="match_parent"
-                      android:descendantFocusability="blocksDescendants"
                       android:orientation="horizontal">
             <LinearLayout android:layout_width="match_parent"
                           android:layout_height="wrap_content"
@@ -22,11 +22,13 @@
                                   android:layout_height="wrap_content"
                                   android:orientation="vertical">
                         <LinearLayout android:layout_width="@dimen/dm350"
+                                      android:id="@+id/ll_simulation_buy_search"
                                       android:layout_height="@dimen/dm065"
                                       android:layout_margin="@dimen/dm015"
                                       android:background="@drawable/backgroud_bg_gary_white"
                                       android:orientation="horizontal">
                             <TextView
+                                android:id="@+id/tv_simulation_buy_code"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -39,6 +41,7 @@
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"/>
                             <TextView
+                                android:id="@+id/tv_simulation_buy_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -49,11 +52,14 @@
                         </LinearLayout>
                         <LinearLayout android:layout_width="@dimen/dm350"
                                       android:layout_height="@dimen/dm065"
+                                      android:focusable="true"
+                                      android:focusableInTouchMode="true"
                                       android:layout_marginLeft="@dimen/dm015"
                                       android:layout_marginRight="@dimen/dm015"
                                       android:background="@drawable/backgroud_bg_gary_white"
                                       android:orientation="horizontal">
                             <LinearLayout android:layout_width="@dimen/dm064"
+                                          android:id="@+id/ll_simulation_buy_minus"
                                           android:layout_height="@dimen/dm065"
                                           android:background="@drawable/backgroud_button_app_color_two_corner_left"
                                           android:orientation="vertical">
@@ -71,18 +77,22 @@
                                     android:textColor="@color/colorWhite"
                                     android:textSize="@dimen/dm016"/>
                             </LinearLayout>
-                            <TextView
+                            <EditText
+                                android:id="@+id/et_simulation_buy_price"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:paddingRight="@dimen/dm015"
-                                android:text="价格"
+                                android:hint="价格"
+                                android:background="@null"
+                                android:inputType="numberDecimal"
                                 android:textColor="@color/titleText"
                                 android:textSize="@dimen/dm028"/>
+
                             <LinearLayout android:layout_width="@dimen/dm064"
                                           android:layout_height="@dimen/dm065"
+                                          android:id="@+id/ll_simulation_buy_add"
                                           android:background="@drawable/backgroud_button_app_color_two_corner_right"
                                           android:orientation="vertical">
                                 <ImageView android:layout_width="@dimen/dm035"
@@ -112,8 +122,9 @@
                                       android:textColor="@color/colorText"
                                       android:textSize="@dimen/dm022"/>
                             <TextView android:layout_width="wrap_content"
+                                      android:id="@+id/tv_simulation_buy_price_minus"
                                       android:layout_height="wrap_content"
-                                      android:text="1.23"
+                                      android:text=""
                                       android:textColor="@color/colorFall"
                                       android:textSize="@dimen/dm022"/>
                             <View
@@ -127,12 +138,15 @@
                                       android:textSize="@dimen/dm022"/>
                             <TextView android:layout_width="wrap_content"
                                       android:layout_height="wrap_content"
-                                      android:text="2.85"
+                                      android:id="@+id/tv_simulation_buy_price_add"
+                                      android:text=""
                                       android:textColor="@color/colorRise"
                                       android:textSize="@dimen/dm022"/>
                         </LinearLayout>
                         <LinearLayout android:layout_width="@dimen/dm350"
                                       android:layout_height="@dimen/dm065"
+                                      android:focusable="true"
+                                      android:focusableInTouchMode="true"
                                       android:layout_marginLeft="@dimen/dm015"
                                       android:layout_marginRight="@dimen/dm015"
                                       android:layout_marginTop="@dimen/dm015"
@@ -146,12 +160,15 @@
                                 android:text="数量"
                                 android:textColor="@color/titleText"
                                 android:textSize="@dimen/dm028"/>
-                            <TextView
+                            <EditText
+                                android:id="@+id/et_simulation_buy_count"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_marginLeft="@dimen/dm030"
-                                android:text="1000"
+                                android:background="@null"
+                                android:inputType="number"
+                                android:hint="请输入数量"
                                 android:textColor="@color/titleText"
                                 android:textSize="@dimen/dm028"/>
                         </LinearLayout>
@@ -161,6 +178,7 @@
                                       android:layout_marginTop="@dimen/dm010"
                                       android:orientation="horizontal">
                             <TextView android:layout_width="0dp"
+                                      android:id="@+id/tv_simulation_buy_count_all"
                                       android:layout_height="match_parent"
                                       android:layout_marginRight="@dimen/dm010"
                                       android:layout_weight="1"
@@ -170,6 +188,7 @@
                                       android:textColor="@color/colorText"
                                       android:textSize="@dimen/dm024"/>
                             <TextView android:layout_width="0dp"
+                                      android:id="@+id/tv_simulation_buy_count_half"
                                       android:layout_height="match_parent"
                                       android:layout_marginRight="@dimen/dm010"
                                       android:layout_weight="1"
@@ -180,6 +199,7 @@
                                       android:textSize="@dimen/dm024"/>
                             <TextView android:layout_width="0dp"
                                       android:layout_height="match_parent"
+                                      android:id="@+id/tv_simulation_buy_count_three"
                                       android:layout_marginRight="@dimen/dm010"
                                       android:layout_weight="1"
                                       android:background="@drawable/backgroud_bg_gary_white"
@@ -189,6 +209,7 @@
                                       android:textSize="@dimen/dm024"/>
                             <TextView android:layout_width="0dp"
                                       android:layout_height="match_parent"
+                                      android:id="@+id/tv_simulation_buy_count_four"
                                       android:layout_marginRight="@dimen/dm015"
                                       android:layout_weight="1"
                                       android:background="@drawable/backgroud_bg_gary_white"
@@ -230,52 +251,11 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="卖1"
+                                android:text="卖5"
                                 android:textColor="@color/colorText"
                                 android:textSize="@dimen/dm022"/>
                             <TextView
-                                android:layout_width="@dimen/dm100"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/dm050"
-                                android:gravity="center"
-                                android:text="——"
-                                android:textColor="@color/colorText"
-                                android:textSize="@dimen/dm022"/>
-                        </LinearLayout>
-                        <LinearLayout android:layout_width="wrap_content"
-                                      android:layout_height="wrap_content"
-                                      android:layout_marginLeft="@dimen/dm015"
-                                      android:layout_marginRight="@dimen/dm015"
-                                      android:layout_marginTop="@dimen/dm008"
-                                      android:orientation="horizontal">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="卖2"
-                                android:textColor="@color/colorText"
-                                android:textSize="@dimen/dm022"/>
-                            <TextView
-                                android:layout_width="@dimen/dm100"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/dm050"
-                                android:gravity="center"
-                                android:text="123.23"
-                                android:textColor="@color/colorFall"
-                                android:textSize="@dimen/dm022"/>
-                        </LinearLayout>
-                        <LinearLayout android:layout_width="wrap_content"
-                                      android:layout_height="wrap_content"
-                                      android:layout_marginLeft="@dimen/dm015"
-                                      android:layout_marginRight="@dimen/dm015"
-                                      android:layout_marginTop="@dimen/dm008"
-                                      android:orientation="horizontal">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="卖3"
-                                android:textColor="@color/colorText"
-                                android:textSize="@dimen/dm022"/>
-                            <TextView
+                                android:id="@+id/tv_simulation_buy_sold5"
                                 android:layout_width="@dimen/dm100"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/dm050"
@@ -297,6 +277,7 @@
                                 android:textColor="@color/colorText"
                                 android:textSize="@dimen/dm022"/>
                             <TextView
+                                android:id="@+id/tv_simulation_buy_sold4"
                                 android:layout_width="@dimen/dm100"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/dm050"
@@ -314,10 +295,55 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="卖5"
+                                android:text="卖3"
                                 android:textColor="@color/colorText"
                                 android:textSize="@dimen/dm022"/>
                             <TextView
+                                android:id="@+id/tv_simulation_buy_sold3"
+                                android:layout_width="@dimen/dm100"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/dm050"
+                                android:gravity="center"
+                                android:text="——"
+                                android:textColor="@color/colorText"
+                                android:textSize="@dimen/dm022"/>
+                        </LinearLayout>
+                        <LinearLayout android:layout_width="wrap_content"
+                                      android:layout_height="wrap_content"
+                                      android:layout_marginLeft="@dimen/dm015"
+                                      android:layout_marginRight="@dimen/dm015"
+                                      android:layout_marginTop="@dimen/dm008"
+                                      android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="卖2"
+                                android:textColor="@color/colorText"
+                                android:textSize="@dimen/dm022"/>
+                            <TextView
+                                android:id="@+id/tv_simulation_buy_sold2"
+                                android:layout_width="@dimen/dm100"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/dm050"
+                                android:gravity="center"
+                                android:text="——"
+                                android:textColor="@color/colorText"
+                                android:textSize="@dimen/dm022"/>
+                        </LinearLayout>
+                        <LinearLayout android:layout_width="wrap_content"
+                                      android:layout_height="wrap_content"
+                                      android:layout_marginLeft="@dimen/dm015"
+                                      android:layout_marginRight="@dimen/dm015"
+                                      android:layout_marginTop="@dimen/dm008"
+                                      android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="卖1"
+                                android:textColor="@color/colorText"
+                                android:textSize="@dimen/dm022"/>
+                            <TextView
+                                android:id="@+id/tv_simulation_buy_sold1"
                                 android:layout_width="@dimen/dm100"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/dm050"
@@ -344,6 +370,7 @@
                                 android:textColor="@color/colorText"
                                 android:textSize="@dimen/dm022"/>
                             <TextView
+                                android:id="@+id/tv_simulation_buy_buy1"
                                 android:layout_width="@dimen/dm100"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/dm050"
@@ -365,12 +392,13 @@
                                 android:textColor="@color/colorText"
                                 android:textSize="@dimen/dm022"/>
                             <TextView
+                                android:id="@+id/tv_simulation_buy_buy2"
                                 android:layout_width="@dimen/dm100"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/dm050"
                                 android:gravity="center"
-                                android:text="123.23"
-                                android:textColor="@color/colorRise"
+                                android:text="——"
+                                android:textColor="@color/colorText"
                                 android:textSize="@dimen/dm022"/>
                         </LinearLayout>
                         <LinearLayout android:layout_width="wrap_content"
@@ -386,6 +414,7 @@
                                 android:textColor="@color/colorText"
                                 android:textSize="@dimen/dm022"/>
                             <TextView
+                                android:id="@+id/tv_simulation_buy_buy3"
                                 android:layout_width="@dimen/dm100"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/dm050"
@@ -407,6 +436,7 @@
                                 android:textColor="@color/colorText"
                                 android:textSize="@dimen/dm022"/>
                             <TextView
+                                android:id="@+id/tv_simulation_buy_buy4"
                                 android:layout_width="@dimen/dm100"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/dm050"
@@ -429,6 +459,7 @@
                                 android:textColor="@color/colorText"
                                 android:textSize="@dimen/dm022"/>
                             <TextView
+                                android:id="@+id/tv_simulation_buy_buy5"
                                 android:layout_width="@dimen/dm100"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/dm050"

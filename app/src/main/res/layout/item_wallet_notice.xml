@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="@dimen/dm080"
+              android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm080"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tv_new_notice_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="发帖加精"
+            android:layout_gravity="center"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/dm024"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/tv_new_notice_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="+10牛币"
+            android:textColor="@color/colorTitle"
+            android:textSize="@dimen/dm024"/>
+
+    </LinearLayout>
+</LinearLayout>

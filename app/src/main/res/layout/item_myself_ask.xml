@@ -39,6 +39,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dm030"
             android:text="江南化工为何涨停?"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:textColor="@color/titleText"
             android:textSize="@dimen/dm028"/>
 
@@ -49,6 +51,8 @@
             android:layout_marginRight="@dimen/dm027"
             android:layout_marginTop="@dimen/dm015"
             android:text="据日本华侨社报道，据日本华侨社报道据日本华侨"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:textColor="@color/colorText"
             android:textSize="@dimen/dm024"/>
         <LinearLayout

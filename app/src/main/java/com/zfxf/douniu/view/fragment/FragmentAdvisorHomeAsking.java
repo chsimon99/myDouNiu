@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.activity.ActivityAnswerDetail;
 import com.zfxf.douniu.activity.ActivityToPay;
+import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.adapter.recycleView.AdvisorHomeAskingAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.bean.AnswerListInfo;
@@ -41,7 +42,7 @@ public class FragmentAdvisorHomeAsking extends BaseFragment {
 	private int totlePage = 0;
 	private int currentPage = 1;
 	private int mId;
-
+	private boolean isShow = false;
 	@Override
 	public View initView(LayoutInflater inflater) {
 		if (view == null) {
@@ -63,10 +64,11 @@ public class FragmentAdvisorHomeAsking extends BaseFragment {
 	@Override
 	public void initdata() {
 		super.initdata();
-		currentPage = 1;
-		mAskingAdapter = null;
-		CommonUtils.showProgressDialog(getActivity(),"加载中……");
-		visitInternet();
+		if (!isShow){
+			isShow = true;
+			CommonUtils.showProgressDialog(getActivity(),"加载中……");
+			visitInternet();
+		}
 	}
 
 	private void visitInternet() {
@@ -91,6 +93,12 @@ public class FragmentAdvisorHomeAsking extends BaseFragment {
 						mAskingAdapter.setOnItemClickListener(new AdvisorHomeAskingAdapter.MyItemClickListener() {
 							@Override
 							public void onItemClick(View v, int positon,AnswerListInfo bean) {
+								if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+									Intent intent = new Intent(getActivity(), ActivityLogin.class);
+									getActivity().startActivity(intent);
+									getActivity().overridePendingTransition(0,0);
+									return;
+								}
 								if (bean.zc_sfjf.equals("0")){
 									Intent intent = new Intent(CommonUtils.getContext(), ActivityToPay.class);
 									intent.putExtra("type","问股");
@@ -122,11 +130,8 @@ public class FragmentAdvisorHomeAsking extends BaseFragment {
 						},1000);
 					}
 					currentPage++;
-					CommonUtils.dismissProgressDialog();
-				}else {
-					CommonUtils.dismissProgressDialog();
-					return;
 				}
+				CommonUtils.dismissProgressDialog();
 
 			}
 		});
@@ -167,6 +172,20 @@ public class FragmentAdvisorHomeAsking extends BaseFragment {
 			CommonUtils.showProgressDialog(getActivity(),"加载中……");
 			visitInternet();
 			SpTools.setBoolean(getActivity(), Constants.buy,false);
+		}
+		if(SpTools.getBoolean(getActivity(), Constants.read,false)){
+			currentPage = 1;
+			mAskingAdapter = null;
+			CommonUtils.showProgressDialog(getActivity(),"加载中……");
+			visitInternet();
+			SpTools.setBoolean(getActivity(), Constants.read,false);
+		}
+		if(SpTools.getBoolean(getActivity(), Constants.alreadyLogin,false)){
+			currentPage = 1;
+			mAskingAdapter = null;
+			CommonUtils.showProgressDialog(getActivity(),"加载中……");
+			visitInternet();
+			SpTools.setBoolean(getActivity(), Constants.alreadyLogin,false);
 		}
 	}
 }

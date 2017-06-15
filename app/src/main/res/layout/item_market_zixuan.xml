@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="horizontal">
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+        <LinearLayout android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_marginBottom="@dimen/dm010"
+                      android:layout_marginTop="@dimen/dm010"
+                      android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/iv_item_market_market"
+                android:layout_width="@dimen/dm032"
+                android:layout_height="@dimen/dm032"
+                android:layout_gravity="center_vertical"
+                android:layout_marginRight="@dimen/dm005"
+            android:src="@drawable/my_noselect"/>
+            <TextView android:id="@+id/tv_item_market_market_name"
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:layout_height="wrap_content"
+                      android:gravity="left"
+                      android:text="格林美\n002340"
+                      android:textColor="@color/titleText"
+                      android:textSize="@dimen/dm024"/>
+            <TextView android:id="@+id/tv_item_market_market_price"
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center"
+                      android:gravity="center"
+                      android:text="12.23"
+                      android:textColor="@color/titleText"
+                      android:textSize="@dimen/dm028"/>
+            <TextView android:id="@+id/tv_item_market_market_ratio"
+                      android:layout_width="0dp"
+                      android:layout_weight="1"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center"
+                      android:gravity="right"
+                      android:text="+9.98%"
+                      android:textColor="@color/colorRise"
+                      android:textSize="@dimen/dm028"/>
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

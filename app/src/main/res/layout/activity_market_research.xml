@@ -16,8 +16,6 @@
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/dm020"
             android:layout_weight="1"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:background="@drawable/backgroud_search_white"
             android:orientation="horizontal">
             <ImageView

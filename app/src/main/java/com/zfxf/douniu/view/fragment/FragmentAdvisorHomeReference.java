@@ -44,7 +44,7 @@ public class FragmentAdvisorHomeReference extends BaseFragment {
 	private int totlePage = 0;
 	private int currentPage = 1;
 	private int mId;
-
+	private boolean isShow = false;
 	@Override
 	public View initView(LayoutInflater inflater) {
 		if (view == null) {
@@ -66,11 +66,11 @@ public class FragmentAdvisorHomeReference extends BaseFragment {
 	@Override
 	public void initdata() {
 		super.initdata();
-		currentPage = 1;
-		mReferenceAdapter = null;
-		CommonUtils.showProgressDialog(getActivity(),"加载中……");
-		visitInternet();
-
+		if(!isShow){
+			isShow =true;
+			CommonUtils.showProgressDialog(getActivity(),"加载中……");
+			visitInternet();
+		}
 //		mRecyclerView.setPushRefreshEnable(false);
 	}
 
@@ -129,11 +129,8 @@ public class FragmentAdvisorHomeReference extends BaseFragment {
 					}
 
 					currentPage++;
-					CommonUtils.dismissProgressDialog();
-				}else {
-					CommonUtils.dismissProgressDialog();
-					return;
 				}
+				CommonUtils.dismissProgressDialog();
 			}
 		},getActivity().getResources().getString(R.string.cankaolist));
 	}

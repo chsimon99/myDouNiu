@@ -30,7 +30,7 @@ public class KChartView extends BaseKChart {
     public KChartView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
-        addChildDraw("VOL", new VolDraw(getContext()));
+        addChildDraw("VOL", new VolDraw(getContext()).withMainChart(true));
         addChildDraw("MACD", new MACDDraw(getContext()));
         addChildDraw("KDJ", new KDJDraw(getContext()));
         addChildDraw("RSI", new RSIDraw(getContext()));
@@ -40,6 +40,7 @@ public class KChartView extends BaseKChart {
 
     @Override
     public void onLeftSide() {
+//        Log.d("--LeftSide---","最新的数据没有了");
         //滑到了最左边
     }
 

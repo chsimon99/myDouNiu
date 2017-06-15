@@ -14,6 +14,8 @@ import android.widget.TextView;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.adapter.viewPager.BarItemAdapter;
 import com.zfxf.douniu.adapter.viewPager.PicPagerAdapter;
+import com.zfxf.douniu.bean.LunBoListInfo;
+import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.utils.MyLunBo;
 import com.zfxf.douniu.view.InnerView;
@@ -48,7 +50,6 @@ public class ActivityHeadline extends FragmentActivity implements View.OnClickLi
     LinearLayout mContainer;
 
     private PicPagerAdapter mPagerAdapter;
-    private List<Integer> mDatas = new ArrayList<Integer>();
     private MyLunBo mMyLunBO;
 
     @BindView(R.id.tl_fragment_new_top)
@@ -73,21 +74,27 @@ public class ActivityHeadline extends FragmentActivity implements View.OnClickLi
     }
 
     private void initData() {
-        if (mDatas.size() == 0) {
-            mDatas.add(R.drawable.home_banner);
-            mDatas.add(R.drawable.home_banner);
-            mDatas.add(R.drawable.home_banner);
-            mDatas.add(R.drawable.home_banner);
-        }
-        if(mPagerAdapter ==null){
-            mPagerAdapter = new PicPagerAdapter(null, CommonUtils.getContext(), new PicPagerAdapter.MyOnClickListener() {
-                @Override
-                public void onItemClick(int positon) {
-                    CommonUtils.toastMessage("您点击的是第 " + (++positon) + " 个Item");
+        NewsInternetRequest.getHeadListLunboInformation(new NewsInternetRequest.ForResultHeadListLunboInfoListener() {
+            @Override
+            public void onResponseMessage(List<LunBoListInfo> lunbo_list) {
+                if(lunbo_list!=null){
+                    if(mPagerAdapter ==null){
+                        mPagerAdapter = new PicPagerAdapter(lunbo_list, CommonUtils.getContext(), new PicPagerAdapter.MyOnClickListener() {
+                            @Override
+                            public void onItemClick(int positon) {
+                                CommonUtils.toastMessage("您点击的是第 " + (++positon) + " 个Item");
+                            }
+                        });
+                    }
+                    if (mMyLunBO == null) {
+                        mMyLunBO = new MyLunBo(mContainer, mViewPage, lunbo_list.size());
+                        mMyLunBO.startLunBO();
+                    }
+                    mViewPage.setAdapter(mPagerAdapter);
                 }
-            });
-        }
-        mViewPage.setAdapter(mPagerAdapter);
+            }
+        });
+
 
         if(mFragmentNewTopPolicy == null){
             mFragmentNewTopPolicy = new FragmentNewTopPolicy();
@@ -150,10 +157,6 @@ public class ActivityHeadline extends FragmentActivity implements View.OnClickLi
     }
     @Override
     public void onResume() {
-        if (mMyLunBO == null) {
-            mMyLunBO = new MyLunBo(mContainer, mViewPage, 4);
-            mMyLunBO.startLunBO();
-        }
         if (isOnPause) {//防止轮播图暂定不动
             if (mMyLunBO != null)
                 mMyLunBO.restartLunBO();

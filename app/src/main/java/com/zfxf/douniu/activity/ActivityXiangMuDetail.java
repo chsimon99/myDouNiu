@@ -1,5 +1,6 @@
 package com.zfxf.douniu.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -8,10 +9,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.bean.OtherResult;
 import com.zfxf.douniu.bean.ProjectListResult;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -71,6 +75,7 @@ public class ActivityXiangMuDetail extends FragmentActivity implements View.OnCl
     }
     private void initListener() {
         back.setOnClickListener(this);
+        qualify.setOnClickListener(this);
     }
 
     @Override
@@ -79,6 +84,13 @@ public class ActivityXiangMuDetail extends FragmentActivity implements View.OnCl
             case R.id.iv_base_back:
                 finishAll();
                 finish();
+                break;
+            case R.id.tv_xiangmu_detail_qualify:
+                if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+                    Intent intent = new Intent(this, ActivityLogin.class);
+                    startActivity(intent);
+                    overridePendingTransition(0,0);
+                }
                 break;
         }
     }
@@ -103,7 +115,7 @@ public class ActivityXiangMuDetail extends FragmentActivity implements View.OnCl
                 }
                 content.setText(projectInfo.cc_description);
                 human.setText(projectInfo.shiyong);
-                qualify.setText("认购项目("+projectInfo.feiyong+"元起)");
+                qualify.setText("认购项目("+ projectInfo.feiyong+"元起)");
                 CommonUtils.dismissProgressDialog();
             }
         },getResources().getString(R.string.projectinfo));

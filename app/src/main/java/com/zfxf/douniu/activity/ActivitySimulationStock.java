@@ -283,4 +283,10 @@ public class ActivitySimulationStock extends FragmentActivity implements View.On
         }
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        CommonUtils.dismissProgressDialog();
+    }
 }

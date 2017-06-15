@@ -5,6 +5,7 @@
                 android:background="@color/colorTitle">
 
     <ImageView
+        android:id="@+id/iv_base_backto"
         android:layout_width="@dimen/dm038"
         android:layout_height="@dimen/dm038"
         android:layout_centerVertical="true"
@@ -71,5 +72,16 @@
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/dm026"
         android:visibility="gone"/>
+    <TextView
+        android:id="@+id/tv_base_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/dm020"
+        android:text="完成"
+        android:textColor="@color/colorWhite"
+        android:visibility="gone"
+        android:textSize="@dimen/dm030"/>
 
 </RelativeLayout>

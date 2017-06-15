@@ -46,6 +46,7 @@ public class FragmentAdvisorAllReference extends BaseFragment{
 	private RecycleViewLunboDivider mDivider;
 	private int totlePage = 0;
 	private int currentPage = 1;
+	private boolean isShow = false;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -67,10 +68,11 @@ public class FragmentAdvisorAllReference extends BaseFragment{
 	@Override
 	public void initdata() {
 		super.initdata();
-		currentPage = 1;
-		mReferenceAdapter = null;
-		CommonUtils.showProgressDialog(getActivity(),"加载中……");
-		visitInternet();
+		if(!isShow){
+			isShow = true;
+			CommonUtils.showProgressDialog(getActivity(),"加载中……");
+			visitInternet();
+		}
 	}
 
 	private void visitInternet() {
@@ -130,11 +132,8 @@ public class FragmentAdvisorAllReference extends BaseFragment{
 						},1000);
 					}
 					currentPage++;
-					CommonUtils.dismissProgressDialog();
-				}else{
-					CommonUtils.dismissProgressDialog();
-					return;
 				}
+				CommonUtils.dismissProgressDialog();
 			}
 		},getActivity().getResources().getString(R.string.cankaolist));
 	}

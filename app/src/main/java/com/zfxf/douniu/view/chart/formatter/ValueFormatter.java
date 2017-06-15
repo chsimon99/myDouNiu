@@ -11,11 +11,12 @@ import com.zfxf.douniu.view.chart.impl.IValueFormatter;
 public class ValueFormatter implements IValueFormatter {
     @Override
     public String format(float value) {
-        if(value < 10000){
-            return String.format("%.2f", value);
-        }else {
-
-            return String.format("%.2f"+"万", value/10000);
-        }
+//        if(value < 10000){
+//            return String.format("%.2f", value);
+//        }else {
+//
+//            return String.format("%.2f"+"万", value/10000);
+//        }
+        return String.format("%.2f", value);
     }
 }

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBgGary"
+    android:orientation="vertical">
+    <include layout="@layout/activity_base_title"/>
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingBottom="@dimen/dm010"
+                    android:paddingLeft="@dimen/dm018"
+                    android:paddingRight="@dimen/dm018"
+                    android:paddingTop="@dimen/dm010">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="名称(代码)"
+            android:textColor="@color/titleText"
+            android:textSize="@dimen/dm022"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="现价"
+            android:textColor="@color/titleText"
+            android:textSize="@dimen/dm022"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="涨幅"
+            android:textColor="@color/titleText"
+            android:textSize="@dimen/dm022"/>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm004"/>
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="0dp"
+                  android:layout_weight="1"
+                  android:orientation="vertical">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_myself_stock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingLeft="@dimen/dm018"
+            android:paddingRight="@dimen/dm018">
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+    <View android:layout_width="match_parent" android:layout_height="1dp"
+    android:background="@color/gray"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dm080"
+        android:background="@color/white"
+        android:orientation="horizontal">
+        <RelativeLayout
+            android:id="@+id/rl_myself_stock_all"
+            android:layout_width="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/iv_myself_stock_all"
+            android:layout_width="@dimen/dm032"
+            android:layout_height="@dimen/dm032"
+            android:layout_marginLeft="@dimen/dm018"
+            android:layout_marginRight="@dimen/dm018"
+            android:src="@drawable/my_noselect"/>
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/tv_myself_stock_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="共选中0个"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/dm024"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <RelativeLayout android:layout_width="@dimen/dm140"
+                        android:layout_height="@dimen/dm045"
+                        android:id="@+id/rl_myself_stock_delete"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="@dimen/dm018"
+                        android:background="@drawable/backgroud_bg_app_color_hollow_another">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:text="删除"
+                android:gravity="center"
+                android:textColor="@color/colorTitle"
+                android:textSize="@dimen/dm028"/>
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

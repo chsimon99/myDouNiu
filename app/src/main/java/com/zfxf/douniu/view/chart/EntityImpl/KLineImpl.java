@@ -5,5 +5,5 @@ package com.zfxf.douniu.view.chart.EntityImpl;
  * Created by tifezh on 2016/6/9.
  */
 
-public interface KLineImpl extends CandleImpl, BOLLImpl, MACDImpl, KDJImpl, RSIImpl,VoLImpl {
+public interface KLineImpl extends CandleImpl, BOLLImpl, MACDImpl, KDJImpl, RSIImpl,VoLImpl ,MINImpl{
 }

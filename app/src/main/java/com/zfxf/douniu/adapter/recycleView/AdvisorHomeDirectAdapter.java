@@ -25,7 +25,7 @@ public class AdvisorHomeDirectAdapter extends RecyclerView.Adapter<AdvisorHomeDi
     private List<Map<String, String>> mDatas;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int positon);
+        void onItemClick(View v, int id,int status);
     }
 
     public AdvisorHomeDirectAdapter(Context context, List<Map<String, String>> datas) {
@@ -79,7 +79,8 @@ public class AdvisorHomeDirectAdapter extends RecyclerView.Adapter<AdvisorHomeDi
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, Integer.parseInt(mDatas.get(getPosition()).get("zt_id")),
+                        Integer.parseInt(mDatas.get(getPosition()).get("status")));
             }
         }
 

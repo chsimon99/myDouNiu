@@ -6,17 +6,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.activity.ActivityStockInfo;
+import com.zfxf.douniu.activity.ActivityStockList;
 import com.zfxf.douniu.adapter.recycleView.MarketMarketAdapter;
 import com.zfxf.douniu.base.BaseFragment;
+import com.zfxf.douniu.bean.SimulationResult;
+import com.zfxf.douniu.internet.NewsInternetRequest;
+import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.FullyLinearLayoutManager;
 import com.zfxf.douniu.view.RecycleViewDivider;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,6 +53,11 @@ public class FragmentMarketMarket extends BaseFragment implements View.OnClickLi
 	@BindView(R.id.tv_market_market_cy_ratio)
 	TextView cy_ratio;
 
+	@BindView(R.id.rl_market_market_rise_more)
+	RelativeLayout rl_rise;
+	@BindView(R.id.rl_market_market_fall_more)
+	RelativeLayout rl_fall;
+
 	@BindView(R.id.rv_market_market_rise)
 	RecyclerView mRiseRecyclerView;
 	private LinearLayoutManager mRiseManager;
@@ -60,8 +67,6 @@ public class FragmentMarketMarket extends BaseFragment implements View.OnClickLi
 	RecyclerView mFallRecyclerView;
 	private LinearLayoutManager mFallManager;
 	private MarketMarketAdapter mFallAdapter;
-	private List<String> riseDatas = new ArrayList<String>();
-	private List<String> fallDatas = new ArrayList<String>();
 
 	private RecycleViewDivider mRiseDivider;
 	private RecycleViewDivider mFallDivider;
@@ -89,71 +94,85 @@ public class FragmentMarketMarket extends BaseFragment implements View.OnClickLi
 	@Override
 	public void initdata() {
 		super.initdata();
-		if (riseDatas.size() == 0) {
-			riseDatas.add("");
-			riseDatas.add("");
-			riseDatas.add("");
-			riseDatas.add("");
-			riseDatas.add("");
-		}
-		if(mRiseManager == null){
-			mRiseManager = new FullyLinearLayoutManager(getActivity());
-		}
-		if(mRiseAdapter == null){
-			mRiseAdapter = new MarketMarketAdapter(getActivity(), riseDatas);
-		}
+		mRiseAdapter = null;
+		mFallAdapter = null;
+		visitInternet();
+	}
 
-		if(fallDatas.size() == 0){
-			fallDatas.add("");
-			fallDatas.add("");
-			fallDatas.add("");
-			fallDatas.add("");
-			fallDatas.add("");
-		}
-		if(mFallManager == null){
-			mFallManager = new FullyLinearLayoutManager(getActivity());
-		}
-		if(mFallAdapter == null){
-			mFallAdapter = new MarketMarketAdapter(getActivity(), fallDatas);
-		}
+	private void visitInternet() {
+		CommonUtils.showProgressDialog(getActivity(),"加载中……");
+		NewsInternetRequest.getQuotationIndexInformation(new NewsInternetRequest.ForResultSimulationIndexListener() {
+			@Override
+			public void onResponseMessage(SimulationResult result) {
+				if(result!=null){
+					if(mRiseManager == null){
+						mRiseManager = new FullyLinearLayoutManager(getActivity());
+					}
+					if(mRiseAdapter == null){
+						mRiseAdapter = new MarketMarketAdapter(getActivity(), result.zhang_gupiao);
+					}
+					if(mFallManager == null){
+						mFallManager = new FullyLinearLayoutManager(getActivity());
+					}
+					if(mFallAdapter == null){
+						mFallAdapter = new MarketMarketAdapter(getActivity(), result.die_gupiao);
+					}
 
-		mRiseRecyclerView.setLayoutManager(mRiseManager);
-		mRiseRecyclerView.setAdapter(mRiseAdapter);
-		if(mRiseDivider == null){//防止多次加载出现宽度变宽
-			mRiseDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
-			mRiseRecyclerView.addItemDecoration(mRiseDivider);
-		}
+					mRiseRecyclerView.setLayoutManager(mRiseManager);
+					mRiseRecyclerView.setAdapter(mRiseAdapter);
+					if(mRiseDivider == null){//防止多次加载出现宽度变宽
+						mRiseDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
+						mRiseRecyclerView.addItemDecoration(mRiseDivider);
+					}
 
-		mFallRecyclerView.setLayoutManager(mFallManager);
-		mFallRecyclerView.setAdapter(mFallAdapter);
-		if(mFallDivider == null){//防止多次加载出现宽度变宽
-			mFallDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
-			mFallRecyclerView.addItemDecoration(mFallDivider);
-		}
+					mFallRecyclerView.setLayoutManager(mFallManager);
+					mFallRecyclerView.setAdapter(mFallAdapter);
+					if(mFallDivider == null){//防止多次加载出现宽度变宽
+						mFallDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
+						mFallRecyclerView.addItemDecoration(mFallDivider);
+					}
+					mRiseAdapter.setOnItemClickListener(new MarketMarketAdapter.MyItemClickListener() {
+						@Override
+						public void onItemClick(View v, int positon) {
+							Intent intent = new Intent(getActivity(), ActivityStockInfo.class);
+							startActivity(intent);
+							getActivity().overridePendingTransition(0,0);
+						}
+					});
+					mFallAdapter.setOnItemClickListener(new MarketMarketAdapter.MyItemClickListener() {
+						@Override
+						public void onItemClick(View v, int positon) {
+
+						}
+					});
+				}
+				CommonUtils.dismissProgressDialog();
+			}
+		});
 	}
 
 	@Override
 	public void initListener() {
 		super.initListener();
-		mRiseAdapter.setOnItemClickListener(new MarketMarketAdapter.MyItemClickListener() {
-			@Override
-			public void onItemClick(View v, int positon) {
-				Intent intent = new Intent(getActivity(), ActivityStockInfo.class);
-				startActivity(intent);
-				getActivity().overridePendingTransition(0,0);
-			}
-		});
-		mFallAdapter.setOnItemClickListener(new MarketMarketAdapter.MyItemClickListener() {
-			@Override
-			public void onItemClick(View v, int positon) {
-
-			}
-		});
+		rl_fall.setOnClickListener(this);
+		rl_rise.setOnClickListener(this);
 	}
+	Intent mIntent;
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()){
-
+			case R.id.rl_market_market_rise_more:
+				mIntent = new Intent(getActivity(), ActivityStockList.class);
+				mIntent.putExtra("status",1);
+				startActivity(mIntent);
+				getActivity().overridePendingTransition(0,0);
+				break;
+			case R.id.rl_market_market_fall_more:
+				mIntent = new Intent(getActivity(), ActivityStockList.class);
+				mIntent.putExtra("status",0);
+				startActivity(mIntent);
+				getActivity().overridePendingTransition(0,0);
+				break;
 		}
 	}
 }

@@ -9,6 +9,24 @@ import com.zfxf.douniu.view.chart.EntityImpl.KLineImpl;
  */
 
 public class KLineEntity implements KLineImpl {
+    public float lastPrice;
+    public float lastClosePrice;
+    public float avPrice;
+
+    public float getLastPrice() {
+        return lastPrice;
+    }
+
+    public float getLastClosePrice() {
+        return lastClosePrice;
+    }
+    public float getAVPrice() {
+        return avPrice;
+    }
+
+    public String getTime() {
+        return Date;
+    }
 
     public String getDatetime() {
         return Date;
@@ -147,4 +165,18 @@ public class KLineEntity implements KLineImpl {
 
     public float dn;
 
+    public boolean isMinDraw = false;
+
+    public float getCloseDif() {
+        if (isMinDraw) {
+            return Close - lastPrice;
+        } else {
+            return Close - Open;
+        }
+    }
+
+
+    public boolean getRate() {
+        return Close - lastClosePrice >= 0;
+    }
 }

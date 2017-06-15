@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.SimulationInfo;
 
 import java.util.List;
 
@@ -19,13 +20,13 @@ import java.util.List;
 public class MarketMarketAdapter extends RecyclerView.Adapter<MarketMarketAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<SimulationInfo> mDatas;
 
     public interface MyItemClickListener {
         void onItemClick(View v, int positon);
     }
 
-    public MarketMarketAdapter(Context context, List<String> datas) {
+    public MarketMarketAdapter(Context context, List<SimulationInfo> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -43,12 +44,15 @@ public class MarketMarketAdapter extends RecyclerView.Adapter<MarketMarketAdapte
 
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
-        holder.setRefreshData(position);
+        holder.setRefreshData(mDatas.get(position));
     }
 
     @Override
     public int getItemCount() {
         return mDatas.size();
+    }
+    public void addDatas(List<SimulationInfo> data) {
+        mDatas.addAll(data);
     }
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -73,8 +77,15 @@ public class MarketMarketAdapter extends RecyclerView.Adapter<MarketMarketAdapte
             }
         }
 
-        public void setRefreshData(int position) {
-
+        public void setRefreshData(SimulationInfo bean) {
+            name.setText(bean.mg_name+"\n"+bean.mg_code);
+            price.setText(bean.mg_xj);
+            ratio.setText(bean.mg_zfz);
+            if(bean.mg_zfz.contains("-")){
+                ratio.setTextColor(mContext.getResources().getColor(R.color.colorFall));
+            }else {
+                ratio.setTextColor(mContext.getResources().getColor(R.color.colorRise));
+            }
         }
     }
 }

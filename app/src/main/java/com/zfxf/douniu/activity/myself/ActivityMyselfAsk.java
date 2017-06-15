@@ -108,4 +108,10 @@ public class ActivityMyselfAsk extends FragmentActivity implements View.OnClickL
     private void finishAll() {
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        CommonUtils.dismissProgressDialog();
+    }
 }

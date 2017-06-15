@@ -7,9 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.AskDone;
 
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * @author Admin
@@ -17,16 +21,16 @@ import java.util.List;
  * @des ${TODO}
  */
 
-public class MyselfAskAdapter extends RecyclerView.Adapter<MyselfAskAdapter.MyHolder> {
+public class MyselfAskDoneAdapter extends RecyclerView.Adapter<MyselfAskDoneAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<AskDone> mDatas;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int positon);
+        void onItemClick(View v, int id);
     }
 
-    public MyselfAskAdapter(Context context, List<String> datas) {
+    public MyselfAskDoneAdapter(Context context, List<AskDone> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -52,7 +56,7 @@ public class MyselfAskAdapter extends RecyclerView.Adapter<MyselfAskAdapter.MyHo
         return mDatas.size();
     }
 
-    public void addDatas(List<String> data) {
+    public void addDatas(List<AskDone> data) {
         mDatas.addAll(data);
     }
 
@@ -79,12 +83,18 @@ public class MyselfAskAdapter extends RecyclerView.Adapter<MyselfAskAdapter.MyHo
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, Integer.parseInt(mDatas.get(getPosition()).zc_id));
             }
         }
 
-        public void setRefreshData(String str, int position) {
-
+        public void setRefreshData(AskDone bean, int position) {
+            Glide.with(mContext).load(bean.url)
+                    .bitmapTransform(new CropCircleTransformation(mContext))
+                    .placeholder(R.drawable.public_img).into(img);
+            name.setText(bean.ud_nickname);
+            title.setText(bean.zc_context);
+            detail.setText(bean.zp_pl);
+            time.setText(bean.zc_date);
         }
     }
 }

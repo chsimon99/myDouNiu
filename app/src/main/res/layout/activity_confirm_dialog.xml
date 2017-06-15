@@ -15,6 +15,7 @@
         android:textColor="@color/titleText"
         android:textSize="@dimen/dm034"/>
     <TextView
+        android:id="@+id/tv_confirm_dialog_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dm035"
@@ -22,14 +23,7 @@
         android:textColor="@color/titleText"
         android:textSize="@dimen/dm028"/>
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dm035"
-        android:layout_marginTop="@dimen/dm010"
-        android:text="账户：00230005"
-        android:textColor="@color/titleText"
-        android:textSize="@dimen/dm028"/>
-    <TextView
+        android:id="@+id/tv_confirm_dialog_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dm035"
@@ -38,6 +32,7 @@
         android:textColor="@color/titleText"
         android:textSize="@dimen/dm028"/>
     <TextView
+        android:id="@+id/tv_confirm_dialog_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dm035"
@@ -46,6 +41,7 @@
         android:textColor="@color/titleText"
         android:textSize="@dimen/dm028"/>
     <TextView
+        android:id="@+id/tv_confirm_dialog_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dm035"

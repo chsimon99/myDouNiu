@@ -14,12 +14,15 @@ import android.widget.Toast;
 
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.activity.ActivityReward;
+import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.adapter.recycleView.LiveLivingAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.bean.LivingContent;
 import com.zfxf.douniu.bean.LivingContentDetailType;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
 import butterknife.BindView;
@@ -129,7 +132,9 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
                             }
                         });
                         type = 1;
-                        firstID = Integer.parseInt(content.context_list.get(0).zc_id);
+                        if(content.context_list.size() > 0){
+                            firstID = Integer.parseInt(content.context_list.get(0).zc_id);
+                        }
                     }else {
                         mLivingAdapter.addDatas(content);
                         mRecyclerView.post(new Runnable() {
@@ -145,12 +150,11 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
                             }
                         }, 1000);
                     }
-                    lastID = Integer.parseInt(content.context_list.get(content.context_list.size()-1).zc_id);
-                    CommonUtils.dismissProgressDialog();
-                }else {
-                    CommonUtils.dismissProgressDialog();
-                    return;
+                    if(content.context_list.size() > 0){
+                        lastID = Integer.parseInt(content.context_list.get(content.context_list.size()-1).zc_id);
+                    }
                 }
+                CommonUtils.dismissProgressDialog();
                 if(!TextUtils.isEmpty(content.is_earliest)){
                     earliestID = content.is_earliest;
                 }
@@ -204,6 +208,12 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.iv_live_living_shang:
+                if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+                    Intent intent = new Intent(getActivity(), ActivityLogin.class);
+                    getActivity().startActivity(intent);
+                    getActivity().overridePendingTransition(0,0);
+                    return;
+                }
                 Intent intent = new Intent(getActivity(),ActivityReward.class);
                 startActivity(intent);
                 getActivity().overridePendingTransition(0,0);

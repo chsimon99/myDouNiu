@@ -1,5 +1,6 @@
 package com.zfxf.douniu.activity.advisor;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.bean.CourseResult;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
@@ -115,6 +117,12 @@ public class ActivityAdvisorAllPublicDetail extends FragmentActivity implements 
                 finish();
                 break;
             case R.id.ll_advisor_all_public_detail:
+                if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+                    Intent intent = new Intent(this, ActivityLogin.class);
+                    startActivity(intent);
+                    overridePendingTransition(0,0);
+                    return;
+                }
                 //关注本公开课的播主
                 if (follow.getText().toString().equals("关注")) {
                     subscribeInternet(Integer.parseInt(mAuthUbId),6,0);
@@ -125,6 +133,12 @@ public class ActivityAdvisorAllPublicDetail extends FragmentActivity implements 
                 }
                 break;
             case R.id.tv_advisor_all_public_detail_subscribe:
+                if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+                    Intent intent = new Intent(this, ActivityLogin.class);
+                    startActivity(intent);
+                    overridePendingTransition(0,0);
+                    return;
+                }
                 if (subscribe.getText().toString().equals("立即预约")) {
                     subscribeInternet(mId,0,0);
                 } else {

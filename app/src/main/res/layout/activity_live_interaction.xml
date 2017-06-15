@@ -13,6 +13,7 @@
         android:layout_marginBottom="@dimen/dm005"
         android:layout_weight="1"/>
     <LinearLayout
+        android:id="@+id/ll_live_interaction"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dm080"
         android:layout_alignParentBottom="true"

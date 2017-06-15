@@ -15,19 +15,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dm290"
                 android:background="@drawable/advisor_home_bg1">
-                <RelativeLayout
-                    android:id="@+id/rl_myself_message"
-                    android:layout_width="@dimen/dm100"
-                    android:layout_height="@dimen/dm070"
-                    android:layout_alignParentRight="true">
-                    <ImageView
-                        android:layout_width="@dimen/dm050"
-                        android:layout_height="@dimen/dm050"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/dm020"
-                        android:layout_marginTop="@dimen/dm020"
-                        android:src="@drawable/icon_home_msg"/>
-                </RelativeLayout>
+                <!--<RelativeLayout-->
+                    <!--android:id="@+id/rl_myself_message"-->
+                    <!--android:layout_width="@dimen/dm100"-->
+                    <!--android:layout_height="@dimen/dm070"-->
+                    <!--android:layout_alignParentRight="true">-->
+                    <!--<ImageView-->
+                        <!--android:layout_width="@dimen/dm050"-->
+                        <!--android:layout_height="@dimen/dm050"-->
+                        <!--android:layout_alignParentRight="true"-->
+                        <!--android:layout_marginRight="@dimen/dm020"-->
+                        <!--android:layout_marginTop="@dimen/dm020"-->
+                        <!--android:src="@drawable/icon_home_msg"/>-->
+                <!--</RelativeLayout>-->
                 <RelativeLayout
                     android:id="@+id/rl_myself_img"
                     android:layout_width="@dimen/dm172"

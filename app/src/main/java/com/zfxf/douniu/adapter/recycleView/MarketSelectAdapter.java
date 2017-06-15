@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.SimulationInfo;
 
 import java.util.List;
 
@@ -19,13 +20,13 @@ import java.util.List;
 public class MarketSelectAdapter extends RecyclerView.Adapter<MarketSelectAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<SimulationInfo> mDatas;
 
     public interface MyItemClickListener {
         void onItemClick(View v, int positon);
     }
 
-    public MarketSelectAdapter(Context context, List<String> datas) {
+    public MarketSelectAdapter(Context context, List<SimulationInfo> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -43,14 +44,16 @@ public class MarketSelectAdapter extends RecyclerView.Adapter<MarketSelectAdapte
 
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
-        holder.setRefreshData(position);
+        holder.setRefreshData(mDatas.get(position));
     }
 
     @Override
     public int getItemCount() {
         return mDatas.size();
     }
-
+    public void addDatas(List<SimulationInfo> data) {
+        mDatas.addAll(data);
+    }
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private MyItemClickListener mListener;
         TextView name;
@@ -65,7 +68,7 @@ public class MarketSelectAdapter extends RecyclerView.Adapter<MarketSelectAdapte
             price = (TextView) itemView.findViewById(R.id.tv_item_market_select_price);
             code = (TextView) itemView.findViewById(R.id.tv_item_market_select_code);
             ratio = (TextView) itemView.findViewById(R.id.tv_item_market_select_ratio);
-//            itemView.setOnClickListener(this);
+            itemView.setOnClickListener(this);
         }
 
         @Override
@@ -75,8 +78,16 @@ public class MarketSelectAdapter extends RecyclerView.Adapter<MarketSelectAdapte
             }
         }
 
-        public void setRefreshData(int position) {
-
+        public void setRefreshData(SimulationInfo bean) {
+            name.setText(bean.mg_name);
+            code.setText(bean.mg_code);
+            price.setText(bean.mg_xj);
+            ratio.setText(bean.mg_zfz);
+            if(bean.mg_zfz.contains("+")){
+                ratio.setBackgroundResource(R.drawable.backgroud_button_red_color);
+            }else {
+                ratio.setBackgroundResource(R.drawable.backgroud_button_green_color);
+            }
         }
     }
 }

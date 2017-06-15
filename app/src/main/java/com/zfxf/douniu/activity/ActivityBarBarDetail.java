@@ -1,5 +1,6 @@
 package com.zfxf.douniu.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.Html;
@@ -11,10 +12,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.bean.NewsInfomationResult;
 import com.zfxf.douniu.bean.OtherResult;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -125,6 +129,12 @@ public class ActivityBarBarDetail extends FragmentActivity implements View.OnCli
 
                 break;
             case R.id.ll_headline_detail_zan:
+                if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+                    Intent intent = new Intent(this, ActivityLogin.class);
+                    startActivity(intent);
+                    overridePendingTransition(0,0);
+                    return;
+                }
                 if(mIsDz.equals("0")){//点赞并提交服务器
                     NewsInternetRequest.dianZan(mNewsinfoId, new NewsInternetRequest.ForResultListener() {
                         @Override

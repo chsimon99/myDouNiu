@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.adapter.recycleView.HeadlineDetailAdapter;
 import com.zfxf.douniu.bean.CommentInformationResult;
 import com.zfxf.douniu.bean.CommentResult;
@@ -27,6 +28,8 @@ import com.zfxf.douniu.bean.NewsInfomationResult;
 import com.zfxf.douniu.bean.OtherResult;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.FullyLinearLayoutManager;
 import com.zfxf.douniu.view.RecycleViewDivider;
 
@@ -186,6 +189,12 @@ public class ActivityHeadLineDetail extends FragmentActivity implements View.OnC
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 switch(actionId){
                     case EditorInfo.IME_ACTION_DONE:
+                        if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+                            intent = new Intent(ActivityHeadLineDetail.this, ActivityLogin.class);
+                            startActivity(intent);
+                            overridePendingTransition(0,0);
+                            return false;
+                        }
                         String str = et_comment.getText().toString();
                         if(TextUtils.isEmpty(str)){
                             CommonUtils.toastMessage("评论的内容不能为空");
@@ -224,7 +233,7 @@ public class ActivityHeadLineDetail extends FragmentActivity implements View.OnC
             }
         });
     }
-
+    Intent intent;
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -236,6 +245,12 @@ public class ActivityHeadLineDetail extends FragmentActivity implements View.OnC
 
                 break;
             case R.id.ll_headline_detail_zan:
+                if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+                    intent = new Intent(ActivityHeadLineDetail.this, ActivityLogin.class);
+                    startActivity(intent);
+                    overridePendingTransition(0,0);
+                    return;
+                }
                 if(mIsDz.equals("0")){//点赞并提交服务器
                     NewsInternetRequest.dianZan(mNewsinfoId, new NewsInternetRequest.ForResultListener() {
                         @Override
@@ -251,7 +266,13 @@ public class ActivityHeadLineDetail extends FragmentActivity implements View.OnC
                 }
                 break;
             case R.id.ll_headline_detail_shang://打赏
-                Intent intent = new Intent(this,ActivityReward.class);
+                if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+                    intent = new Intent(ActivityHeadLineDetail.this, ActivityLogin.class);
+                    startActivity(intent);
+                    overridePendingTransition(0,0);
+                    return;
+                }
+                intent = new Intent(this,ActivityReward.class);
                 startActivity(intent);
                 overridePendingTransition(0,0);
                 break;

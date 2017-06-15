@@ -10,10 +10,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.adapter.recycleView.MatadorAdapter;
 import com.zfxf.douniu.bean.MatadorResult;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.RecycleViewDivider;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
@@ -53,7 +56,6 @@ public class ActivityMatadorList extends FragmentActivity implements View.OnClic
         title.setText("斗牛士列表");
         edit.setVisibility(View.INVISIBLE);
         mId = getIntent().getIntExtra("id", 0);
-        CommonUtils.logMes("-------------="+mId);
         initData();
         initListener();
     }
@@ -84,8 +86,14 @@ public class ActivityMatadorList extends FragmentActivity implements View.OnClic
                         mAttentionAdvisorAdapter.setOnItemClickListener(new MatadorAdapter.MyItemClickListener() {
                             @Override
                             public void onItemClick(View v, int id) {
+                                if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+                                    Intent intent = new Intent(ActivityMatadorList.this, ActivityLogin.class);
+                                    startActivity(intent);
+                                    overridePendingTransition(0,0);
+                                    return;
+                                }
                                 Intent intent = new Intent(ActivityMatadorList.this, ActivityMatador.class);
-                                intent.putExtra("id",id);
+                                intent.putExtra("id",id+"");
                                 startActivity(intent);
                                 overridePendingTransition(0,0);
                             }

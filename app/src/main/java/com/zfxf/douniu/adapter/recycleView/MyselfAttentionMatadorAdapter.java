@@ -27,7 +27,7 @@ public class MyselfAttentionMatadorAdapter extends RecyclerView.Adapter<MyselfAt
     private List<IndexAdvisorListInfo> mDatas;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int positon);
+        void onItemClick(View v, int id);
     }
 
     public MyselfAttentionMatadorAdapter(Context context, List<IndexAdvisorListInfo> datas) {
@@ -85,7 +85,7 @@ public class MyselfAttentionMatadorAdapter extends RecyclerView.Adapter<MyselfAt
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, Integer.parseInt(mDatas.get(getPosition()).ud_ub_id));
             }
         }
 

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.SimulationEntrust;
 
 import java.util.List;
 
@@ -19,13 +20,13 @@ import java.util.List;
 public class SimulationEntrustAdapter extends RecyclerView.Adapter<SimulationEntrustAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<SimulationEntrust> mDatas;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int positon);
+        void onItemClick(View v, int positon,SimulationEntrust entrust);
     }
 
-    public SimulationEntrustAdapter(Context context, List<String> datas) {
+    public SimulationEntrustAdapter(Context context, List<SimulationEntrust> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -51,7 +52,7 @@ public class SimulationEntrustAdapter extends RecyclerView.Adapter<SimulationEnt
         return mDatas.size();
     }
 
-    public void addDatas(List<String> data) {
+    public void addDatas(List<SimulationEntrust> data) {
         mDatas.addAll(data);
     }
 
@@ -86,12 +87,31 @@ public class SimulationEntrustAdapter extends RecyclerView.Adapter<SimulationEnt
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, getPosition(),mDatas.get(getPosition()));
             }
         }
 
-        public void setRefreshData(String str, int position) {
-
+        public void setRefreshData(SimulationEntrust bean, int position) {
+            if(bean.mj_type.equals("1")){
+                type.setText("买");
+                en_state.setText("买入");
+                type.setBackgroundResource(R.drawable.backgroud_stock_buy);
+            }else {
+                type.setText("卖");
+                en_state.setText("卖出");
+                type.setBackgroundResource(R.drawable.backgroud_stock_sold);
+            }
+            name.setText(bean.mg_name);
+            time.setText(bean.mj_wtsj);
+            en_price.setText(bean.mj_wtj);
+            deal_price.setText(bean.mj_cjj);
+            en_count.setText(bean.mj_wtl);
+            deal_count.setText(bean.mj_cjl);
+            if(bean.mj_result.equals("2")){
+                deal_state.setText("部分交易");
+            }else {
+                deal_state.setText("等待交易");
+            }
         }
     }
 }

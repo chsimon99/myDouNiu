@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.utils.Constants;
 import com.zfxf.douniu.utils.DataCleanManager;
@@ -106,6 +107,12 @@ public class ActivityMyselfShezhi extends FragmentActivity implements View.OnCli
                 overridePendingTransition(0,0);
                 break;
             case R.id.ll_myself_she_code:
+                if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+                    mIntent = new Intent(this, ActivityLogin.class);
+                    startActivity(mIntent);
+                    overridePendingTransition(0,0);
+                    return;
+                }
                 mIntent = new Intent(CommonUtils.getContext(), ActivityMyselfReviseCode.class);
                 startActivity(mIntent);
                 overridePendingTransition(0, 0);

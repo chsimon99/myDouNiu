@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,12 +32,16 @@ public class FragmentLiveInteraction extends BaseFragment {
 
     @BindView(R.id.rv_live_interaction)
     PullLoadMoreRecyclerView mRecyclerView;
+    @BindView(R.id.ll_live_interaction)
+    LinearLayout mLinearLayout;
     private LiveInteractionAdapter mInteractionAdapter;
     private int mId;
     private int type = 0;
     private int lastID = 0;//列表显示的评论中最上面的评论id
     private int firstID = 0;//列表显示的评论中最下面的评论id
     private String earliestID = "0";//是否有历史数据 0有1没有
+    private int mStatus;
+
     @Override
     public View initView(LayoutInflater inflater) {
         if (view == null) {
@@ -48,6 +53,7 @@ public class FragmentLiveInteraction extends BaseFragment {
         }
         ButterKnife.bind(this, view);
         mId = getActivity().getIntent().getIntExtra("id", 0);
+        mStatus = getActivity().getIntent().getIntExtra("status", 1);
         return view;
     }
 
@@ -59,6 +65,9 @@ public class FragmentLiveInteraction extends BaseFragment {
     @Override
     public void initdata() {
         super.initdata();
+        if(mStatus == 0){
+            mLinearLayout.setVisibility(View.GONE);
+        }
         if(mId !=0){
             CommonUtils.showProgressDialog(getActivity(),"加载中……");
             visitInternet(lastID);
@@ -85,7 +94,9 @@ public class FragmentLiveInteraction extends BaseFragment {
                             }
                         });
                         type = 1;
-                        firstID = Integer.parseInt(content.pl_list.get(content.pl_list.size()-1).zp_id);
+                        if(content.pl_list.size()>0){
+                            firstID = Integer.parseInt(content.pl_list.get(content.pl_list.size()-1).zp_id);
+                        }
                     }else{
                         final int itemPosition = mRecyclerView.getLinearLayoutManager().findLastVisibleItemPosition();
                         maxLine = content.pl_list.size() > maxLine ? content.pl_list.size() : maxLine;
@@ -100,12 +111,11 @@ public class FragmentLiveInteraction extends BaseFragment {
                             }
                         });
                     }
-                    lastID = Integer.parseInt(content.pl_list.get(0).zp_id);
-                    CommonUtils.dismissProgressDialog();
-                }else {
-                    CommonUtils.dismissProgressDialog();
-                    return;
+                    if(content.pl_list.size()>0){
+                        lastID = Integer.parseInt(content.pl_list.get(0).zp_id);
+                    }
                 }
+                CommonUtils.dismissProgressDialog();
                 if(!TextUtils.isEmpty(content.is_earliest)){
                     earliestID = content.is_earliest;
                 }

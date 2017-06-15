@@ -145,6 +145,7 @@ public class ActivityLogin extends FragmentActivity implements View.OnClickListe
                 if(code.equals("成功")){
                     CommonUtils.toastMessage("登录成功");
                     SpTools.setBoolean(CommonUtils.getContext(), Constants.isLogin,true);
+                    SpTools.setBoolean(CommonUtils.getContext(), Constants.alreadyLogin,true);
                     setResult(Constants.resultCodeLogin,null);
                     finishAll();
                     finish();

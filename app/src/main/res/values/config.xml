@@ -56,6 +56,8 @@
     <string name="sikelist">index.php/cms/sikelist</string>
     <!--私密课详情-->
     <string name="sikeinfo">index.php/cms/sikeinfo</string>
+    <!--看头条轮播图详情-->
+    <string name="headlunbo">index.php/cms/headlunbo</string>
 
     <!--直播课列表-->
     <string name="zhibolist">index.php/zhibo/zhibolist</string>
@@ -80,6 +82,8 @@
     <string name="matadororder">index.php/user/matadororder</string>
     <!--我关注的斗牛士列表-->
     <string name="attention">index.php/user/attention</string>
+    <!--我的问股列表-->
+    <string name="myAskStock">index.php/user/myAskStock</string>
 
     <!--主页列表-->
     <string name="index">index.php/dn/index</string>
@@ -105,5 +109,34 @@
     <string name="stockInfo">index.php/zhihu/stockInfo</string>
     <!--微问答回答详情点赞-->
     <string name="dzBright">index.php/zhihu/stockInfo/dzBright</string>
+
+
+    <!--模拟盘首页-->
+    <string name="mnIndex">index.php/mn/index</string>
+    <!--模拟盘买入-->
+    <string name="buygp">index.php/mn/buygp</string>
+    <!--模拟盘卖出-->
+    <string name="sellgp">index.php/mn/sellgp</string>
+    <!--模拟盘委托-->
+    <string name="consign">index.php/mn/consign</string>
+    <!--股票搜索-->
+    <string name="searchgp">index.php/mn/searchgp</string>
+    <!--股票委托删除-->
+    <string name="del">index.php/mn/consign/del</string>
+    <!--自选股票详情-->
+    <string name="optional">index.php/mn/optional</string>
+    <!--自选股票编辑详情-->
+    <string name="editZx">index.php/mn/optional/editZx</string>
+    <!--自选股票添加和删除-->
+    <string name="addZx">index.php/mn/optional/addZx</string>
+    <!--股票首页涨跌幅详情-->
+    <string name="increaseList">index.php/mn/quotes/increaseList</string>
+
+    <!--行情主页-->
+    <string name="quotes">index.php/mn/quotes</string>
+
+
+    <!--金股池首页主页-->
+    <string name="gp">index.php/gp</string>
 
 </resources>

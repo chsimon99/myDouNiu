@@ -12,6 +12,15 @@ public class UserDetail {
     public String ud_nickname;
     public String ud_addr;
     public String ud_borth;
+    public String ud_memo;
+
+    public String getUd_memo() {
+        return ud_memo;
+    }
+
+    public void setUd_memo(String ud_memo) {
+        this.ud_memo = ud_memo;
+    }
 
     public String getUd_photo_fileid() {
         return ud_photo_fileid;

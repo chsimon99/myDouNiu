@@ -1,5 +1,6 @@
 package com.zfxf.douniu.view.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.ActivityLiving;
 import com.zfxf.douniu.adapter.recycleView.AdvisorHomeDirectAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.bean.LunBoListInfo;
@@ -39,6 +41,7 @@ public class FragmentAdvisorHomeDirect extends BaseFragment {
 	private int totlePage = 0;
 	private int currentPage = 1;
 	private int mId;
+	private boolean isShow = false;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -61,10 +64,11 @@ public class FragmentAdvisorHomeDirect extends BaseFragment {
 	@Override
 	public void initdata() {
 		super.initdata();
-		currentPage = 1;
-		mHomeDirectAdapter = null;
-		CommonUtils.showProgressDialog(getActivity(),"加载中……");
-		visitInternet();
+		if(!isShow){
+			isShow = true;
+			CommonUtils.showProgressDialog(getActivity(),"加载中……");
+			visitInternet();
+		}
 	}
 	private void visitInternet(){
 		NewsInternetRequest.getLivingListInformation(0, currentPage+"", mId+"", new NewsInternetRequest.ForResultEventInfoListener() {
@@ -88,8 +92,12 @@ public class FragmentAdvisorHomeDirect extends BaseFragment {
 
 						mHomeDirectAdapter.setOnItemClickListener(new AdvisorHomeDirectAdapter.MyItemClickListener() {
 							@Override
-							public void onItemClick(View v, int positon) {
-								Toast.makeText(CommonUtils.getContext(),"点击了"+positon,Toast.LENGTH_SHORT).show();
+							public void onItemClick(View v, int id,int status) {
+								Intent intent = new Intent(CommonUtils.getContext(), ActivityLiving.class);
+								intent.putExtra("id",id);
+								intent.putExtra("status",status);
+								startActivity(intent);
+								getActivity().overridePendingTransition(0,0);
 							}
 						});
 					}else {
@@ -108,11 +116,8 @@ public class FragmentAdvisorHomeDirect extends BaseFragment {
 						},1000);
 					}
 					currentPage++;
-					CommonUtils.dismissProgressDialog();
-				}else {
-					CommonUtils.dismissProgressDialog();
-					return;
 				}
+				CommonUtils.dismissProgressDialog();
 			}
 		},getActivity().getResources().getString(R.string.zhibolist));
 

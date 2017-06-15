@@ -19,11 +19,11 @@ import com.zfxf.douniu.activity.myself.ActivityMyselfAsk;
 import com.zfxf.douniu.activity.myself.ActivityMyselfAttention;
 import com.zfxf.douniu.activity.myself.ActivityMyselfConsume;
 import com.zfxf.douniu.activity.myself.ActivityMyselfInformation;
-import com.zfxf.douniu.activity.myself.ActivityMyselfMessage;
 import com.zfxf.douniu.activity.myself.ActivityMyselfRvaluateOne;
 import com.zfxf.douniu.activity.myself.ActivityMyselfRvaluateResult;
 import com.zfxf.douniu.activity.myself.ActivityMyselfShezhi;
 import com.zfxf.douniu.activity.myself.ActivityMyselfSubscribe;
+import com.zfxf.douniu.activity.myself.ActivityMyselfWallet;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.internet.LoginInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
@@ -51,8 +51,8 @@ public class FragmentMyself extends BaseFragment implements View.OnClickListener
 	ImageView img;//头像
 	@BindView(R.id.tv_myself_name)
 	TextView name;//设置或昵称
-	@BindView(R.id.rl_myself_message)
-	RelativeLayout message;//消息
+//	@BindView(R.id.rl_myself_message)
+//	RelativeLayout message;//消息
 	@BindView(R.id.rl_myself_wallet)
 	RelativeLayout wallet;//钱包
 	@BindView(R.id.rl_myself_stock)
@@ -102,6 +102,10 @@ public class FragmentMyself extends BaseFragment implements View.OnClickListener
 			name.setText("注册/登陆");
 			return;
 		}
+		showMessage();
+	}
+
+	private void showMessage() {
 		String nickname = SpTools.getString(getActivity(), Constants.nickname, "");
 		if(!TextUtils.isEmpty(nickname)){
 			name.setText(nickname);
@@ -122,7 +126,7 @@ public class FragmentMyself extends BaseFragment implements View.OnClickListener
 	@Override
 	public void initListener() {
 		super.initListener();
-		message.setOnClickListener(this);
+//		message.setOnClickListener(this);
 		wallet.setOnClickListener(this);
 		stock.setOnClickListener(this);
 		account.setOnClickListener(this);
@@ -139,32 +143,55 @@ public class FragmentMyself extends BaseFragment implements View.OnClickListener
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()){
-			case R.id.rl_myself_message:
-				intent = new Intent(CommonUtils.getContext(), ActivityMyselfMessage.class);
-				startActivity(intent);
-				getActivity().overridePendingTransition(0,0);
-				break;
+//			case R.id.rl_myself_message:
+//				intent = new Intent(CommonUtils.getContext(), ActivityMyselfMessage.class);
+//				startActivity(intent);
+//				getActivity().overridePendingTransition(0,0);
+//				break;
 			case R.id.rl_myself_wallet:
+				if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+					toLogin();
+				}else {
+					intent = new Intent(CommonUtils.getContext(), ActivityMyselfWallet.class);
+					startActivity(intent);
+					getActivity().overridePendingTransition(0,0);
+				}
 				break;
 			case R.id.rl_myself_stock:
-				intent = new Intent(CommonUtils.getContext(), ActivityMyselfAsk.class);
-				startActivity(intent);
-				getActivity().overridePendingTransition(0,0);
+				if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+					toLogin();
+				}else {
+					intent = new Intent(CommonUtils.getContext(), ActivityMyselfAsk.class);
+					startActivity(intent);
+					getActivity().overridePendingTransition(0,0);
+				}
 				break;
 			case R.id.rl_myself_account:
-				intent = new Intent(CommonUtils.getContext(), ActivityMyselfSubscribe.class);
-				startActivity(intent);
-				getActivity().overridePendingTransition(0,0);
+				if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+					toLogin();
+				}else {
+					intent = new Intent(CommonUtils.getContext(), ActivityMyselfSubscribe.class);
+					startActivity(intent);
+					getActivity().overridePendingTransition(0,0);
+				}
 				break;
 			case R.id.rl_myself_follow:
-				intent = new Intent(CommonUtils.getContext(), ActivityMyselfAttention.class);
-				startActivity(intent);
-				getActivity().overridePendingTransition(0,0);
+				if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+					toLogin();
+				}else {
+					intent = new Intent(CommonUtils.getContext(), ActivityMyselfAttention.class);
+					startActivity(intent);
+					getActivity().overridePendingTransition(0,0);
+				}
 				break;
 			case R.id.ll_myself_consume:
-				intent = new Intent(CommonUtils.getContext(), ActivityMyselfConsume.class);
-				startActivity(intent);
-				getActivity().overridePendingTransition(0,0);
+				if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+					toLogin();
+				}else {
+					intent = new Intent(CommonUtils.getContext(), ActivityMyselfConsume.class);
+					startActivity(intent);
+					getActivity().overridePendingTransition(0,0);
+				}
 				break;
 			case R.id.ll_myself_advisor:
 				intent = new Intent(CommonUtils.getContext(), ActivityMyselfAdvisor.class);
@@ -172,15 +199,19 @@ public class FragmentMyself extends BaseFragment implements View.OnClickListener
 				getActivity().overridePendingTransition(0,0);
 				break;
 			case R.id.ll_myself_evaluate:
-				boolean isSuccess = SpTools.getBoolean(CommonUtils.getContext(), Constants.rvaluateSuccess, false);
-				if(isSuccess){
-					intent = new Intent(CommonUtils.getContext(), ActivityMyselfRvaluateResult.class);
-					startActivity(intent);
-					getActivity().overridePendingTransition(0,0);
-				}else{
-					intent = new Intent(CommonUtils.getContext(), ActivityMyselfRvaluateOne.class);
-					startActivity(intent);
-					getActivity().overridePendingTransition(0,0);
+				if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+					toLogin();
+				}else {
+					boolean isSuccess = SpTools.getBoolean(CommonUtils.getContext(), Constants.rvaluateSuccess, false);
+					if(isSuccess){
+						intent = new Intent(CommonUtils.getContext(), ActivityMyselfRvaluateResult.class);
+						startActivity(intent);
+						getActivity().overridePendingTransition(0,0);
+					}else{
+						intent = new Intent(CommonUtils.getContext(), ActivityMyselfRvaluateOne.class);
+						startActivity(intent);
+						getActivity().overridePendingTransition(0,0);
+					}
 				}
 				break;
 			case R.id.ll_myself_contract:
@@ -210,6 +241,12 @@ public class FragmentMyself extends BaseFragment implements View.OnClickListener
 		intent = null;
 	}
 
+	private void toLogin() {
+		intent = new Intent(getActivity(), ActivityLogin.class);
+		getActivity().startActivity(intent);
+		getActivity().overridePendingTransition(0,0);
+	}
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		switch (resultCode){
@@ -234,6 +271,10 @@ public class FragmentMyself extends BaseFragment implements View.OnClickListener
 				img.setImageResource(R.drawable.advisor_home_img);
 				name.setText("注册/登陆");
 			}
+		}
+		if(SpTools.getBoolean(getActivity(), Constants.alreadyLogin,false)){
+			SpTools.setBoolean(getActivity(), Constants.alreadyLogin,false);
+			showMessage();
 		}
 	}
 

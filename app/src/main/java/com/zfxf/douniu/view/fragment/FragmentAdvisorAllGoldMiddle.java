@@ -10,12 +10,11 @@ import com.zfxf.douniu.R;
 import com.zfxf.douniu.activity.ActivityGoldPond;
 import com.zfxf.douniu.adapter.recycleView.AdvisorHomeGoldAdapter;
 import com.zfxf.douniu.base.BaseFragment;
+import com.zfxf.douniu.bean.SimulationResult;
+import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.RecycleViewDivider;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,9 +32,8 @@ public class FragmentAdvisorAllGoldMiddle extends BaseFragment {
     @BindView(R.id.rv_advisor_home_gold)
     PullLoadMoreRecyclerView mRecyclerView;
     private AdvisorHomeGoldAdapter mGoldAdapter;
-    private List<String> datas = new ArrayList<String>();
     private RecycleViewDivider mDivider;
-
+    private boolean isShow = false;
     @Override
     public View initView(LayoutInflater inflater) {
         if (view == null) {
@@ -57,36 +55,64 @@ public class FragmentAdvisorAllGoldMiddle extends BaseFragment {
     @Override
     public void initdata() {
         super.initdata();
-        if (datas.size() == 0) {
-            datas.add("1");
-            datas.add("2");
+        if(!isShow){
+            isShow = true;
+            CommonUtils.showProgressDialog(getActivity(),"加载中……");
+            visitInternet();
         }
-        if (mGoldAdapter == null) {
-            mGoldAdapter = new AdvisorHomeGoldAdapter(getActivity(), datas);
-        }
-
-        mRecyclerView.setLinearLayout();
-        mRecyclerView.setAdapter(mGoldAdapter);
-        if(mDivider == null){
-            mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
-            mRecyclerView.addItemDecoration(mDivider);
-        }
-        mRecyclerView.setPullRefreshEnable(false);
-        mRecyclerView.setPushRefreshEnable(false);
     }
 
-    int num = 0;
+    private void visitInternet() {
+        NewsInternetRequest.getGoldPondListInformation("", 1, null, new NewsInternetRequest.ForResultGoldPoneLongStockListener() {
+            @Override
+            public void onResponseMessage(SimulationResult result) {
+                if(result.dn_jgc.size()>0){
+                    if (mGoldAdapter == null) {
+                        mGoldAdapter = new AdvisorHomeGoldAdapter(getActivity(), result.dn_jgc);
+                    }
+
+                    mRecyclerView.setLinearLayout();
+                    mRecyclerView.setAdapter(mGoldAdapter);
+                    if(mDivider == null){
+                        mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
+                        mRecyclerView.addItemDecoration(mDivider);
+                    }
+//                    mRecyclerView.setPullRefreshEnable(false);//禁止下拉刷新
+                     mRecyclerView.setPushRefreshEnable(false);//禁止上拉加载
+                    mGoldAdapter.setOnItemClickListener(new AdvisorHomeGoldAdapter.MyItemClickListener() {
+                        @Override
+                        public void onItemClick(View v, int positon) {
+                            Intent intent = new Intent(CommonUtils.getContext(), ActivityGoldPond.class);
+                            startActivity(intent);
+                            getActivity().overridePendingTransition(0,0);
+                        }
+                    });
+                }
+                CommonUtils.dismissProgressDialog();
+            }
+        });
+    }
 
     @Override
     public void initListener() {
         super.initListener();
-        mGoldAdapter.setOnItemClickListener(new AdvisorHomeGoldAdapter.MyItemClickListener() {
+        mRecyclerView.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
             @Override
-            public void onItemClick(View v, int positon) {
-                Intent intent = new Intent(CommonUtils.getContext(), ActivityGoldPond.class);
-                startActivity(intent);
-                getActivity().overridePendingTransition(0,0);
-                intent = null;
+            public void onRefresh() {
+                mGoldAdapter = null;
+                CommonUtils.showProgressDialog(getActivity(),"加载中……");
+                visitInternet();
+                mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
+                    @Override
+                    public void run() {
+                        mRecyclerView.setPullLoadMoreCompleted();
+                    }
+                },1000);
+            }
+
+            @Override
+            public void onLoadMore() {
+
             }
         });
     }

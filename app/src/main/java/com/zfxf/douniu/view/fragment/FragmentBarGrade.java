@@ -12,11 +12,14 @@ import android.widget.TextView;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.activity.ActivityMatador;
 import com.zfxf.douniu.activity.ActivityMatadorList;
+import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.adapter.recycleView.MatadorAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.bean.MatadorResult;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.FullyLinearLayoutManager;
 import com.zfxf.douniu.view.RecycleViewDivider;
 
@@ -155,32 +158,60 @@ public class FragmentBarGrade extends BaseFragment implements View.OnClickListen
 
 				mCommendAdapter.setOnItemClickListener(new MatadorAdapter.MyItemClickListener() {
 					@Override
-					public void onItemClick(View v, int positon) {
+					public void onItemClick(View v, int id) {
+						if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+							Intent intent = new Intent(getActivity(), ActivityLogin.class);
+							startActivity(intent);
+							getActivity().overridePendingTransition(0,0);
+							return;
+						}
 						Intent intent = new Intent(getActivity(), ActivityMatador.class);
+						intent.putExtra("id",id+"");
 						startActivity(intent);
 						getActivity().overridePendingTransition(0,0);
 					}
 				});
 				mHumanAdapter.setOnItemClickListener(new MatadorAdapter.MyItemClickListener() {
 					@Override
-					public void onItemClick(View v, int positon) {
+					public void onItemClick(View v, int id) {
+						if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+							Intent intent = new Intent(getActivity(), ActivityLogin.class);
+							startActivity(intent);
+							getActivity().overridePendingTransition(0,0);
+							return;
+						}
 						Intent intent = new Intent(getActivity(), ActivityMatador.class);
+						intent.putExtra("id",id+"");
 						startActivity(intent);
 						getActivity().overridePendingTransition(0,0);
 					}
 				});
 				mIncomeAdapter.setOnItemClickListener(new MatadorAdapter.MyItemClickListener() {
 					@Override
-					public void onItemClick(View v, int positon) {
+					public void onItemClick(View v, int id) {
+						if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+							Intent intent = new Intent(getActivity(), ActivityLogin.class);
+							startActivity(intent);
+							getActivity().overridePendingTransition(0,0);
+							return;
+						}
 						Intent intent = new Intent(getActivity(), ActivityMatador.class);
+						intent.putExtra("id",id+"");
 						startActivity(intent);
 						getActivity().overridePendingTransition(0,0);
 					}
 				});
 				mALLAdapter.setOnItemClickListener(new MatadorAdapter.MyItemClickListener() {
 					@Override
-					public void onItemClick(View v, int positon) {
+					public void onItemClick(View v, int id) {
+						if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+							Intent intent = new Intent(getActivity(), ActivityLogin.class);
+							startActivity(intent);
+							getActivity().overridePendingTransition(0,0);
+							return;
+						}
 						Intent intent = new Intent(getActivity(), ActivityMatador.class);
+						intent.putExtra("id",id+"");
 						startActivity(intent);
 						getActivity().overridePendingTransition(0,0);
 					}

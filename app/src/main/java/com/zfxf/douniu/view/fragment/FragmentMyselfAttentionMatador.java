@@ -1,5 +1,6 @@
 package com.zfxf.douniu.view.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,11 +9,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.ActivityMatador;
 import com.zfxf.douniu.adapter.recycleView.MyselfAttentionMatadorAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.bean.MatadorResult;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.RecycleViewDivider;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
@@ -53,17 +57,17 @@ public class FragmentMyselfAttentionMatador extends BaseFragment {
 	@Override
 	public void initdata() {
 		super.initdata();
-		CommonUtils.showProgressDialog(getActivity(),"加载中……");
 		visitInternet();
 	}
 
 	private void visitInternet() {
+		CommonUtils.showProgressDialog(getActivity(),"加载中……");
 		NewsInternetRequest.getMySubscribeMadatorListInformation(currentPage,new NewsInternetRequest.ForResultMatadorIndexListener() {
 			@Override
 			public void onResponseMessage(MatadorResult result) {
 				if(result.user_list.size()==0){
 					matador.setVisibility(View.VISIBLE);
-				}else{
+				}
 					totlePage = Integer.parseInt(result.total);
 					if (totlePage > 0 && currentPage <= totlePage){
 						if(currentPage == 1){
@@ -80,8 +84,11 @@ public class FragmentMyselfAttentionMatador extends BaseFragment {
 							mRecyclerView.setPullRefreshEnable(false);
 							mAttentionAdvisorAdapter.setOnItemClickListener(new MyselfAttentionMatadorAdapter.MyItemClickListener() {
 								@Override
-								public void onItemClick(View v, int positon) {
-									Toast.makeText(CommonUtils.getContext(),"点击了"+positon,Toast.LENGTH_SHORT).show();
+								public void onItemClick(View v, int id) {
+									Intent intent = new Intent(getActivity(), ActivityMatador.class);
+									intent.putExtra("id",id+"");
+									startActivity(intent);
+									getActivity().overridePendingTransition(0,0);
 								}
 							});
 
@@ -100,10 +107,15 @@ public class FragmentMyselfAttentionMatador extends BaseFragment {
 								}
 							},1000);
 						}
-					}else {
+					}else {//关注取消后size为0时刷新界面
 
+						if(mAttentionAdvisorAdapter == null){
+							mAttentionAdvisorAdapter = new MyselfAttentionMatadorAdapter(getActivity(),result.user_list);
+						}
+						mRecyclerView.setLinearLayout();
+						mRecyclerView.setAdapter(mAttentionAdvisorAdapter);
+						mAttentionAdvisorAdapter.notifyDataSetChanged();
 					}
-				}
 				CommonUtils.dismissProgressDialog();
 			}
 		});
@@ -133,5 +145,16 @@ public class FragmentMyselfAttentionMatador extends BaseFragment {
 				visitInternet();
 			}
 		});
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if(SpTools.getBoolean(getActivity(), Constants.alreadyGuanzhu,false)){
+			currentPage = 1;
+			mAttentionAdvisorAdapter = null;
+			visitInternet();
+			SpTools.setBoolean(getActivity(), Constants.alreadyGuanzhu,false);
+		}
 	}
 }

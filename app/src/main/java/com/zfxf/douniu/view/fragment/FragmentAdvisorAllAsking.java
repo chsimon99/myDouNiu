@@ -16,6 +16,7 @@ import com.zfxf.douniu.activity.ActivityAnswerDetail;
 import com.zfxf.douniu.activity.ActivityAskAdvisor;
 import com.zfxf.douniu.activity.ActivityAskStock;
 import com.zfxf.douniu.activity.ActivityToPay;
+import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.adapter.recycleView.ZhenguAdvisorAdapter;
 import com.zfxf.douniu.adapter.recycleView.ZhenguAnswerAdapter;
 import com.zfxf.douniu.base.BaseFragment;
@@ -63,6 +64,7 @@ public class FragmentAdvisorAllAsking extends BaseFragment implements View.OnCli
 	private LinearLayoutManager mAnswerManager;
 	private ZhenguAnswerAdapter mAnswerAdapter;
 	private RecycleViewDivider mDivider;
+	private boolean isShow = false;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -86,7 +88,10 @@ public class FragmentAdvisorAllAsking extends BaseFragment implements View.OnCli
 	@Override
 	public void initdata() {
 		super.initdata();
-		visitInternet();
+		if(!isShow){
+			isShow = true;
+			visitInternet();
+		}
 	}
 
 	private void visitInternet() {
@@ -108,8 +113,16 @@ public class FragmentAdvisorAllAsking extends BaseFragment implements View.OnCli
 				mAdvisorAdapter.setOnItemClickListener(new ZhenguAdvisorAdapter.MyItemClickListener() {
 					@Override
 					public void onItemClick(View v, int positon) {
+						if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+							Intent intent = new Intent(getActivity(), ActivityLogin.class);
+							getActivity().startActivity(intent);
+							getActivity().overridePendingTransition(0,0);
+							return;
+						}
 						Intent intent = new Intent(CommonUtils.getContext(), ActivityAskStock.class);
 						intent.putExtra("name",result.online_chief.get(positon).ud_nickname);
+						intent.putExtra("fee",result.online_chief.get(positon).df_fee);
+						intent.putExtra("sx_id",result.online_chief.get(positon).sx_ub_id);
 						startActivity(intent);
 						getActivity().overridePendingTransition(0,0);
 					}
@@ -133,6 +146,12 @@ public class FragmentAdvisorAllAsking extends BaseFragment implements View.OnCli
 				mAnswerAdapter.setOnItemClickListener(new ZhenguAnswerAdapter.MyItemClickListener() {
 					@Override
 					public void onItemClick(View v, int positon,AnswerListInfo bean) {
+						if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+							Intent intent = new Intent(getActivity(), ActivityLogin.class);
+							getActivity().startActivity(intent);
+							getActivity().overridePendingTransition(0,0);
+							return;
+						}
 						if (bean.zc_sfjf.equals("0")){
 							Intent intent = new Intent(CommonUtils.getContext(), ActivityToPay.class);
 							intent.putExtra("type","问股");
@@ -171,11 +190,23 @@ public class FragmentAdvisorAllAsking extends BaseFragment implements View.OnCli
 				getActivity().overridePendingTransition(0,0);
 				break;
 			case R.id.rl_zhengu_answer_detail:
+				if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+					intent = new Intent(getActivity(), ActivityLogin.class);
+					getActivity().startActivity(intent);
+					getActivity().overridePendingTransition(0,0);
+					return;
+				}
 				intent = new Intent(getActivity(), ActivityAnswer.class);
 				startActivity(intent);
 				getActivity().overridePendingTransition(0,0);
 				break;
 			case R.id.iv_zhengu_ask:
+				if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+					intent = new Intent(getActivity(), ActivityLogin.class);
+					getActivity().startActivity(intent);
+					getActivity().overridePendingTransition(0,0);
+					return;
+				}
 				intent = new Intent(getActivity(), ActivityAskStock.class);
 				startActivity(intent);
 				getActivity().overridePendingTransition(0,0);
@@ -191,10 +222,19 @@ public class FragmentAdvisorAllAsking extends BaseFragment implements View.OnCli
 	public void onResume() {
 		super.onResume();
 		if(SpTools.getBoolean(getActivity(), Constants.buy,false)){
-			mAdvisorManager = null;
-			mAdvisorAdapter = null;
+			mAnswerAdapter = null;
 			visitInternet();
 			SpTools.setBoolean(getActivity(), Constants.buy,false);
+		}
+		if(SpTools.getBoolean(getActivity(), Constants.read,false)){
+			mAnswerAdapter = null;
+			visitInternet();
+			SpTools.setBoolean(getActivity(), Constants.read,false);
+		}
+		if(SpTools.getBoolean(getActivity(), Constants.alreadyLogin,false)){
+			mAnswerAdapter = null;
+			visitInternet();
+			SpTools.setBoolean(getActivity(), Constants.alreadyLogin,false);
 		}
 	}
 }

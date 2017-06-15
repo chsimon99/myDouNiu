@@ -8,19 +8,25 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.adapter.recycleView.MatadorPositonAdapter;
+import com.zfxf.douniu.bean.SimulationDetail;
+import com.zfxf.douniu.bean.SimulationPositionDetail;
+import com.zfxf.douniu.bean.SimulationResult;
+import com.zfxf.douniu.internet.NewsInternetRequest;
+import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.FullyLinearLayoutManager;
 import com.zfxf.douniu.view.RecycleViewDivider;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
+
 /**
  * @author IMXU
  * @time   2017/5/3 13:30
@@ -63,10 +69,8 @@ public class ActivitySimulation extends FragmentActivity implements View.OnClick
     @BindView(R.id.iv_matador_startfive)
     ImageView start_five;
 
-    @BindView(R.id.rl_matador_more)
-    RelativeLayout rl_more;
-    @BindView(R.id.rl_matador_edit)
-    RelativeLayout rl_edit;//编辑
+//    @BindView(R.id.rl_matador_more)
+//    RelativeLayout rl_more;
 
     @BindView(R.id.ll_matador_buy)
     LinearLayout ll_buy;
@@ -94,8 +98,8 @@ public class ActivitySimulation extends FragmentActivity implements View.OnClick
     RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private MatadorPositonAdapter mPositonAdapter;
-    private List<String> mStrings = new ArrayList<String>();
     private RecycleViewDivider mDivider;
+    private static List<SimulationPositionDetail> mChigu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,24 +122,60 @@ public class ActivitySimulation extends FragmentActivity implements View.OnClick
     }
 
     private void initData() {
-        if (mStrings.size() == 0) {
-            mStrings.add("");
-            mStrings.add("");
-            mStrings.add("");
-            mStrings.add("");
-        }
-        if(mLayoutManager == null){
-            mLayoutManager = new FullyLinearLayoutManager(this);
-        }
-        if(mPositonAdapter == null){
-            mPositonAdapter = new MatadorPositonAdapter(this, mStrings);
-        }
-        if(mDivider == null){//防止多次加载出现宽度变宽
-            mDivider = new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL);
-            mRecyclerView.addItemDecoration(mDivider);
-        }
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mPositonAdapter);
+        CommonUtils.showProgressDialog(this,"加载中……");
+        NewsInternetRequest.getSimulationIndexInformation(null,new NewsInternetRequest.ForResultSimulationIndexListener() {
+            @Override
+            public void onResponseMessage(SimulationResult result) {
+                SimulationDetail detail = result.user_detail;
+                mChigu = result.mn_chigu;
+                Glide.with(ActivitySimulation.this).load(detail.url)
+                        .placeholder(R.drawable.home_adviosr_img)
+                        .bitmapTransform(new CropCircleTransformation(ActivitySimulation.this)).into(img);
+                tv_name.setText(detail.ud_nickname);
+                tv_fans.setText(detail.ud_fensi);
+                tv_type.setText(detail.ud_ul_name);
+                if(detail.ud_ul_level.equals("4")){
+                    start_three.setVisibility(View.GONE);
+                    start_four.setVisibility(View.GONE);
+                    start_five.setVisibility(View.GONE);
+                }else if(detail.ud_ul_level.equals("3")){
+                    start_four.setVisibility(View.GONE);
+                    start_five.setVisibility(View.GONE);
+                }else if(detail.ud_ul_level.equals("2")){
+                    start_five.setVisibility(View.GONE);
+                }else {
+
+                }
+                if(detail.mf_status.equals("1")){
+                    type.setImageResource(R.drawable.myself_up);
+                }else {
+                    type.setImageResource(R.drawable.myself_up_down);
+                }
+                tv_introduce.setText("简介："+detail.ud_memo);
+                tv_rank.setText(detail.mf_zpm);
+                asset.setText(detail.mf_zzc);
+                ratio.setText(detail.mf_cw);
+                trade.setText(detail.mf_yjy);
+                total_income.setText(detail.mf_zsy);
+                month_income.setText(detail.mf_bysy);
+                week_income.setText(detail.mf_bzsy);
+
+                if(mLayoutManager == null){
+                    mLayoutManager = new FullyLinearLayoutManager(ActivitySimulation.this);
+                }
+                if(mPositonAdapter == null){
+                    mPositonAdapter = new MatadorPositonAdapter(ActivitySimulation.this, result.mn_chigu);
+                }
+                if(mDivider == null){//防止多次加载出现宽度变宽
+                    mDivider = new RecycleViewDivider(ActivitySimulation.this, LinearLayoutManager.HORIZONTAL);
+                    mRecyclerView.addItemDecoration(mDivider);
+                }
+                mRecyclerView.setLayoutManager(mLayoutManager);
+                mRecyclerView.setAdapter(mPositonAdapter);
+
+                CommonUtils.dismissProgressDialog();
+            }
+        });
 
     }
     private void initListener() {
@@ -145,6 +185,9 @@ public class ActivitySimulation extends FragmentActivity implements View.OnClick
         ll_sold.setOnClickListener(this);
         ll_entrust.setOnClickListener(this);
         ll_query.setOnClickListener(this);
+    }
+    public static List<SimulationPositionDetail> getList(){
+        return mChigu;
     }
     Intent mIntent;
     @Override
@@ -190,5 +233,11 @@ public class ActivitySimulation extends FragmentActivity implements View.OnClick
     }
     public static int getIndex(){
         return index;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        CommonUtils.dismissProgressDialog();
     }
 }

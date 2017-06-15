@@ -16,12 +16,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.adapter.recycleView.XuanGuAdapter;
 import com.zfxf.douniu.bean.XuanguDetail;
 import com.zfxf.douniu.bean.XuanguItemList;
 import com.zfxf.douniu.bean.XuanguResult;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.FullyLinearLayoutManager;
 
 import java.util.ArrayList;
@@ -186,6 +189,12 @@ public class ActivityIntelligenceChoose extends FragmentActivity implements View
 
                 break;
             case R.id.tv_intelligence_choose_subscribe:
+                if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+                    Intent intent = new Intent(this, ActivityLogin.class);
+                    startActivity(intent);
+                    overridePendingTransition(0,0);
+                    return;
+                }
                 if(tv_subscribe.getText().toString().equals("立即订阅")){
                     subscribeInternet(0);
                 }else {

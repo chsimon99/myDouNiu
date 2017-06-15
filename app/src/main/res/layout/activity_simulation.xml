@@ -49,7 +49,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="@dimen/dm006"
-                                        android:text="百变股神"
+                                        android:text=""
                                         android:textColor="@color/titleText"
                                         android:textSize="@dimen/dm028"/>
                                     <TextView
@@ -64,7 +64,7 @@
                                         android:paddingLeft="@dimen/dm010"
                                         android:paddingRight="@dimen/dm010"
                                         android:paddingTop="@dimen/dm005"
-                                        android:text="高级斗牛士"
+                                        android:text=""
                                         android:textColor="@color/colorWhite"
                                         android:textSize="@dimen/dm020"/>
                                     <ImageView
@@ -118,7 +118,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="@dimen/dm020"
-                                        android:text="2046"
+                                        android:text=""
                                         android:textColor="@color/colorTitle"
                                         android:textSize="@dimen/dm028"/>
                                     <ImageView
@@ -145,7 +145,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="@dimen/dm020"
-                                        android:text="690"
+                                        android:text=""
                                         android:textColor="@color/titleText"
                                         android:textSize="@dimen/dm028"/>
                                 </LinearLayout>
@@ -162,21 +162,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="简介：中方信富签约顾问中方信富签约顾问 中方信富签约顾问中方信富签约顾问!"
+                        android:text="简介："
                         android:textColor="@color/titleText"
                         android:textSize="@dimen/dm024"/>
-                    <RelativeLayout
-                        android:id="@+id/rl_matador_edit"
-                        android:layout_width="@dimen/dm080"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center">
-                        <ImageView
-                            android:layout_width="@dimen/dm030"
-                            android:layout_height="@dimen/dm030"
-                            android:layout_alignParentBottom="true"
-                            android:layout_alignParentRight="true"
-                            android:src="@drawable/icon_edit"/>
-                    </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>
 
@@ -199,7 +187,7 @@
                         android:id="@+id/tv_matador_mes_asset"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="200000.00"
+                        android:text="2,000,000.00"
                         android:textColor="@color/colorTitle"
                         android:textSize="@dimen/dm028"/>
                     <TextView
@@ -465,19 +453,19 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"/>
-                <RelativeLayout
-                    android:id="@+id/rl_matador_more"
-                    android:layout_width="@dimen/dm120"
-                    android:layout_height="match_parent">
-                    <ImageView
-                        android:layout_width="@dimen/dm014"
-                        android:layout_height="@dimen/dm028"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/dm025"
-                        android:layout_marginRight="@dimen/dm020"
-                        android:src="@drawable/home_jiantou"/>
-                </RelativeLayout>
+                <!--<RelativeLayout-->
+                    <!--android:id="@+id/rl_matador_more"-->
+                    <!--android:layout_width="@dimen/dm120"-->
+                    <!--android:layout_height="match_parent">-->
+                    <!--<ImageView-->
+                        <!--android:layout_width="@dimen/dm014"-->
+                        <!--android:layout_height="@dimen/dm028"-->
+                        <!--android:layout_alignParentRight="true"-->
+                        <!--android:layout_centerVertical="true"-->
+                        <!--android:layout_marginLeft="@dimen/dm025"-->
+                        <!--android:layout_marginRight="@dimen/dm020"-->
+                        <!--android:src="@drawable/home_jiantou"/>-->
+                <!--</RelativeLayout>-->
             </LinearLayout>
             <View
                 android:layout_width="match_parent"

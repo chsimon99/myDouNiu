@@ -11,11 +11,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.adapter.recycleView.AdvisorAdapter;
 import com.zfxf.douniu.bean.AnswerChiefListInfo;
 import com.zfxf.douniu.bean.IndexResult;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.RecycleViewDivider;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
@@ -82,8 +85,16 @@ public class ActivityAskAdvisor extends FragmentActivity implements View.OnClick
                         mAdapter.setOnItemClickListener(new AdvisorAdapter.MyItemClickListener() {
                             @Override
                             public void onItemClick(View v, int positon,AnswerChiefListInfo bean) {
+                                if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+                                    Intent intent = new Intent(ActivityAskAdvisor.this, ActivityLogin.class);
+                                    startActivity(intent);
+                                    overridePendingTransition(0,0);
+                                    return;
+                                }
                                 Intent intent = new Intent(CommonUtils.getContext(), ActivityAskStock.class);
                                 intent.putExtra("name",bean.ud_nickname);
+                                intent.putExtra("fee",bean.df_fee);
+                                intent.putExtra("sx_id",bean.sx_ub_id);
                                 startActivity(intent);
                                 overridePendingTransition(0,0);
                             }
@@ -156,5 +167,11 @@ public class ActivityAskAdvisor extends FragmentActivity implements View.OnClick
 
     private void finishAll() {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        CommonUtils.dismissProgressDialog();
     }
 }

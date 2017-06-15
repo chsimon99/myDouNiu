@@ -49,7 +49,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="@dimen/dm006"
-                                        android:text="百变股神"
+                                        android:text=""
                                         android:textColor="@color/titleText"
                                         android:textSize="@dimen/dm028"/>
                                     <TextView
@@ -64,7 +64,7 @@
                                         android:paddingLeft="@dimen/dm010"
                                         android:paddingRight="@dimen/dm010"
                                         android:paddingTop="@dimen/dm005"
-                                        android:text="高级斗牛士"
+                                        android:text=""
                                         android:textColor="@color/colorWhite"
                                         android:textSize="@dimen/dm020"/>
                                     <ImageView
@@ -118,7 +118,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="@dimen/dm020"
-                                        android:text="2046"
+                                        android:text=""
                                         android:textColor="@color/colorTitle"
                                         android:textSize="@dimen/dm028"/>
                                     <ImageView
@@ -145,7 +145,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginLeft="@dimen/dm020"
-                                        android:text="690"
+                                        android:text="0"
                                         android:textColor="@color/titleText"
                                         android:textSize="@dimen/dm028"/>
                                 </LinearLayout>
@@ -170,7 +170,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dm018"
-                    android:text="简介：中方信富签约顾问中方信富签约顾问 中方信富签约顾问中方信富签约顾问!"
+                    android:text="简介："
                     android:textColor="@color/titleText"
                     android:textSize="@dimen/dm024"/>
             </LinearLayout>
@@ -194,7 +194,7 @@
                         android:id="@+id/tv_matador_mes_asset"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="200000.00"
+                        android:text="2,000,000.00"
                         android:textColor="@color/colorTitle"
                         android:textSize="@dimen/dm028"/>
                     <TextView

@@ -24,6 +24,7 @@ import com.zfxf.douniu.activity.ActivityResearch;
 import com.zfxf.douniu.activity.ActivitySimulation;
 import com.zfxf.douniu.activity.ActivityXiangMu;
 import com.zfxf.douniu.activity.MainActivityTabHost;
+import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.activity.myself.ActivityMyselfMessage;
 import com.zfxf.douniu.adapter.recycleView.HomeAdvisorAdapter;
 import com.zfxf.douniu.adapter.recycleView.HomeChooseAdapter;
@@ -33,7 +34,9 @@ import com.zfxf.douniu.bean.IndexResult;
 import com.zfxf.douniu.bean.LunBoListInfo;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
 import com.zfxf.douniu.utils.MyLunBo;
+import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.FullyLinearLayoutManager;
 import com.zfxf.douniu.view.InnerView;
 import com.zfxf.douniu.view.RecycleViewDivider;
@@ -267,9 +270,15 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
                 MainActivityTabHost.setIndex(6);
                 break;
             case R.id.ll_home_moni:
-                intent = new Intent(getActivity(), ActivitySimulation.class);
-                getActivity().startActivity(intent);
-                getActivity().overridePendingTransition(0,0);
+                if(SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+                    intent = new Intent(getActivity(), ActivitySimulation.class);
+                    getActivity().startActivity(intent);
+                    getActivity().overridePendingTransition(0,0);
+                }else {
+                    intent = new Intent(getActivity(), ActivityLogin.class);
+                    getActivity().startActivity(intent);
+                    getActivity().overridePendingTransition(0,0);
+                }
                 break;
             case R.id.ll_home_xiangmu:
                 intent = new Intent(getActivity(), ActivityXiangMu.class);
@@ -277,9 +286,15 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
                 getActivity().overridePendingTransition(0,0);
                 break;
             case R.id.iv_home_message:
-                intent = new Intent(CommonUtils.getContext(), ActivityMyselfMessage.class);
-                startActivity(intent);
-                getActivity().overridePendingTransition(0,0);
+                if(SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+                    intent = new Intent(CommonUtils.getContext(), ActivityMyselfMessage.class);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(0,0);
+                }else {
+                    intent = new Intent(getActivity(), ActivityLogin.class);
+                    getActivity().startActivity(intent);
+                    getActivity().overridePendingTransition(0,0);
+                }
                 break;
             case R.id.ll_home_research:
                 intent = new Intent(CommonUtils.getContext(), ActivityResearch.class);

@@ -16,6 +16,8 @@ import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.bean.IndexResult;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.RecycleViewDivider;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
@@ -76,15 +78,18 @@ public class FragmentMyselfAttentionAdvisor extends BaseFragment {
 		NewsInternetRequest.getAdvisorListInformation(type, currentPage, null, new NewsInternetRequest.ForResultAdvisorJPListener() {
 			@Override
 			public void onResponseMessage(IndexResult indexResult) {
+				if (indexResult.shouxi_list.size() == 0) {
+					advisor.setVisibility(View.VISIBLE);
+				}
 				totlePage = Integer.parseInt(indexResult.total);
-				if (totlePage > 0 && currentPage <= totlePage){
-					if(currentPage == 1){
-						if(mAttentionAdvisorAdapter == null){
-							mAttentionAdvisorAdapter = new HomeAdvisorAdapter(getActivity(),indexResult.shouxi_list);
+				if (totlePage > 0 && currentPage <= totlePage) {
+					if (currentPage == 1) {
+						if (mAttentionAdvisorAdapter == null) {
+							mAttentionAdvisorAdapter = new HomeAdvisorAdapter(getActivity(), indexResult.shouxi_list);
 						}
 						mRecyclerView.setLinearLayout();
 						mRecyclerView.setAdapter(mAttentionAdvisorAdapter);
-						if(mDivider == null){
+						if (mDivider == null) {
 							mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
 							mRecyclerView.addItemDecoration(mDivider);
 						}
@@ -94,12 +99,12 @@ public class FragmentMyselfAttentionAdvisor extends BaseFragment {
 							@Override
 							public void onItemClick(View v, int id) {
 								Intent intent = new Intent(getActivity(), ActivityAdvisorHome.class);
-								intent.putExtra("id",id);
+								intent.putExtra("id", id);
 								getActivity().startActivity(intent);
-								getActivity().overridePendingTransition(0,0);
+								getActivity().overridePendingTransition(0, 0);
 							}
 						});
-					}else {
+					} else {
 						mAttentionAdvisorAdapter.addDatas(indexResult.shouxi_list);
 						mRecyclerView.post(new Runnable() {
 							@Override
@@ -112,14 +117,18 @@ public class FragmentMyselfAttentionAdvisor extends BaseFragment {
 							public void run() {
 								mRecyclerView.setPullLoadMoreCompleted();
 							}
-						},1000);
+						}, 1000);
 					}
 					currentPage++;
-					CommonUtils.dismissProgressDialog();
-				}else {
-					CommonUtils.dismissProgressDialog();
-					return;
+				} else {//关注取消后size为0时刷新界面
+					if (mAttentionAdvisorAdapter == null) {
+						mAttentionAdvisorAdapter = new HomeAdvisorAdapter(getActivity(), indexResult.shouxi_list);
+					}
+					mRecyclerView.setLinearLayout();
+					mRecyclerView.setAdapter(mAttentionAdvisorAdapter);
+					mAttentionAdvisorAdapter.notifyDataSetChanged();
 				}
+				CommonUtils.dismissProgressDialog();
 			}
 		});
 	}
@@ -148,5 +157,17 @@ public class FragmentMyselfAttentionAdvisor extends BaseFragment {
 				visitInternet();
 			}
 		});
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if(SpTools.getBoolean(getActivity(), Constants.alreadyLogin,false)){
+			type = 3;
+			currentPage = 1;
+			mAttentionAdvisorAdapter = null;
+			visitInternet();
+			SpTools.setBoolean(getActivity(), Constants.alreadyLogin,false);
+		}
 	}
 }

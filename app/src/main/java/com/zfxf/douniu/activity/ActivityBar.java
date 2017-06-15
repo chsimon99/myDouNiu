@@ -11,8 +11,11 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.adapter.viewPager.BarItemAdapter;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.fragment.FragmentBarBar;
 import com.zfxf.douniu.view.fragment.FragmentBarGrade;
 import com.zfxf.douniu.view.fragment.FragmentBarZhibo;
@@ -103,6 +106,12 @@ public class ActivityBar extends FragmentActivity implements View.OnClickListene
                 finish();
                 break;
             case R.id.iv_base_edit:
+                if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+                    Intent intent = new Intent(this, ActivityLogin.class);
+                    startActivity(intent);
+                    overridePendingTransition(0,0);
+                    return;
+                }
                 Intent intent = new Intent(this,ActivityPostBar.class);
                 startActivity(intent);
                 overridePendingTransition(0,0);

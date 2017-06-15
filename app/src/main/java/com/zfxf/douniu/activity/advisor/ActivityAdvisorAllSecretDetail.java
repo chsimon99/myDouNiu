@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.activity.ActivityToPay;
+import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.bean.CourseResult;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
@@ -68,29 +69,33 @@ public class ActivityAdvisorAllSecretDetail extends FragmentActivity implements 
     private String fee;
     private void initdata() {
         if(mId != 0){
-            CommonUtils.showProgressDialog(this,"加载中……");
-            NewsInternetRequest.getCourseInformation(mId, new NewsInternetRequest.ForResultCourseInfoListener() {
-                @Override
-                public void onResponseMessage(CourseResult courseResult) {
-                    Glide.with(ActivityAdvisorAllSecretDetail.this).load(courseResult.news_info.img)
-                            .placeholder(R.drawable.advisor_detail).into(img);
-                    tv_title.setText(courseResult.news_info.cc_title);
-                    from.setText(courseResult.news_info.ud_nickname);
-                    time.setText(courseResult.news_info.cc_datetime);
-                    mCount.setText(courseResult.news_info.buy_count);
-                    detail.setText(courseResult.news_info.cc_description);
-                    fee = courseResult.news_info.cc_fee;
-                    money.setText("￥"+fee+"元");
-
-                    if(courseResult.news_info.has_buy.equals("0")){
-                        buyCannel();
-                    }else{
-                        buySuccess();
-                    }
-                    CommonUtils.dismissProgressDialog();
-                }
-            },getResources().getString(R.string.sikeinfo));
+            visitInternet();
         }
+    }
+
+    private void visitInternet() {
+        CommonUtils.showProgressDialog(this,"加载中……");
+        NewsInternetRequest.getCourseInformation(mId, new NewsInternetRequest.ForResultCourseInfoListener() {
+            @Override
+            public void onResponseMessage(CourseResult courseResult) {
+                Glide.with(ActivityAdvisorAllSecretDetail.this).load(courseResult.news_info.img)
+                        .placeholder(R.drawable.advisor_detail).into(img);
+                tv_title.setText(courseResult.news_info.cc_title);
+                from.setText(courseResult.news_info.ud_nickname);
+                time.setText(courseResult.news_info.cc_datetime);
+                mCount.setText(courseResult.news_info.buy_count);
+                detail.setText(courseResult.news_info.cc_description);
+                fee = courseResult.news_info.cc_fee;
+                money.setText("￥"+fee+"元");
+
+                if(courseResult.news_info.has_buy.equals("0")){
+                    buyCannel();
+                }else{
+                    buySuccess();
+                }
+                CommonUtils.dismissProgressDialog();
+            }
+        },getResources().getString(R.string.sikeinfo));
     }
 
     private void buyCannel() {
@@ -118,6 +123,12 @@ public class ActivityAdvisorAllSecretDetail extends FragmentActivity implements 
                 finish();
                 break;
             case R.id.tv_advisor_all_secret_detail_pay:
+                if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+                    Intent intent = new Intent(this, ActivityLogin.class);
+                    startActivity(intent);
+                    overridePendingTransition(0,0);
+                    return;
+                }
                 if(pay.getText().toString().equals("已付款")){
                     return;
                 }else {
@@ -142,6 +153,10 @@ public class ActivityAdvisorAllSecretDetail extends FragmentActivity implements 
         if(SpTools.getBoolean(this, Constants.buy,false)){
             buySuccess();
             SpTools.setBoolean(this, Constants.buy,false);
+        }
+        if(SpTools.getBoolean(this, Constants.alreadyLogin,false)){
+            visitInternet();
+            SpTools.setBoolean(this, Constants.alreadyLogin,false);
         }
     }
 

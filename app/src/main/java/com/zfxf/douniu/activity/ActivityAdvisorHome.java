@@ -1,5 +1,6 @@
 package com.zfxf.douniu.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -15,10 +16,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.adapter.viewPager.BarItemAdapter;
 import com.zfxf.douniu.bean.IndexResult;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.fragment.FragmentAdvisorHomeAsking;
 import com.zfxf.douniu.view.fragment.FragmentAdvisorHomeDirect;
 import com.zfxf.douniu.view.fragment.FragmentAdvisorHomeGold;
@@ -84,6 +88,9 @@ public class ActivityAdvisorHome extends FragmentActivity implements View.OnClic
     private Fragment mFragmentAdvisorHomeCapital;
     private Fragment mFragmentAdvisorHomeGold;
     public int mId;
+    private String mNickname;
+    private String mFee;
+    private String mUb_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,29 +104,7 @@ public class ActivityAdvisorHome extends FragmentActivity implements View.OnClic
 
     private void initdata() {
         if(mId > 0){
-            CommonUtils.showProgressDialog(this,"加载中……");
-            NewsInternetRequest.getAdvisorDetailInformation(mId, new NewsInternetRequest.ForResultIndexListener() {
-                @Override
-                public void onResponseMessage(IndexResult indexResult) {
-                    Glide.with(ActivityAdvisorHome.this).load(indexResult.user_info.zt_fileid)
-                            .placeholder(R.drawable.advisor_home_img)
-                            .bitmapTransform(new CropCircleTransformation(ActivityAdvisorHome.this)).into(mView);
-                    name.setText(indexResult.user_info.ud_nickname);
-                    if(indexResult.user_info.type.equals("1")){
-                        type1.setVisibility(View.VISIBLE);
-                    }else if(indexResult.user_info.type.equals("2")){
-                        type.setVisibility(View.VISIBLE);
-                    }
-                    mCount.setText(indexResult.user_info.dy_count);
-                    income.setText(indexResult.user_info.mf_bysy+"%");
-                    introduce.setText(indexResult.user_info.ud_memo);
-                    if(indexResult.user_info.has_dy.equals("1")){
-                        iv_guanzhu.setImageResource(R.drawable.icon_guanzhu_cannel);
-                        tv_guanzhu.setText("取消关注");
-                    }
-                    CommonUtils.dismissProgressDialog();
-                }
-            });
+            visitInternet();
         }
         if(mFragmentAdvisorHomeDirect == null){
             mFragmentAdvisorHomeDirect = new FragmentAdvisorHomeDirect();
@@ -168,6 +153,36 @@ public class ActivityAdvisorHome extends FragmentActivity implements View.OnClic
         });
 
     }
+
+    private void visitInternet() {
+        CommonUtils.showProgressDialog(this,"加载中……");
+        NewsInternetRequest.getAdvisorDetailInformation(mId, new NewsInternetRequest.ForResultIndexListener() {
+            @Override
+            public void onResponseMessage(IndexResult indexResult) {
+                Glide.with(ActivityAdvisorHome.this).load(indexResult.user_info.zt_fileid)
+                        .placeholder(R.drawable.advisor_home_img)
+                        .bitmapTransform(new CropCircleTransformation(ActivityAdvisorHome.this)).into(mView);
+                mNickname = indexResult.user_info.ud_nickname;
+                mFee = indexResult.user_info.df_fee;
+                mUb_id = indexResult.user_info.ud_ub_id;
+                name.setText(mNickname);
+                if(indexResult.user_info.type.equals("1")){
+                    type1.setVisibility(View.VISIBLE);
+                }else if(indexResult.user_info.type.equals("2")){
+                    type.setVisibility(View.VISIBLE);
+                }
+                mCount.setText(indexResult.user_info.dy_count);
+                income.setText(indexResult.user_info.mf_bysy+"%");
+                introduce.setText(indexResult.user_info.ud_memo);
+                if(indexResult.user_info.has_dy.equals("1")){
+                    iv_guanzhu.setImageResource(R.drawable.icon_guanzhu_cannel);
+                    tv_guanzhu.setText("取消关注");
+                }
+                CommonUtils.dismissProgressDialog();
+            }
+        });
+    }
+
     private void initListener() {
         guanzhu.setOnClickListener(this);
         wengu.setOnClickListener(this);
@@ -180,6 +195,12 @@ public class ActivityAdvisorHome extends FragmentActivity implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ll_advisor_home_guanzhu://关注
+                if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+                    Intent intent = new Intent(this, ActivityLogin.class);
+                    startActivity(intent);
+                    overridePendingTransition(0,0);
+                    return;
+                }
                 if(tv_guanzhu.getText().toString().equals("关注")){
                     subscribeInternet(mId,6,0);
                 }else {
@@ -187,6 +208,18 @@ public class ActivityAdvisorHome extends FragmentActivity implements View.OnClic
                 }
                 break;
             case R.id.ll_advisor_home_wengu://问股
+                if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+                    Intent intent = new Intent(this, ActivityLogin.class);
+                    startActivity(intent);
+                    overridePendingTransition(0,0);
+                    return;
+                }
+                Intent intent = new Intent(CommonUtils.getContext(), ActivityAskStock.class);
+                intent.putExtra("name",mNickname);
+                intent.putExtra("fee",mFee);
+                intent.putExtra("sx_id",mUb_id);
+                startActivity(intent);
+                overridePendingTransition(0,0);
                 break;
             case R.id.rl_advisor_home_back://返回
                 finishAll();
@@ -218,6 +251,7 @@ public class ActivityAdvisorHome extends FragmentActivity implements View.OnClic
                     iv_guanzhu.setImageResource(R.drawable.icon_guanzhu);
                     tv_guanzhu.setText("关注");
                 }
+                SpTools.setBoolean(ActivityAdvisorHome.this, Constants.alreadyLogin,true);//存储关注变动
             }
         },getResources().getString(R.string.userdy));
     }
@@ -226,5 +260,14 @@ public class ActivityAdvisorHome extends FragmentActivity implements View.OnClic
     public void onBackPressed() {
         super.onBackPressed();
         CommonUtils.dismissProgressDialog();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(SpTools.getBoolean(this, Constants.alreadyLogin,false)){
+            visitInternet();
+            SpTools.setBoolean(this, Constants.alreadyLogin,false);
+        }
     }
 }

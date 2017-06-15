@@ -13,10 +13,13 @@ public interface Constants {
     String rvaluateResult = "RVALUATERESULT";
     String rvaluateSuccess = "RVALUATESUCCESS";
     String isLogin = "ISLOGIN";
+    String alreadyLogin = "ALREADYISLOGIN";
+    String alreadyGuanzhu = "ALREADYISGUANZHU";
     String nickname = "NICKNAME";
     String imgurl = "IMGURL";
     String buy = "BUY";
     String subscribe = "SUBSCRIBE";
+    String read = "READ";
     int resultCodeLogin	= 1;
     int resultCodeEditInfor	= 2;
     String getIndexInformation = "GETINDEXINFORMATION";

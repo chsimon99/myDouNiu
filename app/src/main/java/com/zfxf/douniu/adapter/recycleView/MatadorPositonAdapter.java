@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.SimulationPositionDetail;
 
 import java.util.List;
 
@@ -19,13 +20,13 @@ import java.util.List;
 public class MatadorPositonAdapter extends RecyclerView.Adapter<MatadorPositonAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<SimulationPositionDetail> mDatas;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int positon);
+        void onItemClick(View v, int positon,SimulationPositionDetail detail);
     }
 
-    public MatadorPositonAdapter(Context context, List<String> datas) {
+    public MatadorPositonAdapter(Context context, List<SimulationPositionDetail> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -43,7 +44,7 @@ public class MatadorPositonAdapter extends RecyclerView.Adapter<MatadorPositonAd
 
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
-        holder.setRefreshData(position);
+        holder.setRefreshData(mDatas.get(position));
     }
 
     @Override
@@ -71,18 +72,24 @@ public class MatadorPositonAdapter extends RecyclerView.Adapter<MatadorPositonAd
             price = (TextView) itemView.findViewById(R.id.tv_item_matador_positon_price);
             profit = (TextView) itemView.findViewById(R.id.tv_item_matador_positon_profit);
             sold = (TextView) itemView.findViewById(R.id.tv_item_matador_positon_sold);
-//            itemView.setOnClickListener(this);
+            itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, getPosition(),mDatas.get(getPosition()));
             }
         }
 
-        public void setRefreshData(int position) {
-
+        public void setRefreshData(SimulationPositionDetail bean) {
+            name.setText(bean.mg_name+"("+bean.mc_code+")");
+            price.setText(bean.mg_xj+"元");
+            income.setText(bean.mg_zxsz+"元");
+            cost.setText(bean.mc_cbj+"元");
+            count.setText(bean.mc_ccsl+"股");
+            sold.setText(bean.mc_kmsl+"股");
+            profit.setText(bean.mc_ljyk);
         }
     }
 }

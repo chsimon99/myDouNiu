@@ -18,6 +18,7 @@ import com.zfxf.douniu.bean.NewsNewsResult;
 import com.zfxf.douniu.bean.NewsResult;
 import com.zfxf.douniu.bean.OtherResult;
 import com.zfxf.douniu.bean.ProjectListResult;
+import com.zfxf.douniu.bean.SimulationResult;
 import com.zfxf.douniu.bean.XuanguDetail;
 import com.zfxf.douniu.bean.XuanguResult;
 import com.zfxf.douniu.bean.ZanResult;
@@ -62,6 +63,13 @@ public class NewsInternetRequest {
     private static ForResultMySecretListener mySecretListener;
     private static ForResultMyReferenceListener myReferenceListener;
     private static ForResultMatadorIndexListener matadorIndexListener;
+    private static ForResultSimulationIndexListener simulationIndexListener;
+    private static ForResultZiXuanStockListener ziXuanStockListener;
+    private static ForResultMyAskDoneListener myAskDoneListener;
+    private static ForResultMyAskWaitListener myAskWaitListener;
+    private static ForResultHeadListLunboInfoListener headListLunboInfoListener;
+    private static ForResultGoldPoneShortStockListener goldPoneShortStockListener;
+    private static ForResultGoldPoneLongStockListener goldPoneLongStockListener;
     static {
         mGson = new Gson();
         context = CommonUtils.getContext();
@@ -165,6 +173,27 @@ public class NewsInternetRequest {
                 }
             }
         }).post(context.getResources().getString(R.string.headlist),true,params);
+    }
+
+    public static void getHeadListLunboInformation(ForResultHeadListLunboInfoListener listener){
+        headListLunboInfoListener = listener;
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getHeadListLunboInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getHeadListLunboInformation="+response);
+                OtherResult result = mGson.fromJson(response, OtherResult.class);
+                if(result.result.code.equals("10")){
+                    headListLunboInfoListener.onResponseMessage(result.lunbo_list);
+                }else {
+                    CommonUtils.toastMessage("网络出现问题，请重新刷新");
+                }
+            }
+        }).post(context.getResources().getString(R.string.headlunbo),true,null);
     }
 
     /**
@@ -438,9 +467,7 @@ public class NewsInternetRequest {
                 CommonUtils.logMes("getListInformation="+response);
                 OtherResult result = mGson.fromJson(response, OtherResult.class);
                 String total = result.total;
-                if(result.result.info.equals("没有数据")){
-                    return;
-                }
+
                 List<NewsListResult> lists = result.news_list;
                 for (NewsListResult list :lists) {
                     Map<String,String> map = new HashMap<>();
@@ -569,6 +596,38 @@ public class NewsInternetRequest {
                 }
             }
         }).post(context.getResources().getString(R.string.stockInfo),true,params);
+    }
+
+    public static void getGoldPondListInformation(String id, int type
+            , final ForResultGoldPoneShortStockListener shortStockListener, final ForResultGoldPoneLongStockListener longStockListener){
+        if(shortStockListener !=null){
+            goldPoneShortStockListener = shortStockListener;
+        }
+        if(longStockListener !=null){
+            goldPoneLongStockListener = longStockListener;
+        }
+        Map<String ,String> params = new HashMap<>();
+        params.put("type",type+"");
+        params.put("sx_ub_id",id);
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getGoldPondListInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getGoldPondListInformation="+response);
+                SimulationResult result = mGson.fromJson(response, SimulationResult.class);
+                if(result.result.code.equals("10")){
+                    if(shortStockListener !=null){
+                        goldPoneShortStockListener.onResponseMessage(result);
+                    }else if(longStockListener !=null){
+                        goldPoneLongStockListener.onResponseMessage(result);
+                    }
+                }
+            }
+        }).post(context.getResources().getString(R.string.gp),true,params);
     }
     /**
      * 列表选项 私密课
@@ -725,10 +784,10 @@ public class NewsInternetRequest {
             public void onResponse(String response, int id) {
                 CommonUtils.logMes("subscribeAndCannel="+response);
                 ZanResult zanResult = mGson.fromJson(response, ZanResult.class);
-                if(zanResult.result.code.equals("02")){
-                    CommonUtils.toastMessage("失败，请重试");
-                }else{
+                if(zanResult.result.code.equals("10")){
                     resultListener.onResponseMessage(zanResult.dy_count);
+                }else{
+                    CommonUtils.toastMessage("失败，请重试");
                 }
             }
         }).post(html,true,params);
@@ -918,6 +977,12 @@ public class NewsInternetRequest {
             }
         }).post(context.getResources().getString(R.string.shouxilist),true,params);
     }
+
+    /**
+     * 我的关注斗牛士
+     * @param page 页数
+     * @param listener
+     */
     public static void getMySubscribeMadatorListInformation(int page,ForResultMatadorIndexListener listener){
         matadorIndexListener = listener;
         Map<String ,String> params = new HashMap<>();
@@ -938,7 +1003,48 @@ public class NewsInternetRequest {
                     CommonUtils.toastMessage("网络出现问题，请重新刷新");
                 }
             }
-        }).post(context.getResources().getString(R.string.attention),true,null);
+        }).post(context.getResources().getString(R.string.attention),true,params);
+    }
+
+    /**
+     * 我的问股
+     * @param page 页数
+     * @param type 0已回答 1未回答
+     * @param doneListener 已回答
+     * @param waitListener 未回答
+     */
+    public static void getMyAskDoneInformation(int page , final int type, ForResultMyAskDoneListener doneListener, ForResultMyAskWaitListener waitListener){
+        if(doneListener != null){
+            myAskDoneListener = doneListener;
+        }
+        if(waitListener != null){
+            myAskWaitListener = waitListener;
+        }
+        Map<String ,String> params = new HashMap<>();
+        params.put("page",page+"");
+        params.put("type",type+"");
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getMyAskDoneInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getMyAskDoneInformation="+response);
+                NewsResult result = mGson.fromJson(response, NewsResult.class);
+                if(result.result.code.equals("10")){
+                    if(type == 0){
+                        myAskDoneListener.onResponseMessage(result);
+                    }else if(type == 1){
+                        myAskWaitListener.onResponseMessage(result);
+                    }
+                }else {
+                    CommonUtils.toastMessage("网络出现问题，请重新刷新");
+                }
+            }
+        }).post(context.getResources().getString(R.string.myAskStock),true,params);
+
     }
     /**
      * 首席首页个人详细信息
@@ -1191,6 +1297,318 @@ public class NewsInternetRequest {
         }).post(context.getResources().getString(R.string.matadororder),true,params);
     }
 
+    /**
+     * 模拟炒股首页
+     * @param listener
+     */
+    public static void getSimulationIndexInformation(String id,ForResultSimulationIndexListener listener){
+        simulationIndexListener = listener;
+        Map<String ,String> params = new HashMap<>();
+        if(!TextUtils.isEmpty(id)){
+            params.put("dn_ub_id",id);
+        }
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getSimulationIndexInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getSimulationIndexInformation="+response);
+                SimulationResult result = mGson.fromJson(response, SimulationResult.class);
+                if(result.result.code.equals("10")){
+                    simulationIndexListener.onResponseMessage(result);
+                }else {
+                    CommonUtils.toastMessage("网络出现问题，请重新刷新");
+                }
+            }
+        }).post(context.getResources().getString(R.string.mnIndex),true,params);
+    }
+
+    /**
+     * 模拟炒股买入
+     * @param code 股票代码
+     * @param listener
+     */
+    public static void getSimulationBuyInformation(String code,ForResultSimulationIndexListener listener){
+        simulationIndexListener = listener;
+        Map<String ,String> params = new HashMap<>();
+        if(!TextUtils.isEmpty(code)){
+            params.put("mg_code",code);
+        }
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getSimulationBuyInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getSimulationBuyInformation="+response);
+                SimulationResult result = mGson.fromJson(response, SimulationResult.class);
+                if(result.result.code.equals("10")){
+                    simulationIndexListener.onResponseMessage(result);
+                }else {
+                    CommonUtils.toastMessage("网络出现问题，请重新刷新");
+                }
+            }
+        }).post(context.getResources().getString(R.string.buygp),true,params);
+    }
+
+    /**
+     * 模拟炒股卖出
+     * @param code 股票代码
+     * @param listener
+     */
+    public static void getSimulationSellInformation(String code,ForResultSimulationIndexListener listener){
+        simulationIndexListener = listener;
+        Map<String ,String> params = new HashMap<>();
+        if(!TextUtils.isEmpty(code)){
+            params.put("mg_code",code);
+        }
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getSimulationSellInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getSimulationSellInformation="+response);
+                SimulationResult result = mGson.fromJson(response, SimulationResult.class);
+                if(result.result.code.equals("10")){
+                    simulationIndexListener.onResponseMessage(result);
+                }else {
+                    CommonUtils.toastMessage("网络出现问题，请重新刷新");
+                }
+            }
+        }).post(context.getResources().getString(R.string.sellgp),true,params);
+    }
+
+    /**
+     * 模拟炒股委托
+     * @param listener
+     */
+    public static void getSimulationEntrustInformation(ForResultSimulationIndexListener listener){
+        simulationIndexListener = listener;
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getSimulationEntrustInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getSimulationEntrustInformation="+response);
+                SimulationResult result = mGson.fromJson(response, SimulationResult.class);
+                if(result.result.code.equals("10")){
+                    simulationIndexListener.onResponseMessage(result);
+                }else {
+                    CommonUtils.toastMessage("网络出现问题，请重新刷新");
+                }
+            }
+        }).post(context.getResources().getString(R.string.consign),true,null);
+    }
+
+    /**
+     * 股票搜索
+     * @param code 搜索内容
+     * @param listener
+     */
+    public static void getSearchStockInformation(String code,ForResultSimulationIndexListener listener){
+        simulationIndexListener = listener;
+        Map<String ,String> params = new HashMap<>();
+        params.put("mg_code",code);
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getSearchStockInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getSearchStockInformation="+response);
+                SimulationResult result = mGson.fromJson(response, SimulationResult.class);
+                if(result.result.code.equals("10")){
+                    simulationIndexListener.onResponseMessage(result);
+                }else {
+                    CommonUtils.toastMessage("网络出现问题，请重新刷新");
+                }
+            }
+        }).post(context.getResources().getString(R.string.searchgp),true,params);
+    }
+
+    /**
+     * 模拟炒股委托删除
+     * @param id 删除的股票id
+     * @param listener
+     */
+    public static void getSimulationEntrustDelete(String id,ForResultSimulationIndexListener listener){
+        simulationIndexListener = listener;
+        Map<String ,String> params = new HashMap<>();
+        params.put("mc_id",id);
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getSimulationEntrustDelete="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getSimulationEntrustDelete="+response);
+                SimulationResult result = mGson.fromJson(response, SimulationResult.class);
+                if(result.result.code.equals("10")){
+                    simulationIndexListener.onResponseMessage(result);
+                }else {
+                    CommonUtils.toastMessage("网络出现问题，请重新刷新");
+                }
+            }
+        }).post(context.getResources().getString(R.string.del),true,params);
+    }
+
+    /**
+     * 行情首页信息
+     * @param listener
+     */
+    public static void getQuotationIndexInformation(ForResultSimulationIndexListener listener){
+        simulationIndexListener = listener;
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getQuotationIndexInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getQuotationIndexInformation="+response);
+                SimulationResult result = mGson.fromJson(response, SimulationResult.class);
+                if(result.result.code.equals("10")){
+                    simulationIndexListener.onResponseMessage(result);
+                }else {
+                    CommonUtils.toastMessage("网络出现问题，请重新刷新");
+                }
+            }
+        }).post(context.getResources().getString(R.string.quotes),true,null);
+    }
+
+    /**
+     * 首页涨跌幅详情
+     * @param page 页数
+     * @param type 0降序 1升序
+     * @param station 0跌幅榜 1涨幅榜
+     * @param listener
+     */
+    public static void getStockListInformation(int page,int type,int station,ForResultZiXuanStockListener listener){
+        ziXuanStockListener = listener;
+        Map<String ,String> params = new HashMap<>();
+        params.put("page",page+"");
+        params.put("type",type+"");
+        params.put("station",station+"");
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getStockListInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getStockListInformation="+response);
+                SimulationResult result = mGson.fromJson(response, SimulationResult.class);
+                if(result.result.code.equals("10")){
+                    ziXuanStockListener.onResponseMessage(result);
+                }else {
+                    CommonUtils.toastMessage("网络出现问题，请重新刷新");
+                }
+            }
+        }).post(context.getResources().getString(R.string.increaseList),true,params);
+    }
+    /**
+     * 自选股票详情
+     * @param page 页数
+     * @param type 类型 0综合 2 市价升序  1市价降序 3跌幅 4涨幅
+     * @param listener
+     */
+    public static void getZiXuanStockInformation(int page,int type,ForResultZiXuanStockListener listener) {
+        ziXuanStockListener = listener;
+        Map<String ,String> params = new HashMap<>();
+        params.put("page",page+"");
+        params.put("type",type+"");
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getZiXuanStockInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getZiXuanStockInformation="+response);
+                SimulationResult result = mGson.fromJson(response, SimulationResult.class);
+                if(result.result.code.equals("10")){
+                    ziXuanStockListener.onResponseMessage(result);
+                }else if(result.result.code.equals("01")){
+                    ziXuanStockListener.onResponseMessage(result);
+                }else {
+                    CommonUtils.toastMessage("网络出现问题，请重新刷新");
+                }
+            }
+        }).post(context.getResources().getString(R.string.optional),true,params);
+    }
+
+    /**
+     * 编辑自选股列表
+     * @param listener
+     */
+    public static void getMyZiXuanStockInformation(ForResultZiXuanStockListener listener){
+        ziXuanStockListener = listener;
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getMyZiXuanStockInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getMyZiXuanStockInformation="+response);
+                SimulationResult result = mGson.fromJson(response, SimulationResult.class);
+                if(result.result.code.equals("10")){
+                    ziXuanStockListener.onResponseMessage(result);
+                }else {
+                    CommonUtils.toastMessage("网络出现问题，请重新刷新");
+                }
+            }
+        }).post(context.getResources().getString(R.string.editZx),true,null);
+    }
+
+    /**
+     * 自选股的添加和删除
+     * @param code 股票的代码 可多个用，隔开
+     * @param type 0添加 1删除
+     * @param listener
+     */
+    public static void deleteZiXuanStockInformation(String code,int type,ForResultListener listener){
+        resultListener = listener;
+        Map<String ,String> params = new HashMap<>();
+        params.put("mg_code",code);
+        params.put("type",type+"");
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("deleteZiXuanStockInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("deleteZiXuanStockInformation="+response);
+                SimulationResult result = mGson.fromJson(response, SimulationResult.class);
+                if(result.result.code.equals("10")){
+                    resultListener.onResponseMessage(result.result.code);
+                }else {
+                    CommonUtils.toastMessage("网络出现问题，请重新刷新");
+                }
+            }
+        }).post(context.getResources().getString(R.string.addZx),true,params);
+    }
 
     public interface ForResultPolicyInfoListener {
         void onResponseMessage(List<Map<String, String>> lists, String totalpage, List<LunBoListInfo> lunbo_list);
@@ -1200,6 +1618,9 @@ public class NewsInternetRequest {
     }
     public interface ForResultPointInfoListener {
         void onResponseMessage(List<Map<String,String>> lists, String totalpage, List<LunBoListInfo> lunbo_list);
+    }
+    public interface ForResultHeadListLunboInfoListener {
+        void onResponseMessage(List<LunBoListInfo> lunbo_list);
     }
     public interface ForResultLivingInfoListener {
         void onResponseMessage(LivingContent content);
@@ -1248,5 +1669,23 @@ public class NewsInternetRequest {
     }
     public interface ForResultMatadorIndexListener{
         void onResponseMessage(MatadorResult result);
+    }
+    public interface ForResultSimulationIndexListener {
+        void onResponseMessage(SimulationResult result);
+    }
+    public interface ForResultMyAskDoneListener {
+        void onResponseMessage(NewsResult result);
+    }
+    public interface ForResultMyAskWaitListener {
+        void onResponseMessage(NewsResult result);
+    }
+    public interface ForResultZiXuanStockListener {
+        void onResponseMessage(SimulationResult result);
+    }
+    public interface ForResultGoldPoneShortStockListener {
+        void onResponseMessage(SimulationResult result);
+    }
+    public interface ForResultGoldPoneLongStockListener {
+        void onResponseMessage(SimulationResult result);
     }
 }

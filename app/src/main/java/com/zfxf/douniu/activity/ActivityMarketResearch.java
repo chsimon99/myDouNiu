@@ -1,6 +1,7 @@
 package com.zfxf.douniu.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,12 +15,19 @@ import android.widget.TextView;
 
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.adapter.recycleView.MarketResearchAdapter;
+import com.zfxf.douniu.bean.SimulationResult;
+import com.zfxf.douniu.bean.SimulationSearchInfo;
+import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.FullyLinearLayoutManager;
 import com.zfxf.douniu.view.RecycleViewDivider;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,13 +50,23 @@ public class ActivityMarketResearch extends FragmentActivity implements View.OnC
     RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private MarketResearchAdapter mResearchAdapter;
-    private List<String> mStrings = new ArrayList<String>();
+    private List<SimulationSearchInfo> mStrings = new ArrayList<SimulationSearchInfo>();
     private RecycleViewDivider mDivider;
+    private boolean mSimulation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_market_research);
         ButterKnife.bind(this);
+        mSimulation = getIntent().getBooleanExtra("simulation", false);
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                InputMethodManager inputManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.showSoftInput(research, 0);
+            }
+        },300);
         initData();
         initListener();
     }
@@ -58,7 +76,7 @@ public class ActivityMarketResearch extends FragmentActivity implements View.OnC
             mLayoutManager = new FullyLinearLayoutManager(this);
         }
         if(mResearchAdapter == null){
-            mResearchAdapter = new MarketResearchAdapter(this, mStrings);
+            mResearchAdapter = new MarketResearchAdapter(this, mStrings,mSimulation);
         }
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mResearchAdapter);
@@ -73,19 +91,26 @@ public class ActivityMarketResearch extends FragmentActivity implements View.OnC
         research.setOnClickListener(this);
         research.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            public boolean onEditorAction(final TextView v, int actionId, KeyEvent event) {
                 switch(actionId){
                     case EditorInfo.IME_ACTION_SEARCH:
                         CommonUtils.toastMessage("开始搜索");
-                        mStrings = new ArrayList<String>();
-                        mStrings.add("");
-                        mStrings.add("");
-                        mResearchAdapter.addDatas(mStrings);
-                        mResearchAdapter.notifyDataSetChanged();
                         InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                        research.setFocusable(false);
-                        research.setText("");
+                        NewsInternetRequest.getSearchStockInformation(research.getText().toString(), new NewsInternetRequest.ForResultSimulationIndexListener() {
+                            @Override
+                            public void onResponseMessage(SimulationResult result) {
+                                if(result.mg_gupiao.size() == 0){
+                                    CommonUtils.toastMessage("没有搜索到数据");
+                                }else if(result.mg_gupiao.size()>0){
+                                    mResearchAdapter.deleteDatas();
+                                    mResearchAdapter.addDatas(result.mg_gupiao);
+                                    mResearchAdapter.notifyDataSetChanged();
+                                }
+                                research.setFocusable(false);
+                                research.setText("");
+                            }
+                        });
                         break;
                 }
                 return false;
@@ -93,10 +118,46 @@ public class ActivityMarketResearch extends FragmentActivity implements View.OnC
         });
         mResearchAdapter.setOnItemClickListener(new MarketResearchAdapter.MyItemClickListener() {
             @Override
-            public void onItemClick(View v, int positon) {
-
+            public void onItemClick(View v, int position,SimulationSearchInfo info) {
+                if(mSimulation){
+                    fanhui(info);
+                    finish();
+                }else {
+                    //跳转股票详情信息
+                }
             }
         });
+        mResearchAdapter.setOnAddStockClickListener(new MarketResearchAdapter.MyAddStockClickListener() {
+            @Override
+            public void onItemClick(View v, int position, SimulationSearchInfo info) {
+                if(info.isAddSuccess() || info.zixuan_status.equals("1")){
+                    return;
+                }
+                addZiXuanStock(info.mg_code,position);
+            }
+        });
+    }
+
+    private void addZiXuanStock(String mg_code, final int position) {
+        NewsInternetRequest.deleteZiXuanStockInformation(mg_code, 0, new NewsInternetRequest.ForResultListener() {
+            @Override
+            public void onResponseMessage(String code) {
+                if(code.equals("10")){
+                    CommonUtils.toastMessage("添加自选成功");
+                    SpTools.setBoolean(ActivityMarketResearch.this, Constants.buy,true);
+                }else {
+                    mResearchAdapter.changeItemImage(position);
+                    mResearchAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+    private void fanhui(SimulationSearchInfo info) {
+        Intent intent = new Intent();
+        intent.putExtra("name",info.mg_name);
+        intent.putExtra("code",info.mg_code);
+        setResult(2,intent);
     }
 
     @Override

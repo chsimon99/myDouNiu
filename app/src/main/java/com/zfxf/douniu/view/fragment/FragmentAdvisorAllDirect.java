@@ -56,6 +56,7 @@ public class FragmentAdvisorAllDirect extends BaseFragment implements View.OnCli
 	private int headType = 0;
 	private int totlePage = 0;
 	private int currentPage = 1;
+	private boolean isShow = false;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -77,10 +78,11 @@ public class FragmentAdvisorAllDirect extends BaseFragment implements View.OnCli
 	@Override
 	public void initdata() {
 		super.initdata();
-		currentPage = 1;
-		mAllDirectAdapter = null;
-		CommonUtils.showProgressDialog(getActivity(),"加载中……");
-		visitInternet();
+		if(!isShow){
+			isShow = true;
+			CommonUtils.showProgressDialog(getActivity(),"加载中……");
+			visitInternet();
+		}
 	}
 	private void visitInternet(){
 		NewsInternetRequest.getLivingListInformation(headType, currentPage+"", null, new NewsInternetRequest.ForResultEventInfoListener() {
@@ -128,11 +130,8 @@ public class FragmentAdvisorAllDirect extends BaseFragment implements View.OnCli
 						},1000);
 					}
 					currentPage++;
-					CommonUtils.dismissProgressDialog();
-				}else {
-					CommonUtils.dismissProgressDialog();
-					return;
 				}
+				CommonUtils.dismissProgressDialog();
 			}
 		},getActivity().getResources().getString(R.string.zhibolist));
 

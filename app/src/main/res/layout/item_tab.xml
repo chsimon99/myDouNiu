@@ -15,8 +15,10 @@
             android:textColor="@drawable/tab_text_color_selector" />
 
         <View
+            android:id="@+id/tab_indicator"
             android:layout_width="match_parent"
             android:layout_height="2dp"
+            android:visibility="gone"
             android:background="@drawable/tab_indicator_selector"
             android:layout_alignParentBottom="true" />
     </RelativeLayout>

@@ -48,6 +48,7 @@
                 android:textColor="@color/titleText"
                 android:textSize="@dimen/dm028"/>
             <ImageView
+                android:id="@+id/iv_market_select_new"
                 android:layout_width="@dimen/dm018"
                 android:layout_height="@dimen/dm024"
                 android:layout_gravity="center"
@@ -72,6 +73,7 @@
                 android:textSize="@dimen/dm028"/>
             <ImageView
                 android:layout_gravity="center"
+                android:id="@+id/iv_market_select_ratio"
                 android:layout_width="@dimen/dm018"
                 android:layout_height="@dimen/dm024"
                 android:src="@drawable/icon_up_down"/>
@@ -84,10 +86,18 @@
     <FrameLayout android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
+        <com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView
+            android:id="@+id/rv_market_select"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dm018"
+            android:layout_marginRight="@dimen/dm018"/>
+
         <LinearLayout android:layout_width="match_parent"
                       android:layout_height="@dimen/dm420"
                       android:id="@+id/ll_market_select_none"
                       android:gravity="center"
+                      android:visibility="gone"
                       android:orientation="vertical">
             <TextView
                 android:layout_width="wrap_content"
@@ -101,12 +111,6 @@
                 android:layout_marginTop="@dimen/dm045"
                 android:src="@drawable/icon_add"/>
         </LinearLayout>
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_market_select"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dm018"
-            android:layout_marginRight="@dimen/dm018"/>
     </FrameLayout>
     <View
         android:layout_width="match_parent"

@@ -14,15 +14,7 @@ public interface VoLImpl {
 
     public float getVolume();
 
-    /**
-     * 开盘价
-     * @return
-     */
-    public float getOpenPrice();
+    public float getCloseDif();
 
-    /**
-     * 收盘价
-     * @return
-     */
-    public float getClosePrice();
+    public boolean getRate();
 }

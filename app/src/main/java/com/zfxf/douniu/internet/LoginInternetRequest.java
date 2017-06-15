@@ -447,10 +447,12 @@ public class LoginInternetRequest {
                 String ud_borth = result.user_detail.getUd_borth();
                 String ud_nickname = result.user_detail.getUd_nickname();
                 String ud_photo_fileid = result.user_detail.getUd_photo_fileid();
+                String ud_memo = result.user_detail.getUd_memo();
                 map.put("ud_addr",ud_addr);
                 map.put("ud_borth",ud_borth);
                 map.put("ud_nickname",ud_nickname);
                 map.put("ud_photo_fileid",ud_photo_fileid);
+                map.put("ud_memo",ud_memo);
                 mInfoListener.onResponseMessage(map);
             }
         });
@@ -501,7 +503,7 @@ public class LoginInternetRequest {
      * @param id 上传图片成功后传递的图片id
      * @param listener
      */
-    public static void editUserInformation(String name, String date, String address, String id,ForResultListener listener) {
+    public static void editUserInformation(String name, String date, String address,String info, String id,ForResultListener listener) {
         String url = context.getResources().getString(R.string.service_host_address)
                 .concat(context.getResources().getString(R.string.mycountEdit));
         mListener = listener;
@@ -510,6 +512,7 @@ public class LoginInternetRequest {
         detail.setUd_addr(address);
         detail.setUd_borth(date);
         detail.setUd_nickname(name);
+        detail.setUd_memo(info);
         if(!TextUtils.isEmpty(id)){
             detail.setUd_photo_fileid(id);
         }

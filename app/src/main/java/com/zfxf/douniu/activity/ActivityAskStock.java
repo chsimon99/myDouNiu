@@ -45,12 +45,16 @@ public class ActivityAskStock extends FragmentActivity implements View.OnClickLi
     TextView title;
 
 
+    @BindView(R.id.tv_askstock_fee)
+    TextView fee;
     @BindView(R.id.tv_askstock_count)
     TextView count;
     @BindView(R.id.ll_askstock_contact)
     LinearLayout contract;
     @BindView(R.id.et_askstock)
     EditText askstock;
+    private String mTv_fee;
+    private String mSx_id;
 
 
     @Override
@@ -59,11 +63,17 @@ public class ActivityAskStock extends FragmentActivity implements View.OnClickLi
         setContentView(R.layout.activity_askstock);
         ButterKnife.bind(this);
         String toName = getIntent().getStringExtra("name");//向xx提问
+        mTv_fee = getIntent().getStringExtra("fee");//问股价钱
+        mSx_id = getIntent().getStringExtra("sx_id");//首席id
         if(TextUtils.isEmpty(toName)){
             title.setText("问股");
         }else {
             title.setText("向"+toName+"问股");
 
+        }
+        if(!TextUtils.isEmpty(mTv_fee)){
+            fee.setVisibility(View.VISIBLE);
+            fee.setText(mTv_fee +"元/次");
         }
         edit.setVisibility(View.INVISIBLE);
         confirm.setVisibility(View.VISIBLE);
