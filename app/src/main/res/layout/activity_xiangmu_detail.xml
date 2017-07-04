@@ -54,7 +54,7 @@
                                     android:id="@+id/tv_xiangmu_detail_name"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:text="领跑者"
+                                    android:text=""
                                     android:textColor="@color/colorText"
                                     android:textSize="@dimen/dm028"/>
                             </LinearLayout>
@@ -62,6 +62,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="@dimen/dm010"
+                                android:layout_marginBottom="@dimen/dm024"
                                 android:orientation="horizontal">
                                 <TextView
                                     android:layout_width="match_parent"
@@ -73,7 +74,7 @@
                                     android:id="@+id/tv_xiangmu_detail_time"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:text="2017-12-12"
+                                    android:text=""
                                     android:textColor="@color/colorText"
                                     android:textSize="@dimen/dm028"/>
                             </LinearLayout>
@@ -84,8 +85,7 @@
                             android:layout_height="@dimen/dm080"
                             android:layout_marginBottom="@dimen/dm020"
                             android:layout_marginRight="@dimen/dm024"
-                            android:layout_marginTop="@dimen/dm020"
-                            android:src="@drawable/xiangmu_ing"/>
+                            android:layout_marginTop="@dimen/dm020"/>
                     </LinearLayout>
                 </RelativeLayout>
                 <View
@@ -113,7 +113,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/dm024"
-                        android:text="依托国务院发展研究中心“中国经济报告课题组”、国家发改委宏观经济研究院、中国国际工程咨询公司等单位专家为智囊的专业项目融资咨询机构,依托国务院发展研究中心“中国经济报告课题组”"
+                        android:text=""
                         android:textColor="@color/colorText"
                         android:textSize="@dimen/dm024"/>
                 </LinearLayout>
@@ -142,7 +142,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/dm024"
-                        android:text="资金50万以上者"
+                        android:text=""
                         android:textColor="@color/colorText"
                         android:textSize="@dimen/dm024"/>
                 </LinearLayout>
@@ -155,7 +155,7 @@
             android:layout_alignParentBottom="true"
             android:background="@color/colorTitle"
             android:gravity="center"
-            android:text="认购项目(10万元起)"
+            android:text="认购项目(万元起)"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/dm032"/>
     </RelativeLayout>

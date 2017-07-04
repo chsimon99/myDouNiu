@@ -102,6 +102,8 @@ public class FragmentAdvisorAllReference extends BaseFragment{
 							public void onItemClick(View v, int id, Map<String, String> map) {
 								if(map.get("has_buy").equals("0")){//是否购买返回来判断 0为未购买
 									Intent intent = new Intent(CommonUtils.getContext(), ActivityToPay.class);
+									intent.putExtra("info","大参考,"+map.get("cc_ub_id")+","+map.get("cc_id"));
+									intent.putExtra("sx_id",map.get("cc_ub_id"));
 									intent.putExtra("type","大参考");
 									intent.putExtra("count",map.get("cc_fee"));
 									intent.putExtra("from",map.get("cc_from"));

@@ -105,11 +105,11 @@ public class FragmentAdvisorAllPublic extends BaseFragment{
 						mAllPublicAdapter.setOnSubscribeClickListener(new AdvisorAllPublicAdapter.MySubscribeClickListener() {
 							@Override
 							public void onItemClick(View v, int id,String type) {
-								if(type.equals("已预约")){
-									CommonUtils.toastMessage("预约成功");
-								}else if(type.equals("预约")){
-									CommonUtils.toastMessage("取消预约成功");
-								}
+//								if(type.equals("已预约")){
+//									CommonUtils.toastMessage("预约成功");
+//								}else if(type.equals("预约")){
+//									CommonUtils.toastMessage("取消预约成功");
+//								}
 							}
 						});
 					}else{

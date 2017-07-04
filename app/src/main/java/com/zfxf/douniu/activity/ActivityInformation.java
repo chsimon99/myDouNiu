@@ -2,9 +2,9 @@ package com.zfxf.douniu.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -44,6 +44,8 @@ public class ActivityInformation extends FragmentActivity implements View.OnClic
     TextView content;
     @BindView(R.id.ll_information_text)
     LinearLayout ll_text;
+    @BindView(R.id.wv_information)
+    WebView mWebView;
     private int mNewsinfoId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +106,8 @@ public class ActivityInformation extends FragmentActivity implements View.OnClic
                         from.setText(info.cc_from);
                     }
                     time.setText(info.cc_datetime);
-                    content.setText(Html.fromHtml(info.cc_context));
+//                    content.setText(Html.fromHtml(info.cc_context));
+                    mWebView.loadUrl(info.context_url);
                     CommonUtils.dismissProgressDialog();
                 }
             },getResources().getString(R.string.zixuninfo));

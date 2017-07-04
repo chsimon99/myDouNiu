@@ -14,6 +14,7 @@ public class XuanguGupiaoDetail {
     public String zg_mg_name;//股票名
     public String zg_rxj;//入选价
     public String zg_zgzf;//最高涨幅
+    public String mg_zg;//最高价
     public String zg_date;//id
     public String mg_xj;//现价
 }

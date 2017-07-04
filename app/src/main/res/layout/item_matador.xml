@@ -17,7 +17,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dm025"
+            android:layout_marginTop="@dimen/dm030"
             android:orientation="horizontal">
             <TextView
                 android:id="@+id/tv_home_advisor_name"
@@ -43,35 +43,6 @@
                 android:text="斗牛大师"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/dm020"/>
-            <ImageView
-                android:layout_width="@dimen/dm024"
-                android:layout_height="@dimen/dm024"
-                android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/dm005"
-                android:src="@drawable/home_star"/>
-            <ImageView
-                android:layout_width="@dimen/dm024"
-                android:layout_height="@dimen/dm024"
-                android:layout_gravity="center"
-                android:src="@drawable/home_star"/>
-            <ImageView
-                android:id="@+id/iv_home_advisor_start_three"
-                android:layout_width="@dimen/dm024"
-                android:layout_height="@dimen/dm024"
-                android:layout_gravity="center"
-                android:src="@drawable/home_star"/>
-            <ImageView
-                android:id="@+id/iv_home_advisor_start_four"
-                android:layout_width="@dimen/dm024"
-                android:layout_height="@dimen/dm024"
-                android:layout_gravity="center"
-                android:src="@drawable/home_star"/>
-            <ImageView
-                android:id="@+id/iv_home_advisor_start_five"
-                android:layout_width="@dimen/dm024"
-                android:layout_height="@dimen/dm024"
-                android:layout_gravity="center"
-                android:src="@drawable/home_star"/>
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -97,6 +68,42 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dm010"
             android:orientation="horizontal">
+            <ImageView
+                android:layout_width="@dimen/dm024"
+                android:layout_height="@dimen/dm024"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dm005"
+                android:src="@drawable/home_star"/>
+            <ImageView
+                android:layout_width="@dimen/dm024"
+                android:layout_height="@dimen/dm024"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dm005"
+                android:src="@drawable/home_star"/>
+            <ImageView
+                android:id="@+id/iv_home_advisor_start_three"
+                android:layout_width="@dimen/dm024"
+                android:layout_height="@dimen/dm024"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dm005"
+                android:src="@drawable/home_star"/>
+            <ImageView
+                android:id="@+id/iv_home_advisor_start_four"
+                android:layout_width="@dimen/dm024"
+                android:layout_height="@dimen/dm024"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dm005"
+                android:src="@drawable/home_star"/>
+            <ImageView
+                android:id="@+id/iv_home_advisor_start_five"
+                android:layout_width="@dimen/dm024"
+                android:layout_height="@dimen/dm024"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dm005"
+                android:src="@drawable/home_star"/>
+            <View android:layout_width="0dp"
+                  android:layout_weight="1"
+                  android:layout_height="match_parent"/>
             <TextView
                 android:id="@+id/tv_home_advisor_income"
                 android:layout_width="wrap_content"

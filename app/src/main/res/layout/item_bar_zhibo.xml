@@ -26,8 +26,9 @@
             </RelativeLayout>
             <TextView
                 android:id="@+id/tv_bar_zhibo_left_name"
-                android:layout_width="@dimen/dm090"
-                android:layout_height="@dimen/dm040"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dm005"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/dm015"
                 android:layout_toRightOf="@id/rl_bar_zhibo_left"
@@ -35,7 +36,7 @@
                 android:gravity="center"
                 android:text="令狐冲"
                 android:textColor="@color/colorTitle"
-                android:textSize="@dimen/dm024"/>
+                android:textSize="@dimen/dm022"/>
         </RelativeLayout>
         <ImageView
             android:layout_width="@dimen/dm098"
@@ -51,15 +52,16 @@
             android:layout_marginTop="@dimen/dm030">
             <TextView
                 android:id="@+id/tv_bar_zhibo_right_name"
-                android:layout_width="@dimen/dm090"
-                android:layout_height="@dimen/dm040"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dm005"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/dm015"
                 android:background="@drawable/backgroud_bar_zhibo_text"
                 android:gravity="center"
                 android:text="李逍遥"
                 android:textColor="@color/colorTitle"
-                android:textSize="@dimen/dm024"/>
+                android:textSize="@dimen/dm022"/>
             <RelativeLayout
                 android:id="@+id/rl_bar_zhibo_right"
                 android:layout_width="@dimen/dm128"

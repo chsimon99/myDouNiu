@@ -28,11 +28,11 @@ public class ActivityMyselfMessage extends FragmentActivity implements View.OnCl
     @BindView(R.id.tv_base_title)
     TextView title;
 
-    @BindView(R.id.ll_myself_message_system)
+    @BindView(R.id.ll_myself_message_system)//系统
     LinearLayout ll_system;
     @BindView(R.id.ll_myself_message_advisor)
     LinearLayout ll_advisor;
-    @BindView(R.id.ll_myself_message_alarm)
+    @BindView(R.id.ll_myself_message_alarm)//预警
     LinearLayout ll_alarm;
     @BindView(R.id.ll_myself_message_service)
     LinearLayout ll_service;
@@ -92,21 +92,21 @@ public class ActivityMyselfMessage extends FragmentActivity implements View.OnCl
 
     private void initData() {
         v_system.setVisibility(View.INVISIBLE);
-        v_advisor.setVisibility(View.INVISIBLE);
         v_alarm.setVisibility(View.INVISIBLE);
-        v_service.setVisibility(View.INVISIBLE);
-        v_moni.setVisibility(View.INVISIBLE);
-        v_quan.setVisibility(View.INVISIBLE);
+//        v_advisor.setVisibility(View.INVISIBLE);
+//        v_service.setVisibility(View.INVISIBLE);
+//        v_moni.setVisibility(View.INVISIBLE);
+//        v_quan.setVisibility(View.INVISIBLE);
     }
 
     private void initListener() {
         back.setOnClickListener(this);
         ll_system.setOnClickListener(this);
-        ll_advisor.setOnClickListener(this);
         ll_alarm.setOnClickListener(this);
-        ll_service.setOnClickListener(this);
-        ll_moni.setOnClickListener(this);
-        ll_quan.setOnClickListener(this);
+//        ll_advisor.setOnClickListener(this);
+//        ll_service.setOnClickListener(this);
+//        ll_moni.setOnClickListener(this);
+//        ll_quan.setOnClickListener(this);
     }
     Intent mIntent;
     @Override
@@ -120,36 +120,36 @@ public class ActivityMyselfMessage extends FragmentActivity implements View.OnCl
                 startActivity(mIntent);
                 overridePendingTransition(0,0);
                 break;
-            case R.id.ll_myself_message_advisor:
-                mIntent = new Intent(this,ActivityMyselfMessageCategorie.class);
-                mIntent.putExtra("type","首席动态");
-                startActivity(mIntent);
-                overridePendingTransition(0,0);
-                break;
             case R.id.ll_myself_message_alarm:
                 mIntent = new Intent(this,ActivityMyselfMessageCategorie.class);
                 mIntent.putExtra("type","预警提醒");
                 startActivity(mIntent);
                 overridePendingTransition(0,0);
                 break;
-            case R.id.ll_myself_message_service:
-                mIntent = new Intent(this,ActivityMyselfMessageCategorie.class);
-                mIntent.putExtra("type","服务动态");
-                startActivity(mIntent);
-                overridePendingTransition(0,0);
-                break;
-            case R.id.ll_myself_message_moni:
-                mIntent = new Intent(this,ActivityMyselfMessageCategorie.class);
-                mIntent.putExtra("type","模拟炒股");
-                startActivity(mIntent);
-                overridePendingTransition(0,0);
-                break;
-            case R.id.ll_myself_message_quan:
-                mIntent = new Intent(this,ActivityMyselfMessageCategorie.class);
-                mIntent.putExtra("type","圈子信息");
-                startActivity(mIntent);
-                overridePendingTransition(0,0);
-                break;
+//            case R.id.ll_myself_message_advisor:
+//                mIntent = new Intent(this,ActivityMyselfMessageCategorie.class);
+//                mIntent.putExtra("type","首席动态");
+//                startActivity(mIntent);
+//                overridePendingTransition(0,0);
+//                break;
+//            case R.id.ll_myself_message_service:
+//                mIntent = new Intent(this,ActivityMyselfMessageCategorie.class);
+//                mIntent.putExtra("type","服务动态");
+//                startActivity(mIntent);
+//                overridePendingTransition(0,0);
+//                break;
+//            case R.id.ll_myself_message_moni:
+//                mIntent = new Intent(this,ActivityMyselfMessageCategorie.class);
+//                mIntent.putExtra("type","模拟炒股");
+//                startActivity(mIntent);
+//                overridePendingTransition(0,0);
+//                break;
+//            case R.id.ll_myself_message_quan:
+//                mIntent = new Intent(this,ActivityMyselfMessageCategorie.class);
+//                mIntent.putExtra("type","圈子信息");
+//                startActivity(mIntent);
+//                overridePendingTransition(0,0);
+//                break;
         }
         finishAll();
         finish();

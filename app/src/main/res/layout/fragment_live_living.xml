@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dm010"
-            android:text="养老金入市全面启动，资金已经开始投资"
+            android:text=""
             android:textColor="@color/titleText"
             android:textSize="@dimen/dm026"/>
     </LinearLayout>

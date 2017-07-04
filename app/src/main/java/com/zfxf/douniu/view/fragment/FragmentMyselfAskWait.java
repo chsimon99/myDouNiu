@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.adapter.recycleView.MyselfAskWaitAdapter;
@@ -112,5 +113,26 @@ public class FragmentMyselfAskWait extends BaseFragment {
 	@Override
 	public void initListener() {
 		super.initListener();
+		mRecyclerView.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
+			@Override
+			public void onRefresh() {
+
+			}
+
+			@Override
+			public void onLoadMore() {
+				if(currentPage > totlePage){
+					Toast.makeText(CommonUtils.getContext(),"没有数据了",Toast.LENGTH_SHORT).show();
+					mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
+						@Override
+						public void run() {
+							mRecyclerView.setPullLoadMoreCompleted();
+						}
+					},200);
+					return;
+				}
+				visitInternet();
+			}
+		});
 	}
 }

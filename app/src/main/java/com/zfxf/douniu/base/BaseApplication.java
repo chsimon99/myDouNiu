@@ -5,8 +5,15 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.zhy.http.okhttp.OkHttpUtils;
+
+import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.Cache;
+import okhttp3.OkHttpClient;
 
 /**
  * @author Admin
@@ -21,6 +28,7 @@ public class BaseApplication extends Application {
     private static Looper	mMainLooper;
     private static Handler mHandler;
     private static ExecutorService threadPool;
+    private static final int DEFAULT_TIMEOUT = 5;
 
     public static Handler getHandler() {
         return mHandler;
@@ -54,6 +62,16 @@ public class BaseApplication extends Application {
         mMainLooper = getMainLooper(); // 主线程Looper对象
         mHandler = new Handler();// 定义一个handler
         threadPool = Executors.newCachedThreadPool();//定义一个线程池
+
+        String path = mContext.getCacheDir().getAbsolutePath();
+        int cacheSize = 10 * 1024 * 1024; // 10 MiB
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+                .readTimeout(DEFAULT_TIMEOUT,TimeUnit.SECONDS)
+                .retryOnConnectionFailure(true)
+                .cache(new Cache(new File(path,"cache"),cacheSize))
+                .build();
+        OkHttpUtils.initClient(client);
         super.onCreate();
     }
 }

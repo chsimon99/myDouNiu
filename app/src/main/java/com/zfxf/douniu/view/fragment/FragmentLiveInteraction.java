@@ -13,10 +13,11 @@ import com.zfxf.douniu.R;
 import com.zfxf.douniu.adapter.recycleView.LiveInteractionAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.bean.LivingContent;
-import com.zfxf.douniu.bean.LivingInteract;
 import com.zfxf.douniu.bean.LivingSendMsg;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
 import butterknife.BindView;
@@ -61,7 +62,6 @@ public class FragmentLiveInteraction extends BaseFragment {
     public void init() {
         super.init();
     }
-
     @Override
     public void initdata() {
         super.initdata();
@@ -72,9 +72,38 @@ public class FragmentLiveInteraction extends BaseFragment {
             CommonUtils.showProgressDialog(getActivity(),"加载中……");
             visitInternet(lastID);
         }
+        alwaysRefresh();
+    }
+    private AutoScrollTask mTask;
+    private boolean isRefresh = false;//是否在刷新
+    private void alwaysRefresh() {
+        mTask = new AutoScrollTask();
+        mTask.start();
+    }
+    class AutoScrollTask implements Runnable {
+        public void start() {/**开始轮播*/
+            CommonUtils.postTaskDelay(this, 5000);
+        }
+        public void stop() { /**结束轮播*/
+            CommonUtils.removeTask(this);
+        }
+        @Override
+        public void run() {
+            if(!isRefresh){
+                type = 0;
+                visitInternet(firstID);
+                if(SpTools.getBoolean(CommonUtils.getContext(), Constants.error,false)){
+                    SpTools.setBoolean(CommonUtils.getContext(),Constants.error,false);
+                    type = 0;
+                    visitInternet(firstID);
+                }
+            }
+            start();
+        }
     }
     int maxLine=0;
     private void visitInternet(int refreshId) {
+        isRefresh = true;
         NewsInternetRequest.getLivingInteractInformation(type + "", mId, refreshId,new NewsInternetRequest.ForResultLivingInteractInfoListener() {
             @Override
             public void onResponseMessage(final LivingContent content) {
@@ -85,6 +114,7 @@ public class FragmentLiveInteraction extends BaseFragment {
                         }
 
                         mRecyclerView.setLinearLayout();
+//                        mRecyclerView.getLinearLayoutManager().setReverseLayout(true);
                         mRecyclerView.setAdapter(mInteractionAdapter);
                         mRecyclerView.setPushRefreshEnable(false);//禁止上拉加载
                         mRecyclerView.post(new Runnable() {
@@ -97,25 +127,55 @@ public class FragmentLiveInteraction extends BaseFragment {
                         if(content.pl_list.size()>0){
                             firstID = Integer.parseInt(content.pl_list.get(content.pl_list.size()-1).zp_id);
                         }
+                        isRefresh = false;
                     }else{
-                        final int itemPosition = mRecyclerView.getLinearLayoutManager().findLastVisibleItemPosition();
-                        maxLine = content.pl_list.size() > maxLine ? content.pl_list.size() : maxLine;
-                        mInteractionAdapter.addDatas(content.pl_list);
-                        mRecyclerView.post(new Runnable() {
-                            @Override
-                            public void run() {
-//                                mInteractionAdapter.notifyItemRangeChanged(0,maxLine);
-                                mInteractionAdapter.notifyDataSetChanged();
-                                mRecyclerView.getRecyclerView().scrollToPosition(itemPosition+content.pl_list.size());
-                                mRecyclerView.setPullLoadMoreCompleted();
+                        if(type == 0){
+                            if(content.pl_list.size() != 0){
+                                final int count = mInteractionAdapter.getItemCount();
+                                mInteractionAdapter.addALLDatas(content.pl_list);
+                                firstID = Integer.parseInt(content.pl_list.get(content.pl_list.size()-1).zp_id);
+                                final int lastPosition = mRecyclerView.getLinearLayoutManager().findLastVisibleItemPosition();
+                                final int pos = lastPosition - mRecyclerView.getLinearLayoutManager().findFirstVisibleItemPosition();
+                                mRecyclerView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+//                                        mInteractionAdapter.notifyItemRangeChanged(count-1,mInteractionAdapter.getItemCount());//部分更新在用户看历史数据的时候不起作用
+                                        mInteractionAdapter.notifyDataSetChanged();
+                                        if((mInteractionAdapter.getItemCount()-lastPosition)<pos){//如果观看的页数在最后几条时，更新后直接显示更新内容
+                                            mRecyclerView.getRecyclerView().smoothScrollToPosition(mInteractionAdapter.getItemCount());//显示到最底部
+                                        }
+                                    }
+                                });
                             }
-                        });
+                            isRefresh = false;
+                            if(mStatus == 0){//在非直播状态，不进行循环刷新
+                                isRefresh = true;
+                            }
+                            return;
+                        }else {
+                            final int itemPosition = mRecyclerView.getLinearLayoutManager().findLastVisibleItemPosition();
+                            maxLine = content.pl_list.size() > maxLine ? content.pl_list.size() : maxLine;
+                            mInteractionAdapter.addDatas(content.pl_list);
+                            mRecyclerView.post(new Runnable() {
+                                @Override
+                                public void run() {
+//                                    mInteractionAdapter.notifyItemRangeChanged(0,maxLine);
+                                    mInteractionAdapter.notifyDataSetChanged();
+                                    mRecyclerView.getRecyclerView().scrollToPosition(itemPosition+content.pl_list.size()-1);
+                                    mRecyclerView.setPullLoadMoreCompleted();
+                                }
+                            });
+                            isRefresh = false;
+                        }
                     }
                     if(content.pl_list.size()>0){
                         lastID = Integer.parseInt(content.pl_list.get(0).zp_id);
                     }
                 }
                 CommonUtils.dismissProgressDialog();
+                if(mStatus == 0){//在非直播状态，不进行循环刷新
+                    isRefresh = true;
+                }
                 if(!TextUtils.isEmpty(content.is_earliest)){
                     earliestID = content.is_earliest;
                 }
@@ -129,6 +189,7 @@ public class FragmentLiveInteraction extends BaseFragment {
         mRecyclerView.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
             @Override
             public void onRefresh() {
+                type = 1;
                 if(earliestID.equals("1")){
                     Toast.makeText(CommonUtils.getContext(),"没有数据了",Toast.LENGTH_SHORT).show();
                     mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
@@ -175,16 +236,19 @@ public class FragmentLiveInteraction extends BaseFragment {
                     public void onResponseMessage(LivingSendMsg sendMsg) {
                         if(sendMsg !=null){
                             et_interaction.setText("");
-                            LivingInteract interact = new LivingInteract();
-                            interact.setUd_nickname(sendMsg.zp_ud_nickname);
-                            interact.setZp_date(sendMsg.zp_date);
-                            interact.setHeadImg(sendMsg.headImg);
-                            interact.setZp_pl(sendMsg.zp_pl);
-                            interact.setRole("1");
-                            int count = mInteractionAdapter.getItemCount();
-                            mInteractionAdapter.addNewDatas(interact);
-                            mInteractionAdapter.notifyItemInserted(count);
-                            mRecyclerView.getRecyclerView().smoothScrollToPosition(mInteractionAdapter.getItemCount());//显示到最底部
+//                            LivingInteract interact = new LivingInteract();
+//                            interact.setUd_nickname(sendMsg.zp_ud_nickname);
+//                            interact.setZp_date(sendMsg.zp_date);
+//                            interact.setHeadImg(sendMsg.headImg);
+//                            interact.setZp_pl(sendMsg.zp_pl);
+//                            interact.setRole("1");
+//                            int count = mInteractionAdapter.getItemCount();
+//                            mInteractionAdapter.addNewDatas(interact);
+//                            mRecyclerView.getRecyclerView().smoothScrollToPosition(mInteractionAdapter.getItemCount());//显示到最底部
+                            type = 0;
+                            lastID = 0;
+                            mInteractionAdapter = null;
+                            visitInternet(lastID);
                         }
                         CommonUtils.dismissProgressDialog();
                     }

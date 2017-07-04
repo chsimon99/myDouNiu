@@ -264,5 +264,11 @@ public class FragmentMarketSelect extends BaseFragment implements View.OnClickLi
 			visitInternet();
 			SpTools.setBoolean(getActivity(), Constants.buy,false);
 		}
+		if(SpTools.getBoolean(getActivity(), Constants.alreadyLogout,false)){//退出登陆后
+			currentPage = 1;
+			mSelectAdapter = null;
+			visitInternet();
+			SpTools.setBoolean(getActivity(), Constants.alreadyLogout,false);
+		}
 	}
 }

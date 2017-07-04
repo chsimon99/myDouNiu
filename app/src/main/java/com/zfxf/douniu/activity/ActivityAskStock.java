@@ -2,6 +2,7 @@ package com.zfxf.douniu.activity;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.FragmentActivity;
@@ -19,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 
 import java.util.Timer;
@@ -53,8 +55,14 @@ public class ActivityAskStock extends FragmentActivity implements View.OnClickLi
     LinearLayout contract;
     @BindView(R.id.et_askstock)
     EditText askstock;
+    @BindView(R.id.ll_askstock_xuanshang)
+    LinearLayout ll_xuanshang;
+    @BindView(R.id.et_askstock_xuanshang)
+    EditText et_xuanshang;
+
     private String mTv_fee;
     private String mSx_id;
+    private String toName;
 
 
     @Override
@@ -62,13 +70,16 @@ public class ActivityAskStock extends FragmentActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_askstock);
         ButterKnife.bind(this);
-        String toName = getIntent().getStringExtra("name");//向xx提问
+        //向xx提问
+        toName = getIntent().getStringExtra("name");
         mTv_fee = getIntent().getStringExtra("fee");//问股价钱
         mSx_id = getIntent().getStringExtra("sx_id");//首席id
         if(TextUtils.isEmpty(toName)){
             title.setText("问股");
+            ll_xuanshang.setVisibility(View.VISIBLE);
         }else {
-            title.setText("向"+toName+"问股");
+            title.setText("向"+ toName +"问股");
+            ll_xuanshang.setVisibility(View.GONE);
 
         }
         if(!TextUtils.isEmpty(mTv_fee)){
@@ -154,6 +165,12 @@ public class ActivityAskStock extends FragmentActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.tv_base_confirm:
+                if(TextUtils.isEmpty(toName)){
+                    if(TextUtils.isEmpty(et_xuanshang.getText().toString())){
+                        CommonUtils.toastMessage("请输入悬赏问股的价格");
+                        return;
+                    }
+                }
                 //提交服务器
                 confirm();
                 break;
@@ -172,11 +189,29 @@ public class ActivityAskStock extends FragmentActivity implements View.OnClickLi
         builder.setTitle("确认提交")
                 .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(final DialogInterface dialog, int which) {
                         //提交服务器
-                        finishAll();
-                        finish();
-                        dialog.dismiss();
+                        if(TextUtils.isEmpty(toName)){
+                            mTv_fee = et_xuanshang.getText().toString();
+                        }
+                        NewsInternetRequest.sendAskingStock(askstock.getText().toString(), mSx_id, mTv_fee, new NewsInternetRequest.ForResultListener() {
+                            @Override
+                            public void onResponseMessage(String code) {
+                                if(code.equals("成功")){
+                                    Intent intent = new Intent(ActivityAskStock.this,ActivityToPay.class);
+                                    intent.putExtra("info","微问答,"+mSx_id+","+"");
+                                    intent.putExtra("type","微问答");
+                                    intent.putExtra("from",toName);
+                                    intent.putExtra("count",mTv_fee);
+                                    intent.putExtra("sx_id",mSx_id);
+                                    startActivity(intent);
+                                    overridePendingTransition(0,0);
+                                    finishAll();
+                                    finish();
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {

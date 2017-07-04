@@ -309,6 +309,7 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
     @Override
     public void onBackPressed() {
         CommonUtils.dismissProgressDialog();
+        saveText();
         if(number>0){
             confirm();
         }else {

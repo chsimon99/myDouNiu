@@ -128,7 +128,14 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyHolder
             }
             holder.stock_name.setText(lists.get(position).zg_mg_name+"\n"+lists.get(position).zg_mg_code);
             holder.price.setText(lists.get(position).zg_rxj);
-            holder.highPrice.setText(lists.get(position).zg_rxj);
+            holder.highPrice.setText(lists.get(position).mg_zg);
+            if(lists.get(position).zg_zgzf.contains("-")){
+                holder.rise.setTextColor(mContext.getResources().getColor(R.color.colorFall));
+                holder.highPrice.setTextColor(mContext.getResources().getColor(R.color.colorFall));
+            }else {
+                holder.rise.setTextColor(mContext.getResources().getColor(R.color.colorRise));
+                holder.highPrice.setTextColor(mContext.getResources().getColor(R.color.colorRise));
+            }
             holder.rise.setText(lists.get(position).zg_zgzf+"%");
             return convertView;
         }

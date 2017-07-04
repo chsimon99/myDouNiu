@@ -144,6 +144,7 @@ public class ActivityMyselfShezhi extends FragmentActivity implements View.OnCli
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 SpTools.setBoolean(CommonUtils.getContext(), Constants.isLogin,false);
+                                SpTools.setBoolean(CommonUtils.getContext(), Constants.alreadyLogout,true);
                                 SpTools.setString(CommonUtils.getContext(),Constants.userId,"");
                                 CommonUtils.deleteBitmap("myicon.jpg");
                                 FragmentMyself.exit();

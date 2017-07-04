@@ -6,52 +6,55 @@
               android:orientation="vertical"
               android:paddingLeft="@dimen/dm020"
               android:paddingRight="@dimen/dm020">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/tv_myself_ask_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dm030"
-            android:text="江南化工为何涨停?"
-            android:textColor="@color/titleText"
-            android:textSize="@dimen/dm028"/>
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dm020"
-            android:layout_marginTop="@dimen/dm022"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/dm002"
-            android:paddingTop="@dimen/dm002">
-            <ImageView
-                android:layout_width="@dimen/dm020"
-                android:layout_height="@dimen/dm020"
-                android:layout_gravity="center"
-                android:src="@drawable/bar_time"/>
+            android:orientation="vertical">
             <TextView
-                android:id="@+id/tv_myself_ask_time"
+                android:id="@+id/tv_myself_ask_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dm010"
-                android:text="08:46"
-                android:textColor="@color/titleTextGray"
-                android:textSize="@dimen/dm022"/>
-            <View
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent"/>
-            <TextView
-                android:id="@+id/tv_myself_ask_type"
-                android:layout_width="@dimen/dm090"
-                android:layout_height="@dimen/dm032"
-                android:background="@drawable/backgroud_button_app_color"
-                android:gravity="center"
-                android:text="待回答"
-                android:textColor="@color/white"
-                android:textSize="@dimen/dm022"/>
+                android:layout_marginTop="@dimen/dm030"
+                android:text="江南化工为何涨停?"
+                android:textColor="@color/titleText"
+                android:textSize="@dimen/dm028"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dm020"
+                android:layout_marginTop="@dimen/dm022"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/dm002"
+                android:paddingTop="@dimen/dm002">
+                <ImageView
+                    android:layout_width="@dimen/dm020"
+                    android:layout_height="@dimen/dm020"
+                    android:layout_gravity="center"
+                    android:src="@drawable/bar_time"/>
+                <TextView
+                    android:id="@+id/tv_myself_ask_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm010"
+                    android:text="08:46"
+                    android:textColor="@color/titleTextGray"
+                    android:textSize="@dimen/dm022"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+                <TextView
+                    android:id="@+id/tv_myself_ask_type"
+                    android:layout_width="@dimen/dm090"
+                    android:layout_height="@dimen/dm032"
+                    android:background="@drawable/backgroud_button_app_color"
+                    android:gravity="center"
+                    android:text="待回答"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/dm022"/>
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

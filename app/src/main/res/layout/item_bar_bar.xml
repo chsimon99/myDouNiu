@@ -46,7 +46,7 @@
         <TextView
             android:id="@+id/tv_bar_bar_detail"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dm058"
             android:layout_marginRight="@dimen/dm027"
             android:layout_marginTop="@dimen/dm018"
             android:text="据日本华侨社报道，据日本华侨社报道据日本华侨"

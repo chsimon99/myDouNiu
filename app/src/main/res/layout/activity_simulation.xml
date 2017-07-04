@@ -170,7 +170,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="@dimen/dm001"
                 android:layout_marginTop="@dimen/dm025"
                 android:background="@color/gray"/>
             <LinearLayout android:layout_width="match_parent"
@@ -258,7 +258,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="@dimen/dm001"
                 android:layout_marginLeft="@dimen/dm018"
                 android:layout_marginRight="@dimen/dm018"
                 android:background="@color/gray"/>
@@ -469,7 +469,7 @@
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="@dimen/dm001"
                 android:background="@color/gray"/>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_matador_detail"

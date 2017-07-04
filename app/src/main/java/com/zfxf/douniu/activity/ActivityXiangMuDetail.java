@@ -1,8 +1,10 @@
 package com.zfxf.douniu.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -52,6 +54,8 @@ public class ActivityXiangMuDetail extends FragmentActivity implements View.OnCl
     @BindView(R.id.tv_xiangmu_detail_qualify)
     TextView qualify;//项目资格
     private int mNewsinfoId;
+    private String mPhone;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,9 +94,38 @@ public class ActivityXiangMuDetail extends FragmentActivity implements View.OnCl
                     Intent intent = new Intent(this, ActivityLogin.class);
                     startActivity(intent);
                     overridePendingTransition(0,0);
+                }else {
+                    showDailog();
                 }
                 break;
+            case R.id.tv_contract_dialog_cannel:
+                mDialog.dismiss();
+                break;
+            case R.id.tv_contract_dialog_confirm:
+                callPhone();
+                mDialog.dismiss();
+                break;
         }
+    }
+
+    private void callPhone() {
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+mPhone));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    private AlertDialog mDialog;
+    private void showDailog() {
+        AlertDialog.Builder builder=new AlertDialog.Builder(this); //先得到构造器
+        mDialog = builder.create();
+        mDialog.show();
+        View view = View.inflate(this, R.layout.activity_contract_dialog, null);
+        mDialog.getWindow().setContentView(view);
+        TextView phone = (TextView) view.findViewById(R.id.tv_contract_dialog_phone);
+        mPhone = phone.getText().toString();
+        view.findViewById(R.id.tv_contract_dialog_cannel).setOnClickListener(this);
+        view.findViewById(R.id.tv_contract_dialog_confirm).setOnClickListener(this);
+
     }
 
     private void finishAll() {

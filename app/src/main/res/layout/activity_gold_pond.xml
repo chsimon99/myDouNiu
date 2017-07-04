@@ -302,6 +302,7 @@
                         android:textSize="@dimen/dm024"/>
                 </LinearLayout>
                 <View
+                    android:id="@+id/v_gold_pond_detail_view"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dm080"/>
             </LinearLayout>

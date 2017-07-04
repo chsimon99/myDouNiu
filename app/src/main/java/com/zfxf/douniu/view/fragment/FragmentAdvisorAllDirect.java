@@ -105,9 +105,10 @@ public class FragmentAdvisorAllDirect extends BaseFragment implements View.OnCli
 
 						mAllDirectAdapter.setOnItemClickListener(new AdvisorAllDirectAdapter.MyItemClickListener() {
 							@Override
-							public void onItemClick(View v, int id) {
+							public void onItemClick(View v, int id,String sx_id) {
 								Intent intent = new Intent(CommonUtils.getContext(), ActivityLiving.class);
 								intent.putExtra("id",id);
+								intent.putExtra("sx_id",sx_id);
 								startActivity(intent);
 								getActivity().overridePendingTransition(0,0);
 							}

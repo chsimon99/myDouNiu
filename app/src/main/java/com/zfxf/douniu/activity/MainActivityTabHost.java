@@ -3,6 +3,7 @@ package com.zfxf.douniu.activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +12,11 @@ import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.igexin.sdk.PushManager;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.base.BaseApplication;
+import com.zfxf.douniu.service.DemoIntentService;
+import com.zfxf.douniu.service.DemoPushService;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.utils.Constants;
 import com.zfxf.douniu.utils.SpTools;
@@ -43,6 +47,13 @@ public class MainActivityTabHost extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tabhost);
 		initView();
+		//注册推送
+		PushManager.getInstance().initialize(this.getApplicationContext(), DemoIntentService.class);
+		PushManager.getInstance().initialize(this.getApplicationContext(), DemoPushService.class);
+
+		if(!TextUtils.isEmpty(SpTools.getString(this,Constants.userId,""))){
+			PushManager.getInstance().bindAlias(CommonUtils.getContext(),SpTools.getString(this,Constants.userId,""));
+		}
 	}
 
 	/**

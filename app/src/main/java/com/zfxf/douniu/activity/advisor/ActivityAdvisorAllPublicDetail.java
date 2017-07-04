@@ -1,6 +1,7 @@
 package com.zfxf.douniu.activity.advisor;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
@@ -55,11 +56,14 @@ public class ActivityAdvisorAllPublicDetail extends FragmentActivity implements 
     TextView name;
     @BindView(R.id.tv_advisor_all_public_detail_detail)
     TextView detail;
+    @BindView(R.id.tv_advisor_all_public_detail_status)
+    TextView zhibo;
 
     @BindView(R.id.ll_advisor_all_public_detail)
     LinearLayout ll_subscribe;
     private int mId;
     private String mAuthUbId;
+    private String mUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +102,17 @@ public class ActivityAdvisorAllPublicDetail extends FragmentActivity implements 
                         subscribeSuccess();
                     }
                     detail.setText(courseResult.news_info.cc_description);
+                    if(courseResult.news_info.status.equals("0")){
+                        zhibo.setText("直播已结束");
+                        zhibo.setTextColor(getResources().getColor(R.color.colorText));
+                    }else if(courseResult.news_info.status.equals("1")){
+                        zhibo.setText("正在直播中 >");
+                        zhibo.setTextColor(getResources().getColor(R.color.colorTitle));
+                    }else if(courseResult.news_info.status.equals("2")){
+                        zhibo.setText("直播还未开始");
+                        zhibo.setTextColor(getResources().getColor(R.color.colorText));
+                    }
+                    mUrl = courseResult.news_info.url;
                     CommonUtils.dismissProgressDialog();
                 }
             },getResources().getString(R.string.gongkeinfo));
@@ -107,6 +122,7 @@ public class ActivityAdvisorAllPublicDetail extends FragmentActivity implements 
         back.setOnClickListener(this);
         ll_subscribe.setOnClickListener(this);
         subscribe.setOnClickListener(this);
+        zhibo.setOnClickListener(this);
     }
 
     @Override
@@ -143,6 +159,16 @@ public class ActivityAdvisorAllPublicDetail extends FragmentActivity implements 
                     subscribeInternet(mId,0,0);
                 } else {
                     subscribeInternet(mId,0,1);
+                }
+                break;
+            case R.id.tv_advisor_all_public_detail_status:
+                if(zhibo.getText().toString().contains("正在直播")){
+                    if(TextUtils.isEmpty(mUrl)){
+                        return;
+                    }
+                    Uri uri = Uri.parse(mUrl);
+                    Intent it = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(it);
                 }
                 break;
         }

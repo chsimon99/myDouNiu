@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 
 import butterknife.BindView;
@@ -68,8 +69,8 @@ public class ActivityMyselfQuestion extends FragmentActivity implements View.OnC
                 finish();
                 break;
             case R.id.rl_myself_question_submit:
-                String str_content = content.getText().toString();
-                String str_phone = phone.getText().toString();
+                final String str_content = content.getText().toString();
+                final String str_phone = phone.getText().toString();
                 if(TextUtils.isEmpty(str_content)){
                     CommonUtils.toastMessage("请提出您宝贵的意见");
                     return;
@@ -81,9 +82,17 @@ public class ActivityMyselfQuestion extends FragmentActivity implements View.OnC
                         .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                //提交服务器
-                                finishAll();
-                                finish();
+                                NewsInternetRequest.sendQuestion(str_content, str_phone, new NewsInternetRequest.ForResultListener() {
+                                    @Override
+                                    public void onResponseMessage(String count) {
+                                        if(count.equals("成功")){
+                                            finishAll();
+                                            finish();
+                                        }else {
+                                            CommonUtils.toastMessage("提交意见失败，请重试");
+                                        }
+                                    }
+                                });
                                 dialog.dismiss();
                             }
                         }).show();

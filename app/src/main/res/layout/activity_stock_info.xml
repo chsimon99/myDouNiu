@@ -68,7 +68,7 @@
                                   android:layout_gravity="center"
                                   android:layout_marginTop="@dimen/dm008"
                                   android:text="3526.28"
-                                  android:textColor="@color/titleText"
+                                  android:textColor="@color/colorText"
                                   android:textSize="@dimen/dm024"/>
                         <TextView android:layout_width="wrap_content"
                                   android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
                                   android:layout_gravity="center"
                                   android:layout_marginTop="@dimen/dm008"
                                   android:text="3526.28"
-                                  android:textColor="@color/titleText"
+                                  android:textColor="@color/colorText"
                                   android:textSize="@dimen/dm024"/>
                     </LinearLayout>
                     <LinearLayout
@@ -103,7 +103,7 @@
                                   android:layout_gravity="center"
                                   android:layout_marginTop="@dimen/dm008"
                                   android:text="352.28亿"
-                                  android:textColor="@color/titleText"
+                                  android:textColor="@color/colorText"
                                   android:textSize="@dimen/dm024"/>
                         <TextView android:layout_width="wrap_content"
                                   android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
                                   android:layout_gravity="center"
                                   android:layout_marginTop="@dimen/dm008"
                                   android:text="3526万"
-                                  android:textColor="@color/titleText"
+                                  android:textColor="@color/colorText"
                                   android:textSize="@dimen/dm024"/>
                     </LinearLayout>
                     <LinearLayout
@@ -138,7 +138,7 @@
                                   android:layout_gravity="center"
                                   android:layout_marginTop="@dimen/dm008"
                                   android:text="31.28"
-                                  android:textColor="@color/titleText"
+                                  android:textColor="@color/colorText"
                                   android:textSize="@dimen/dm024"/>
                         <TextView android:layout_width="wrap_content"
                                   android:layout_height="wrap_content"
@@ -152,7 +152,7 @@
                                   android:layout_gravity="center"
                                   android:layout_marginTop="@dimen/dm008"
                                   android:text="26.28"
-                                  android:textColor="@color/titleText"
+                                  android:textColor="@color/colorText"
                                   android:textSize="@dimen/dm024"/>
                     </LinearLayout>
                 </LinearLayout>

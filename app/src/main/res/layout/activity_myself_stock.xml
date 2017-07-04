@@ -9,34 +9,34 @@
     <RelativeLayout android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:paddingBottom="@dimen/dm010"
+                    android:paddingBottom="@dimen/dm024"
                     android:paddingLeft="@dimen/dm018"
                     android:paddingRight="@dimen/dm018"
-                    android:paddingTop="@dimen/dm010">
+                    android:paddingTop="@dimen/dm024">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="名称(代码)"
             android:textColor="@color/titleText"
-            android:textSize="@dimen/dm022"/>
+            android:textSize="@dimen/dm026"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="现价"
             android:textColor="@color/titleText"
-            android:textSize="@dimen/dm022"/>
+            android:textSize="@dimen/dm026"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="涨幅"
             android:textColor="@color/titleText"
-            android:textSize="@dimen/dm022"/>
+            android:textSize="@dimen/dm026"/>
     </RelativeLayout>
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dm004"/>
+        android:layout_height="@dimen/dm016"/>
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="0dp"
                   android:layout_weight="1"

@@ -2,12 +2,20 @@ apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 
 android {
+    signingConfigs {
+        imrelease {
+            keyAlias 'douniu'
+            keyPassword 'lchtime'
+            storeFile file('D:/work/斗牛财经/key.jks')
+            storePassword 'lchtime'
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     aaptOptions {
         cruncherEnabled = false
         useNewCruncher = false
-     }
+    }
     defaultConfig {
         applicationId "com.zfxf.douniu"
         minSdkVersion 14
@@ -15,11 +23,23 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [
+                GETUI_APP_ID    : "R6fVk8Y7lp9I2j5c4r0P48",
+                GETUI_APP_KEY   : "J4eeoOPpCp6dl7eY7Aveg3",
+                GETUI_APP_SECRET: "0UH6uXDJl666XEtb3NyrW"
+        ]
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "x86_64"
+        }
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.imrelease
+        }
+        debug {
+            signingConfig signingConfigs.imrelease
         }
     }
 }
@@ -42,4 +62,9 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'jp.wasabeef:glide-transformations:2.0.0'
     compile 'com.github.LuckSiege.PictureSelector:picture_library:v2.0.2'
+    compile files('libs/alipaySingle-20170510.jar')
+    compile project(':threeLoginFrame')
+    compile files('libs/libammsdk.jar')
+    compile files('libs/GetuiSDK2.10.2.0.jar')
+    compile 'com.android.support:support-v4:+'
 }

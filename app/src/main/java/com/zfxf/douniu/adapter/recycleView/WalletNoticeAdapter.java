@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.ProjectListResult;
 
 import java.util.List;
 
@@ -20,13 +21,13 @@ import java.util.List;
 public class WalletNoticeAdapter extends RecyclerView.Adapter<WalletNoticeAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<ProjectListResult> mDatas;
 
     public interface MyItemClickListener {
         void onItemClick(View v, int id);
     }
 
-    public WalletNoticeAdapter(Context context, List<String> datas) {
+    public WalletNoticeAdapter(Context context, List<ProjectListResult> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -51,7 +52,7 @@ public class WalletNoticeAdapter extends RecyclerView.Adapter<WalletNoticeAdapte
     public int getItemCount() {
         return mDatas.size();
     }
-    public void addDatas(List<String> data) {
+    public void addDatas(List<ProjectListResult> data) {
         mDatas.addAll(data);
     }
 
@@ -75,8 +76,9 @@ public class WalletNoticeAdapter extends RecyclerView.Adapter<WalletNoticeAdapte
             }
         }
 
-        public void setRefreshData(String bean, int position) {
-
+        public void setRefreshData(ProjectListResult bean, int position) {
+            content.setText(bean.name);
+            time.setText("+"+bean.number+"牛币");
         }
     }
 }

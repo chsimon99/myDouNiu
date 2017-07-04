@@ -8,7 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
     <style name="MyBarTabLayout" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
-        <item name="android:textSize">@dimen/dm026</item>
+        <item name="android:textSize">@dimen/dm028</item>
     </style>
 
     <style name="MydateStyle" parent="android:Theme.Holo.Light">

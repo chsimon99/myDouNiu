@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.igexin.sdk.PushManager;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.bean.EditUserInformationBean;
 import com.zfxf.douniu.bean.LoginResult;
@@ -14,7 +15,6 @@ import com.zfxf.douniu.bean.TouGuDetail;
 import com.zfxf.douniu.bean.TouGuInformationBean;
 import com.zfxf.douniu.bean.UserDetail;
 import com.zfxf.douniu.utils.CommonUtils;
-import com.zfxf.douniu.utils.Constants;
 import com.zfxf.douniu.utils.SpTools;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -25,6 +25,8 @@ import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.MediaType;
+
+import static com.zfxf.douniu.utils.Constants.userId;
 
 /**
  * @author Admin
@@ -101,7 +103,8 @@ public class LoginInternetRequest {
                 String code = result.result.code;
                 String info = result.result.info;
                 if (code.equals("10")) {
-                    SpTools.setString(context, Constants.userId, result.ub_id);//存储用户的ub_id
+                    SpTools.setString(context, userId, result.ub_id);//存储用户的ub_id
+                    PushManager.getInstance().bindAlias(CommonUtils.getContext(),result.ub_id);
                     mListener.onResponseMessage("成功");
                 } else if (code.equals("20")) {
                     if (info.equals("手机长度不正确")) {
@@ -250,6 +253,125 @@ public class LoginInternetRequest {
     }
 
     /**
+     * 第三方登陆注册
+     * @param phoneNumber 电话号码
+     * @param password 密码
+     * @param nextPassword 确认密码
+     * @param openid 第三方获取的id
+     * @param username 第三方获取的昵称
+     * @param imgUrl 第三方获取的头像url等其他信息，用| 隔开
+     * @param type 第三方类型 1微信 1qq 3新浪微博 4支付宝
+     * @param passport 输入密码的Editext
+     * @param nextPassport 再次输入密码的Editext
+     * @param listener
+     */
+    public static void thirdRegister(String phoneNumber, String password, String nextPassword
+            ,String openid,String username,String imgUrl,String type
+            , final EditText passport, final EditText nextPassport, ForResultListener listener){
+        mListener = listener;
+        if(!CommonUtils.isNetworkAvailable(CommonUtils.getContext())){
+            CommonUtils.toastMessage("您当前无网络，请联网再试");
+            return;
+        }
+        if(TextUtils.isEmpty(phoneNumber)){
+            CommonUtils.toastMessage("您输入的手机号为空");
+            return;
+        }else if(TextUtils.isEmpty(password) | TextUtils.isEmpty(nextPassword)){
+            CommonUtils.toastMessage("您输入的密码为空");
+            passport.setText("");
+            nextPassport.setText("");
+            return;
+        }else if(password.length()<6 |nextPassword.length()<6){
+            CommonUtils.toastMessage("输入的密码长度不要小于6位");
+            passport.setText("");
+            nextPassport.setText("");
+            return;
+        }
+        if(!TextUtils.isEmpty(phoneNumber)){
+            if(!CommonUtils.isMobilePhone(phoneNumber)){
+                CommonUtils.toastMessage("您输入的手机号有误");
+                mListener.onResponseMessage("");
+                return ;
+            }
+        }
+        if(!password.equals(nextPassword)){
+            CommonUtils.toastMessage("二次输入的密码不一致");
+            passport.setText("");
+            nextPassport.setText("");
+            return;
+        }
+        String url = context.getResources().getString(R.string.service_host_address)
+                .concat(context.getResources().getString(R.string.tparty));
+        OkHttpUtils.post().url(url)
+                .addParams("sid","")
+                .addParams("index",(index++)+"")
+                .addParams("tp_openid",openid)
+                .addParams("tp_username",username)
+                .addParams("tp_tparty_info",imgUrl)
+                .addParams("tp_tparty_type",type)
+                .addParams("type",1+"")
+                .addParams("ub_phone",phoneNumber)
+                .addParams("ud_pwd",password)
+                .addParams("uo_long","")
+                .addParams("uo_lat","")
+                .addParams("uo_high","")
+                .build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("thirdRegister="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("thirdRegister="+response);
+                LoginResult result = mGson.fromJson(response, LoginResult.class);
+                String code = result.result.code;
+                String info = result.result.info;
+                if (code.equals("10")) {
+                    SpTools.setString(context, userId, result.ub_id);//存储用户的ub_id
+                    mListener.onResponseMessage("成功");
+                }
+            }
+        });
+    }
+    public static void thirdRegisterQuery(String openid,String username,String imgUrl,String type
+            , ForResultListener listener){
+        mListener = listener;
+        String url = context.getResources().getString(R.string.service_host_address)
+                .concat(context.getResources().getString(R.string.tparty));
+        OkHttpUtils.post().url(url)
+                .addParams("sid","")
+                .addParams("index",(index++)+"")
+                .addParams("tp_openid",openid)
+                .addParams("tp_username",username)
+                .addParams("tp_tparty_info",imgUrl)
+                .addParams("tp_tparty_type",type)
+                .addParams("type",1+"")
+                .addParams("uo_long","")
+                .addParams("uo_lat","")
+                .addParams("uo_high","")
+                .build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("thirdRegisterQuery="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("thirdRegisterQuery="+response);
+                LoginResult result = mGson.fromJson(response, LoginResult.class);
+                String code = result.result.code;
+                String info = result.result.info;
+                if (code.equals("10")) {
+                    SpTools.setString(context, userId, result.ub_id);//存储用户的ub_id
+                    mListener.onResponseMessage("成功");
+                }else if(code.equals("20")){
+                    mListener.onResponseMessage("");
+                }
+            }
+        });
+    }
+    /**
      * 忘记密码
      * @param phoneNumber 电话号码
      * @param vc_code 获得到验证码
@@ -383,7 +505,7 @@ public class LoginInternetRequest {
         OkHttpUtils.post().url(url)
                 .addParams("sid","")
                 .addParams("index",(index++)+"")
-                .addParams("ub_id",SpTools.getString(context, Constants.userId,"0"))
+                .addParams("ub_id",SpTools.getString(context, userId,"0"))
                 .addParams("uo_long","")
                 .addParams("uo_lat","")
                 .addParams("uo_high","")
@@ -429,7 +551,7 @@ public class LoginInternetRequest {
         OkHttpUtils.post().url(url)
                 .addParams("sid","")
                 .addParams("index",(index++)+"")
-                .addParams("ub_id",SpTools.getString(context, Constants.userId,"0"))
+                .addParams("ub_id",SpTools.getString(context, userId,"0"))
                 .addParams("uo_long","")
                 .addParams("uo_lat","")
                 .addParams("uo_high","")
@@ -472,7 +594,7 @@ public class LoginInternetRequest {
                 .url(url)
                 .addParams("sid", "")
                 .addParams("index", (index++) + "")
-                .addParams("ub_id", SpTools.getString(CommonUtils.getContext(), Constants.userId ,"0"))
+                .addParams("ub_id", SpTools.getString(CommonUtils.getContext(), userId ,"0"))
                 .addParams("uo_long","")
                 .addParams("uo_lat","")
                 .addParams("uo_high","")
@@ -519,7 +641,7 @@ public class LoginInternetRequest {
 
         informationBean.setSid("");
         informationBean.setIndex((index++)+"");
-        informationBean.setUb_id(Integer.parseInt(SpTools.getString(context, Constants.userId,"0")));
+        informationBean.setUb_id(Integer.parseInt(SpTools.getString(context, userId,"0")));
         informationBean.setUo_high("");
         informationBean.setUo_lat("");
         informationBean.setUo_long("");
@@ -562,7 +684,7 @@ public class LoginInternetRequest {
 
         informationBean.setSid("");
         informationBean.setIndex((index++)+"");
-        informationBean.setUb_id(Integer.parseInt(SpTools.getString(context, Constants.userId,"0")));
+        informationBean.setUb_id(Integer.parseInt(SpTools.getString(context, userId,"0")));
         informationBean.setUo_high("");
         informationBean.setUo_lat("");
         informationBean.setUo_long("");

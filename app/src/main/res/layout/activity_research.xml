@@ -33,7 +33,6 @@
                 android:layout_weight="1"
                 android:background="@null"
                 android:hint="股票/投顾/直播"
-                android:imeOptions="actionSearch"
                 android:inputType="text"
                 android:maxLines="1"
                 android:textColorHint="@color/colorText"
@@ -50,64 +49,207 @@
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/dm026"/>
     </LinearLayout>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/dm080"
-        android:text="您可以快速找到"
-        android:textColor="@color/titleText"
-        android:textSize="@dimen/dm034"/>
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dm060"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:background="@color/colorBgGary">
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:id="@+id/ll_research_original"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="visible">
             <TextView
-                android:layout_width="@dimen/dm100"
-                android:layout_height="@dimen/dm100"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
-                android:text="股票"
-                android:background="@drawable/backgroud_circle_black_hollow"
+                android:layout_marginTop="@dimen/dm080"
+                android:text="您可以快速找到"
                 android:textColor="@color/titleText"
-                android:textSize="@dimen/dm028"/>
+                android:textSize="@dimen/dm034"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dm060"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="@dimen/dm100"
+                        android:layout_height="@dimen/dm100"
+                        android:layout_gravity="center"
+                        android:background="@drawable/backgroud_circle_black_hollow"
+                        android:gravity="center"
+                        android:text="股票"
+                        android:textColor="@color/titleText"
+                        android:textSize="@dimen/dm028"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="@dimen/dm100"
+                        android:layout_height="@dimen/dm100"
+                        android:layout_gravity="center"
+                        android:background="@drawable/backgroud_circle_black_hollow"
+                        android:gravity="center"
+                        android:text="投顾"
+                        android:textColor="@color/titleText"
+                        android:textSize="@dimen/dm028"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="@dimen/dm100"
+                        android:layout_height="@dimen/dm100"
+                        android:layout_gravity="center"
+                        android:background="@drawable/backgroud_circle_black_hollow"
+                        android:gravity="center"
+                        android:text="直播"
+                        android:textColor="@color/titleText"
+                        android:textSize="@dimen/dm028"/>
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:id="@+id/ll_research_research"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="@dimen/dm100"
-                android:layout_height="@dimen/dm100"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="投顾"
-                android:background="@drawable/backgroud_circle_black_hollow"
-                android:textColor="@color/titleText"
-                android:textSize="@dimen/dm028"/>
+            android:orientation="vertical"
+            android:visibility="gone">
+            <LinearLayout
+                android:id="@+id/ll_research_tougu"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm075"
+                android:background="@color/white"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dm018"
+                    android:text="查看更多相关投顾"
+                    android:textColor="@color/colorTitle"
+                    android:textSize="@dimen/dm024"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+                <ImageView
+                    android:layout_width="@dimen/dm014"
+                    android:layout_height="@dimen/dm028"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="@dimen/dm018"
+                    android:src="@drawable/home_jiantou"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm016"/>
+            <LinearLayout
+                android:id="@+id/ll_research_stock"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm075"
+                android:background="@color/white"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dm018"
+                    android:text="查看更多相关股票"
+                    android:textColor="@color/colorTitle"
+                    android:textSize="@dimen/dm024"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+                <ImageView
+                    android:layout_width="@dimen/dm014"
+                    android:layout_height="@dimen/dm028"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="@dimen/dm018"
+                    android:src="@drawable/home_jiantou"/>
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm016"/>
+            <LinearLayout
+                android:id="@+id/ll_research_zhibo"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dm075"
+                android:background="@color/white"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dm018"
+                    android:text="查看更多相关直播"
+                    android:textColor="@color/colorTitle"
+                    android:textSize="@dimen/dm024"/>
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+                <ImageView
+                    android:layout_width="@dimen/dm014"
+                    android:layout_height="@dimen/dm028"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="@dimen/dm018"
+                    android:src="@drawable/home_jiantou"/>
+            </LinearLayout>
         </LinearLayout>
+        <com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView
+            android:id="@+id/rv_research_tougu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView
+            android:id="@+id/rv_research_stock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView
+            android:id="@+id/rv_research_zhibo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:id="@+id/ll_research_result"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginTop="@dimen/dm080"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
             <TextView
-                android:layout_width="@dimen/dm100"
-                android:layout_height="@dimen/dm100"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
-                android:text="直播"
-                android:background="@drawable/backgroud_circle_black_hollow"
-                android:textColor="@color/titleText"
-                android:textSize="@dimen/dm028"/>
+                android:text="暂无"
+                android:textColor="@color/titleTextGray"
+                android:textSize="@dimen/dm030"/>
+            <TextView
+                android:id="@+id/tv_research_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="麒麟才女"
+                android:textColor="@color/colorTitle"
+                android:textSize="@dimen/dm030"/>
+            <TextView
+                android:id="@+id/tv_research_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="相关直播"
+                android:textColor="@color/titleTextGray"
+                android:textSize="@dimen/dm030"/>
         </LinearLayout>
-    </LinearLayout>
-
+    </RelativeLayout>
 </LinearLayout>

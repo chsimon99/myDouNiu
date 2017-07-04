@@ -53,6 +53,8 @@ public class FragmentAdvisorAllAsking extends BaseFragment implements View.OnCli
 	TextView text_advisor;
 	@BindView(R.id.tv_zhengu_answer)
 	TextView text_answer;
+	@BindView(R.id.tv_all_ask_refresh)
+	TextView text_refresh;
 
 	@BindView(R.id.rv_zhengu_advisor)
 	RecyclerView mAdvisorRecyclerView;//在线分析师recycleview
@@ -152,10 +154,13 @@ public class FragmentAdvisorAllAsking extends BaseFragment implements View.OnCli
 							getActivity().overridePendingTransition(0,0);
 							return;
 						}
+
 						if (bean.zc_sfjf.equals("0")){
 							Intent intent = new Intent(CommonUtils.getContext(), ActivityToPay.class);
-							intent.putExtra("type","问股");
+							intent.putExtra("info","微问答,"+bean.sx_ub_id+","+bean.zc_id);
+							intent.putExtra("type","一元偷偷看");
 							intent.putExtra("count",bean.zc_fee);
+							intent.putExtra("sx_id",bean.sx_ub_id);
 							intent.putExtra("from",bean.ud_nickname);
 							startActivity(intent);
 							getActivity().overridePendingTransition(0,0);
@@ -167,9 +172,13 @@ public class FragmentAdvisorAllAsking extends BaseFragment implements View.OnCli
 						}
 					}
 				});
+				text_refresh.setVisibility(View.GONE);
 				CommonUtils.dismissProgressDialog();
 			}
 		});
+		if(mAdvisorAdapter == null & mAnswerAdapter==null){
+			text_refresh.setVisibility(View.VISIBLE);
+		}
 	}
 
 	@Override
@@ -178,6 +187,7 @@ public class FragmentAdvisorAllAsking extends BaseFragment implements View.OnCli
 		advisor_detail.setOnClickListener(this);
 		answer_detail.setOnClickListener(this);
 		ask.setOnClickListener(this);
+		text_refresh.setOnClickListener(this);
 	}
 
 	@Override
@@ -210,6 +220,10 @@ public class FragmentAdvisorAllAsking extends BaseFragment implements View.OnCli
 				intent = new Intent(getActivity(), ActivityAskStock.class);
 				startActivity(intent);
 				getActivity().overridePendingTransition(0,0);
+				break;
+			case R.id.tv_all_ask_refresh:
+				text_refresh.setVisibility(View.GONE);
+				visitInternet();
 				break;
 		}
 	}

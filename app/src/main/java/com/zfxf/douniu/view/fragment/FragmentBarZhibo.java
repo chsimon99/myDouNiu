@@ -10,12 +10,11 @@ import android.widget.Toast;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.adapter.recycleView.BarZhiboAdapter;
 import com.zfxf.douniu.base.BaseFragment;
+import com.zfxf.douniu.bean.NewsResult;
+import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.RecycleViewDivider;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,8 +31,10 @@ public class FragmentBarZhibo extends BaseFragment {
 	@BindView(R.id.rv_bar_zhibo)
 	PullLoadMoreRecyclerView mRecyclerView;
 	private BarZhiboAdapter mZhiboAdapter;
-	private List<String> datas = new ArrayList<String>();
 	private RecycleViewDivider mDivider;
+
+	private int totlePage = 0;
+	private int currentPage = 1;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -55,32 +56,67 @@ public class FragmentBarZhibo extends BaseFragment {
 	@Override
 	public void initdata() {
 		super.initdata();
-		if(datas.size() == 0){
-			datas.add("1");
-			datas.add("2");
-			datas.add("3");
-			datas.add("4");
-		}
-		if(mZhiboAdapter == null){
-			mZhiboAdapter = new BarZhiboAdapter(getActivity(),datas);
-		}
-
-		mRecyclerView.setLinearLayout();
-		mRecyclerView.setAdapter(mZhiboAdapter);
-		if(mDivider == null){
-			mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL,
-					CommonUtils.px2dip(getActivity(), 40), Color.parseColor("#f4f4f4"));
-			mRecyclerView.addItemDecoration(mDivider);
-		}
-		mRecyclerView.setFooterViewText("加载更多……");
+		CommonUtils.showProgressDialog(getActivity(),"加载中……");
+		visitInternet();
 	}
-	int num = 0;
+
+	private void visitInternet() {
+		NewsInternetRequest.getMatadorPKListInformation(currentPage, new NewsInternetRequest.ForResultMyAskDoneListener() {
+			@Override
+			public void onResponseMessage(NewsResult result) {
+				totlePage = Integer.parseInt(result.total);
+				if (totlePage > 0 && currentPage <= totlePage){
+					if(currentPage == 1){
+						if(mZhiboAdapter == null){
+							mZhiboAdapter = new BarZhiboAdapter(getActivity(),result.pk_list);
+						}
+
+						mRecyclerView.setLinearLayout();
+						mRecyclerView.setAdapter(mZhiboAdapter);
+						if(mDivider == null){
+							mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL,
+									CommonUtils.px2dip(getActivity(), 40), Color.parseColor("#f4f4f4"));
+							mRecyclerView.addItemDecoration(mDivider);
+						}
+						mRecyclerView.setFooterViewText("加载更多……");
+						mZhiboAdapter.setOnItemClickListener(new BarZhiboAdapter.MyItemClickListener() {
+							@Override
+							public void onItemClick(View v, int positon) {
+								Toast.makeText(CommonUtils.getContext(),"点击了"+positon,Toast.LENGTH_SHORT).show();
+							}
+						});
+					}else {
+						mZhiboAdapter.addDatas(result.pk_list);
+						mRecyclerView.post(new Runnable() {
+							@Override
+							public void run() {
+								mZhiboAdapter.notifyDataSetChanged();
+							}
+						});
+						mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
+							@Override
+							public void run() {
+								mRecyclerView.setPullLoadMoreCompleted();
+							}
+						},1000);
+					}
+					currentPage++;
+				}
+				CommonUtils.dismissProgressDialog();
+			}
+		});
+	}
+
 	@Override
 	public void initListener() {
 		super.initListener();
 		mRecyclerView.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
 			@Override
 			public void onRefresh() {
+				currentPage = 1;
+				mZhiboAdapter = null;
+				CommonUtils.showProgressDialog(getActivity(),"加载中……");
+				visitInternet();
 				mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
 					@Override
 					public void run() {
@@ -91,34 +127,17 @@ public class FragmentBarZhibo extends BaseFragment {
 
 			@Override
 			public void onLoadMore() {
-				if(num > 6){
+				if(currentPage > totlePage){
 					Toast.makeText(CommonUtils.getContext(),"没有数据了",Toast.LENGTH_SHORT).show();
-					mRecyclerView.setPullLoadMoreCompleted();
+					mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
+						@Override
+						public void run() {
+							mRecyclerView.setPullLoadMoreCompleted();
+						}
+					}, 200);
 					return;
 				}
-				num++;
-				List<String> newdatas = new ArrayList<String>();
-				newdatas.add("7");
-				mZhiboAdapter.addDatas(newdatas);
-				mRecyclerView.post(new Runnable() {
-					@Override
-					public void run() {
-						mZhiboAdapter.notifyDataSetChanged();
-					}
-				});
-				mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
-					@Override
-					public void run() {
-						mRecyclerView.setPullLoadMoreCompleted();
-					}
-				},1000);
-			}
-		});
-
-		mZhiboAdapter.setOnItemClickListener(new BarZhiboAdapter.MyItemClickListener() {
-			@Override
-			public void onItemClick(View v, int positon) {
-				Toast.makeText(CommonUtils.getContext(),"点击了"+positon,Toast.LENGTH_SHORT).show();
+				visitInternet();
 			}
 		});
 	}

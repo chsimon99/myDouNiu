@@ -90,7 +90,7 @@ public class MyselfAskDoneAdapter extends RecyclerView.Adapter<MyselfAskDoneAdap
         public void setRefreshData(AskDone bean, int position) {
             Glide.with(mContext).load(bean.url)
                     .bitmapTransform(new CropCircleTransformation(mContext))
-                    .placeholder(R.drawable.public_img).into(img);
+                    .placeholder(R.drawable.home_adviosr_img).into(img);
             name.setText(bean.ud_nickname);
             title.setText(bean.zc_context);
             detail.setText(bean.zp_pl);

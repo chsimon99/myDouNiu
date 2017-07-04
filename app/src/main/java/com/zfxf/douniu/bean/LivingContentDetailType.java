@@ -12,4 +12,13 @@ public class LivingContentDetailType {
     public String url;//声音url
     public String length;//声音长度
 
+    public boolean isShow;
+
+    public boolean isShow() {
+        return isShow;
+    }
+
+    public void setShow(boolean show) {
+        isShow = show;
+    }
 }

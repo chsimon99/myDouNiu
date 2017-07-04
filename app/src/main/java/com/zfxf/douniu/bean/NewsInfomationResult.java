@@ -19,4 +19,6 @@ public class NewsInfomationResult {
     public String ud_photo_fileid;//用户头像
     public String cc_from;//信息来源
     public String cc_fielid;//图片
+    public String context_url;//url地址
+    public String ud_ub_id;//首席id
 }

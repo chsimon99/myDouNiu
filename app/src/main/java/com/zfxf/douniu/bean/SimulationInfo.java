@@ -7,6 +7,7 @@ package com.zfxf.douniu.bean;
  */
 
 public class SimulationInfo {
+    public String mg_id;//id
     public String mg_xj;//现价
     public String mg_dt;//跌停
     public String mg_zt;//涨停

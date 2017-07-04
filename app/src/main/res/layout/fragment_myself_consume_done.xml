@@ -8,8 +8,21 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dm016"
         android:background="@color/colorBgGary"/>
-    <com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView
-        android:id="@+id/rv_myself_consume_done"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+        <com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView
+            android:id="@+id/rv_myself_consume_done"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_myself_consume_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="您还没有相关订单"
+            android:textColor="@color/titleText"
+            android:textSize="@dimen/dm030"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
+    </RelativeLayout>
 </LinearLayout>

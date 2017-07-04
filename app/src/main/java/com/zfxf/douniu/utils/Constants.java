@@ -13,7 +13,9 @@ public interface Constants {
     String rvaluateResult = "RVALUATERESULT";
     String rvaluateSuccess = "RVALUATESUCCESS";
     String isLogin = "ISLOGIN";
+    String sendOrder = "SENDORDER";
     String alreadyLogin = "ALREADYISLOGIN";
+    String alreadyLogout = "ALREADYISLOGOUT";
     String alreadyGuanzhu = "ALREADYISGUANZHU";
     String nickname = "NICKNAME";
     String imgurl = "IMGURL";
@@ -23,4 +25,6 @@ public interface Constants {
     int resultCodeLogin	= 1;
     int resultCodeEditInfor	= 2;
     String getIndexInformation = "GETINDEXINFORMATION";
+    String APP_ID = "wx086c758d5e01f463";
+    String error = "ERROR";
 }

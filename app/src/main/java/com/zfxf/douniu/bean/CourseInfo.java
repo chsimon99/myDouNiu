@@ -15,6 +15,9 @@ public class CourseInfo {
     public String cc_datetime;//时间
     public String cc_description;//课程介绍
     public String ud_nickname;//作者
+    public String url;//直播地址
+    public String status;//直播状态 0已结束 1正在直播 2未开始
+
     public String auth_ub_id;//作者id，用于关注
     public String has_dy;//是否订阅
     public String dy_count;//订阅数量

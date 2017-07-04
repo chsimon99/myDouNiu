@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -37,14 +37,14 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"/>
                         <RelativeLayout
-                            android:layout_width="@dimen/dm100"
                             android:id="@+id/rl_zhengu_advisor_detail"
+                            android:layout_width="@dimen/dm100"
                             android:layout_height="match_parent">
                             <ImageView
                                 android:layout_width="@dimen/dm014"
                                 android:layout_height="@dimen/dm028"
-                                android:layout_centerInParent="true"
                                 android:layout_alignParentRight="true"
+                                android:layout_centerInParent="true"
                                 android:layout_marginLeft="@dimen/dm025"
                                 android:layout_marginRight="@dimen/dm020"
                                 android:src="@drawable/home_jiantou"/>
@@ -58,9 +58,9 @@
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/rv_zhengu_advisor"
                             android:layout_width="match_parent"
-                            android:background="@color/colorBgGary"
                             android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/dm005"/>
+                            android:layout_margin="@dimen/dm005"
+                            android:background="@color/colorBgGary"/>
                     </RelativeLayout>
                 </LinearLayout>
                 <LinearLayout
@@ -81,14 +81,14 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"/>
                     <RelativeLayout
-                        android:layout_width="@dimen/dm100"
                         android:id="@+id/rl_zhengu_answer_detail"
+                        android:layout_width="@dimen/dm100"
                         android:layout_height="match_parent">
                         <ImageView
                             android:layout_width="@dimen/dm014"
                             android:layout_height="@dimen/dm028"
-                            android:layout_centerInParent="true"
                             android:layout_alignParentRight="true"
+                            android:layout_centerInParent="true"
                             android:layout_marginLeft="@dimen/dm025"
                             android:layout_marginRight="@dimen/dm020"
                             android:src="@drawable/home_jiantou"/>
@@ -109,6 +109,14 @@
                         android:layout_marginLeft="@dimen/dm020"
                         android:layout_marginRight="@dimen/dm020"/>
                 </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_all_ask_refresh"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dm400"
+                    android:gravity="center"
+                    android:text="点击刷新"
+                    android:textSize="@dimen/dm040"/>
             </LinearLayout>
         </com.zfxf.douniu.view.MyScrollview>
         <ImageView

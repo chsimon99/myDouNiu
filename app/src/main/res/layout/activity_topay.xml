@@ -39,7 +39,7 @@
         </LinearLayout>
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/dm001"
             android:background="@color/gray"/>
         <LinearLayout
             android:layout_width="match_parent"
@@ -69,7 +69,7 @@
         </LinearLayout>
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/dm001"
             android:background="@color/gray"/>
 
         <LinearLayout
@@ -137,7 +137,17 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="@dimen/dm030"
                 android:text="余额不足"
-                android:visibility="invisible"
+                android:visibility="gone"
+                android:textColor="@color/titleTextGray"
+                android:textSize="@dimen/dm024"/>
+
+            <TextView
+                android:id="@+id/tv_topay_yu_e_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dm030"
+                android:text=""
                 android:textColor="@color/titleTextGray"
                 android:textSize="@dimen/dm024"/>
             <View
@@ -176,7 +186,7 @@
         <View
             android:id="@+id/view_topay_yu_e"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/dm001"
             android:background="@color/gray"/>
         <LinearLayout
             android:id="@+id/ll_topay_wx"
@@ -222,7 +232,7 @@
         </LinearLayout>
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/dm001"
             android:background="@color/gray"/>
 
         <LinearLayout

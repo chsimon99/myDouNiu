@@ -7,9 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.MatadorPKList;
 
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * @author Admin
@@ -20,13 +24,13 @@ import java.util.List;
 public class BarZhiboAdapter extends RecyclerView.Adapter<BarZhiboAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<MatadorPKList> mDatas;
 
     public interface MyItemClickListener {
         void onItemClick(View v, int positon);
     }
 
-    public BarZhiboAdapter(Context context, List<String> datas) {
+    public BarZhiboAdapter(Context context, List<MatadorPKList> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -51,9 +55,8 @@ public class BarZhiboAdapter extends RecyclerView.Adapter<BarZhiboAdapter.MyHold
     public int getItemCount() {
         return mDatas.size();
     }
-    public void addDatas(List<String> data) {
+    public void addDatas(List<MatadorPKList> data) {
         mDatas.addAll(data);
-//        notifyDataSetChanged();
     }
 
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -90,13 +93,21 @@ public class BarZhiboAdapter extends RecyclerView.Adapter<BarZhiboAdapter.MyHold
             }
         }
 
-        public void setRefreshData(String str) {
-            if(str.equals("7")){
-                leftname.setText("郭靖");
-                rightname.setText("杨康");
-            }else{
-                leftname.setText(str);
-            }
+        public void setRefreshData(MatadorPKList bean) {
+            Glide.with(mContext).load(bean.op_fileid_1)
+                    .placeholder(R.drawable.home_adviosr_img)
+                    .bitmapTransform(new CropCircleTransformation(mContext))
+                    .into(leftImg);
+            Glide.with(mContext).load(bean.op_fileid_2)
+                    .placeholder(R.drawable.home_adviosr_img)
+                    .bitmapTransform(new CropCircleTransformation(mContext))
+                    .into(rightImg);
+            leftname.setText(bean.op_name_1);
+            rightname.setText(bean.op_name_2);
+            leftcount.setText(bean.op_rq_1);
+            rightcount.setText(bean.op_rq_2);
+            leftincome.setText(bean.op_sy_1+"%");
+            rightincome.setText(bean.op_sy_2+"%");
         }
     }
 }

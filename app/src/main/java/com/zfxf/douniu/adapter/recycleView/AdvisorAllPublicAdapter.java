@@ -139,9 +139,9 @@ public class AdvisorAllPublicAdapter extends RecyclerView.Adapter<AdvisorAllPubl
                         mSubListener.onItemClick(v,Integer.parseInt(mDatas.get(getRealPosition(this)).get("cc_id"))
                                 ,type.getText().toString());
                         if (type.getText().toString().equals("已预约")) {
-                            subscribeInternet(0);
-                        } else {
                             subscribeInternet(1);
+                        } else {
+                            subscribeInternet(0);
                         }
                     }
                     break;
@@ -162,9 +162,11 @@ public class AdvisorAllPublicAdapter extends RecyclerView.Adapter<AdvisorAllPubl
                         public void onResponseMessage(String count) {
                             if (type.getText().toString().equals("预约")) {
                                 type.setText("已预约");
+                                CommonUtils.toastMessage("预约成功");
                                 type.setBackgroundResource(R.drawable.backgroud_button_gary_color);
                             } else {
                                 type.setText("预约");
+                                CommonUtils.toastMessage("取消预约成功");
                                 type.setBackgroundResource(R.drawable.backgroud_button_app_color);
                             }
                             myCount.setText(count);

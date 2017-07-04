@@ -1,8 +1,12 @@
 package com.zfxf.douniu.activity.login;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -11,7 +15,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bslee.threelogin.api.OauthLoginListener;
+import com.bslee.threelogin.api.ThirdWeiXinLoginApi;
+import com.bslee.threelogin.db.LoginPlatForm;
+import com.bslee.threelogin.model.AuthToken;
+import com.bslee.threelogin.model.AuthUser;
+import com.bslee.threelogin.model.QQToken;
+import com.bslee.threelogin.model.QQUserInfo;
+import com.bslee.threelogin.model.WeiBoToken;
+import com.bslee.threelogin.model.WeiBoUserInfo;
+import com.bslee.threelogin.model.WeiXinUserInfo;
+import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.internet.LoginInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
@@ -20,6 +36,10 @@ import com.zfxf.douniu.utils.SpTools;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.zfxf.douniu.utils.CommonUtils.handler;
+import static com.zfxf.douniu.utils.Constants.isLogin;
+
 /**
  * @author IMXU
  * @time   2017/5/3 13:20
@@ -53,11 +73,15 @@ public class ActivityLogin extends FragmentActivity implements View.OnClickListe
     @BindView(R.id.iv_login_wx)
     ImageView wx;
 
+    MyReceiver mReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        mReceiver = new MyReceiver();
+        LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver,new IntentFilter("ACTION_WX_LOGIN_SUCEESS"));
+
         title.setText("登录");
         edit.setVisibility(View.INVISIBLE);
         initdata();
@@ -105,19 +129,17 @@ public class ActivityLogin extends FragmentActivity implements View.OnClickListe
                 intent = new Intent(this,ActivityRegister.class);
                 startActivity(intent);
                 overridePendingTransition(0,0);
-                finishAll();
-                finish();
                 break;
             case R.id.tv_login_forget:
                 intent = new Intent(this,ActivityForget.class);
                 startActivity(intent);
                 overridePendingTransition(0,0);
-                finishAll();
-                finish();
                 break;
             case R.id.iv_login_qq:
                 break;
             case R.id.iv_login_wx:
+                ThirdWeiXinLoginApi.getWXAPI(getApplicationContext());
+                ThirdWeiXinLoginApi.login(getApplicationContext());
                 break;
         }
         intent = null;
@@ -144,7 +166,7 @@ public class ActivityLogin extends FragmentActivity implements View.OnClickListe
             public void onResponseMessage(String code) {
                 if(code.equals("成功")){
                     CommonUtils.toastMessage("登录成功");
-                    SpTools.setBoolean(CommonUtils.getContext(), Constants.isLogin,true);
+                    SpTools.setBoolean(CommonUtils.getContext(), isLogin,true);
                     SpTools.setBoolean(CommonUtils.getContext(), Constants.alreadyLogin,true);
                     setResult(Constants.resultCodeLogin,null);
                     finishAll();
@@ -156,4 +178,117 @@ public class ActivityLogin extends FragmentActivity implements View.OnClickListe
 
     private void finishAll() {
     }
+    /**
+     * 微信授权广播回调
+     *
+     * @author user
+     *
+     */
+    private class MyReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if ("ACTION_WX_LOGIN_SUCEESS".equals(intent.getAction())) {
+                //拿着code获取个人信息
+                final String code = intent.getStringExtra("code");
+                if (!TextUtils.isEmpty(code)) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ThirdWeiXinLoginApi.getOauthAcces(code, oauthlogin);
+                        }
+                    }).start();
+                }else {
+                    int errorCode = intent.getIntExtra("erro",0);
+                    if( errorCode != BaseResp.ErrCode.ERR_OK ){
+                        //微信
+                        String resid = errorCode == BaseResp.ErrCode.ERR_USER_CANCEL ? "授权取消" : "授权失败";
+                        Toast.makeText(CommonUtils.getContext(), resid, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        }
+    }
+    /**
+     * QQ，WeiBo，WeiXin登录成功回调
+     */
+    private OauthLoginListener oauthlogin = new OauthLoginListener() {
+        @Override
+        public void OauthLoginSuccess(final AuthToken token, final AuthUser user) {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    String uuid = "";//三方用户唯一ID
+                    String name = "";
+                    String header = "";
+                    String gender = "";
+                    String loginType = "";
+                    int type = token.authtype;
+                    switch (type) {
+                        case LoginPlatForm.QQZONE_PLATPORM:
+                            uuid = ((QQToken) token).getOpenid();
+                            name = ((QQUserInfo) user).getNickname();
+                            header = ((QQUserInfo) user).getFigureurl_qq_1();
+                            gender = ((QQUserInfo) user).getGender();
+                            loginType = "2";
+                            break;
+                        case LoginPlatForm.WECHAT_PLATPORM:
+                            uuid = ((WeiXinUserInfo) user).getOpenid();
+                            name = ((WeiXinUserInfo) user).getNickname();
+                            header = ((WeiXinUserInfo) user).getHeadimgurl();
+                            gender = ((WeiXinUserInfo) user).getSex();
+                            if ("1".equals(gender)){
+                                gender = "男";
+                            }else {
+                                gender = "女";
+                            }
+                            loginType = "1";
+                            break;
+                        case LoginPlatForm.WEIBO_PLATPORM:
+                            uuid = ((WeiBoToken) token).getUid();
+                            name = ((WeiBoUserInfo) user).getName();
+                            header = ((WeiBoUserInfo) user).getProfile_image_url();
+                            gender = ((WeiBoUserInfo) user).getGender();
+                            loginType = "3";
+                            break;
+                    }
+                    final String finalUuid = uuid;
+                    final String finalName = name;
+                    final String finalHeader = header;
+                    final String finalLoginType = loginType;
+                    LoginInternetRequest.thirdRegisterQuery(uuid,name,header,loginType,new LoginInternetRequest.ForResultListener() {
+                                @Override
+                                public void onResponseMessage(String code) {
+                                    if(code.equals("成功")){
+                                        SpTools.setBoolean(CommonUtils.getContext(), isLogin,true);
+                                        SpTools.setBoolean(CommonUtils.getContext(), Constants.alreadyLogin,true);
+                                        finish();
+                                    }else{
+                                        Intent intent = new Intent(ActivityLogin.this,ActivityThirdRegister.class);
+                                        intent.putExtra("uuid", finalUuid);
+                                        intent.putExtra("name", finalName);
+                                        intent.putExtra("img", finalHeader);
+                                        intent.putExtra("loginType", finalLoginType);
+                                        startActivity(intent);
+                                        overridePendingTransition(0,0);
+                                        finish();
+                                    }
+                                }
+                            });
+//                    MuTiLogin(uuid,name,header,gender,loginType);
+                }
+            });
+
+        }
+        @Override
+        public void OauthLoginFail() {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    CommonUtils.toastMessage("授权失败，请重试！");
+                    finish();
+                }
+            });
+
+        }
+    };
 }

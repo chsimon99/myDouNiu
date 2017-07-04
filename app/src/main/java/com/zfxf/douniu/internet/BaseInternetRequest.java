@@ -36,7 +36,8 @@ public class BaseInternetRequest {
 
     public interface HttpUtilsListener{
         void onError(Call call, Exception e, int id);
-        void onResponse(String response, int id);
+        void
+        onResponse(String response, int id);
     }
 
     public void post(String url , Boolean isPostBaseData ,Map<String, String> params){

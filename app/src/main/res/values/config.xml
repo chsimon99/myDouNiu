@@ -4,6 +4,8 @@
     <string name="service_host_address">http://douniu.lchtime.cn:8001/</string>
     <!--登录-->
     <string name="getLogin">index.php/user/login</string>
+    <!--第三方登录注册-->
+    <string name="tparty">index.php/user/tparty</string>
     <!--发送验证码-->
     <string name="sendCode">index.php/system/send</string>
     <!--注册-->
@@ -20,6 +22,12 @@
     <string name="mycountEdit">index.php/user/edit</string>
     <!--投顾申请-->
     <string name="tougu">index.php/user/tougu</string>
+    <!--意见反馈-->
+    <string name="feedback">index.php/user/feedback</string>
+    <!--我的钱包-->
+    <string name="mywallet">index.php/user/mywallet</string>
+    <!--消费记录-->
+    <string name="getpaylist">index.php/user/getpaylist</string>
 
     <!--上传-->
     <string name="upload">index.php/system/upload/</string>
@@ -67,6 +75,8 @@
     <string name="zhibopl">index.php/zhibo/zhibopl</string>
     <!--直播课互动评论-->
     <string name="zhibofbpl">index.php/zhibo/zhibofbpl</string>
+    <!--直播或新闻打赏-->
+    <string name="zhibodsy">index.php/pay/paydsy</string>
 
     <!--订阅、取消订阅-->
     <string name="userdy">index.php/user/userdy</string>
@@ -78,12 +88,16 @@
     <string name="dingyuelist">index.php/user/dingyuelist</string>
     <!--斗牛士主页列表-->
     <string name="matadorlist">index.php/user/matadorlist</string>
+    <!--斗牛士PK列表-->
+    <string name="matadorpk">index.php/user/matadorpk</string>
     <!--斗牛士排行列表-->
     <string name="matadororder">index.php/user/matadororder</string>
     <!--我关注的斗牛士列表-->
     <string name="attention">index.php/user/attention</string>
     <!--我的问股列表-->
     <string name="myAskStock">index.php/user/myAskStock</string>
+    <!--我的牛币在支付页面显示-->
+    <string name="mynb">index.php/user/mynb</string>
 
     <!--主页列表-->
     <string name="index">index.php/dn/index</string>
@@ -97,6 +111,8 @@
     <string name="historygupiao">index.php/dn/historygupiao</string>
     <!--选股王订阅-->
     <string name="xuangudy">index.php/dn/xuangudy</string>
+    <!--主页搜索-->
+    <string name="indexSearch">index.php/dn/search</string>
 
 
     <!--微问答列表-->
@@ -109,6 +125,8 @@
     <string name="stockInfo">index.php/zhihu/stockInfo</string>
     <!--微问答回答详情点赞-->
     <string name="dzBright">index.php/zhihu/stockInfo/dzBright</string>
+    <!--提交问股-->
+    <string name="Asktochief">index.php/zhihu/Asktochief</string>
 
 
     <!--模拟盘首页-->
@@ -136,9 +154,17 @@
     <string name="quotes">index.php/mn/quotes</string>
 
 
+    <!--普通订单-->
+    <string name="payorder">index.php/pay/payorder</string>
+    <!--确认订单-->
+    <string name="notifyOrder">index.php/pay/notify</string>
+
+
     <!--金股池首页主页-->
     <string name="gp">index.php/gp</string>
     <!--金股池详情页-->
     <string name="gpinfo">index.php/gp/gpinfo</string>
+    <!--金股池历史页-->
+    <string name="historyList">index.php/gp/historyList</string>
 
 </resources>

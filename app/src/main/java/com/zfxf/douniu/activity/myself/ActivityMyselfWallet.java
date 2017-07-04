@@ -1,20 +1,25 @@
 package com.zfxf.douniu.activity.myself;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.ActivityBuyNiu;
 import com.zfxf.douniu.adapter.recycleView.WalletNoticeAdapter;
+import com.zfxf.douniu.bean.OtherResult;
+import com.zfxf.douniu.internet.NewsInternetRequest;
+import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.FullyLinearLayoutManager;
 import com.zfxf.douniu.view.RecycleViewDivider;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,7 +27,7 @@ import butterknife.ButterKnife;
 /**
  * @author IMXU
  * @time   2017/5/3 13:20
- * @des    联系我们
+ * @des    我的钱包
  * 邮箱：butterfly_xu@sina.com
  *
 */
@@ -44,7 +49,6 @@ public class ActivityMyselfWallet extends FragmentActivity implements View.OnCli
     LinearLayoutManager mLayoutManager;
     RecycleViewDivider mDivider;
     WalletNoticeAdapter mAdapter;
-    List<String> mList = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,27 +63,40 @@ public class ActivityMyselfWallet extends FragmentActivity implements View.OnCli
     }
 
     private void initdata() {
-        if(mList.size() == 0){
-            mList.add("");
-            mList.add("");
-            mList.add("");
-        }
-        if(mLayoutManager == null){
-            mLayoutManager = new FullyLinearLayoutManager(this);
-        }
-        if(mAdapter == null){
-            mAdapter = new WalletNoticeAdapter(this,mList);
-        }
-        if(mDivider == null){//防止多次加载出现宽度变宽
-            mDivider = new RecycleViewDivider(this, LinearLayoutManager.HORIZONTAL);
-            mRecyclerView.addItemDecoration(mDivider);
-        }
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+        visitInternet();
     }
+
+    private void visitInternet() {
+        CommonUtils.showProgressDialog(this,"加载中……");
+        NewsInternetRequest.getWalletInformation(new NewsInternetRequest.ForResultNewsInfoListener() {
+            @Override
+            public void onResponseMessage(OtherResult otherResult) {
+                if(mLayoutManager == null){
+                    mLayoutManager = new FullyLinearLayoutManager(ActivityMyselfWallet.this);
+                }
+                if(mAdapter == null){
+                    mAdapter = new WalletNoticeAdapter(ActivityMyselfWallet.this,otherResult.hq_nb);
+                }
+                if(mDivider == null){//防止多次加载出现宽度变宽
+                    mDivider = new RecycleViewDivider(ActivityMyselfWallet.this, LinearLayoutManager.HORIZONTAL);
+                    mRecyclerView.addItemDecoration(mDivider);
+                }
+                mRecyclerView.setLayoutManager(mLayoutManager);
+                mRecyclerView.setAdapter(mAdapter);
+                String wallet = otherResult.my_wallet;
+                if(TextUtils.isEmpty(wallet)){
+                    count.setText("0牛币");
+                }else {
+                    count.setText(wallet +"牛币");
+                }
+                CommonUtils.dismissProgressDialog();
+            }
+        });
+    }
+
     private void initListener() {
         back.setOnClickListener(this);
-
+        buy.setOnClickListener(this);
     }
 
     @Override
@@ -91,10 +108,30 @@ public class ActivityMyselfWallet extends FragmentActivity implements View.OnCli
                 break;
             case R.id.ll_myself_disclaimer:
                 break;
+            case R.id.tv_myself_wallet_buy:
+                Intent intent = new Intent(this,ActivityBuyNiu.class);
+                startActivity(intent);
+                overridePendingTransition(0,0);
+                break;
         }
     }
 
     private void finishAll() {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        CommonUtils.dismissProgressDialog();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(SpTools.getBoolean(this, Constants.buy,false)){//如果已经支付成功，重新刷新数据
+            SpTools.setBoolean(this, Constants.buy,false);
+            visitInternet();
+        }
     }
 }

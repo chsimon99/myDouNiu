@@ -1,6 +1,7 @@
 package com.zfxf.douniu.adapter.recycleView;
 
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -76,6 +77,9 @@ public class LiveLivingAdapter extends RecyclerView.Adapter {
     }
     public void addDatas(LivingContent data) {
         mDatas.addAll(data.context_list);
+    }
+    public void refreshDatas(LivingContent data) {
+        mDatas.addAll(0,data.context_list);
     }
 
     @Override
@@ -159,6 +163,23 @@ public class LiveLivingAdapter extends RecyclerView.Adapter {
                 int addLength = (int) ((mMaxItemWidth*0.8 - mMinItemWidth) * Integer.parseInt(str) / 60);
                 mParams.width = mMinItemWidth +addLength;
             }
+            if(bean.zc_context.isShow()){
+                startAnimation(mView);
+            }else {
+                stopAnimation(mView);
+            }
+        }
+        private AnimationDrawable voiceAnimation = null;
+        public void stopAnimation(ImageView view){
+            if(voiceAnimation !=null){
+                voiceAnimation.stop();
+            }
+            view.setImageResource(R.drawable.icon_sound);
+        }
+        public void startAnimation(ImageView view){
+            view.setImageResource(R.drawable.voiceanimation);
+            voiceAnimation = (AnimationDrawable) view.getDrawable();
+            voiceAnimation.start();
         }
     }
 }

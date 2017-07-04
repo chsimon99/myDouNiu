@@ -16,7 +16,10 @@ import com.zfxf.douniu.bean.MyContentResult;
 import com.zfxf.douniu.bean.NewsListResult;
 import com.zfxf.douniu.bean.NewsNewsResult;
 import com.zfxf.douniu.bean.NewsResult;
+import com.zfxf.douniu.bean.OrderDetail;
+import com.zfxf.douniu.bean.OrderInformationBean;
 import com.zfxf.douniu.bean.OtherResult;
+import com.zfxf.douniu.bean.PayListResult;
 import com.zfxf.douniu.bean.ProjectListResult;
 import com.zfxf.douniu.bean.SimulationResult;
 import com.zfxf.douniu.bean.XuanguDetail;
@@ -25,6 +28,8 @@ import com.zfxf.douniu.bean.ZanResult;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.utils.Constants;
 import com.zfxf.douniu.utils.SpTools;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
+import okhttp3.MediaType;
 
 /**
  * @author Admin
@@ -70,6 +76,10 @@ public class NewsInternetRequest {
     private static ForResultHeadListLunboInfoListener headListLunboInfoListener;
     private static ForResultGoldPoneShortStockListener goldPoneShortStockListener;
     private static ForResultGoldPoneLongStockListener goldPoneLongStockListener;
+    private static ForResultGoldPoneHistoryStockListener goldPoneHistoryStockListener;
+    private static ForResultResearchInfoListener researchInfoListener;
+    private static ForResultPayListInfoListener payListInfoListener;
+    private static ForResultPayListSuccessInfoListener listSuccessInfoListener;
     static {
         mGson = new Gson();
         context = CommonUtils.getContext();
@@ -482,6 +492,7 @@ public class NewsInternetRequest {
                     map.put("cc_datetime",list.cc_datetime);
                     map.put("has_dy",list.has_dy);
                     map.put("dy_count",list.dy_count);
+                    map.put("cc_ub_id",list.cc_ub_id);
                     result_lists.add(map);
                 }
                 policyInfoListener.onResponseMessage(result_lists,total,result.lunbo_list);
@@ -663,6 +674,31 @@ public class NewsInternetRequest {
                 }
             }
         }).post(context.getResources().getString(R.string.gpinfo),true,params);
+    }
+
+    public static void getGoldPondHistoryInformation(String id,String type,ForResultGoldPoneHistoryStockListener listener){
+        goldPoneHistoryStockListener = listener;
+        Map<String ,String> params = new HashMap<>();
+        params.put("sx_ub_id",id);
+        params.put("type",type);
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("geGoldPondHistoryInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("geGoldPondHistoryInformation="+response);
+                XuanguResult result = mGson.fromJson(response, XuanguResult.class);
+                if(result.result.code.equals("10")){
+                    goldPoneHistoryStockListener.onResponseMessage(result);
+                }else {
+                    CommonUtils.toastMessage("网络出现问题，请重新刷新");
+                }
+
+            }
+        }).post(context.getResources().getString(R.string.historyList),true,params);
     }
     /**
      * 列表选项 私密课
@@ -898,6 +934,7 @@ public class NewsInternetRequest {
         new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
             @Override
             public void onError(Call call, Exception e, int id) {
+                SpTools.setBoolean(context,Constants.error,true);//网络错误的时候设置重新连接
                 CommonUtils.logMes("getLivingInteractInformation="+e);
             }
 
@@ -1645,6 +1682,321 @@ public class NewsInternetRequest {
         }).post(context.getResources().getString(R.string.addZx),true,params);
     }
 
+    /**
+     * 提交意见反馈
+     * @param mes 内容
+     * @param phone 电话
+     * @param listener
+     */
+    public static void sendQuestion(String mes,String phone,ForResultListener listener){
+        resultListener = listener;
+        Map<String ,String> params = new HashMap<>();
+        params.put("fb_context",mes);
+        params.put("fb_phone",phone);
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("sendQuestion="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("sendQuestion="+response);
+                OtherResult result = mGson.fromJson(response, OtherResult.class);
+                if(result.result.code.equals("10")){
+                    resultListener.onResponseMessage("成功");
+                }
+            }
+        }).post(context.getResources().getString(R.string.feedback),true,params);
+    }
+
+    /**
+     * 我的钱包
+     * @param listener
+     */
+    public static void getWalletInformation(ForResultNewsInfoListener listener){
+        newsInfoListener = listener;
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getWalletInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getWalletInformation="+response);
+                OtherResult result = mGson.fromJson(response, OtherResult.class);
+                if(result.result.code.equals("10")){
+                    newsInfoListener.onResponseMessage(result);
+                }
+            }
+        }).post(context.getResources().getString(R.string.mywallet),true,null);
+    }
+
+    /**
+     * 直播或新闻打赏列表
+     * @param id 直播或新闻的id
+     * @param type 0直播 1新闻
+     * @param listener
+     */
+    public static void toRewardInformation(int id,int type,ForResultIndexListener listener){
+        indexListener = listener;
+        Map<String ,String> params = new HashMap<>();
+        params.put("id",id+"");
+        params.put("type",type+"");
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("toRewardInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("toRewardInformation="+response);
+                IndexResult result = mGson.fromJson(response, IndexResult.class);
+                if(result.result.code.equals("10")){
+                    indexListener.onResponseMessage(result);
+                }
+            }
+        }).post(context.getResources().getString(R.string.zhibodsy),true,params);
+    }
+
+    /**
+     * 斗牛士直播室pk列表
+     * @param page
+     * @param listener
+     */
+    public static void getMatadorPKListInformation(int page,ForResultMyAskDoneListener listener){
+        myAskDoneListener = listener;
+        Map<String ,String> params = new HashMap<>();
+        params.put("page",page+"");
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getMatadorPKListInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getMatadorPKListInformation="+response);
+                NewsResult result = mGson.fromJson(response, NewsResult.class);
+                if(result.result.code.equals("10")){
+                    myAskDoneListener.onResponseMessage(result);
+                }
+            }
+        }).post(context.getResources().getString(R.string.matadorpk),true,params);
+
+    }
+
+    /**
+     * 提交订单时候牛币账户和牛币兑换的数值
+     * @param listener
+     */
+    public static void getNiuBiShow(ForResultNewsInfoListener listener){
+        newsInfoListener = listener;
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getNiuBiShow="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getNiuBiShow="+response);
+                OtherResult result = mGson.fromJson(response, OtherResult.class);
+                if(result.result.code.equals("10")){
+                    newsInfoListener.onResponseMessage(result);
+                }
+            }
+        }).post(context.getResources().getString(R.string.mynb),true,null);
+    }
+
+    /**
+     * 提交生成订单
+     * @param order 订单号 没有传""
+     * @param fee 支付费用
+     * @param status 订单状态 0 默认
+     * @param type 订单类型 0 购买 1 充值
+     * @param code 支付代号 wechat  微信 alipay  支付宝 niubi  牛币
+     * @param info 订单描述
+     * @param id 首席id
+     * @param listener
+     */
+    public static void sendOrderInformation(String order,String fee, String status
+            ,String type,String code, String info,String id,ForResultNewsInfoListener listener){
+        newsInfoListener = listener;
+        String url = context.getResources().getString(R.string.service_host_address)
+                .concat(context.getResources().getString(R.string.payorder));
+        OrderInformationBean bean = new OrderInformationBean();
+        OrderDetail detail = new OrderDetail();
+        detail.setPmo_fee(fee);
+        detail.setPmo_info(info);
+        detail.setPmo_status(status);
+        detail.setPmo_type(type);
+
+        bean.setSid("");
+        bean.setIndex((index++)+"");
+        bean.setUb_id(Integer.parseInt(SpTools.getString(context, Constants.userId,"0")));
+        bean.setUo_high("");
+        bean.setUo_lat("");
+        bean.setUo_long("");
+        bean.setPay_order(detail);
+        bean.setPt_code(code);
+        bean.setSx_ub_id(id);
+        bean.setPmo_order(order);
+
+        String json = mGson.toJson(bean);
+        CommonUtils.logMes("response"+json);
+        OkHttpUtils.postString().url(url)
+                .content(json)
+                .mediaType(MediaType.parse("application/json; charset=utf-8"))
+                .build().execute(new StringCallback() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("sendOrderInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("sendOrderInformation="+response);
+                OtherResult result = mGson.fromJson(response, OtherResult.class);
+                if(result.result.code.equals("10")){
+                    newsInfoListener.onResponseMessage(result);
+                }
+            }
+        });
+    }
+
+    /**
+     * 确认订单
+     * @param code 支付代号
+     * @param order 订单号
+     * @param id 生成订单的顺序
+     * @param listener
+     */
+    public static void confirmOrder(String code,String order,String id,ForResultNewsInfoListener listener){
+        newsInfoListener = listener;
+        Map<String ,String> params = new HashMap<>();
+        params.put("pt_code",code);
+        params.put("pmo_order",order);
+        params.put("pmo_id",id);
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("confirmOrder="+e);
+
+            }
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("confirmOrder="+response);
+                OtherResult result = mGson.fromJson(response, OtherResult.class);
+                if(result.result.code.equals("10")){
+                    newsInfoListener.onResponseMessage(result);
+                }
+            }
+        }).post(context.getResources().getString(R.string.notifyOrder),true,params);
+    }
+
+    /**
+     * 主页搜索接口
+     * @param cond 搜索的内容
+     * @param page 页数
+     * @param type 类型 0股票 1投顾 2直播
+     * @param listener
+     */
+    public static void getResearchInformation(String cond,String page,String type,ForResultResearchInfoListener listener){
+        researchInfoListener = listener;
+        Map<String ,String> params = new HashMap<>();
+        params.put("cond",cond);
+        params.put("page",page);
+        params.put("type",type);
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getResearchInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getResearchInformation="+response);
+                CourseResult result = mGson.fromJson(response, CourseResult.class);
+                if(result.result.code.equals("10")){
+                    researchInfoListener.onResponseMessage(result);
+                }
+            }
+        }).post(context.getResources().getString(R.string.indexSearch),true,params);
+    }
+
+    /**
+     * 提交问股 问题
+     * @param content 提出的问题
+     * @param sx_id 首席的id，悬赏问股不需要传
+     * @param fee 问股的费用
+     * @param listener
+     */
+    public static void sendAskingStock(String content,String sx_id,String fee,ForResultListener listener){
+        resultListener = listener;
+        Map<String ,String> params = new HashMap<>();
+        params.put("zc_context",content);
+        params.put("df_fee",fee);
+        if(!TextUtils.isEmpty(sx_id)){
+            params.put("sx_ub_id",sx_id);
+        }
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("sendAskingStock="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("sendAskingStock="+response);
+                OtherResult result = mGson.fromJson(response, OtherResult.class);
+                if(result.result.code.equals("10")){
+                    resultListener.onResponseMessage("成功");
+                }
+            }
+        }).post(context.getResources().getString(R.string.Asktochief),true,params);
+    }
+
+    /**
+     * 消费记录
+     * @param page 页数
+     * @param type 类型 0待支付 1已完成
+     * @param listener
+     */
+    public static void getPayListInformation(int page, int type, final ForResultPayListInfoListener listener
+    , ForResultPayListSuccessInfoListener infoListener){
+        if(listener !=null){
+            payListInfoListener = listener;
+        }
+        if(infoListener !=null){
+            listSuccessInfoListener = infoListener;
+        }
+        Map<String ,String> params = new HashMap<>();
+        params.put("page",page+"");
+        params.put("type",type+"");
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getPayListInformation="+e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getPayListInformation="+response);
+                PayListResult result = mGson.fromJson(response, PayListResult.class);
+                if(result.result.code.equals("10")){
+                    if(listener !=null){
+                        payListInfoListener.onResponseMessage(result);
+                    }else {
+                        listSuccessInfoListener.onResponseMessage(result);
+                    }
+                }
+            }
+        }).post(context.getResources().getString(R.string.getpaylist),true,params);
+    }
+
     public interface ForResultPolicyInfoListener {
         void onResponseMessage(List<Map<String, String>> lists, String totalpage, List<LunBoListInfo> lunbo_list);
     }
@@ -1722,5 +2074,17 @@ public class NewsInternetRequest {
     }
     public interface ForResultGoldPoneLongStockListener {
         void onResponseMessage(SimulationResult result);
+    }
+    public interface ForResultGoldPoneHistoryStockListener {
+        void onResponseMessage(XuanguResult result);
+    }
+    public interface ForResultResearchInfoListener {
+        void onResponseMessage(CourseResult result);
+    }
+    public interface ForResultPayListInfoListener {
+        void onResponseMessage(PayListResult result);
+    }
+    public interface ForResultPayListSuccessInfoListener {
+        void onResponseMessage(PayListResult result);
     }
 }

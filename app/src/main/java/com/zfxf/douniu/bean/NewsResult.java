@@ -14,4 +14,6 @@ public class NewsResult {
     public List<NewsNewsResult> news_list;//资讯列表数据
     public List<AskDone> have_answer;//我的问答已回答详情
     public List<AskWait> no_answer;//我的问答未回答详情
+
+    public List<MatadorPKList> pk_list;//斗牛吧直播列表
 }

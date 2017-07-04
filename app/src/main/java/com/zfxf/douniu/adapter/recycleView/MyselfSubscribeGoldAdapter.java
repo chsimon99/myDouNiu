@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.StockChiInfo;
 import com.zfxf.douniu.utils.CommonUtils;
 
 import java.util.List;
@@ -20,13 +21,13 @@ import java.util.List;
 public class MyselfSubscribeGoldAdapter extends RecyclerView.Adapter<MyselfSubscribeGoldAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<StockChiInfo> mDatas;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int positon);
+        void onItemClick(View v, int id,int jgc);
     }
 
-    public MyselfSubscribeGoldAdapter(Context context, List<String> datas) {
+    public MyselfSubscribeGoldAdapter(Context context, List<StockChiInfo> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -52,7 +53,7 @@ public class MyselfSubscribeGoldAdapter extends RecyclerView.Adapter<MyselfSubsc
         return mDatas.size();
     }
 
-    public void addDatas(List<String> data) {
+    public void addDatas(List<StockChiInfo> data) {
         mDatas.addAll(data);
     }
 
@@ -92,20 +93,47 @@ public class MyselfSubscribeGoldAdapter extends RecyclerView.Adapter<MyselfSubsc
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, Integer.parseInt(mDatas.get(getPosition()).ud_ub_id)
+                        ,Integer.parseInt(mDatas.get(getPosition()).djf_id));
             }
         }
 
-        public void setRefreshData(String str, int position) {
-            if(position == 1){
-                type1.setText("跌");
-                type1.setBackgroundResource(R.drawable.backgroud_circle_fall);
-                type2.setTextColor(CommonUtils.getResource().getColor(R.color.colorFall));
-            }else{
+        public void setRefreshData(StockChiInfo bean, int position) {
+            title.setText(bean.ud_nickname+"的金股池");
+            count.setText(bean.dy_count);
+            item1.setText(bean.gu_piao.get(0).mg_name+"("+bean.gu_piao.get(0).mg_code+")");
+            item2.setText(bean.gu_piao.get(1).mg_name+"("+bean.gu_piao.get(1).mg_code+")");
+            item3.setText(bean.gu_piao.get(2).mg_name+"("+bean.gu_piao.get(2).mg_code+")");
+            if(bean.gu_piao.get(0).mg_zfz.contains("+")){
+                range1.setTextColor(mContext.getResources().getColor(R.color.colorRise));
+            }else {
+                range1.setTextColor(mContext.getResources().getColor(R.color.colorFall));
+            }
+            range1.setText(bean.gu_piao.get(0).mg_zfz);
+            if(bean.gu_piao.get(1).mg_zfz.contains("+")){
+                range1.setTextColor(mContext.getResources().getColor(R.color.colorRise));
+            }else {
+                range1.setTextColor(mContext.getResources().getColor(R.color.colorFall));
+            }
+            range1.setText(bean.gu_piao.get(1).mg_zfz);
+            if(bean.gu_piao.get(2).mg_zfz.contains("+")){
+                range1.setTextColor(mContext.getResources().getColor(R.color.colorRise));
+            }else {
+                range1.setTextColor(mContext.getResources().getColor(R.color.colorFall));
+            }
+            range1.setText(bean.gu_piao.get(2).mg_zfz);
+            if(bean.is_up.equals("1")){
                 type1.setText("涨");
                 type1.setBackgroundResource(R.drawable.backgroud_circle_rise);
                 type2.setTextColor(CommonUtils.getResource().getColor(R.color.colorRise));
+            }else {
+                type1.setText("跌");
+                type1.setBackgroundResource(R.drawable.backgroud_circle_fall);
+                type2.setTextColor(CommonUtils.getResource().getColor(R.color.colorFall));
             }
+            type2.setText(bean.status);
+            quantity.setText("股池数量："+bean.jgc_count);
+            time.setText("发布周期："+bean.jgcfa_date);
         }
     }
 }

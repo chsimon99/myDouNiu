@@ -20,4 +20,6 @@ public class XuanguResult {
     public String status;//状态 0未购买  1已购买
     public StockChiInfo dn_jgc;//金股池详情信息
     public String jgc_count;//入选股数量
+
+    public List<XuanguHistoryDetail> ls_result;//金股池历史数据
 }

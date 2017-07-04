@@ -35,7 +35,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginBottom="@dimen/dm018"
             android:layout_marginRight="@dimen/dm018"
-            android:background="@drawable/backgroud_bg_white"
+            android:background="@drawable/backgroud_bg_white_other"
             android:gravity="center"
             android:text="立即充值"
             android:textColor="@color/colorTitle"

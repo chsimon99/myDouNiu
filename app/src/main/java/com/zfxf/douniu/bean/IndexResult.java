@@ -18,5 +18,7 @@ public class IndexResult {
     public advisorDetailInfo user_info;//首席个人主业信息
     public List<AnswerChiefListInfo> online_chief;//微问答主页分析师列表
     public List<AnswerListInfo> bright_answer;//微问答主页精彩回答
-    public AnswerListInfo context_info;//微问答回答详情
+    public AnswerListInfo context_info;//微问答回答详情 和 打赏详情
+
+    public List<AnswerListInfo> jiage_list;//微问答主页精彩回答
 }

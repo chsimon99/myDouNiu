@@ -1,21 +1,21 @@
 package com.zfxf.douniu.view.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.ActivityGoldPond;
 import com.zfxf.douniu.adapter.recycleView.MyselfSubscribeGoldAdapter;
 import com.zfxf.douniu.base.BaseFragment;
+import com.zfxf.douniu.bean.SimulationResult;
+import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.RecycleViewDivider;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,7 +30,6 @@ public class FragmentMyselfSubscribeGold extends BaseFragment {
 	@BindView(R.id.rv_myself_subscribe_gold)
 	PullLoadMoreRecyclerView mRecyclerView;
 	private MyselfSubscribeGoldAdapter mSubscribeGoldAdapter;
-	private List<String> datas = new ArrayList<String>();
 	private RecycleViewDivider mDivider;
 
 	@Override
@@ -53,37 +52,47 @@ public class FragmentMyselfSubscribeGold extends BaseFragment {
 	@Override
 	public void initdata() {
 		super.initdata();
-		if(datas.size() == 0){
-			datas.add("1");
-			datas.add("2");
-			datas.add("2");
-			datas.add("2");
-			datas.add("2");
-//			wait.setVisibility(View.VISIBLE);
-		}
-		if(mSubscribeGoldAdapter == null){
-			mSubscribeGoldAdapter = new MyselfSubscribeGoldAdapter(getActivity(),datas);
-		}
+		visitInternet();
+	}
 
-		mRecyclerView.setLinearLayout();
-		mRecyclerView.setAdapter(mSubscribeGoldAdapter);
-		if(mDivider == null){
-			mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
-			mRecyclerView.addItemDecoration(mDivider);
-		}
-		mRecyclerView.setPullRefreshEnable(false);
-		mRecyclerView.setPushRefreshEnable(false);
+	private void visitInternet() {
+		CommonUtils.showProgressDialog(getActivity(),"加载中……");
+		NewsInternetRequest.getGoldPondListInformation("", 2, new NewsInternetRequest.ForResultGoldPoneShortStockListener() {
+			@Override
+			public void onResponseMessage(SimulationResult result) {
+				if(result.dn_jgc.size()==0){
+					wait.setVisibility(View.VISIBLE);
+				}else{
+					if(mSubscribeGoldAdapter == null){
+						mSubscribeGoldAdapter = new MyselfSubscribeGoldAdapter(getActivity(),result.dn_jgc);
+					}
+
+					mRecyclerView.setLinearLayout();
+					mRecyclerView.setAdapter(mSubscribeGoldAdapter);
+					if(mDivider == null){
+						mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
+						mRecyclerView.addItemDecoration(mDivider);
+					}
+					mRecyclerView.setPullRefreshEnable(false);
+					mRecyclerView.setPushRefreshEnable(false);
+					mSubscribeGoldAdapter.setOnItemClickListener(new MyselfSubscribeGoldAdapter.MyItemClickListener() {
+						@Override
+						public void onItemClick(View v, int id,int jgc) {
+							Intent intent = new Intent(CommonUtils.getContext(), ActivityGoldPond.class);
+							intent.putExtra("id",id);
+							intent.putExtra("jgcId",jgc);
+							startActivity(intent);
+							getActivity().overridePendingTransition(0,0);
+						}
+					});
+				}
+				CommonUtils.dismissProgressDialog();
+			}
+		},null);
 	}
 
 	@Override
 	public void initListener() {
 		super.initListener();
-
-		mSubscribeGoldAdapter.setOnItemClickListener(new MyselfSubscribeGoldAdapter.MyItemClickListener() {
-			@Override
-			public void onItemClick(View v, int positon) {
-				Toast.makeText(CommonUtils.getContext(),"点击了"+positon,Toast.LENGTH_SHORT).show();
-			}
-		});
 	}
 }

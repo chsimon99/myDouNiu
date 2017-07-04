@@ -1,8 +1,10 @@
 package com.zfxf.douniu.activity.advisor;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -53,7 +55,11 @@ public class ActivityAdvisorAllSecretDetail extends FragmentActivity implements 
     TextView name;
     @BindView(R.id.tv_advisor_all_secret_detail_detail)
     TextView detail;
+    @BindView(R.id.tv_advisor_all_secret_detail_status)
+    TextView zhibo;
     private int mId;
+    private String sx_id;
+    private String mUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +68,7 @@ public class ActivityAdvisorAllSecretDetail extends FragmentActivity implements 
         ButterKnife.bind(this);
         mId = getIntent().getIntExtra("id",0);
         title.setText("课程详情");
-
+        zhibo.setVisibility(View.GONE);
         initdata();
         initListener();
     }
@@ -80,6 +86,7 @@ public class ActivityAdvisorAllSecretDetail extends FragmentActivity implements 
             public void onResponseMessage(CourseResult courseResult) {
                 Glide.with(ActivityAdvisorAllSecretDetail.this).load(courseResult.news_info.img)
                         .placeholder(R.drawable.advisor_detail).into(img);
+                sx_id = courseResult.news_info.auth_ub_id;
                 tv_title.setText(courseResult.news_info.cc_title);
                 from.setText(courseResult.news_info.ud_nickname);
                 time.setText(courseResult.news_info.cc_datetime);
@@ -92,7 +99,19 @@ public class ActivityAdvisorAllSecretDetail extends FragmentActivity implements 
                     buyCannel();
                 }else{
                     buySuccess();
+                    zhibo.setVisibility(View.VISIBLE);
+                    if(courseResult.news_info.status.equals("0")){
+                        zhibo.setText("直播已结束");
+                        zhibo.setTextColor(getResources().getColor(R.color.colorText));
+                    }else if(courseResult.news_info.status.equals("1")){
+                        zhibo.setText("正在直播中 >");
+                        zhibo.setTextColor(getResources().getColor(R.color.colorTitle));
+                    }else if(courseResult.news_info.status.equals("2")){
+                        zhibo.setText("直播还未开始");
+                        zhibo.setTextColor(getResources().getColor(R.color.colorText));
+                    }
                 }
+                mUrl = courseResult.news_info.url;
                 CommonUtils.dismissProgressDialog();
             }
         },getResources().getString(R.string.sikeinfo));
@@ -113,6 +132,7 @@ public class ActivityAdvisorAllSecretDetail extends FragmentActivity implements 
     private void initListener() {
         back.setOnClickListener(this);
         pay.setOnClickListener(this);
+        zhibo.setOnClickListener(this);
     }
 
     @Override
@@ -133,11 +153,23 @@ public class ActivityAdvisorAllSecretDetail extends FragmentActivity implements 
                     return;
                 }else {
                     Intent intent = new Intent(CommonUtils.getContext(), ActivityToPay.class);
+                    intent.putExtra("info","私密课,"+sx_id+","+mId);
+                    intent.putExtra("sx_id",sx_id);
                     intent.putExtra("type","私密课");
                     intent.putExtra("count",fee);
                     intent.putExtra("from",from.getText().toString());
                     startActivity(intent);
                     overridePendingTransition(0,0);
+                }
+                break;
+            case R.id.tv_advisor_all_secret_detail_status:
+                if(zhibo.getText().toString().contains("正在直播")){
+                    if(TextUtils.isEmpty(mUrl)){
+                        return;
+                    }
+                    Uri uri = Uri.parse(mUrl);
+                    Intent it = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(it);
                 }
                 break;
         }

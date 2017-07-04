@@ -375,6 +375,7 @@
                 <RelativeLayout
                     android:id="@+id/rl_matador_more"
                     android:layout_width="@dimen/dm120"
+                    android:visibility="gone"
                     android:layout_height="match_parent">
                     <ImageView
                         android:layout_width="@dimen/dm014"

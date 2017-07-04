@@ -108,7 +108,8 @@ public class FragmentSimulationStockEntrust extends BaseFragment implements View
 		ActivitySimulationStock.setOnRefreshListener(new ActivitySimulationStock.OnRefreshListener() {
 			@Override
 			public void refreshData() {
-				CommonUtils.toastMessage("FragmentSimulationStockEntrust  点击了刷新");
+				mEntrustAdapter = null;
+				visitInternet();
 			}
 		});
 	}

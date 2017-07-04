@@ -192,7 +192,7 @@
                 </LinearLayout>
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="@dimen/dm001"
                     android:background="@color/gray"/>
 
                 <LinearLayout
@@ -240,8 +240,8 @@
                     android:layout_height="@dimen/dm080"
                     android:orientation="horizontal">
                     <ImageView
-                        android:layout_width="@dimen/dm035"
-                        android:layout_height="@dimen/dm035"
+                        android:layout_width="@dimen/dm032"
+                        android:layout_height="@dimen/dm032"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/dm020"
                         android:src="@drawable/myself_evaluate"/>
@@ -266,7 +266,7 @@
                 </LinearLayout>
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="@dimen/dm001"
                     android:background="@color/gray"/>
                 <LinearLayout
                     android:id="@+id/ll_myself_contract"

@@ -108,4 +108,10 @@ public class ActivityMyselfConsume extends FragmentActivity implements View.OnCl
     private void finishAll() {
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        CommonUtils.dismissProgressDialog();
+    }
 }

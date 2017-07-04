@@ -87,6 +87,13 @@ public class AdvisorAllGoldPondHistoryAdapter extends RecyclerView.Adapter<Advis
         public void setRefreshData(SimulationInfo bean, int position) {
             name.setText(bean.mg_name);
             number.setText(bean.mg_code);
+            if(bean.mg_zfz.contains("+")){
+                highprice.setTextColor(mContext.getResources().getColor(R.color.colorRise));
+                highrise.setTextColor(mContext.getResources().getColor(R.color.colorRise));
+            }else {
+                highprice.setTextColor(mContext.getResources().getColor(R.color.colorFall));
+                highrise.setTextColor(mContext.getResources().getColor(R.color.colorFall));
+            }
             price.setText(bean.mg_rxjg);
             highprice.setText(bean.mg_zgj);
             highrise.setText(bean.mg_zfz);

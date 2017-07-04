@@ -80,6 +80,7 @@
         android:id="@+id/ll_myself_message_advisor"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dm110"
+        android:visibility="gone"
         android:background="@color/colorWhite"
         android:orientation="horizontal">
         <RelativeLayout
@@ -144,6 +145,7 @@
     <View
         android:layout_width="match_parent"
         android:background="@color/gray"
+        android:visibility="gone"
         android:layout_height="1dp"/>
     <LinearLayout
         android:id="@+id/ll_myself_message_alarm"
@@ -213,11 +215,13 @@
     <View
         android:layout_width="match_parent"
         android:background="@color/gray"
+        android:visibility="gone"
         android:layout_height="1dp"/>
     <LinearLayout
         android:id="@+id/ll_myself_message_service"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dm110"
+        android:visibility="gone"
         android:background="@color/colorWhite"
         android:orientation="horizontal">
         <RelativeLayout
@@ -282,11 +286,13 @@
     <View
         android:layout_width="match_parent"
         android:background="@color/gray"
+        android:visibility="gone"
         android:layout_height="1dp"/>
     <LinearLayout
         android:id="@+id/ll_myself_message_moni"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dm110"
+        android:visibility="gone"
         android:background="@color/colorWhite"
         android:orientation="horizontal">
         <RelativeLayout
@@ -351,11 +357,13 @@
     <View
         android:layout_width="match_parent"
         android:background="@color/gray"
+        android:visibility="gone"
         android:layout_height="1dp"/>
     <LinearLayout
         android:id="@+id/ll_myself_message_quan"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dm110"
+        android:visibility="gone"
         android:background="@color/colorWhite"
         android:orientation="horizontal">
         <RelativeLayout

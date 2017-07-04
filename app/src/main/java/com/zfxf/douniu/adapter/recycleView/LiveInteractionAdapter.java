@@ -68,6 +68,9 @@ public class LiveInteractionAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public void addDatas(List<LivingInteract> data) {
         mDatas.addAll(0,data);
     }
+    public void addALLDatas(List<LivingInteract> data) {
+        mDatas.addAll(data);
+    }
     public void addNewDatas(LivingInteract data) {
         mDatas.add(data);
     }

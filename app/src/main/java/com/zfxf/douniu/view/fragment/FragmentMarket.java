@@ -87,6 +87,7 @@ public class FragmentMarket extends BaseFragment implements View.OnClickListener
 	}
 	private void select(int index) {
 		if(mIndex == index){
+
 			return;
 		}
 		mFt = getActivity().getSupportFragmentManager().beginTransaction();

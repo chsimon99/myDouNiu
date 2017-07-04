@@ -28,4 +28,15 @@ public class AnswerListInfo {
     public String sx_pl;//回答详情
     public String sx_fee;//问问题费用
     public String is_zan;//是否点赞 0没有 1有
+
+    //打赏金额
+    public String price;
+
+    //打赏
+    public String id;// 新闻或直播id
+    public String title;// 标题
+    public String auth_id;// 作者id
+    public String nickname;// 昵称
+    public String headImg;// 图片
+    public String ds_count;// 打赏数量
 }

@@ -23,6 +23,7 @@ public class NewsListResult {
     public String dy_count; //订阅数量
     public String has_buy; //是否购买 0未购买 1已购买
     public String has_dy; //是否订阅 0未订阅 1已订阅
+    public String cc_ub_id; //首席id
 
     public String zt_id; //直播ID
     public String zt_name; //直播主题

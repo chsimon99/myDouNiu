@@ -21,4 +21,15 @@ public class OtherResult {
     public List<CommentInformationResult> pl_info;//评论列表数据
     public CommentResult cms_contextpl;//发表评论成功信息
     public List<LunBoListInfo> lunbo_list;//轮播图
+
+    public String my_wallet;//钱包余额
+    public List<ProjectListResult> hq_nb;//钱包中获取牛币方式
+    public String niubi_style_info;//牛币支付信息
+    public List<ProjectListResult> niubi_style;//钱包中获取牛币方式
+
+    public ProjectListResult pay_morder;//提交订单返回信息
+
+    public String response;//支付宝返回的信息
+    public WeiXinInfo wx_params;//微信返回信息
+
 }

@@ -100,7 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginRight="@dimen/dm020"
-                android:text="010-53670815"
+                android:text="010-59670815"
                 android:textColor="@color/colorPhone"
                 android:textSize="@dimen/dm024"/>
         </LinearLayout>

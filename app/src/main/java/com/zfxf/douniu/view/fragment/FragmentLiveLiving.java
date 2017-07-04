@@ -27,6 +27,7 @@ import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 /**
  * @author IMXU
  * @time   2017/5/3 13:34
@@ -76,19 +77,43 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
             CommonUtils.showProgressDialog(getActivity(),"加载中……");
             visitInternet(lastID);
         }
+        alwaysRefresh();
     }
+
+    private AutoScrollTask mTask;
+    private void alwaysRefresh() {
+        mTask = new AutoScrollTask();
+        mTask.start();
+    }
+    class AutoScrollTask implements Runnable {
+        public void start() {/**开始轮播*/
+            CommonUtils.postTaskDelay(this, 5000);
+        }
+        public void stop() { /**结束轮播*/
+            CommonUtils.removeTask(this);
+        }
+        @Override
+        public void run() {
+            if(!isRefresh){
+                type = 0;
+                visitInternet(firstID);
+            }
+            start();
+        }
+    }
+
     private MediaPlayer mPlayer;
     private void visitInternet(int refreshId) {
+        isRefresh = true;
         NewsInternetRequest.getLivingInformation(type + "", mId, refreshId, new NewsInternetRequest.ForResultLivingInfoListener() {
             @Override
-            public void onResponseMessage(LivingContent content) {
+            public void onResponseMessage(final LivingContent content) {
                 title.setText(content.zt_name);
                 if (earliestID.equals("0")){
                     if(type == 0 && lastID == 0){
                         if (mLivingAdapter == null) {
                             mLivingAdapter = new LiveLivingAdapter(getActivity(), content);
                         }
-
                         mRecyclerView.setLinearLayout();
                         mRecyclerView.setAdapter(mLivingAdapter);
                         mRecyclerView.setFooterViewText("加载更多……");
@@ -97,17 +122,20 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
                             int currentPos = -1;
                             ImageView currentView;
                             @Override
-                            public void onItemClick(View v, int positon, LivingContentDetailType type, final ImageView view) {
+                            public void onItemClick(View v, int positon, final LivingContentDetailType type, final ImageView view) {
                                 if(type.type.equals("1")){
                                     if(currentPos == positon){
-                                        stopAnimation(view);
-                                        mPlayer.stop();
-                                        mPlayer.release();
+//                                        stopAnimation(view);
+                                        if(mPlayer!=null){
+                                            mPlayer.stop();
+                                            mPlayer.release();
+                                        }
                                         currentPos = -1;
                                         mPlayer = null;
+                                        type.setShow(false);
                                     }else{
                                         if(mPlayer != null){
-                                            stopAnimation(currentView);
+//                                            stopAnimation(currentView);
                                             mPlayer.stop();
                                             mPlayer.release();
                                             mPlayer = null;
@@ -120,12 +148,15 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
                                         mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                                             @Override
                                             public void onCompletion(MediaPlayer mp) {
+                                                type.setShow(false);
                                                 stopAnimation(currentView);
                                                 mPlayer.release();
                                                 mPlayer = null;
                                             }
                                         });
-                                        startAnimation(view);
+                                        type.setShow(true);
+                                        mLivingAdapter.notifyDataSetChanged();
+//                                        startAnimation(view);
                                         mPlayer.start();
                                     }
                                 }
@@ -135,26 +166,50 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
                         if(content.context_list.size() > 0){
                             firstID = Integer.parseInt(content.context_list.get(0).zc_id);
                         }
+                        isRefresh = false;
                     }else {
-                        mLivingAdapter.addDatas(content);
-                        mRecyclerView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mLivingAdapter.notifyDataSetChanged();
+                        if(type == 0){
+                            if(content.context_list.size() != 0){
+                                final int size = content.context_list.size();
+                                mLivingAdapter.refreshDatas(content);
+                                firstID = Integer.parseInt(content.context_list.get(0).zc_id);
+                                mRecyclerView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mLivingAdapter.notifyItemRangeChanged(0,size);
+                                    }
+                                });
                             }
-                        });
-                        mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
-                            @Override
-                            public void run() {
-                                mRecyclerView.setPullLoadMoreCompleted();
+                            isRefresh = false;
+                            if(content.status.equals("0")){//在非直播状态，不进行循环刷新
+                                isRefresh = true;
                             }
-                        }, 1000);
+                            return;
+                        }else {
+                            mLivingAdapter.addDatas(content);
+                            mRecyclerView.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mLivingAdapter.notifyDataSetChanged();
+                                }
+                            });
+                            mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
+                                @Override
+                                public void run() {
+                                    mRecyclerView.setPullLoadMoreCompleted();
+                                }
+                            }, 1000);
+                            isRefresh = false;
+                        }
                     }
                     if(content.context_list.size() > 0){
                         lastID = Integer.parseInt(content.context_list.get(content.context_list.size()-1).zc_id);
                     }
                 }
                 CommonUtils.dismissProgressDialog();
+                if(content.status.equals("0")){//在非直播状态，不进行循环刷新
+                    isRefresh = true;
+                }
                 if(!TextUtils.isEmpty(content.is_earliest)){
                     earliestID = content.is_earliest;
                 }
@@ -163,7 +218,9 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
     }
     private AnimationDrawable voiceAnimation = null;
     public void stopAnimation(ImageView view){
-        voiceAnimation.stop();
+        if(voiceAnimation!=null){
+            voiceAnimation.stop();
+        }
         view.setImageResource(R.drawable.icon_sound);
     }
     public void startAnimation(ImageView view){
@@ -171,6 +228,7 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
         voiceAnimation = (AnimationDrawable) view.getDrawable();
         voiceAnimation.start();
     }
+    private boolean isRefresh = false;//是否在刷新
     @Override
     public void initListener() {
         super.initListener();
@@ -178,6 +236,7 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
         mRecyclerView.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
             @Override
             public void onRefresh() {
+                type = 0;
                 visitInternet(firstID);
                 mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
                     @Override
@@ -189,6 +248,7 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
 
             @Override
             public void onLoadMore() {
+                type = 1;
                 if (earliestID.equals("1")) {
                     Toast.makeText(CommonUtils.getContext(), "没有数据了", Toast.LENGTH_SHORT).show();
                     mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
@@ -215,6 +275,9 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
                     return;
                 }
                 Intent intent = new Intent(getActivity(),ActivityReward.class);
+                intent.putExtra("id",mId);
+                intent.putExtra("sx_id",getActivity().getIntent().getStringExtra("sx_id"));
+                intent.putExtra("type","直播");
                 startActivity(intent);
                 getActivity().overridePendingTransition(0,0);
                 break;
@@ -229,5 +292,11 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
             mPlayer.release();
             mPlayer = null;
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mTask.stop();
     }
 }

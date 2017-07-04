@@ -27,7 +27,7 @@ public class AdvisorAllDirectAdapter extends RecyclerView.Adapter<AdvisorAllDire
     private List<Map<String, String>> mDatas;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int id);
+        void onItemClick(View v, int id,String sx_id);
     }
 
     public AdvisorAllDirectAdapter(Context context, List<Map<String, String>> datas) {
@@ -79,7 +79,8 @@ public class AdvisorAllDirectAdapter extends RecyclerView.Adapter<AdvisorAllDire
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, Integer.parseInt(mDatas.get(getPosition()).get("zt_id")));
+                mListener.onItemClick(v, Integer.parseInt(mDatas.get(getPosition()).get("zt_id")),
+                        mDatas.get(getPosition()).get("ud_ub_id"));
             }
         }
 

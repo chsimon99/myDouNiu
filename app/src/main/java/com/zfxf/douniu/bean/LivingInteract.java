@@ -13,7 +13,12 @@ public class LivingInteract {
     public String zp_pl;//内容
     public String zp_date;//时间
     public String headImg;//图片地址
-    public String zp_id;//发帖的id
+    public String zp_id;//直播的id
+    public String zt_name;//直播的标题
+
+
+    public String zt_ub_id;//直播人的id，首席id
+    public String ds_count;//打赏人数
 
     public void setZp_id(String zp_id) {
         this.zp_id = zp_id;

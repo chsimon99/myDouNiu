@@ -15,8 +15,8 @@
             android:scrollbars="none">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:descendantFocusability="blocksDescendants"
                 android:layout_height="wrap_content"
+                android:descendantFocusability="blocksDescendants"
                 android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -29,8 +29,7 @@
                         android:layout_width="@dimen/dm100"
                         android:layout_height="@dimen/dm100"
                         android:layout_marginLeft="@dimen/dm020"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/home_adviosr_img"/>
+                        android:scaleType="fitXY"/>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -41,7 +40,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/dm016"
-                            android:text="江南化工为何涨停?"
+                            android:text=""
                             android:textColor="@color/titleText"
                             android:textSize="@dimen/dm032"/>
                         <LinearLayout
@@ -54,7 +53,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="江南户"
+                                android:text=""
                                 android:textColor="@color/titleText"
                                 android:textSize="@dimen/dm024"/>
                             <ImageView
@@ -68,7 +67,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/dm010"
-                                android:text="08:46"
+                                android:text=""
                                 android:textColor="@color/colorText"
                                 android:textSize="@dimen/dm022"/>
                             <ImageView
@@ -82,31 +81,31 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/dm010"
-                                android:text="1469"
+                                android:text=""
                                 android:textColor="@color/colorText"
                                 android:textSize="@dimen/dm022"/>
                             <View android:layout_width="0dp"
                                   android:layout_height="match_parent"
                                   android:layout_weight="1"/>
-                            <LinearLayout android:layout_width="wrap_content"
-                                          android:id="@+id/ll_headline_detail_zan"
+                            <LinearLayout android:id="@+id/ll_headline_detail_zan"
+                                          android:layout_width="wrap_content"
                                           android:layout_height="wrap_content"
-                            android:orientation="horizontal">
-                            <ImageView
-                                android:layout_width="@dimen/dm030"
-                                android:layout_height="@dimen/dm025"
-                                android:layout_gravity="center"
-                                android:layout_marginLeft="@dimen/dm030"
-                                android:src="@drawable/heart"/>
-                            <TextView
-                                android:id="@+id/tv_headline_detail_count_zan"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="@dimen/dm010"
-                                android:layout_marginRight="@dimen/dm020"
-                                android:text="赞26"
-                                android:textColor="@color/colorTitle"
-                                android:textSize="@dimen/dm026"/>
+                                          android:orientation="horizontal">
+                                <ImageView
+                                    android:layout_width="@dimen/dm030"
+                                    android:layout_height="@dimen/dm025"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="@dimen/dm030"
+                                    android:src="@drawable/heart"/>
+                                <TextView
+                                    android:id="@+id/tv_headline_detail_count_zan"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="@dimen/dm010"
+                                    android:layout_marginRight="@dimen/dm020"
+                                    android:text="赞"
+                                    android:textColor="@color/colorTitle"
+                                    android:textSize="@dimen/dm026"/>
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
@@ -135,31 +134,36 @@
                         android:layout_marginRight="@dimen/dm020"
                         android:ellipsize="end"
                         android:maxLines="2"
-                        android:text="折呵呵呵呵啦是救死扶伤的哈佛送的花佛山的发挥的身份啊搜集"
+                        android:text=""
                         android:textColor="@color/colorText"
                         android:textSize="@dimen/dm026"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dm020"
-                    android:layout_marginRight="@dimen/dm020"
+                    android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/dm025"
                     android:orientation="vertical">
                     <TextView
                         android:id="@+id/tv_headline_detail_detail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="江南户折呵呵呵呵啦是救死扶伤的哈佛送折呵呵呵呵啦是救死扶伤\n的哈佛送折呵呵呵呵啦是救死扶伤的哈佛送折呵呵呵呵啦是救死扶伤的哈佛送"
+                        android:text=""
                         android:textColor="@color/colorText"
-                        android:textSize="@dimen/dm024"/>
+                        android:textSize="@dimen/dm024"
+                        android:visibility="gone"/>
+                    <WebView
+                        android:id="@+id/wv_headline_detail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    </WebView>
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/ll_headline_detail_shang"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/dm050"
+                    android:layout_marginTop="@dimen/dm040"
                     android:orientation="vertical">
                     <ImageView
                         android:layout_width="@dimen/dm120"
@@ -172,7 +176,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dm015"
-                        android:text="已有16人打赏"
+                        android:text="已有0人打赏"
                         android:textColor="@color/colorTitle"
                         android:textSize="@dimen/dm026"/>
                 </LinearLayout>
@@ -219,8 +223,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/dm050"
                     android:layout_marginBottom="@dimen/dm050"
+                    android:layout_marginTop="@dimen/dm050"
                     android:orientation="vertical">
                     <ImageView
                         android:layout_width="@dimen/dm088"
@@ -249,9 +253,9 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dm080"
             android:layout_alignParentBottom="true"
+            android:background="@color/colorBgGary"
             android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:background="@color/colorBgGary">
+            android:focusableInTouchMode="true">
             <EditText
                 android:id="@+id/et_headline_detail"
                 android:layout_width="match_parent"
@@ -260,12 +264,12 @@
                 android:layout_marginLeft="@dimen/dm020"
                 android:layout_marginRight="@dimen/dm020"
                 android:layout_marginTop="@dimen/dm015"
-                android:paddingLeft="@dimen/dm010"
-                android:paddingRight="@dimen/dm010"
                 android:background="@color/colorWhite"
                 android:hint="说点什么"
-                android:inputType="text"
                 android:imeOptions="actionDone"
+                android:inputType="text"
+                android:paddingLeft="@dimen/dm010"
+                android:paddingRight="@dimen/dm010"
                 android:textColor="@color/colorText"
                 android:textSize="@dimen/dm024"/>
         </RelativeLayout>

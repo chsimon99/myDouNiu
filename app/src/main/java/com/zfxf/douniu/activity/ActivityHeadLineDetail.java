@@ -6,12 +6,12 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -71,8 +71,8 @@ public class ActivityHeadLineDetail extends FragmentActivity implements View.OnC
     TextView name;//新闻发布者
     @BindView(R.id.tv_headline_detail_title)
     TextView detail_title;//新闻标题
-    @BindView(R.id.tv_headline_detail_detail)
-    TextView detail_detail;//新闻详情
+//    @BindView(R.id.tv_headline_detail_detail)
+//    TextView detail_detail;//新闻详情
     @BindView(R.id.tv_headline_detail_time)
     TextView time;//新闻发布时间
     @BindView(R.id.tv_headline_detail_count)
@@ -89,6 +89,8 @@ public class ActivityHeadLineDetail extends FragmentActivity implements View.OnC
     TextView comment_count;//评论数量
     @BindView(R.id.tv_headline_detail_jianjie)
     TextView jianjie;
+    @BindView(R.id.wv_headline_detail)
+    WebView mWebView;
 
     @BindView(R.id.et_headline_detail)
     EditText et_comment;
@@ -99,6 +101,7 @@ public class ActivityHeadLineDetail extends FragmentActivity implements View.OnC
     private int mNewsinfoId;
     private String mIsDz;
     private int mPlTotal;
+    private String sx_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,8 +143,10 @@ public class ActivityHeadLineDetail extends FragmentActivity implements View.OnC
                         .bitmapTransform(new CropCircleTransformation(ActivityHeadLineDetail.this))
                         .into(img);
                 name.setText(news_info.ud_nickname);
+                sx_id = news_info.ud_ub_id;
                 detail_title.setText(news_info.cc_title);
-                detail_detail.setText(Html.fromHtml(news_info.cc_context));
+//                detail_detail.setText(Html.fromHtml(news_info.cc_context));
+                mWebView.loadUrl(news_info.context_url);
                 profile.setText(news_info.cc_description);
                 time.setText(news_info.cc_datetime);
                 count.setText(news_info.cc_count);
@@ -273,6 +278,9 @@ public class ActivityHeadLineDetail extends FragmentActivity implements View.OnC
                     return;
                 }
                 intent = new Intent(this,ActivityReward.class);
+                intent.putExtra("sx_id",sx_id);
+                intent.putExtra("id",mNewsinfoId);
+                intent.putExtra("type","头条");
                 startActivity(intent);
                 overridePendingTransition(0,0);
                 break;
@@ -293,6 +301,15 @@ public class ActivityHeadLineDetail extends FragmentActivity implements View.OnC
 
     private void finishAll() {
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(SpTools.getBoolean(this, Constants.buy,false)){//如果已经支付成功，重新刷新数据
+            SpTools.setBoolean(this, Constants.buy,false);
+            visitInternet();
+        }
     }
 
     @Override

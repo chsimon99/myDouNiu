@@ -1,13 +1,14 @@
 package com.zfxf.douniu.view.fragment;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.ActivityInformation;
 import com.zfxf.douniu.adapter.recycleView.MyselfSubscribeCapitalAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.bean.MyContentResult;
@@ -77,8 +78,12 @@ public class FragmentMyselfSubscribeCapital extends BaseFragment {
 
 					mSubscribeCapitalAdapter.setOnItemClickListener(new MyselfSubscribeCapitalAdapter.MyItemClickListener() {
 						@Override
-						public void onItemClick(View v, int positon) {
-							Toast.makeText(CommonUtils.getContext(),"点击了"+positon,Toast.LENGTH_SHORT).show();
+						public void onItemClick(View v, int id) {
+							Intent intent = new Intent(CommonUtils.getContext(), ActivityInformation.class);
+							intent.putExtra("type","参考详情");
+							intent.putExtra("newsinfoId",id);
+							startActivity(intent);
+							getActivity().overridePendingTransition(0,0);
 						}
 					});
 				}

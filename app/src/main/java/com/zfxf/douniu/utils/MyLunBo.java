@@ -50,7 +50,7 @@ public class MyLunBo {
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(CommonUtils.dip2px(CommonUtils.getContext(),10)
                     ,CommonUtils.dip2px(CommonUtils.getContext(),10));// dp-->px
             // 左边距
-            params.leftMargin = CommonUtils.px2dip(CommonUtils.getContext(),16);
+            params.leftMargin = CommonUtils.px2dip(CommonUtils.getContext(),30);
             // 下边距
 //            params.bottomMargin = CommonUtils.px2dip(CommonUtils.getContext(),5);
             mLayout.addView(indicatorView, params);
