@@ -73,7 +73,7 @@ public class ActivityAnswerDetail extends FragmentActivity implements View.OnCli
 
         title.setText("回答详情");
         edit.setVisibility(View.INVISIBLE);
-        share.setVisibility(View.VISIBLE);
+        share.setVisibility(View.INVISIBLE);
         mId = getIntent().getStringExtra("id");
         initdata();
         initListener();

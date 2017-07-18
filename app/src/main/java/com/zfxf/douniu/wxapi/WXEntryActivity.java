@@ -9,11 +9,12 @@ import android.widget.Toast;
 
 import com.bslee.threelogin.api.ThirdWeiXinLoginApi;
 import com.google.gson.Gson;
+import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseResp;
-import com.tencent.mm.sdk.modelbase.BaseResp.ErrCode;
 import com.tencent.mm.sdk.modelmsg.SendAuth;
 import com.tencent.mm.sdk.openapi.IWXAPIEventHandler;
+
 
 public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
@@ -25,14 +26,19 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 				getIntent(), this);
 	}
 
-	// 微信发送请求到第三方应用时，会回调到该方法
+//	// 微信发送请求到第三方应用时，会回调到该方法
+//	@Override
+//	public void onReq(com.tencent.mm.sdk.modelbase.BaseReq arg0) {
+//
+//	}
+//	ShareProtocal protocal = new ShareProtocal();
+	Gson gson = new Gson();
+
 	@Override
-	public void onReq(com.tencent.mm.sdk.modelbase.BaseReq arg0) {
+	public void onReq(BaseReq baseReq) {
 
 	}
 
-//	ShareProtocal protocal = new ShareProtocal();
-	Gson gson = new Gson();
 	//授权成功失败回调
 	@Override
 	public void onResp(BaseResp resp) {
@@ -69,7 +75,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 		String result = "";
 
 		switch (resp.errCode) {
-			case ErrCode.ERR_OK:
+			case BaseResp.ErrCode.ERR_OK:
 				result = "发送成功";
 
 //				if (GetMoneyActivity.flag == 1) {
@@ -115,10 +121,10 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 //
 //				}
 				break;
-			case ErrCode.ERR_USER_CANCEL:
+			case BaseResp.ErrCode.ERR_USER_CANCEL:
 				result = "发送取消";
 				break;
-			case ErrCode.ERR_AUTH_DENIED:
+			case BaseResp.ErrCode.ERR_AUTH_DENIED:
 				result = "发送被拒绝";
 				break;
 			default:

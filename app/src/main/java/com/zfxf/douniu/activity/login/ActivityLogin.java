@@ -17,7 +17,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bslee.threelogin.api.OauthListener;
 import com.bslee.threelogin.api.OauthLoginListener;
+import com.bslee.threelogin.api.ThirdQQLoginApi;
 import com.bslee.threelogin.api.ThirdWeiXinLoginApi;
 import com.bslee.threelogin.db.LoginPlatForm;
 import com.bslee.threelogin.model.AuthToken;
@@ -136,8 +138,11 @@ public class ActivityLogin extends FragmentActivity implements View.OnClickListe
                 overridePendingTransition(0,0);
                 break;
             case R.id.iv_login_qq:
+                ThirdQQLoginApi.getTencent(getApplicationContext());
+                ThirdQQLoginApi.login(this, oauth, oauthlogin);
                 break;
             case R.id.iv_login_wx:
+                CommonUtils.toastMessage("微信登录");
                 ThirdWeiXinLoginApi.getWXAPI(getApplicationContext());
                 ThirdWeiXinLoginApi.login(getApplicationContext());
                 break;
@@ -289,6 +294,25 @@ public class ActivityLogin extends FragmentActivity implements View.OnClickListe
                 }
             });
 
+        }
+    };
+    /**
+     * QQ，微博授权回调
+     */
+    private OauthListener oauth = new OauthListener() {
+
+        @Override
+        public void OauthSuccess(Object obj) {
+//            mProressbar.setText("正在为你登录");
+//            mProressbar.setVisibility(View.VISIBLE);
+        }
+        @Override
+        public void OauthFail(Object type) {
+            Toast.makeText(getApplicationContext(), "授权失败", Toast.LENGTH_SHORT).show();
+        }
+        @Override
+        public void OauthCancel(Object type) {
+            Toast.makeText(getApplicationContext(), "取消授权", Toast.LENGTH_SHORT).show();
         }
     };
 }

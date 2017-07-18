@@ -101,6 +101,22 @@ public class FragmentAdvisorAllAsking extends BaseFragment implements View.OnCli
 		NewsInternetRequest.getAnswerIndexInformation(new NewsInternetRequest.ForResultAnswerIndexListener() {
 			@Override
 			public void onResponseMessage(final IndexResult result) {
+				if(result.online_chief ==null){
+					CommonUtils.dismissProgressDialog();
+					return;
+				}
+				if(result.bright_answer ==null){
+					CommonUtils.dismissProgressDialog();
+					return;
+				}
+				if(result.online_chief.size() ==0 ){
+					CommonUtils.dismissProgressDialog();
+					return;
+				}
+				if(result.bright_answer.size() ==0 ){
+					CommonUtils.dismissProgressDialog();
+					return;
+				}
 				/**
 				 * 在线首席
 				 */

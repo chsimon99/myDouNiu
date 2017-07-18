@@ -21,6 +21,6 @@ public class ThirdAppKey {
             + "friendships_groups_read,friendships_groups_write,statuses_to_me_read,"
             + "follow_app_official_microblog," + "invitation_write" ;
     //QQ
-    public final static String QQ_APPID = "1106145455";
+    public final static String QQ_APPID = "1106186645";
     public final static String QQ_SCOPE = "all" ;
 }

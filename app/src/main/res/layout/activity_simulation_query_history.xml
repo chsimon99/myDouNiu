@@ -82,7 +82,7 @@
             </LinearLayout>
             <View android:layout_width="match_parent"
                   android:layout_height="@dimen/dm016"/>
-            <android.support.v7.widget.RecyclerView
+            <com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView
                 android:id="@+id/rv_simulation_query_today"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

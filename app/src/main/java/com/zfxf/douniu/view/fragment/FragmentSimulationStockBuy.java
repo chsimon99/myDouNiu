@@ -22,6 +22,8 @@ import com.zfxf.douniu.bean.SimulationPositionDetail;
 import com.zfxf.douniu.bean.SimulationResult;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.FullyLinearLayoutManager;
 import com.zfxf.douniu.view.MyScrollview;
 import com.zfxf.douniu.view.RecycleViewDivider;
@@ -102,6 +104,8 @@ public class FragmentSimulationStockBuy extends BaseFragment implements View.OnC
 	private final int mRequestCode = 1;
 	private String mStockCode;
 	private String mYesPrice;
+	private String m_zzc;//总资产
+	private String nowPrice;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -132,15 +136,17 @@ public class FragmentSimulationStockBuy extends BaseFragment implements View.OnC
 		NewsInternetRequest.getSimulationBuyInformation(code, new NewsInternetRequest.ForResultSimulationIndexListener() {
 			@Override
 			public void onResponseMessage(SimulationResult result) {
-				if(mLayoutManager == null){
-					mLayoutManager = new FullyLinearLayoutManager(getActivity());
-				}
-				if(mPositonAdapter == null){
-					mPositonAdapter = new MatadorPositonAdapter(getActivity(), result.mn_chigu);
-				}
-				if(mDivider == null){//防止多次加载出现宽度变宽
-					mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
-					mRecyclerView.addItemDecoration(mDivider);
+				if(result.mn_chigu !=null){
+					if(mLayoutManager == null){
+						mLayoutManager = new FullyLinearLayoutManager(getActivity());
+					}
+					if(mPositonAdapter == null){
+						mPositonAdapter = new MatadorPositonAdapter(getActivity(), result.mn_chigu);
+					}
+					if(mDivider == null){//防止多次加载出现宽度变宽
+						mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
+						mRecyclerView.addItemDecoration(mDivider);
+					}
 				}
 				mRecyclerView.setLayoutManager(mLayoutManager);
 				mRecyclerView.setAdapter(mPositonAdapter);
@@ -157,8 +163,10 @@ public class FragmentSimulationStockBuy extends BaseFragment implements View.OnC
 				if(result.mn_gupiao !=null){
 					tv_price_add.setText(result.mn_gupiao.mg_zt);
 					tv_price_minus.setText(result.mn_gupiao.mg_dt);
-					et_price.setText(result.mn_gupiao.mg_xj);
+					nowPrice = result.mn_gupiao.mg_xj;
+					et_price.setText(nowPrice);
 					mYesPrice = result.mn_gupiao.mg_zs;
+					m_zzc = result.mn_gupiao.mg_zzc;
 				}
 				if(result.mr_gupiao!=null){
 					if(TextUtils.isEmpty(result.mr_gupiao.mg_b1)){
@@ -297,10 +305,15 @@ public class FragmentSimulationStockBuy extends BaseFragment implements View.OnC
 			}
 		});
 		confirm.setOnClickListener(this);
+		tv_count_a.setOnClickListener(this);
+		tv_count_h.setOnClickListener(this);
+		tv_count_t.setOnClickListener(this);
+		tv_count_f.setOnClickListener(this);
 	}
 
 	@Override
 	public void onClick(View v) {
+		int count = 0;
 		switch (v.getId()){
 			case R.id.rl_simulation_buy_confirm:
 				confirmDialog();
@@ -310,7 +323,7 @@ public class FragmentSimulationStockBuy extends BaseFragment implements View.OnC
 				mDialog.dismiss();
 				break;
 			case R.id.tv_confirm_dialog_confirm:
-				CommonUtils.toastMessage("确认购买");
+				confirmBuy();
 				mDialog.dismiss();
 				break;
 			case R.id.ll_simulation_buy_search:
@@ -337,7 +350,46 @@ public class FragmentSimulationStockBuy extends BaseFragment implements View.OnC
 				f = (float)(Math.round((f-0.01f)*100))/100;
 				et_price.setText(f+"");
 				break;
+			case R.id.tv_simulation_buy_count_all:
+				count= (int) (Float.parseFloat(m_zzc)/Float.parseFloat(nowPrice));
+				et_count.setText(count+"");
+				break;
+			case R.id.tv_simulation_buy_count_half:
+				count = (int) ((Float.parseFloat(m_zzc)*0.5)/Float.parseFloat(nowPrice));
+				et_count.setText(count+"");
+				break;
+			case R.id.tv_simulation_buy_count_three:
+				count = (int) (Float.parseFloat(m_zzc)/(Float.parseFloat(nowPrice)*3));
+				et_count.setText(count+"");
+				break;
+			case R.id.tv_simulation_buy_count_four:
+				count = (int) ((Float.parseFloat(m_zzc)*0.25)/Float.parseFloat(nowPrice));
+				et_count.setText(count+"");
+				break;
 		}
+	}
+
+	private void confirmBuy() {
+		float v = Float.parseFloat(m_zzc) / Float.parseFloat(nowPrice);
+		if(Float.parseFloat(et_count.getText().toString().trim()) > v){
+			CommonUtils.toastMessage("购买数量超出可购买额度");
+			et_count.setText("");
+			return;
+		}
+		NewsInternetRequest.simulationBuyStock( tv_code.getText().toString(),tv_name.getText().toString()
+				, et_count.getText().toString(),et_price.getText().toString(), new NewsInternetRequest.ForResultListener() {
+					@Override
+					public void onResponseMessage(String info) {
+						if(info.equals("成功")){
+							CommonUtils.toastMessage("购买成功");
+							et_count.setText("");
+							visitInternet(mStockCode);
+							SpTools.setBoolean(CommonUtils.getContext(), Constants.buy,true);//购买股票
+						}else {
+							CommonUtils.toastMessage(info);
+						}
+					}
+				});
 	}
 
 
@@ -370,6 +422,18 @@ public class FragmentSimulationStockBuy extends BaseFragment implements View.OnC
 				tv_code.setText(mStockCode);
 				visitInternet(mStockCode);
 				break;
+		}
+	}
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		super.setUserVisibleHint(isVisibleToUser);
+		if (isVisibleToUser) {
+			//相当于Fragment的onResume
+			if(!TextUtils.isEmpty(mStockCode)){
+				visitInternet(mStockCode);
+			}
+		} else {
+			//相当于Fragment的onPause
 		}
 	}
 }

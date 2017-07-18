@@ -207,7 +207,7 @@ public class CommonUtils {
     private static boolean isLoging = true;
     public static void logMes(String str){
         if(isLoging){
-            Log.d("------test------",""+str);
+            Log.e("------test------",""+str);
         }
     }
     /**

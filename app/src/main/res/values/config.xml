@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--主 -->
-    <string name="service_host_address">http://douniu.lchtime.cn:8001/</string>
+    <!--<string name="service_host_address">http://douniu.lchtime.cn:8001/</string>-->
+    <string name="service_host_address">http://app.douniu8.com/</string>
     <!--登录-->
     <string name="getLogin">index.php/user/login</string>
     <!--第三方登录注册-->
@@ -137,6 +138,8 @@
     <string name="sellgp">index.php/mn/sellgp</string>
     <!--模拟盘委托-->
     <string name="consign">index.php/mn/consign</string>
+    <!--模拟盘查询-->
+    <string name="MNsearch">index.php/mn/search</string>
     <!--股票搜索-->
     <string name="searchgp">index.php/mn/searchgp</string>
     <!--股票委托删除-->
@@ -149,6 +152,16 @@
     <string name="addZx">index.php/mn/optional/addZx</string>
     <!--股票首页涨跌幅详情-->
     <string name="increaseList">index.php/mn/quotes/increaseList</string>
+    <!--股票详情-->
+    <string name="stockinfo">index.php/mn/gpinfo</string>
+    <!--股票日k详情-->
+    <string name="riline">index.php/mn/gpinfo/line</string>
+    <!--股票news详情-->
+    <string name="stocknews">index.php/mn/gpinfo/news</string>
+    <!--模拟股票购买-->
+    <string name="monibuygp">index.php/mn/buygp/buy</string>
+    <!--模拟股票卖出-->
+    <string name="monisellgp">index.php/mn/sellgp/sell</string>
 
     <!--行情主页-->
     <string name="quotes">index.php/mn/quotes</string>
@@ -166,5 +179,11 @@
     <string name="gpinfo">index.php/gp/gpinfo</string>
     <!--金股池历史页-->
     <string name="historyList">index.php/gp/historyList</string>
+
+
+    <!--消息主页信息-->
+    <string name="messageIndex">index.php/index/message</string>
+    <!--消息详情信息-->
+    <string name="messageInfo">index.php/index/message/messageInfo</string>
 
 </resources>

@@ -29,8 +29,9 @@
                         <TextView android:layout_width="wrap_content"
                                   android:layout_height="wrap_content"
                                   android:layout_gravity="center"
-                                  android:text="511.38"
-                                  android:textColor="@color/colorFall"
+                                  android:id="@+id/tv_stock_info_xj"
+                                  android:text="--"
+                                  android:textColor="@color/titleText"
                                   android:textSize="@dimen/dm042"/>
                         <LinearLayout android:layout_width="wrap_content"
                                       android:layout_height="match_parent"
@@ -39,14 +40,16 @@
                                       android:orientation="horizontal">
                             <TextView android:layout_width="wrap_content"
                                       android:layout_height="wrap_content"
-                                      android:text="-9.34"
-                                      android:textColor="@color/colorFall"
+                                      android:id="@+id/tv_stock_info_cz"
+                                      android:text="--"
+                                      android:textColor="@color/titleText"
                                       android:textSize="@dimen/dm026"/>
                             <TextView android:layout_width="wrap_content"
                                       android:layout_height="wrap_content"
                                       android:layout_marginLeft="@dimen/dm015"
-                                      android:text="-9.34%"
-                                      android:textColor="@color/colorFall"
+                                      android:id="@+id/tv_stock_info_zf"
+                                      android:text="--"
+                                      android:textColor="@color/titleText"
                                       android:textSize="@dimen/dm026"/>
                         </LinearLayout>
                     </LinearLayout>
@@ -67,7 +70,8 @@
                                   android:layout_height="wrap_content"
                                   android:layout_gravity="center"
                                   android:layout_marginTop="@dimen/dm008"
-                                  android:text="3526.28"
+                                  android:id="@+id/tv_stock_info_jk"
+                                  android:text="--"
                                   android:textColor="@color/colorText"
                                   android:textSize="@dimen/dm024"/>
                         <TextView android:layout_width="wrap_content"
@@ -81,7 +85,8 @@
                                   android:layout_height="wrap_content"
                                   android:layout_gravity="center"
                                   android:layout_marginTop="@dimen/dm008"
-                                  android:text="3526.28"
+                                  android:id="@+id/tv_stock_info_zs"
+                                  android:text="--"
                                   android:textColor="@color/colorText"
                                   android:textSize="@dimen/dm024"/>
                     </LinearLayout>
@@ -102,7 +107,8 @@
                                   android:layout_height="wrap_content"
                                   android:layout_gravity="center"
                                   android:layout_marginTop="@dimen/dm008"
-                                  android:text="352.28亿"
+                                  android:id="@+id/tv_stock_info_cje"
+                                  android:text="--"
                                   android:textColor="@color/colorText"
                                   android:textSize="@dimen/dm024"/>
                         <TextView android:layout_width="wrap_content"
@@ -116,7 +122,8 @@
                                   android:layout_height="wrap_content"
                                   android:layout_gravity="center"
                                   android:layout_marginTop="@dimen/dm008"
-                                  android:text="3526万"
+                                  android:id="@+id/tv_stock_info_cjl"
+                                  android:text="--"
                                   android:textColor="@color/colorText"
                                   android:textSize="@dimen/dm024"/>
                     </LinearLayout>
@@ -137,7 +144,8 @@
                                   android:layout_height="wrap_content"
                                   android:layout_gravity="center"
                                   android:layout_marginTop="@dimen/dm008"
-                                  android:text="31.28"
+                                  android:id="@+id/tv_stock_info_zg"
+                                  android:text="--"
                                   android:textColor="@color/colorText"
                                   android:textSize="@dimen/dm024"/>
                         <TextView android:layout_width="wrap_content"
@@ -151,7 +159,8 @@
                                   android:layout_height="wrap_content"
                                   android:layout_gravity="center"
                                   android:layout_marginTop="@dimen/dm008"
-                                  android:text="26.28"
+                                  android:id="@+id/tv_stock_info_zd"
+                                  android:text="--"
                                   android:textColor="@color/colorText"
                                   android:textSize="@dimen/dm024"/>
                     </LinearLayout>
@@ -335,7 +344,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
                             android:layout_marginTop="@dimen/dm020"
-                            android:text="互动"
+                            android:text="研报"
                             android:textColor="@color/titleText"
                             android:textSize="@dimen/dm026"/>
                         <View
@@ -404,11 +413,13 @@
                 android:gravity="center"
                 android:orientation="horizontal">
                 <ImageView
+                    android:id="@+id/iv_stock_info_zixuan"
                     android:layout_width="@dimen/dm033"
                     android:layout_height="@dimen/dm033"
                     android:layout_marginRight="@dimen/dm015"
                     android:src="@drawable/icon_add_small"/>
                 <TextView
+                    android:id="@+id/tv_stock_info_zixuan"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -507,16 +518,18 @@
                               android:layout_height="wrap_content"
                               android:orientation="horizontal">
                     <TextView
+                        android:id="@+id/tv_stock_info_buy_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="格林美"
+                        android:text=""
                         android:textColor="@color/titleText"
                         android:textSize="@dimen/dm026"/>
                     <TextView
+                        android:id="@+id/tv_stock_info_buy_code"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dm018"
-                        android:text="002342"
+                        android:text=""
                         android:textColor="@color/colorText"
                         android:textSize="@dimen/dm022"/>
                     <View
@@ -785,16 +798,18 @@
                               android:layout_height="wrap_content"
                               android:orientation="horizontal">
                     <TextView
+                        android:id="@+id/tv_stock_info_sold_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="格林美"
+                        android:text=""
                         android:textColor="@color/titleText"
                         android:textSize="@dimen/dm026"/>
                     <TextView
+                        android:id="@+id/tv_stock_info_sold_code"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dm018"
-                        android:text="002342"
+                        android:text=""
                         android:textColor="@color/colorText"
                         android:textSize="@dimen/dm022"/>
                     <View

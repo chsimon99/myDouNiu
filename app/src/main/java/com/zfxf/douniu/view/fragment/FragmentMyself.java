@@ -18,6 +18,7 @@ import com.zfxf.douniu.activity.myself.ActivityMyselfAdvisor;
 import com.zfxf.douniu.activity.myself.ActivityMyselfAsk;
 import com.zfxf.douniu.activity.myself.ActivityMyselfAttention;
 import com.zfxf.douniu.activity.myself.ActivityMyselfConsume;
+import com.zfxf.douniu.activity.myself.ActivityMyselfEleContract;
 import com.zfxf.douniu.activity.myself.ActivityMyselfInformation;
 import com.zfxf.douniu.activity.myself.ActivityMyselfRvaluateOne;
 import com.zfxf.douniu.activity.myself.ActivityMyselfRvaluateResult;
@@ -215,6 +216,9 @@ public class FragmentMyself extends BaseFragment implements View.OnClickListener
 				}
 				break;
 			case R.id.ll_myself_contract:
+				intent = new Intent(CommonUtils.getContext(), ActivityMyselfEleContract.class);
+				startActivity(intent);
+				getActivity().overridePendingTransition(0,0);
 				break;
 			case R.id.ll_myself_shezhi:
 				intent = new Intent(CommonUtils.getContext(), ActivityMyselfShezhi.class);

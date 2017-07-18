@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.activity.ActivityMarketResearch;
 import com.zfxf.douniu.activity.ActivityMySelfStock;
+import com.zfxf.douniu.activity.ActivityStockInfo;
 import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.adapter.recycleView.MarketSelectAdapter;
 import com.zfxf.douniu.base.BaseFragment;
@@ -120,8 +121,12 @@ public class FragmentMarketSelect extends BaseFragment implements View.OnClickLi
 						mRecyclerView.setFooterViewText("加载更多……");
 						mSelectAdapter.setOnItemClickListener(new MarketSelectAdapter.MyItemClickListener() {
 							@Override
-							public void onItemClick(View v, int positon) {
-
+							public void onItemClick(View v, String code,String name) {
+								Intent intent = new Intent(getActivity(), ActivityStockInfo.class);
+								intent.putExtra("code",code);
+								intent.putExtra("name",name);
+								startActivity(intent);
+								getActivity().overridePendingTransition(0,0);
 							}
 						});
 					}else {

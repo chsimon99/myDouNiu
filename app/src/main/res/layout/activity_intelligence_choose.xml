@@ -13,8 +13,8 @@
         <LinearLayout android:layout_width="match_parent"
                       android:layout_height="wrap_content"
                       android:orientation="horizontal"
-                      android:paddingBottom="@dimen/dm025"
-                      android:paddingTop="@dimen/dm025">
+                      android:paddingBottom="@dimen/dm010"
+                      android:paddingTop="@dimen/dm010">
             <LinearLayout android:layout_width="0dp"
                           android:layout_height="wrap_content"
                           android:layout_gravity="center"
@@ -82,7 +82,7 @@
                     android:id="@+id/tv_intelligence_choose_fall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dm015"
+                    android:layout_marginTop="@dimen/dm010"
                     android:text="%"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/dm038"/>
@@ -103,7 +103,7 @@
                     android:id="@+id/tv_intelligence_choose_rise"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dm015"
+                    android:layout_marginTop="@dimen/dm010"
                     android:text="%"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/dm038"/>
@@ -124,7 +124,7 @@
                     android:id="@+id/tv_intelligence_choose_data"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dm015"
+                    android:layout_marginTop="@dimen/dm010"
                     android:text="天"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/dm038"/>
@@ -136,7 +136,7 @@
             android:layout_marginBottom="@dimen/dm010"
             android:layout_marginLeft="@dimen/dm020"
             android:layout_marginRight="@dimen/dm020"
-            android:layout_marginTop="@dimen/dm020"
+            android:layout_marginTop="@dimen/dm015"
             android:background="@color/colorWhite"/>
         <LinearLayout android:layout_width="match_parent"
                       android:layout_height="wrap_content"
@@ -167,8 +167,6 @@
             android:layout_marginLeft="@dimen/dm020"
             android:layout_marginRight="@dimen/dm020"
             android:layout_marginTop="@dimen/dm010"
-            android:maxLines="1"
-            android:ellipsize="end"
             android:text=""
             android:textColor="@color/colorWhiteE"
             android:textSize="@dimen/dm022"/>
@@ -184,8 +182,8 @@
         <ListView android:id="@+id/lv_intelligence_choose"
                   android:layout_width="@dimen/dm180"
                   android:layout_height="match_parent"
-                  android:layout_marginBottom="@dimen/dm035"
-                  android:layout_marginTop="@dimen/dm035"
+                  android:layout_marginBottom="@dimen/dm030"
+                  android:layout_marginTop="@dimen/dm030"
                   android:cacheColorHint="#00000000"
                   android:divider="@android:color/transparent"
                   android:fadingEdge="none"

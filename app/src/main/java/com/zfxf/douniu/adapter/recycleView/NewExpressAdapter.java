@@ -2,6 +2,7 @@ package com.zfxf.douniu.adapter.recycleView;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,7 +108,7 @@ public class NewExpressAdapter extends RecyclerView.Adapter<NewExpressAdapter.My
                 data.setText(thisDate);
             }
             time.setText(bean.get("cc_datetime"));
-            content.setText(bean.get("cc_context"));
+            content.setText(Html.fromHtml(bean.get("cc_context")));
         }
     }
 }

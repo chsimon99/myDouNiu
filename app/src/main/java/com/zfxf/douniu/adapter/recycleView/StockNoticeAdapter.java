@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.StockInfo;
 
 import java.util.List;
 
@@ -19,13 +20,13 @@ import java.util.List;
 public class StockNoticeAdapter extends RecyclerView.Adapter<StockNoticeAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<StockInfo> mDatas;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int id);
+        void onItemClick(View v, StockInfo bean);
     }
 
-    public StockNoticeAdapter(Context context, List<String> datas) {
+    public StockNoticeAdapter(Context context, List<StockInfo> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -50,7 +51,7 @@ public class StockNoticeAdapter extends RecyclerView.Adapter<StockNoticeAdapter.
     public int getItemCount() {
         return mDatas.size();
     }
-    public void addDatas(List<String> data) {
+    public void addDatas(List<StockInfo> data) {
         mDatas.addAll(data);
     }
 
@@ -70,13 +71,13 @@ public class StockNoticeAdapter extends RecyclerView.Adapter<StockNoticeAdapter.
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, mDatas.get(getPosition()));
             }
         }
 
-        public void setRefreshData(String bean, int position) {
-//            time.setText(bean.get("cc_datetime"));
-//            content.setText(bean.get("cc_title"));
+        public void setRefreshData(StockInfo bean, int position) {
+            content.setText(bean.title);
+            time.setText(bean.date);
         }
     }
 }

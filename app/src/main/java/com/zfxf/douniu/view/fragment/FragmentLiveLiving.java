@@ -96,7 +96,13 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
         public void run() {
             if(!isRefresh){
                 type = 0;
+                earliestID = "0";
                 visitInternet(firstID);
+                if(SpTools.getBoolean(CommonUtils.getContext(), Constants.error,false)){//网络错误重连
+                    SpTools.setBoolean(CommonUtils.getContext(),Constants.error,false);
+                    type = 0;
+                    visitInternet(firstID);
+                }
             }
             start();
         }
@@ -297,6 +303,31 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mTask.stop();
+        if(mTask!=null){
+            mTask.stop();
+        }
+        mTask = null;
+        if(mPlayer !=null){
+            mPlayer.stop();
+            mPlayer.release();
+            mPlayer = null;
+        }
+    }
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            //相当于Fragment的onResume
+            if(mTask!=null){
+                mTask.start();
+            }
+            CommonUtils.logMes("-------直播---onResume---");
+        } else {
+            //相当于Fragment的onPause
+            if(mTask!=null){
+                mTask.stop();
+            }
+            CommonUtils.logMes("-------直播---onPause---");
+        }
     }
 }

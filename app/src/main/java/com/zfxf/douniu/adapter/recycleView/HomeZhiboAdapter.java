@@ -25,7 +25,7 @@ public class HomeZhiboAdapter extends RecyclerView.Adapter<HomeZhiboAdapter.MyHo
     private List<IndexLivingListInfo> mDatas;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int positon);
+        void onItemClick(View v, int id,String sx_id);
     }
 
     public HomeZhiboAdapter(Context context, List<IndexLivingListInfo> datas) {
@@ -73,7 +73,8 @@ public class HomeZhiboAdapter extends RecyclerView.Adapter<HomeZhiboAdapter.MyHo
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, Integer.parseInt(mDatas.get(getPosition()).zt_id),
+                        mDatas.get(getPosition()).zt_ub_id);
             }
         }
 

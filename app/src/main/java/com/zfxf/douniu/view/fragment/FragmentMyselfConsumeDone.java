@@ -138,7 +138,7 @@ public class FragmentMyselfConsumeDone extends BaseFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if(!SpTools.getBoolean(getContext(), Constants.buy,false)){
+		if(SpTools.getBoolean(getContext(), Constants.buy,false)){
 			SpTools.setBoolean(CommonUtils.getContext(),Constants.buy,false);
 			currentPage = 1;
 			totlePage = 0;

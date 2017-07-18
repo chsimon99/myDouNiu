@@ -134,34 +134,34 @@
                 android:layout_marginRight="@dimen/dm020"
                 android:src="@drawable/home_jiantou"/>
         </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dm001"
-            android:background="@color/gray"/>
-        <LinearLayout
-            android:id="@+id/ll_myself_she_update"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dm080"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/dm020"
-                android:text="检查更新"
-                android:textColor="@color/titleText"
-                android:textSize="@dimen/dm028"/>
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
-            <ImageView
-                android:layout_width="@dimen/dm014"
-                android:layout_height="@dimen/dm028"
-                android:layout_gravity="center"
-                android:layout_marginRight="@dimen/dm020"
-                android:src="@drawable/home_jiantou"/>
-        </LinearLayout>
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/dm001"-->
+            <!--android:background="@color/gray"/>-->
+        <!--<LinearLayout-->
+            <!--android:id="@+id/ll_myself_she_update"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="@dimen/dm080"-->
+            <!--android:orientation="horizontal">-->
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginLeft="@dimen/dm020"-->
+                <!--android:text="检查更新"-->
+                <!--android:textColor="@color/titleText"-->
+                <!--android:textSize="@dimen/dm028"/>-->
+            <!--<View-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1"/>-->
+            <!--<ImageView-->
+                <!--android:layout_width="@dimen/dm014"-->
+                <!--android:layout_height="@dimen/dm028"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_marginRight="@dimen/dm020"-->
+                <!--android:src="@drawable/home_jiantou"/>-->
+        <!--</LinearLayout>-->
     </LinearLayout>
     <View
         android:layout_width="match_parent"

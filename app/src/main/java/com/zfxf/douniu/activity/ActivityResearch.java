@@ -8,7 +8,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -93,16 +95,16 @@ public class ActivityResearch extends FragmentActivity implements View.OnClickLi
         ll_stock.setOnClickListener(this);
         ll_zhibo.setOnClickListener(this);
         research.setOnClickListener(this);
-//        research.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                switch(actionId){
-//                    case EditorInfo.IME_ACTION_SEARCH:
-//                        break;
-//                }
-//                return false;
-//            }
-//        });
+        research.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                switch(actionId){
+                    case EditorInfo.IME_ACTION_SEARCH:
+                        break;
+                }
+                return false;
+            }
+        });
         research.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -117,6 +119,10 @@ public class ActivityResearch extends FragmentActivity implements View.OnClickLi
             @Override
             public void afterTextChanged(Editable s) {
                 resetRecycleView();
+                if(isResearch){
+                    isResearch = false;
+                    return;
+                }
                 if(TextUtils.isEmpty(s)){
                     ll_original.setVisibility(View.VISIBLE);
                     ll_research.setVisibility(View.GONE);
@@ -155,6 +161,7 @@ public class ActivityResearch extends FragmentActivity implements View.OnClickLi
     }
     private int type = 0;
     private InputMethodManager imm;
+    private boolean isResearch = false;
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -183,7 +190,7 @@ public class ActivityResearch extends FragmentActivity implements View.OnClickLi
                 break;
             case R.id.et_research:
                 ll_result.setVisibility(View.GONE);
-                research.setText("");
+//                research.setText("");
                 if(research.isFocusable()){
 
                 }else{//打开键盘
@@ -199,6 +206,7 @@ public class ActivityResearch extends FragmentActivity implements View.OnClickLi
     }
 
     private void visitInternet() {
+        isResearch = true;
         NewsInternetRequest.getResearchInformation(research.getText().toString(), currentPage + "", type + "", new NewsInternetRequest.ForResultResearchInfoListener() {
             @Override
             public void onResponseMessage(CourseResult result) {
@@ -210,6 +218,7 @@ public class ActivityResearch extends FragmentActivity implements View.OnClickLi
                         ll_result.setVisibility(View.VISIBLE);
                         tv_name.setText(name);
                         tv_type.setText("相关投顾");
+                        research.setText("");
                         return;
                     }
                     mTougu.setVisibility(View.VISIBLE);
@@ -253,6 +262,7 @@ public class ActivityResearch extends FragmentActivity implements View.OnClickLi
                         ll_result.setVisibility(View.VISIBLE);
                         tv_name.setText(name);
                         tv_type.setText("相关股票");
+                        research.setText("");
                         return;
                     }
                     mStock.setVisibility(View.VISIBLE);
@@ -290,6 +300,7 @@ public class ActivityResearch extends FragmentActivity implements View.OnClickLi
                         ll_result.setVisibility(View.VISIBLE);
                         tv_name.setText(name);
                         tv_type.setText("相关直播");
+                        research.setText("");
                         return;
                     }
                     mZhibo.setVisibility(View.VISIBLE);
@@ -329,6 +340,7 @@ public class ActivityResearch extends FragmentActivity implements View.OnClickLi
                         currentPage++;
                     }
                 }
+                research.setText("");
             }
         });
     }

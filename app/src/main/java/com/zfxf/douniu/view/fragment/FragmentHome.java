@@ -20,6 +20,7 @@ import com.zfxf.douniu.activity.ActivityAdvisorList;
 import com.zfxf.douniu.activity.ActivityBar;
 import com.zfxf.douniu.activity.ActivityHeadline;
 import com.zfxf.douniu.activity.ActivityIntelligenceChoose;
+import com.zfxf.douniu.activity.ActivityLiving;
 import com.zfxf.douniu.activity.ActivityResearch;
 import com.zfxf.douniu.activity.ActivitySimulation;
 import com.zfxf.douniu.activity.ActivityXiangMu;
@@ -149,15 +150,17 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
                     return;
                 }
 
-                if(mPicAdapter == null){
-                    mPicAdapter = new myPicAdapter(indexResult.lunbo_list);
-                }
                 LunboSize = indexResult.lunbo_list.size();
-                if(mMyLunBO == null){
-                    mMyLunBO = new MyLunBo(mContainer, mViewPage, LunboSize);
-                    mMyLunBO.startLunBO();
+                if(LunboSize>0){
+                    if(mPicAdapter == null){
+                        mPicAdapter = new myPicAdapter(indexResult.lunbo_list);
+                    }
+                    if(mMyLunBO == null){
+                        mMyLunBO = new MyLunBo(mContainer, mViewPage, LunboSize);
+                        mMyLunBO.startLunBO();
+                    }
+                    mViewPage.setAdapter(mPicAdapter);
                 }
-                mViewPage.setAdapter(mPicAdapter);
 
                 if(mAdvisorManager == null){
                     mAdvisorManager = new FullyLinearLayoutManager(getActivity());
@@ -208,6 +211,16 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
                 }
                 mZhiboRecyclerView.setLayoutManager(mZhiboManager);
                 mZhiboRecyclerView.setAdapter(mZhiboAdapter);
+                mZhiboAdapter.setOnItemClickListener(new HomeZhiboAdapter.MyItemClickListener() {
+                    @Override
+                    public void onItemClick(View v, int id,String sx_id) {
+                        Intent intent = new Intent(CommonUtils.getContext(), ActivityLiving.class);
+                        intent.putExtra("id",id);
+                        intent.putExtra("sx_id",sx_id);
+                        startActivity(intent);
+                        getActivity().overridePendingTransition(0,0);
+                    }
+                });
 
                 CommonUtils.dismissProgressDialog();
             }

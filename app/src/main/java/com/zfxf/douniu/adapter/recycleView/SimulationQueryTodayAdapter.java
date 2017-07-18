@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.bean.SimulationInfo;
 
 import java.util.List;
 
@@ -19,13 +20,13 @@ import java.util.List;
 public class SimulationQueryTodayAdapter extends RecyclerView.Adapter<SimulationQueryTodayAdapter.MyHolder> {
     private Context mContext;
     private MyItemClickListener mItemClickListener = null;
-    private List<String> mDatas;
+    private List<SimulationInfo> mDatas;
 
     public interface MyItemClickListener {
         void onItemClick(View v, int positon);
     }
 
-    public SimulationQueryTodayAdapter(Context context, List<String> datas) {
+    public SimulationQueryTodayAdapter(Context context, List<SimulationInfo> datas) {
         mContext = context;
         mDatas = datas;
     }
@@ -51,7 +52,7 @@ public class SimulationQueryTodayAdapter extends RecyclerView.Adapter<Simulation
         return mDatas.size();
     }
 
-    public void addDatas(List<String> data) {
+    public void addDatas(List<SimulationInfo> data) {
         mDatas.addAll(data);
     }
 
@@ -84,8 +85,20 @@ public class SimulationQueryTodayAdapter extends RecyclerView.Adapter<Simulation
             }
         }
 
-        public void setRefreshData(String str, int position) {
-
+        public void setRefreshData(SimulationInfo bean, int position) {
+            if(bean.mj_type.equals("1")){
+                type.setText("买");
+                en_state.setText("买入");
+                type.setBackgroundResource(R.drawable.backgroud_stock_buy);
+            }else {
+                type.setText("卖");
+                en_state.setText("卖出");
+                type.setBackgroundResource(R.drawable.backgroud_stock_sold);
+            }
+            time.setText(bean.mj_cjsj);
+            name.setText(bean.mg_name);
+            en_price.setText(bean.mj_cjj);
+            en_count.setText(bean.mj_cjl);
         }
     }
 }

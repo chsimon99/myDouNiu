@@ -28,7 +28,7 @@ public class BaseApplication extends Application {
     private static Looper	mMainLooper;
     private static Handler mHandler;
     private static ExecutorService threadPool;
-    private static final int DEFAULT_TIMEOUT = 5;
+    private static final int DEFAULT_TIMEOUT = 10;
 
     public static Handler getHandler() {
         return mHandler;

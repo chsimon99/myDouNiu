@@ -68,6 +68,9 @@ public class FragmentNewNotice extends BaseFragment {
 		mRecyclerView.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
 			@Override
 			public void onRefresh() {
+				currentPage = 1;
+				mNoticeAdapter = null;
+				visitInternet();
 				mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
 					@Override
 					public void run() {
@@ -111,7 +114,7 @@ public class FragmentNewNotice extends BaseFragment {
 							mRecyclerView.addItemDecoration(mDivider);
 						}
 						mRecyclerView.setFooterViewText("加载更多……");
-						mRecyclerView.setPullRefreshEnable(false);//禁止上拉刷新
+//						mRecyclerView.setPullRefreshEnable(false);//禁止上拉刷新
 						mNoticeAdapter.setOnItemClickListener(new NewNoticeAdapter.MyItemClickListener() {
 							@Override
 							public void onItemClick(View v, int id) {

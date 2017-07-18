@@ -8,7 +8,7 @@ package com.zfxf.douniu.bean;
 
 public class IndexLivingListInfo {
 
-    public String zf_id;//自动增长id
+    public String zt_id;//自动增长id
     public String zt_ub_id;//直播用户id
     public String zt_clicks;//直播数量
     public String zt_fileid;//图片

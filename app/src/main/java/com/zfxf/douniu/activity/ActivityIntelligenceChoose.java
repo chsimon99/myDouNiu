@@ -93,7 +93,7 @@ public class ActivityIntelligenceChoose extends FragmentActivity implements View
         String type_title = getIntent().getStringExtra("type");//传过来的标题
         title.setText(type_title);
         edit.setVisibility(View.INVISIBLE);
-        share.setVisibility(View.VISIBLE);
+        share.setVisibility(View.INVISIBLE);
         mId = getIntent().getIntExtra("id", 0);
         average_price.getPaint().setFakeBoldText(true);//加粗
         tv_data.getPaint().setFakeBoldText(true);//加粗
@@ -221,6 +221,7 @@ public class ActivityIntelligenceChoose extends FragmentActivity implements View
                             tv_subscribe.setText("立即订阅");
                             CommonUtils.toastMessage("取消订阅成功");
                         }
+                        SpTools.setBoolean(ActivityIntelligenceChoose.this, Constants.subscribe,true);
                     }
                 },getResources().getString(R.string.xuangudy));
     }

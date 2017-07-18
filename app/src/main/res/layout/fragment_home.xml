@@ -280,16 +280,16 @@
                         android:src="@drawable/home_jiantou"/>
                 </RelativeLayout>
             </LinearLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dm050"
-                android:background="@color/colorBgGary"
-                android:gravity="center_vertical"
-                android:paddingLeft="@dimen/dm020"
-                android:text="百变股神正在直播本月股票收益"
-                android:textColor="@color/colorToRed"
-                android:textSize="@dimen/dm026"
-            />
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/dm050"-->
+                <!--android:background="@color/colorBgGary"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:paddingLeft="@dimen/dm020"-->
+                <!--android:text="百变股神正在直播本月股票收益"-->
+                <!--android:textColor="@color/colorToRed"-->
+                <!--android:textSize="@dimen/dm026"-->
+            <!--/>-->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -1,5 +1,6 @@
 package com.zfxf.douniu.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -50,9 +51,13 @@ public class ActivityStockList extends FragmentActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stock_list);
         ButterKnife.bind(this);
-        title.setText("涨幅榜");
-        edit.setVisibility(View.INVISIBLE);
         mStatus = getIntent().getIntExtra("status", -1);
+        if(mStatus == 0){
+            title.setText("跌幅榜");
+        }else {
+            title.setText("涨幅榜");
+        }
+        edit.setVisibility(View.INVISIBLE);
         initData();
         initListener();
     }
@@ -81,8 +86,12 @@ public class ActivityStockList extends FragmentActivity implements View.OnClickL
 
                         mAttentionAdvisorAdapter.setOnItemClickListener(new MarketMarketAdapter.MyItemClickListener() {
                             @Override
-                            public void onItemClick(View v, int id) {
-
+                            public void onItemClick(View v, String code,String name) {
+                                Intent intent = new Intent(ActivityStockList.this, ActivityStockInfo.class);
+                                intent.putExtra("code",code);
+                                intent.putExtra("name",name);
+                                startActivity(intent);
+                                overridePendingTransition(0,0);
                             }
                         });
                     }else {

@@ -56,6 +56,7 @@ public class ActivityInformation extends FragmentActivity implements View.OnClic
         title.setText(type_title);
         mNewsinfoId = getIntent().getIntExtra("newsinfoId", 0);
         infoTitle.getPaint().setFakeBoldText(true);
+        edit.setVisibility(View.INVISIBLE);
         initData();
 //        String zp_content = "测试图片信息：<br><img src=\"http://avatar.csdn.net/0/3/8/2_zhang957411207.jpg\" />";
 //        Html.ImageGetter imageGetter = new Html.ImageGetter() {

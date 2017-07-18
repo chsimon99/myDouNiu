@@ -47,8 +47,8 @@ public class ActivityMyselfShezhi extends FragmentActivity implements View.OnCli
     LinearLayout code;//密码修改
     @BindView(R.id.ll_myself_she_cache)
     LinearLayout cache;//清除缓存
-    @BindView(R.id.ll_myself_she_update)
-    LinearLayout update;//检查更新
+//    @BindView(R.id.ll_myself_she_update)
+//    LinearLayout update;//检查更新
     @BindView(R.id.ll_myself_she_quit)
     LinearLayout quit;//退出
     private Intent mIntent;
@@ -84,7 +84,7 @@ public class ActivityMyselfShezhi extends FragmentActivity implements View.OnCli
         question.setOnClickListener(this);
         code.setOnClickListener(this);
         cache.setOnClickListener(this);
-        update.setOnClickListener(this);
+//        update.setOnClickListener(this);
         quit.setOnClickListener(this);
 
     }
@@ -135,8 +135,8 @@ public class ActivityMyselfShezhi extends FragmentActivity implements View.OnCli
                             }
                         }).show();
                 break;
-            case R.id.ll_myself_she_update:
-                break;
+//            case R.id.ll_myself_she_update:
+//                break;
             case R.id.ll_myself_she_quit:
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("是否退出登录")

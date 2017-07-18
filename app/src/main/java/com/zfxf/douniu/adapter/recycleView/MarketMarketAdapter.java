@@ -23,7 +23,7 @@ public class MarketMarketAdapter extends RecyclerView.Adapter<MarketMarketAdapte
     private List<SimulationInfo> mDatas;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int positon);
+        void onItemClick(View v, String code,String name);
     }
 
     public MarketMarketAdapter(Context context, List<SimulationInfo> datas) {
@@ -73,7 +73,7 @@ public class MarketMarketAdapter extends RecyclerView.Adapter<MarketMarketAdapte
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, getPosition());
+                mListener.onItemClick(v, mDatas.get(getPosition()).mg_code,mDatas.get(getPosition()).mg_name);
             }
         }
 

@@ -56,7 +56,7 @@ public class ActivityLiving extends FragmentActivity implements View.OnClickList
         ButterKnife.bind(this);
         title.setText("中方信富首席工作室");
         edit.setVisibility(View.GONE);
-        share.setVisibility(View.VISIBLE);
+        share.setVisibility(View.INVISIBLE);
         initData();
         initListener();
     }

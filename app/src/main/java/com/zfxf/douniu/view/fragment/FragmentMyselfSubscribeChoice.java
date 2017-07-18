@@ -15,6 +15,8 @@ import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.bean.XuanguResult;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.RecycleViewDivider;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
@@ -96,5 +98,14 @@ public class FragmentMyselfSubscribeChoice extends BaseFragment {
 	@Override
 	public void initListener() {
 		super.initListener();
+	}
+	@Override
+	public void onResume() {
+		super.onResume();
+		if(SpTools.getBoolean(getActivity(), Constants.subscribe,false)){//如果已经支付成功，重新刷新数据
+			mSubscribeChoiceAdapter = null;
+			visitInternet();
+			SpTools.setBoolean(getActivity(), Constants.subscribe,false);
+		}
 	}
 }

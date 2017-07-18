@@ -31,6 +31,7 @@ import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 /**
  * @author IMXU
  * @time   2017/5/3 13:43
@@ -124,6 +125,11 @@ public class ActivityMarketResearch extends FragmentActivity implements View.OnC
                     finish();
                 }else {
                     //跳转股票详情信息
+                    Intent intent = new Intent(ActivityMarketResearch.this, ActivityStockInfo.class);
+                    intent.putExtra("code",info.mg_code);
+                    intent.putExtra("name",info.mg_name);
+                    startActivity(intent);
+                    overridePendingTransition(0,0);
                 }
             }
         });

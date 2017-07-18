@@ -1,5 +1,6 @@
 package com.zfxf.douniu.activity.myself;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
@@ -60,6 +61,9 @@ public class ActivityMyselfContact extends FragmentActivity implements View.OnCl
                 finish();
                 break;
             case R.id.ll_myself_disclaimer:
+                Intent intent = new Intent(this,ActivityMyselfContactDisclaimer.class);
+                startActivity(intent);
+                overridePendingTransition(0,0);
                 break;
         }
     }

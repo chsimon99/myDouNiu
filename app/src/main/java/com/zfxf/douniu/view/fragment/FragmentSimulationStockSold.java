@@ -22,6 +22,8 @@ import com.zfxf.douniu.bean.SimulationPositionDetail;
 import com.zfxf.douniu.bean.SimulationResult;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.FullyLinearLayoutManager;
 import com.zfxf.douniu.view.MyScrollview;
 import com.zfxf.douniu.view.RecycleViewDivider;
@@ -101,6 +103,7 @@ public class FragmentSimulationStockSold extends BaseFragment implements View.On
 	private final int mRequestCode = 1;
 	private String mStockCode;
 	private String mYesPrice;
+	private String mgKmsl;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -131,15 +134,17 @@ public class FragmentSimulationStockSold extends BaseFragment implements View.On
 		NewsInternetRequest.getSimulationSellInformation(code, new NewsInternetRequest.ForResultSimulationIndexListener() {
 			@Override
 			public void onResponseMessage(SimulationResult result) {
-				if(mLayoutManager == null){
-					mLayoutManager = new FullyLinearLayoutManager(getActivity());
-				}
-				if(mPositonAdapter == null){
-					mPositonAdapter = new MatadorPositonAdapter(getActivity(), result.mn_chigu);
-				}
-				if(mDivider == null){//防止多次加载出现宽度变宽
-					mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
-					mRecyclerView.addItemDecoration(mDivider);
+				if(result.mn_chigu !=null){
+					if(mLayoutManager == null){
+						mLayoutManager = new FullyLinearLayoutManager(getActivity());
+					}
+					if(mPositonAdapter == null){
+						mPositonAdapter = new MatadorPositonAdapter(getActivity(), result.mn_chigu);
+					}
+					if(mDivider == null){//防止多次加载出现宽度变宽
+						mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
+						mRecyclerView.addItemDecoration(mDivider);
+					}
 				}
 				mRecyclerView.setLayoutManager(mLayoutManager);
 				mRecyclerView.setAdapter(mPositonAdapter);
@@ -158,6 +163,9 @@ public class FragmentSimulationStockSold extends BaseFragment implements View.On
 					tv_price_minus.setText(result.mn_gupiao.mg_dt);
 					et_price.setText(result.mn_gupiao.mg_xj);
 					mYesPrice = result.mn_gupiao.mg_zs;
+					if(!TextUtils.isEmpty(result.mn_gupiao.mg_kmsl)){
+						mgKmsl = result.mn_gupiao.mg_kmsl;
+					}
 				}
 				if(result.mr_gupiao!=null){
 					if(TextUtils.isEmpty(result.mr_gupiao.mg_b1)){
@@ -295,9 +303,14 @@ public class FragmentSimulationStockSold extends BaseFragment implements View.On
 			}
 		});
 		confirm.setOnClickListener(this);
+		tv_count_a.setOnClickListener(this);
+		tv_count_h.setOnClickListener(this);
+		tv_count_t.setOnClickListener(this);
+		tv_count_f.setOnClickListener(this);
 	}
 	@Override
 	public void onClick(View v) {
+		int count = 0;
 		switch (v.getId()){
 			case R.id.rl_simulation_sold_confirm:
 				confirmDialog();
@@ -307,7 +320,7 @@ public class FragmentSimulationStockSold extends BaseFragment implements View.On
 				mDialog.dismiss();
 				break;
 			case R.id.tv_confirm_dialog_confirm:
-				CommonUtils.toastMessage("确认购买");
+				confirmSell();
 				mDialog.dismiss();
 				break;
 			case R.id.ll_simulation_sold_search:
@@ -334,8 +347,54 @@ public class FragmentSimulationStockSold extends BaseFragment implements View.On
 				f = (float)(Math.round((f-0.01f)*100))/100;
 				et_price.setText(f+"");
 				break;
+			case R.id.tv_simulation_sold_count_all:
+				if(TextUtils.isEmpty(mgKmsl)){
+					return;
+				}
+				count= (int) (Float.parseFloat(mgKmsl));
+				et_count.setText(count+"");
+				break;
+			case R.id.tv_simulation_sold_count_half:
+				if(TextUtils.isEmpty(mgKmsl)){
+					return;
+				}
+				count= (int) (Float.parseFloat(mgKmsl)/2);
+				et_count.setText(count+"");
+				break;
+			case R.id.tv_simulation_sold_count_three:
+				if(TextUtils.isEmpty(mgKmsl)){
+					return;
+				}
+				count= (int) (Float.parseFloat(mgKmsl)/3);
+				et_count.setText(count+"");
+				break;
+			case R.id.tv_simulation_sold_count_four:
+				if(TextUtils.isEmpty(mgKmsl)){
+					return;
+				}
+				count= (int) (Float.parseFloat(mgKmsl)/4);
+				et_count.setText(count+"");
+				break;
 		}
 	}
+
+	private void confirmSell() {
+		NewsInternetRequest.simulationSellStock( tv_code.getText().toString(),tv_name.getText().toString()
+				, et_count.getText().toString(),et_price.getText().toString(), new NewsInternetRequest.ForResultListener() {
+					@Override
+					public void onResponseMessage(String info) {
+						if(info.equals("成功")){
+							CommonUtils.toastMessage("卖出成功");
+							et_count.setText("");
+							visitInternet(mStockCode);
+							SpTools.setBoolean(CommonUtils.getContext(), Constants.buy,true);//购买股票
+						}else {
+							CommonUtils.toastMessage(info);
+						}
+					}
+				});
+	}
+
 	private void confirmDialog() {
 		AlertDialog.Builder builder=new AlertDialog.Builder(getActivity()); //先得到构造器
 		mDialog = builder.create();
@@ -365,6 +424,18 @@ public class FragmentSimulationStockSold extends BaseFragment implements View.On
 				tv_code.setText(mStockCode);
 				visitInternet(mStockCode);
 				break;
+		}
+	}
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		super.setUserVisibleHint(isVisibleToUser);
+		if (isVisibleToUser) {
+			//相当于Fragment的onResume
+			if(!TextUtils.isEmpty(mStockCode)){
+				visitInternet(mStockCode);
+			}
+		} else {
+			//相当于Fragment的onPause
 		}
 	}
 }

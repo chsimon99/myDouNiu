@@ -45,4 +45,7 @@
     <color name="price_up">#e94142</color>
     <color name="price_down">#35bc69</color>
     <color name="white">#ffffff</color>
+
+    <color name="black">#000000</color>
+    <color name="light_blue">#6593cb</color>
 </resources>

@@ -81,7 +81,6 @@ public class FragmentNewChoice extends BaseFragment {
 							mRecyclerView.addItemDecoration(mDivider);
 						}
 						mRecyclerView.setFooterViewText("加载更多……");
-						mRecyclerView.setPullRefreshEnable(false);//禁止上拉刷新
 						mChoiceAdapter.setOnItemClickListener(new NewChoiceAdapter.MyItemClickListener() {
 							@Override
 							public void onItemClick(View v, int id) {
@@ -129,6 +128,9 @@ public class FragmentNewChoice extends BaseFragment {
 		mRecyclerView.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
 			@Override
 			public void onRefresh() {
+				currentPage = 1;
+				mChoiceAdapter = null;
+				visitInternet();
 				mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
 					@Override
 					public void run() {

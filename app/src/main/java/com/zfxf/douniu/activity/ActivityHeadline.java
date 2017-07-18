@@ -77,7 +77,7 @@ public class ActivityHeadline extends FragmentActivity implements View.OnClickLi
         NewsInternetRequest.getHeadListLunboInformation(new NewsInternetRequest.ForResultHeadListLunboInfoListener() {
             @Override
             public void onResponseMessage(List<LunBoListInfo> lunbo_list) {
-                if(lunbo_list!=null){
+                if(lunbo_list.size() >0 ){
                     if(mPagerAdapter ==null){
                         mPagerAdapter = new PicPagerAdapter(lunbo_list, CommonUtils.getContext(), new PicPagerAdapter.MyOnClickListener() {
                             @Override
@@ -86,6 +86,7 @@ public class ActivityHeadline extends FragmentActivity implements View.OnClickLi
                             }
                         });
                     }
+
                     if (mMyLunBO == null) {
                         mMyLunBO = new MyLunBo(mContainer, mViewPage, lunbo_list.size());
                         mMyLunBO.startLunBO();

@@ -42,12 +42,14 @@ public class KChartView extends BaseKChart {
     public void onLeftSide() {
 //        Log.d("--LeftSide---","最新的数据没有了");
         //滑到了最左边
+        mListener.leftSide();
     }
 
     @Override
     public void onRightSide() {
 //        Log.d("--RightSide---","最新的数据没有了");
         //滑到了最右边
+        mListener.rightSide();
     }
 
     private float	mDownX;
@@ -87,4 +89,13 @@ public class KChartView extends BaseKChart {
         }
         return super.onTouchEvent(ev);
     }
+    private static MyStockListener mListener;
+    public interface MyStockListener{
+        void leftSide();
+        void rightSide();
+    }
+    public static void setStockListener(MyStockListener listener){
+        mListener = listener;
+    }
+
 }

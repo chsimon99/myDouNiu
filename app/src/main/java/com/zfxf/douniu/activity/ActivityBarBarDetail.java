@@ -70,7 +70,7 @@ public class ActivityBarBarDetail extends FragmentActivity implements View.OnCli
         ButterKnife.bind(this);
         title.setText("详情");
         edit.setVisibility(View.INVISIBLE);
-        share.setVisibility(View.VISIBLE);
+        share.setVisibility(View.INVISIBLE);
         mNewsinfoId = getIntent().getIntExtra("newsinfoId", 0);
         detail_title.getPaint().setFakeBoldText(true);//加粗
         initData();

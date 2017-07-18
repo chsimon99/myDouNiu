@@ -133,7 +133,7 @@ public class OrderView extends RelativeLayout {
         headLayout.setGravity(Gravity.CENTER);
         addListHeaderTextView(x, 70, headLayout);
         for (int i = 0; i < order.length; i++) {
-            String ord = order[i].equals("0.00") ? "－" : order[i];
+            String ord = order[i].equals("0.00") ? "--" : order[i];
             TextView tv = addListHeaderTextView(ord, (layoutWidth - 70) / 2, headLayout);
             if (i == order.length - 1) {
                 tv.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);

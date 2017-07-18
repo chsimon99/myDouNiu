@@ -196,7 +196,7 @@ public abstract class BaseKChart extends ScrollAndScaleView implements
     }
 
     //当前点的个数
-    private int mItemCount;
+    private  int mItemCount;
     //每个点的x坐标
     private List<Float> mXs = new ArrayList<>();
     private IChartDraw mChildDraw;
@@ -589,6 +589,7 @@ public abstract class BaseKChart extends ScrollAndScaleView implements
             } else if (mMainDraw instanceof MIN5Draw) {
                 mDataLen = (int) ((mItemCount - 1) * mWidth / m5MinCount);
             } else {
+                mDataLen = (mItemCount - 1) * mPointWidth;
                 if(mDataLen < mWidth){//如果数据不够一个屏幕，从最左边开始画
                     mDataLen = mWidth - mPointWidth/2;
                 }else {

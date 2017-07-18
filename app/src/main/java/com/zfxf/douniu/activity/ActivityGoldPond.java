@@ -93,7 +93,7 @@ public class ActivityGoldPond extends FragmentActivity implements View.OnClickLi
         setContentView(R.layout.activity_gold_pond);
         ButterKnife.bind(this);
         title.setText("金股池详情");
-        share.setVisibility(View.VISIBLE);
+        share.setVisibility(View.INVISIBLE);
         edit.setVisibility(View.INVISIBLE);
         tv_name.getPaint().setFakeBoldText(true);//加粗
         tv_money.getPaint().setFakeBoldText(true);//加粗

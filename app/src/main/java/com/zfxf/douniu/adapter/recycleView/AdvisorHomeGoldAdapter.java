@@ -102,27 +102,59 @@ public class AdvisorHomeGoldAdapter extends RecyclerView.Adapter<AdvisorHomeGold
         public void setRefreshData(StockChiInfo bean, int position) {
             title.setText(bean.ud_nickname+"的金股池");
             count.setText(bean.dy_count);
-            item1.setText(bean.gu_piao.get(0).mg_name+"("+bean.gu_piao.get(0).mg_code+")");
-            item2.setText(bean.gu_piao.get(1).mg_name+"("+bean.gu_piao.get(1).mg_code+")");
-            item3.setText(bean.gu_piao.get(2).mg_name+"("+bean.gu_piao.get(2).mg_code+")");
-            if(bean.gu_piao.get(0).mg_zfz.contains("+")){
-                range1.setTextColor(mContext.getResources().getColor(R.color.colorRise));
+            if(bean.gu_piao.size() == 1){
+                item2.setVisibility(View.GONE);
+                range2.setVisibility(View.GONE);
+                item3.setVisibility(View.GONE);
+                range3.setVisibility(View.GONE);
+                item1.setText(bean.gu_piao.get(0).mg_name+"("+bean.gu_piao.get(0).mg_code+")");
+                if(bean.gu_piao.get(0).mg_zfz.contains("+")){
+                    range1.setTextColor(mContext.getResources().getColor(R.color.colorRise));
+                }else {
+                    range1.setTextColor(mContext.getResources().getColor(R.color.colorFall));
+                }
+                range1.setText(bean.gu_piao.get(0).mg_zfz);
+            }else if(bean.gu_piao.size() == 2){
+                item3.setVisibility(View.GONE);
+                range3.setVisibility(View.GONE);
+                item1.setText(bean.gu_piao.get(0).mg_name+"("+bean.gu_piao.get(0).mg_code+")");
+                item2.setText(bean.gu_piao.get(1).mg_name+"("+bean.gu_piao.get(1).mg_code+")");
+                if(bean.gu_piao.get(0).mg_zfz.contains("+")){
+                    range1.setTextColor(mContext.getResources().getColor(R.color.colorRise));
+                }else {
+                    range1.setTextColor(mContext.getResources().getColor(R.color.colorFall));
+                }
+                range1.setText(bean.gu_piao.get(0).mg_zfz);
+                if(bean.gu_piao.get(1).mg_zfz.contains("+")){
+                    range2.setTextColor(mContext.getResources().getColor(R.color.colorRise));
+                }else {
+                    range2.setTextColor(mContext.getResources().getColor(R.color.colorFall));
+                }
+                range2.setText(bean.gu_piao.get(1).mg_zfz);
             }else {
-                range1.setTextColor(mContext.getResources().getColor(R.color.colorFall));
+                item1.setText(bean.gu_piao.get(0).mg_name+"("+bean.gu_piao.get(0).mg_code+")");
+                item2.setText(bean.gu_piao.get(1).mg_name+"("+bean.gu_piao.get(1).mg_code+")");
+                item3.setText(bean.gu_piao.get(2).mg_name+"("+bean.gu_piao.get(2).mg_code+")");
+                if(bean.gu_piao.get(0).mg_zfz.contains("+")){
+                    range1.setTextColor(mContext.getResources().getColor(R.color.colorRise));
+                }else {
+                    range1.setTextColor(mContext.getResources().getColor(R.color.colorFall));
+                }
+                range1.setText(bean.gu_piao.get(0).mg_zfz);
+                if(bean.gu_piao.get(1).mg_zfz.contains("+")){
+                    range2.setTextColor(mContext.getResources().getColor(R.color.colorRise));
+                }else {
+                    range2.setTextColor(mContext.getResources().getColor(R.color.colorFall));
+                }
+                range2.setText(bean.gu_piao.get(1).mg_zfz);
+                if(bean.gu_piao.get(2).mg_zfz.contains("+")){
+                    range3.setTextColor(mContext.getResources().getColor(R.color.colorRise));
+                }else {
+                    range3.setTextColor(mContext.getResources().getColor(R.color.colorFall));
+                }
+                range3.setText(bean.gu_piao.get(2).mg_zfz);
             }
-            range1.setText(bean.gu_piao.get(0).mg_zfz);
-            if(bean.gu_piao.get(1).mg_zfz.contains("+")){
-                range1.setTextColor(mContext.getResources().getColor(R.color.colorRise));
-            }else {
-                range1.setTextColor(mContext.getResources().getColor(R.color.colorFall));
-            }
-            range1.setText(bean.gu_piao.get(1).mg_zfz);
-            if(bean.gu_piao.get(2).mg_zfz.contains("+")){
-                range1.setTextColor(mContext.getResources().getColor(R.color.colorRise));
-            }else {
-                range1.setTextColor(mContext.getResources().getColor(R.color.colorFall));
-            }
-            range1.setText(bean.gu_piao.get(2).mg_zfz);
+
             if(bean.is_up.equals("1")){
                 type1.setText("涨");
                 type1.setBackgroundResource(R.drawable.backgroud_circle_rise);

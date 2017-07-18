@@ -15,4 +15,7 @@ public class CourseResult {
     public String total;//总页数
     public List<ResearchInfo> news_list;//主页搜索信息
 
+
+    public List<MessageInfo> sys_message;//系统消息
+
 }

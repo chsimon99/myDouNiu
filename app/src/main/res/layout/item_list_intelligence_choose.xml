@@ -10,11 +10,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="强势异动A"
-        android:layout_marginLeft="@dimen/dm016"
-        android:layout_marginRight="@dimen/dm016"
-        android:layout_marginTop="@dimen/dm030"
-        android:layout_marginBottom="@dimen/dm030"
+        android:layout_marginLeft="@dimen/dm008"
+        android:layout_marginRight="@dimen/dm008"
+        android:layout_marginTop="@dimen/dm020"
+        android:layout_marginBottom="@dimen/dm020"
         android:textColor="@color/item_text_color_selector"
-        android:textSize="@dimen/dm028"/>
+        android:textSize="@dimen/dm024"/>
 
 </LinearLayout>

@@ -34,7 +34,6 @@ public class MChartAdapter extends BaseKChartAdapter {
     public Date getDate(int position) {
         try {
             String s = datas.get(position).Date;
-//            String[] split = s.split("/");
             Date date = new Date();
             date.setMinutes(Integer.parseInt(s));
             return date;
@@ -74,8 +73,7 @@ public class MChartAdapter extends BaseKChartAdapter {
 //                datas.set(i, data.get(i));
 //            }
             datas.addAll(data);
-
-//            int ss = datas.size();
+            //            int ss = datas.size();
 //            for (int i = 0; i < 240 - ss; i++){
 //                datas.add(new KLineEntity());
 //            }

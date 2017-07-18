@@ -18,6 +18,8 @@ import com.zfxf.douniu.bean.SimulationPositionDetail;
 import com.zfxf.douniu.bean.SimulationResult;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.FullyLinearLayoutManager;
 import com.zfxf.douniu.view.RecycleViewDivider;
 
@@ -123,6 +125,11 @@ public class ActivitySimulation extends FragmentActivity implements View.OnClick
 
     private void initData() {
         CommonUtils.showProgressDialog(this,"加载中……");
+        visitInternet();
+
+    }
+
+    private void visitInternet() {
         NewsInternetRequest.getSimulationIndexInformation(null,new NewsInternetRequest.ForResultSimulationIndexListener() {
             @Override
             public void onResponseMessage(SimulationResult result) {
@@ -176,8 +183,8 @@ public class ActivitySimulation extends FragmentActivity implements View.OnClick
                 CommonUtils.dismissProgressDialog();
             }
         });
-
     }
+
     private void initListener() {
         back.setOnClickListener(this);
         question.setOnClickListener(this);
@@ -239,5 +246,14 @@ public class ActivitySimulation extends FragmentActivity implements View.OnClick
     public void onBackPressed() {
         super.onBackPressed();
         CommonUtils.dismissProgressDialog();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(SpTools.getBoolean(CommonUtils.getContext(), Constants.buy,false)){//模拟买入后刷新数据
+            SpTools.setBoolean(CommonUtils.getContext(), Constants.buy,false);
+            visitInternet();
+        }
     }
 }

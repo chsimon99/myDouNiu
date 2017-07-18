@@ -46,6 +46,7 @@ public class BaseInternetRequest {
             return;
         }
         PostFormBuilder builder = OkHttpUtils.post().url(mContext.getResources().getString(R.string.service_host_address).concat(url));
+        CommonUtils.logMes("---------url----"+mContext.getResources().getString(R.string.service_host_address).concat(url));
         if(isPostBaseData){
             builder.addParams("sid", "");
             builder.addParams("index", (index++) + "");
@@ -65,10 +66,12 @@ public class BaseInternetRequest {
             @Override
             public void onError(Call call, Exception e, int id) {
                 mHttpUtilsListener.onError(call,e,id);
+                CommonUtils.dismissProgressDialog();
             }
             @Override
             public void onResponse(String response, int id) {
                 mHttpUtilsListener.onResponse(response, id);
+                CommonUtils.dismissProgressDialog();
             }
         });
     }

@@ -91,8 +91,9 @@ public class FragmentLiveInteraction extends BaseFragment {
         public void run() {
             if(!isRefresh){
                 type = 0;
+                earliestID = "0";
                 visitInternet(firstID);
-                if(SpTools.getBoolean(CommonUtils.getContext(), Constants.error,false)){
+                if(SpTools.getBoolean(CommonUtils.getContext(), Constants.error,false)){//网络错误重连
                     SpTools.setBoolean(CommonUtils.getContext(),Constants.error,false);
                     type = 0;
                     visitInternet(firstID);
@@ -247,6 +248,7 @@ public class FragmentLiveInteraction extends BaseFragment {
 //                            mRecyclerView.getRecyclerView().smoothScrollToPosition(mInteractionAdapter.getItemCount());//显示到最底部
                             type = 0;
                             lastID = 0;
+                            earliestID = "0";
                             mInteractionAdapter = null;
                             visitInternet(lastID);
                         }
@@ -255,5 +257,31 @@ public class FragmentLiveInteraction extends BaseFragment {
                 });
             }
         });
+    }
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            //相当于Fragment的onResume
+            if(mTask!=null){
+                mTask.start();
+            }
+            CommonUtils.logMes("-------论坛---onResume---");
+        } else {
+            //相当于Fragment的onPause
+            if(mTask!=null){
+                mTask.stop();
+            }
+            CommonUtils.logMes("-------论坛---onpausee---");
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(mTask!=null){
+            mTask.stop();
+        }
+        mTask = null;
     }
 }

@@ -53,6 +53,8 @@
         <activity android:name=".activity.myself.ActivityMyselfAsk"/>
         <activity android:name=".activity.myself.ActivityMyselfSubscribe"/>
         <activity android:name=".activity.myself.ActivityMyselfInformation"/>
+        <activity android:name=".activity.myself.ActivityMyselfContactDisclaimer"/>
+        <activity android:name=".activity.myself.ActivityMyselfEleContract"/>
         <activity android:name=".activity.advisor.ActivityAdvisorAllPublicDetail"/>
         <activity android:name=".activity.advisor.ActivityAdvisorAllSecretDetail"/>
         <activity android:name=".activity.ActivityToPay"/>
@@ -84,6 +86,8 @@
         <activity android:name=".activity.ActivityMySelfStock"/>
         <activity android:name=".activity.myself.ActivityMyselfWallet"/>
         <activity android:name=".activity.login.ActivityThirdRegister"/>
+        <activity android:name=".activity.ActivityMessageInformation"/>
+        <activity android:name=".activity.ActivityStockNewsInformation"/>
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -124,7 +128,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="tencent1106145455" />
+                <data android:scheme="tencent1106186645" />
             </intent-filter>
         </activity>
         <activity

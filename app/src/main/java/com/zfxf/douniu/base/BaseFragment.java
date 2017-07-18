@@ -10,6 +10,13 @@ import android.view.ViewGroup;
 
 public class BaseFragment extends Fragment {
     private View view;
+//    protected Activity mActivity;
+//
+//    @Override
+//    public void onAttach(Activity activity) {
+//        super.onAttach(activity);
+//        mActivity = activity;
+//    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         init();

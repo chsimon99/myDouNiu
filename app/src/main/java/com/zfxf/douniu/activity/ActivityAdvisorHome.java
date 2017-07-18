@@ -98,6 +98,7 @@ public class ActivityAdvisorHome extends FragmentActivity implements View.OnClic
         setContentView(R.layout.activity_advisor_home);
         ButterKnife.bind(this);
         mId = getIntent().getIntExtra("id", 0);
+        share.setVisibility(View.INVISIBLE);
         initdata();
         initListener();
     }

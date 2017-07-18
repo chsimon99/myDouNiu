@@ -32,4 +32,6 @@ public class OtherResult {
     public String response;//支付宝返回的信息
     public WeiXinInfo wx_params;//微信返回信息
 
+    public String url;
+
 }

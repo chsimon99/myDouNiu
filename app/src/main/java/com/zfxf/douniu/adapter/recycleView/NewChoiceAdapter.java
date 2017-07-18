@@ -9,9 +9,13 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.List;
 import java.util.Map;
+
+import okhttp3.Call;
 
 /**
  * @author Admin
@@ -85,9 +89,29 @@ public class NewChoiceAdapter extends RecyclerView.Adapter<NewChoiceAdapter.MyHo
             name.setText(bean.get("cc_from"));
             time.setText(bean.get("cc_datetime"));
             content.setText(bean.get("cc_title"));
-            Glide.with(mContext).load(bean.get("cc_fielid"))
-                    .placeholder(R.drawable.public_img)
-                    .into(mImageView);
+
+            String str = "http://app.douniu8.com/index.php/cms/zixunlist/checkfileexists/fileid/"+bean.get("cc_fielid");
+
+            OkHttpUtils.get().url(str).build().execute(new StringCallback() {
+                @Override
+                public void onError(Call call, Exception e, int id) {
+                }
+                @Override
+                public void onResponse(String response, int id) {
+                    Glide.with(mContext).load(response)
+                            .placeholder(R.drawable.public_img)
+                            .into(mImageView);
+                }
+            });
         }
     }
+
+//    public static String inputStream2String(InputStream is) throws IOException {
+//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//        int i = -1;
+//        while ((i = is.read()) != -1) {
+//            baos.write(i);
+//        }
+//        return baos.toString();
+//    }
 }
