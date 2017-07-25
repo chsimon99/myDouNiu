@@ -3,7 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="colorTitle">#FB6733</color>
+    <color name="colorTitle">#FF6905</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorText">#666666</color>
     <color name="colorBgGary">#f4f4f4</color>
@@ -11,7 +11,7 @@
     <color name="colorToRed">#cc3333</color>
     <color name="colorRed">#ef3b3c</color>
     <color name="colorSuper">#ffa135</color>
-    <color name="colorShort">#fb6733</color>
+    <color name="colorShort">#FF6905</color>
     <color name="gray">#dbdbdb</color>
     <color name="titleText">#333333</color>
     <color name="titleTextGray">#999999</color>

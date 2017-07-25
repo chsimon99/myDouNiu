@@ -259,7 +259,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/dm020"
-                    android:text="金牌首席"
+                    android:text="首席工作室"
                     android:textColor="#32384d"
                     android:textSize="@dimen/dm028"/>
                 <View

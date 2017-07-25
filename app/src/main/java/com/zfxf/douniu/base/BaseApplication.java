@@ -5,6 +5,10 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.umeng.socialize.Config;
+import com.umeng.socialize.PlatformConfig;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareConfig;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.io.File;
@@ -62,6 +66,14 @@ public class BaseApplication extends Application {
         mMainLooper = getMainLooper(); // 主线程Looper对象
         mHandler = new Handler();// 定义一个handler
         threadPool = Executors.newCachedThreadPool();//定义一个线程池
+        PlatformConfig.setWeixin("wx086c758d5e01f463","0ffe0ba97f1480d02ae91f9c1fbdea7a");
+//        PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
+        PlatformConfig.setSinaWeibo("1211225805", "0a1b01274b5c4d78e177a6d1ee3717c6","http://sns.whalecloud.com/sina2/callback");
+        Config.DEBUG = true;
+
+        UMShareConfig config = new UMShareConfig();
+        config.isNeedAuthOnGetUserInfo(true);
+        UMShareAPI.get(this).setShareConfig(config);
 
         String path = mContext.getCacheDir().getAbsolutePath();
         int cacheSize = 10 * 1024 * 1024; // 10 MiB

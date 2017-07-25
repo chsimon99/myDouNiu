@@ -11,6 +11,8 @@ import com.tencent.mm.opensdk.modelbase.BaseResp;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.zfxf.douniu.activity.ActivityDeposit;
+import com.zfxf.douniu.activity.ActivityToPay;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.utils.Constants;
 import com.zfxf.douniu.utils.SpTools;
@@ -48,7 +50,11 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 		if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
 			if(resp.errCode == 0){
 				CommonUtils.toastMessage("支付成功");
-				SpTools.setBoolean(CommonUtils.getContext(), Constants.buy, true);
+				if(SpTools.getInt(CommonUtils.getContext(),Constants.payweixin,0) == 1){
+					ActivityDeposit.getInstance().showResult(2);
+				}else if(SpTools.getInt(CommonUtils.getContext(),Constants.payweixin,0) == 2){
+					ActivityToPay.getInstance().showResult(2);//通知支付成功
+				}
 			}else if(resp.errCode == -1){
 //				tv.setText("支付发生错误,请从新支付");
 				CommonUtils.toastMessage("支付失败");

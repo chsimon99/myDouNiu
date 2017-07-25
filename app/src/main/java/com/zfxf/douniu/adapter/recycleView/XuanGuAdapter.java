@@ -82,7 +82,7 @@ public class XuanGuAdapter extends RecyclerView.Adapter<XuanGuAdapter.MyHolder> 
         public void setRefreshData(XuanguGupiaoDetail bean) {
             name.setText(bean.zg_mg_name+"\n"+bean.zg_mg_code);
             price.setText("/"+bean.zg_rxj);
-            nowprice.setText(bean.zg_rxj);
+            nowprice.setText(bean.mg_xj);
             ratio.setText(bean.zg_zgzf+"%");
         }
     }

@@ -133,7 +133,7 @@ public class FragmentAdvisorHomePublic extends BaseFragment {
 				CommonUtils.dismissProgressDialog();
 
 			}
-		},getActivity().getResources().getString(R.string.gongkelist));
+		},null,getActivity().getResources().getString(R.string.gongkelist));
 	}
 
 	@Override

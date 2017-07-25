@@ -28,6 +28,8 @@ import com.zfxf.douniu.view.FullyLinearLayoutManager;
 import com.zfxf.douniu.view.MyScrollview;
 import com.zfxf.douniu.view.RecycleViewDivider;
 
+import java.text.DecimalFormat;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -106,6 +108,8 @@ public class FragmentSimulationStockBuy extends BaseFragment implements View.OnC
 	private String mYesPrice;
 	private String m_zzc;//总资产
 	private String nowPrice;
+	private String mStock_zt;
+	private String mStock_dt;
 
 	@Override
 	public View initView(LayoutInflater inflater) {
@@ -161,8 +165,10 @@ public class FragmentSimulationStockBuy extends BaseFragment implements View.OnC
 					}
 				});
 				if(result.mn_gupiao !=null){
-					tv_price_add.setText(result.mn_gupiao.mg_zt);
-					tv_price_minus.setText(result.mn_gupiao.mg_dt);
+					mStock_zt = result.mn_gupiao.mg_zt;
+					tv_price_add.setText(mStock_zt);
+					mStock_dt = result.mn_gupiao.mg_dt;
+					tv_price_minus.setText(mStock_dt);
 					nowPrice = result.mn_gupiao.mg_xj;
 					et_price.setText(nowPrice);
 					mYesPrice = result.mn_gupiao.mg_zs;
@@ -316,6 +322,27 @@ public class FragmentSimulationStockBuy extends BaseFragment implements View.OnC
 		int count = 0;
 		switch (v.getId()){
 			case R.id.rl_simulation_buy_confirm:
+				if(TextUtils.isEmpty(et_price.getText().toString())){
+					return;
+				}
+				if(Float.parseFloat(et_price.getText().toString())>Float.parseFloat(mStock_zt)){
+					CommonUtils.toastMessage("购买价格不能大于涨停价");
+					return;
+				}
+				if(Float.parseFloat(et_price.getText().toString())<Float.parseFloat(mStock_dt)){
+					CommonUtils.toastMessage("购买价格不能低于跌停价");
+					return;
+				}
+				if(TextUtils.isEmpty(et_count.getText().toString())){
+					CommonUtils.toastMessage("购买数量不能为空");
+					return;
+				}
+				if(Integer.parseInt(et_count.getText().toString().trim())<100){
+					CommonUtils.toastMessage("购买数量不能小于100股");
+					return;
+				}
+				String s_count = et_count.getText().toString().trim();
+				et_count.setText(changeCount(Integer.parseInt(s_count))+"");
 				confirmDialog();
 				break;
 			case R.id.tv_confirm_dialog_cannel:
@@ -339,6 +366,11 @@ public class FragmentSimulationStockBuy extends BaseFragment implements View.OnC
 				}
 				Float fp = Float.parseFloat(s_price);
 				fp = (float)(Math.round((fp+0.01f)*100))/100;
+				if(fp > Float.parseFloat(mStock_zt)){
+					CommonUtils.toastMessage("购买价格不能大于涨停价");
+					et_price.setText(mStock_zt);
+					return;
+				}
 				et_price.setText(fp+"");
 				break;
 			case R.id.ll_simulation_buy_minus:
@@ -348,22 +380,47 @@ public class FragmentSimulationStockBuy extends BaseFragment implements View.OnC
 				}
 				Float f = Float.parseFloat(m_price);
 				f = (float)(Math.round((f-0.01f)*100))/100;
+				if(f < Float.parseFloat(mStock_dt)){
+					CommonUtils.toastMessage("购买价格不能低于跌停价");
+					et_price.setText(mStock_dt);
+					return;
+				}
 				et_price.setText(f+"");
 				break;
 			case R.id.tv_simulation_buy_count_all:
 				count= (int) (Float.parseFloat(m_zzc)/Float.parseFloat(nowPrice));
+				count= changeCount(count);
+				if(count == 0){
+					CommonUtils.toastMessage("您的资产不足购买100股");
+					return;
+				}
 				et_count.setText(count+"");
 				break;
 			case R.id.tv_simulation_buy_count_half:
 				count = (int) ((Float.parseFloat(m_zzc)*0.5)/Float.parseFloat(nowPrice));
+				count= changeCount(count);
+				if(count == 0){
+					CommonUtils.toastMessage("您的资产不足购买100股");
+					return;
+				}
 				et_count.setText(count+"");
 				break;
 			case R.id.tv_simulation_buy_count_three:
 				count = (int) (Float.parseFloat(m_zzc)/(Float.parseFloat(nowPrice)*3));
+				count= changeCount(count);
+				if(count == 0){
+					CommonUtils.toastMessage("您的资产不足购买100股");
+					return;
+				}
 				et_count.setText(count+"");
 				break;
 			case R.id.tv_simulation_buy_count_four:
 				count = (int) ((Float.parseFloat(m_zzc)*0.25)/Float.parseFloat(nowPrice));
+				count= changeCount(count);
+				if(count == 0){
+					CommonUtils.toastMessage("您的资产不足购买100股");
+					return;
+				}
 				et_count.setText(count+"");
 				break;
 		}
@@ -434,6 +491,16 @@ public class FragmentSimulationStockBuy extends BaseFragment implements View.OnC
 			}
 		} else {
 			//相当于Fragment的onPause
+		}
+	}
+
+	public int changeCount(int num){
+		if(num < 100){
+			return 0;
+		}else{
+			int i = num / 100;
+			DecimalFormat format = new DecimalFormat("0");
+			return Integer.parseInt(format.format(i*100));
 		}
 	}
 }

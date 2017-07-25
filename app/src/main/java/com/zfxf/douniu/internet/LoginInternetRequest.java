@@ -586,7 +586,7 @@ public class LoginInternetRequest {
      * @param listener
      */
     public static void uplodePicture(String picName, ForResultListener listener){
-        String url = context.getResources().getString(R.string.service_host_address)
+        String url = context.getResources().getString(R.string.file_host_address)
                 .concat(context.getResources().getString(R.string.upload));
         mListener = listener;
         OkHttpUtils.post()

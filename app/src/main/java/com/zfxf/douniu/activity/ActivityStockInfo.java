@@ -34,6 +34,9 @@ import com.zfxf.douniu.view.fragment.FragmentStockDay;
 import com.zfxf.douniu.view.fragment.FragmentStockMinitue;
 import com.zfxf.douniu.view.fragment.FragmentStockMonth;
 import com.zfxf.douniu.view.fragment.FragmentStockWeek;
+import com.zhy.http.okhttp.OkHttpUtils;
+
+import java.text.DecimalFormat;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -234,7 +237,9 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
     private String mg_zzc;
     private String nowPrice;
     private String mgKmsl;
-
+    private String mStock_dt;
+    private String mStock_zt;
+    private Handler fiveHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -263,6 +268,16 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
                     super.handleMessage(msg);
                     switch (msg.what){
                         case 1:
+                            if(fiveHandler == null){
+                                fiveHandler = FragmentStockMinitue.getmFiveHandler();
+                            }
+                            if(fiveHandler != null) {
+                                Message message = fiveHandler.obtainMessage();
+                                message.obj = msg.obj;
+                                message.what = 1;
+                                fiveHandler.sendMessage(message);
+                            }
+
                             if(((StockInfo)msg.obj).mg_cz.contains("+")){
                                 tv_xj.setTextColor(getResources().getColor(R.color.colorRise));
                                 tv_cz.setTextColor(getResources().getColor(R.color.colorRise));
@@ -354,12 +369,15 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
                         }
                     });
                 }
+                if (mStockNoticeAdapter == null) {
+                    mStockNoticeAdapter.notifyDataSetChanged();
+                }
             }
         });
     }
 
     private void visitInternet() {
-        NewsInternetRequest.getStockInformation(mCode, ActivityStockInfo.this,new NewsInternetRequest.ForResultStockInfoListener() {
+        NewsInternetRequest.getStockDetailInformation(mCode,new NewsInternetRequest.ForResultStockInfoListener() {
             @Override
             public void onResponseMessage(StockResult result) {
                 if(result != null){
@@ -378,7 +396,7 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
                     }
                 }
             }
-        },null);
+        });
     }
 
     private static Handler mHandler;
@@ -591,6 +609,11 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
                 }
                 Float fp = Float.parseFloat(s_price);
                 fp = (float)(Math.round((fp+0.01f)*100))/100;
+                if(fp > Float.parseFloat(mStock_zt)){
+                    CommonUtils.toastMessage("购买的价格不能大于涨停价");
+                    et_buy_price.setText(mStock_zt);
+                    return;
+                }
                 et_buy_price.setText(fp+"");
                 break;
             case R.id.ll_stock_info_buy_minus:
@@ -600,25 +623,71 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
                 }
                 Float f = Float.parseFloat(m_price);
                 f = (float)(Math.round((f-0.01f)*100))/100;
+                if(f < Float.parseFloat(mStock_dt)){
+                    CommonUtils.toastMessage("购买的价格不能低于跌停价");
+                    et_buy_price.setText(mStock_dt);
+                    return;
+                }
                 et_buy_price.setText(f+"");
                 break;
             case R.id.tv_stock_info_buy_count_all:
                 count= (int) (Float.parseFloat(mg_zzc)/Float.parseFloat(nowPrice));
+                count= changeCount(count);
+                if(count == 0){
+                    CommonUtils.toastMessage("您的资产不足购买100股");
+                    return;
+                }
                 et_buy_count.setText(count+"");
                 break;
             case R.id.tv_stock_info_buy_count_half:
                 count = (int) ((Float.parseFloat(mg_zzc)*0.5)/Float.parseFloat(nowPrice));
+                count= changeCount(count);
+                if(count == 0){
+                    CommonUtils.toastMessage("您的资产不足购买100股");
+                    return;
+                }
                 et_buy_count.setText(count+"");
                 break;
             case R.id.tv_stock_info_buy_count_three:
                 count = (int) (Float.parseFloat(mg_zzc)/(Float.parseFloat(nowPrice)*3));
+                count= changeCount(count);
+                if(count == 0){
+                    CommonUtils.toastMessage("您的资产不足购买100股");
+                    return;
+                }
                 et_buy_count.setText(count+"");
                 break;
             case R.id.tv_stock_info_buy_count_four:
                 count = (int) ((Float.parseFloat(mg_zzc)*0.25)/Float.parseFloat(nowPrice));
+                count= changeCount(count);
+                if(count == 0){
+                    CommonUtils.toastMessage("您的资产不足购买100股");
+                    return;
+                }
                 et_buy_count.setText(count+"");
                 break;
             case R.id.rl_stock_info_buy_confirm://确认购买
+                if(TextUtils.isEmpty(et_buy_price.getText().toString())){
+                    return;
+                }
+                if(Float.parseFloat(et_buy_price.getText().toString())>Float.parseFloat(mStock_zt)){
+                    CommonUtils.toastMessage("购买的价格不能大于涨停价");
+                    return;
+                }
+                if(Float.parseFloat(et_buy_price.getText().toString())<Float.parseFloat(mStock_dt)){
+                    CommonUtils.toastMessage("购买的价格不能低于跌停价");
+                    return;
+                }
+                if(TextUtils.isEmpty(et_buy_count.getText().toString())){
+                    CommonUtils.toastMessage("购买的数量不能为空");
+                    return;
+                }
+                if(Integer.parseInt(et_buy_count.getText().toString().trim())<100){
+                    CommonUtils.toastMessage("购买数量不能小于100股");
+                    return;
+                }
+                String b_count = et_buy_count.getText().toString().trim();
+                et_buy_count.setText(changeCount(Integer.parseInt(b_count))+"");
                 confirmBuyDialog();
                 break;
             case R.id.tv_confirm_dialog_cannel:
@@ -641,6 +710,11 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
                 }
                 Float sold_fp = Float.parseFloat(sold_price);
                 sold_fp = (float)(Math.round((sold_fp+0.01f)*100))/100;
+                if(sold_fp > Float.parseFloat(mStock_zt)){
+                    CommonUtils.toastMessage("卖出价格不能大于涨停价");
+                    et_buy_price.setText(mStock_zt);
+                    return;
+                }
                 et_buy_price.setText(sold_fp+"");
                 break;
             case R.id.ll_stock_info_sold_minus:
@@ -650,6 +724,11 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
                 }
                 Float sold_f = Float.parseFloat(sold_m_price);
                 sold_f = (float)(Math.round((sold_f-0.01f)*100))/100;
+                if(sold_f < Float.parseFloat(mStock_dt)){
+                    CommonUtils.toastMessage("卖出价格不能低于跌停价");
+                    et_buy_price.setText(mStock_dt);
+                    return;
+                }
                 et_buy_price.setText(sold_f+"");
                 break;
             case R.id.tv_simulation_sold_count_all:
@@ -657,6 +736,11 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
                     return;
                 }
                 count= (int) (Float.parseFloat(mgKmsl));
+                count= changeCount(count);
+                if(count == 0){
+                    CommonUtils.toastMessage("您的可卖数量不足100股");
+                    return;
+                }
                 et_sold_count.setText(count+"");
                 break;
             case R.id.tv_simulation_sold_count_half:
@@ -664,6 +748,11 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
                     return;
                 }
                 count= (int) (Float.parseFloat(mgKmsl)/2);
+                count= changeCount(count);
+                if(count == 0){
+                    CommonUtils.toastMessage("您的可卖数量不足100股");
+                    return;
+                }
                 et_sold_count.setText(count+"");
                 break;
             case R.id.tv_simulation_sold_count_three:
@@ -671,6 +760,11 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
                     return;
                 }
                 count= (int) (Float.parseFloat(mgKmsl)/3);
+                count= changeCount(count);
+                if(count == 0){
+                    CommonUtils.toastMessage("您的可卖数量不足100股");
+                    return;
+                }
                 et_sold_count.setText(count+"");
                 break;
             case R.id.tv_simulation_sold_count_four:
@@ -678,9 +772,35 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
                     return;
                 }
                 count= (int) (Float.parseFloat(mgKmsl)/4);
+                count= changeCount(count);
+                if(count == 0){
+                    CommonUtils.toastMessage("您的可卖数量不足100股");
+                    return;
+                }
                 et_sold_count.setText(count+"");
                 break;
-            case R.id.rl_simulation_sold_confirm:
+            case R.id.rl_simulation_sold_confirm://确认卖出
+                if(TextUtils.isEmpty(et_sold_price.getText().toString())){
+                    return;
+                }
+                if(Float.parseFloat(et_sold_price.getText().toString())>Float.parseFloat(mStock_zt)){
+                    CommonUtils.toastMessage("卖出价格不能大于涨停价");
+                    return;
+                }
+                if(Float.parseFloat(et_sold_price.getText().toString())<Float.parseFloat(mStock_dt)){
+                    CommonUtils.toastMessage("卖出价格不能低于跌停价");
+                    return;
+                }
+                if(TextUtils.isEmpty(et_sold_count.getText().toString())){
+                    CommonUtils.toastMessage("卖出数量不能为空");
+                    return;
+                }
+                if(Integer.parseInt(et_sold_count.getText().toString().trim())<100){
+                    CommonUtils.toastMessage("卖出数量不能小于100股");
+                    return;
+                }
+                String s_count = et_sold_count.getText().toString().trim();
+                et_sold_count.setText(changeCount(Integer.parseInt(s_count))+"");
                 confirmSoldDialog();
                 break;
         }
@@ -750,6 +870,11 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
                 });
     }
     private void confirmSell() {
+        if(Float.parseFloat(et_sold_count.getText().toString().trim()) > Float.parseFloat(mgKmsl)){
+            CommonUtils.toastMessage("卖出数量超出可卖数量");
+            et_sold_count.setText("");
+            return;
+        }
         NewsInternetRequest.simulationSellStock( tv_sold_code.getText().toString(),tv_sold_name.getText().toString()
                 , et_sold_count.getText().toString(),et_sold_price.getText().toString(), new NewsInternetRequest.ForResultListener() {
                     @Override
@@ -773,8 +898,10 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
                 if(result.mn_gupiao !=null){
                     tv_buy_name.setText(result.mn_gupiao.mg_name);
                     tv_buy_code.setText(result.mn_gupiao.mg_code);
-                    tv_buy_price_die.setText(result.mn_gupiao.mg_dt);
-                    tv_buy_price_zhang.setText(result.mn_gupiao.mg_zt);
+                    mStock_dt = result.mn_gupiao.mg_dt;
+                    tv_buy_price_die.setText(mStock_dt);
+                    mStock_zt = result.mn_gupiao.mg_zt;
+                    tv_buy_price_zhang.setText(mStock_zt);
                     nowPrice = result.mn_gupiao.mg_xj;
                     et_buy_price.setText(nowPrice);
                     mg_zzc = result.mn_gupiao.mg_zzc;
@@ -789,6 +916,8 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
                 if(result.mn_gupiao !=null){
                     tv_sold_name.setText(result.mn_gupiao.mg_name);
                     tv_sold_code.setText(result.mn_gupiao.mg_code);
+                    mStock_zt = result.mn_gupiao.mg_zt;
+                    mStock_dt = result.mn_gupiao.mg_dt;
                     tv_sold_price_zhang.setText(result.mn_gupiao.mg_zt);
                     tv_sold_price_die.setText(result.mn_gupiao.mg_dt);
                     nowPrice = result.mn_gupiao.mg_xj;
@@ -833,7 +962,7 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        NewsInternetRequest.cannel(ActivityStockInfo.this);
+        OkHttpUtils.getInstance().getOkHttpClient().dispatcher().cancelAll();//关闭网络请求
         if(mTask !=null){
             mTask.stop();
             mTask = null;
@@ -844,5 +973,14 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
     @Override
     public void onSaveInstanceState(Bundle outState) {
 //        super.onSaveInstanceState(outState);
+    }
+    public int changeCount(int num){
+        if(num < 100){
+            return 0;
+        }else{
+            int i = num / 100;
+            DecimalFormat format = new DecimalFormat("0");
+            return Integer.parseInt(format.format(i*100));
+        }
     }
 }

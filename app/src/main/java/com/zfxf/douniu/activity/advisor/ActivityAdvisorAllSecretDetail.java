@@ -84,7 +84,10 @@ public class ActivityAdvisorAllSecretDetail extends FragmentActivity implements 
         NewsInternetRequest.getCourseInformation(mId, new NewsInternetRequest.ForResultCourseInfoListener() {
             @Override
             public void onResponseMessage(CourseResult courseResult) {
-                Glide.with(ActivityAdvisorAllSecretDetail.this).load(courseResult.news_info.img)
+                String picUrl = getResources().getString(R.string.file_host_address)
+                        +getResources().getString(R.string.showpic)
+                        +courseResult.news_info.img;
+                Glide.with(ActivityAdvisorAllSecretDetail.this).load(picUrl)
                         .placeholder(R.drawable.advisor_detail).into(img);
                 sx_id = courseResult.news_info.auth_ub_id;
                 tv_title.setText(courseResult.news_info.cc_title);

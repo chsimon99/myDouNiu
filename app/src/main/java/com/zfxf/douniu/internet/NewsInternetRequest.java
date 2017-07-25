@@ -58,6 +58,7 @@ public class NewsInternetRequest {
     private static Context context;
     private static Gson mGson;
     private static ForResultPolicyInfoListener policyInfoListener;
+    private static ForResultReferenceInfoListener referenceInfoListener;
     private static ForResultEventInfoListener eventInfoListener;
     private static ForResultPointInfoListener pointInfoListener;
     private static ForResultLivingInfoListener livingInfoListener;
@@ -466,11 +467,18 @@ public class NewsInternetRequest {
      * 列表选项 公开课、大参考
      * @param page 访问页数
      * @param id 首席的id，默认null为全部
-     * @param listener
+     * @param listener 公开课接口
+     * @param infoListener 大参考接口
      * @param html 访问的网络地址
      */
-    public static void getListInformation(String page, String id,ForResultPolicyInfoListener listener,String html) {
-        policyInfoListener = listener;
+    public static void getListInformation(String page, String id, final ForResultPolicyInfoListener listener,
+                                          final ForResultReferenceInfoListener infoListener, String html) {
+        if(listener !=null){
+            policyInfoListener = listener;
+        }
+        if(infoListener !=null){
+            referenceInfoListener = infoListener;
+        }
         final List<Map<String,String>> result_lists = new ArrayList<>();
         Map<String ,String> params = new HashMap<>();
         if(!TextUtils.isEmpty(id)){
@@ -506,7 +514,12 @@ public class NewsInternetRequest {
                     map.put("cc_ub_id",list.cc_ub_id);
                     result_lists.add(map);
                 }
-                policyInfoListener.onResponseMessage(result_lists,total,result.lunbo_list);
+                if(infoListener !=null ){
+                    referenceInfoListener.onResponseMessage(result_lists,total,result.lunbo_list);
+                }
+                if(listener !=null){
+                    policyInfoListener.onResponseMessage(result_lists,total,result.lunbo_list);
+                }
             }
         });
         baseInternetRequest.post(html,true,params);
@@ -2258,6 +2271,56 @@ public class NewsInternetRequest {
     }
 
     /**
+     * 股票详情数据
+     * @param code 股票代码
+     * @param listener
+     */
+    public static void getStockDetailInformation(String code,ForResultStockInfoListener listener){
+        stockInfoListener = listener;
+        Map<String, String> params = new HashMap<>();
+        params.put("mg_code", code);
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getStockDetailInformation=" + e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getStockDetailInformation="+response);
+                StockResult result = mGson.fromJson(response, StockResult.class);
+                if (result.result.code.equals("10")) {
+                    stockInfoListener.onResponseMessage(result);
+                }
+            }
+        }).post(context.getResources().getString(R.string.stockdetailinfo), true, params);
+    }
+    /**
+     * 股票分时数据
+     * @param code 股票代码
+     * @param listener
+     */
+    public static void getStockSencondInformation(String code,ForResultStockFensiInfoListener listener){
+        fensiInfoListener = listener;
+        Map<String, String> params = new HashMap<>();
+        params.put("mg_code", code);
+        new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
+            @Override
+            public void onError(Call call, Exception e, int id) {
+                CommonUtils.logMes("getStockSencondInformation=" + e);
+            }
+
+            @Override
+            public void onResponse(String response, int id) {
+                CommonUtils.logMes("getStockSencondInformation="+response);
+                StockResult result = mGson.fromJson(response, StockResult.class);
+                if (result.result.code.equals("10")) {
+                    fensiInfoListener.onResponseMessage(result);
+                }
+            }
+        }).post(context.getResources().getString(R.string.secondLine), true, params);
+    }
+    /**
      * 股票的k线图
      * @param code 股票代码
      * @param page 页数
@@ -2289,6 +2352,12 @@ public class NewsInternetRequest {
 
     }
 
+    /**
+     * 获取股票的公告、咨询信息
+     * @param code 股票代码
+     * @param type 1资讯 2公告 3研报
+     * @param listener
+     */
     public static void getStockNewsInformation(String code,int type,ForResultStockNewsInfoListener listener){
         stockNewsInfoListener = listener;
         Map<String ,String> params = new HashMap<>();
@@ -2307,12 +2376,18 @@ public class NewsInternetRequest {
                 StockResult result = mGson.fromJson(response, StockResult.class);
                 if (result.result.code.equals("10")) {
                     stockNewsInfoListener.onResponseMessage(result);
+                }else if(result.result.code.equals("20")){
+                    stockNewsInfoListener.onResponseMessage(result);
                 }
             }
         }).post(context.getResources().getString(R.string.stocknews), true, params);
 
     }
+
     public interface ForResultPolicyInfoListener {
+        void onResponseMessage(List<Map<String, String>> lists, String totalpage, List<LunBoListInfo> lunbo_list);
+    }
+    public interface ForResultReferenceInfoListener {
         void onResponseMessage(List<Map<String, String>> lists, String totalpage, List<LunBoListInfo> lunbo_list);
     }
     public interface ForResultEventInfoListener {
@@ -2414,7 +2489,7 @@ public class NewsInternetRequest {
     public interface ForResultStockNewsInfoListener {
         void onResponseMessage(StockResult result);
     }
-    public static void cannel(FragmentActivity activity){
-        OkHttpUtils.getInstance().cancelTag(activity);
+    public static void cannel(){
+        OkHttpUtils.getInstance().getOkHttpClient().dispatcher().cancelAll();//关闭网络请求
     }
 }

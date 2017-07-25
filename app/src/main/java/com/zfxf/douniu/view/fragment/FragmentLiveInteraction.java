@@ -19,6 +19,7 @@ import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.utils.Constants;
 import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -279,6 +280,7 @@ public class FragmentLiveInteraction extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        OkHttpUtils.getInstance().getOkHttpClient().dispatcher().cancelAll();//关闭网络请求
         if(mTask!=null){
             mTask.stop();
         }

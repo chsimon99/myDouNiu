@@ -79,7 +79,10 @@ public class HomeZhiboAdapter extends RecyclerView.Adapter<HomeZhiboAdapter.MyHo
         }
 
         public void setRefreshData(IndexLivingListInfo bean, int position) {
-            Glide.with(mContext).load(bean.zt_fileid)
+            String picUrl = mContext.getResources().getString(R.string.file_host_address)
+                    +mContext.getResources().getString(R.string.showpic)
+                    +bean.zt_fileid;
+            Glide.with(mContext).load(picUrl)
                     .placeholder(R.drawable.home_zhibo_bg).into(bg);
             name.setText(bean.ud_nickname);
             count.setText(bean.zt_clicks+"人参与");

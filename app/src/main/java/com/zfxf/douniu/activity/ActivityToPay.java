@@ -80,6 +80,11 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
     @BindView(R.id.iv_topay_zfb_noselect)
     ImageView zfb_noselect;
 
+    @BindView(R.id.rl_topay_wx)
+    RelativeLayout rl_wx;//微信的按钮
+    @BindView(R.id.rl_topay_zfb)
+    RelativeLayout rl_zfb;//支付宝的按钮
+
     @BindView(R.id.rl_topay_pay)
     RelativeLayout pay;
     private String mCount;
@@ -109,6 +114,7 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
         towho.setText(from);
         api = WXAPIFactory.createWXAPI(this,  Constants.APP_ID);
         api.registerApp(Constants.APP_ID);
+        instance = this;
         initData();
         initListener();
     }
@@ -118,6 +124,12 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
         yu_e.setVisibility(View.VISIBLE);
         yu_e_pay.setVisibility(View.VISIBLE);
         v_yu_e.setVisibility(View.GONE);
+        if(mCount.equals("0")){
+            rl_wx.setVisibility(View.GONE);
+            rl_zfb.setVisibility(View.GONE);
+            wx.setVisibility(View.GONE);
+            zfb.setVisibility(View.GONE);
+        }
     }
 
     private void visitInternet() {
@@ -233,15 +245,11 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
             public void onResponseMessage(OtherResult otherResult) {
                 if(payType.equals("alipay")){
                     final String orderInfo = otherResult.response;
-                    CommonUtils.logMes("-------orderInfo----"+orderInfo);
                     Runnable payRunnable = new Runnable() {
                         @Override
                         public void run() {
-                            CommonUtils.logMes("-------msp--1--");
                             PayTask alipay = new PayTask(ActivityToPay.this);
-                            CommonUtils.logMes("-------msp--2--");
                             Map<String, String> result = alipay.payV2(orderInfo, true);
-                            CommonUtils.logMes("-------msp--3--"+result);
                             Message msg = new Message();
                             msg.what = SDK_PAY_FLAG;
                             msg.obj = result;
@@ -261,12 +269,13 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
                         req.timeStamp = otherResult.wx_params.timestamp;
                         req.sign = otherResult.wx_params.sign;
                         api.sendReq(req);
+                        SpTools.setInt(CommonUtils.getContext(),Constants.payweixin,2);//非牛币购买的微信支付
                     }
                 }else if(payType.equals("niubi")){
                     //牛币支付
                     SpTools.setBoolean(ActivityToPay.this, Constants.buy, true);
+                    finish();
                 }
-                finish();
             }
         });
     }
@@ -301,6 +310,7 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
                     if (TextUtils.equals(resultStatus, "9000")) {
                         SpTools.setBoolean(ActivityToPay.this, Constants.buy, true);
                         Toast.makeText(ActivityToPay.this, "支付成功", Toast.LENGTH_SHORT).show();
+                        finish();
                     } else {
                         Toast.makeText(ActivityToPay.this, "支付失败", Toast.LENGTH_SHORT).show();
                     }
@@ -311,4 +321,15 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
             }
         }
     };
+
+    private static ActivityToPay instance;
+    public static ActivityToPay getInstance() {
+        return instance;
+    }
+    public void showResult(int i){
+        if(i == 2){
+            SpTools.setBoolean(CommonUtils.getContext(), Constants.buy, true);
+            finish();
+        }
+    }
 }

@@ -160,7 +160,10 @@ public class ActivityAdvisorHome extends FragmentActivity implements View.OnClic
         NewsInternetRequest.getAdvisorDetailInformation(mId, new NewsInternetRequest.ForResultIndexListener() {
             @Override
             public void onResponseMessage(IndexResult indexResult) {
-                Glide.with(ActivityAdvisorHome.this).load(indexResult.user_info.zt_fileid)
+                String picUrl = getResources().getString(R.string.file_host_address)
+                        +getResources().getString(R.string.showpic)
+                        +indexResult.user_info.zt_fileid;
+                Glide.with(ActivityAdvisorHome.this).load(picUrl)
                         .placeholder(R.drawable.advisor_home_img)
                         .bitmapTransform(new CropCircleTransformation(ActivityAdvisorHome.this)).into(mView);
                 mNickname = indexResult.user_info.ud_nickname;

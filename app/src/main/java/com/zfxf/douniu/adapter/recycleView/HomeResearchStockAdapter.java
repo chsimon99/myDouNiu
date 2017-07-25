@@ -23,7 +23,7 @@ public class HomeResearchStockAdapter extends RecyclerView.Adapter<HomeResearchS
     private List<ResearchInfo> mDatas;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int id);
+        void onItemClick(View v, ResearchInfo id);
     }
 
     public HomeResearchStockAdapter(Context context, List<ResearchInfo> datas) {
@@ -75,12 +75,16 @@ public class HomeResearchStockAdapter extends RecyclerView.Adapter<HomeResearchS
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, Integer.parseInt(mDatas.get(getPosition()).mg_id));
+                mListener.onItemClick(v, mDatas.get(getPosition()));
             }
         }
 
         public void setRefreshData(ResearchInfo bean, int position) {
-            type.setText(bean.mg_mb_name);
+            if(bean.mg_code.startsWith("6",0)){
+                type.setText("沪A");
+            }else {
+                type.setText("深A");
+            }
             name.setText(bean.mg_name);
             code.setText(bean.mg_code);
         }

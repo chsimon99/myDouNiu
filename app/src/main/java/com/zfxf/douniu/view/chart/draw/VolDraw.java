@@ -2,7 +2,6 @@ package com.zfxf.douniu.view.chart.draw;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -100,7 +99,7 @@ public class VolDraw extends BaseDraw<VoLImpl> {
             if (closeDif < 0) {
                 canvas.drawRect(cutX - r, vol, cutX + r, view.getChildY(0), greenPaint);
             } else if (closeDif == 0) {
-                redPaint.setColor(Color.LTGRAY);
+                redPaint.setColor(mContext.getResources().getColor(R.color.price_av));
                 canvas.drawRect(cutX - r, vol, cutX + r, view.getChildY(0), redPaint);
             } else {
                 redPaint.setColor(mContext.getResources().getColor(R.color.chart_red));

@@ -93,10 +93,20 @@ public class BarBarAdapter extends RecyclerView.Adapter<BarBarAdapter.MyHolder> 
             name.setText(bean.get("ud_nickname"));
             title.setText(bean.get("cc_title"));
             detail.setText(bean.get("cc_description"));
-            Glide.with(mContext).load(bean.get("headImg"))
-                    .placeholder(R.drawable.home_adviosr_img)
-                    .bitmapTransform(new CropCircleTransformation(mContext))
-                    .into(imageView);
+            if(bean.get("headImg").contains("http")){
+                Glide.with(mContext).load(bean.get("headImg"))
+                        .placeholder(R.drawable.home_adviosr_img)
+                        .bitmapTransform(new CropCircleTransformation(mContext))
+                        .into(imageView);
+            }else {
+                String picUrl = mContext.getResources().getString(R.string.file_host_address)
+                        +mContext.getResources().getString(R.string.showpic)
+                        +bean.get("headImg");
+                Glide.with(mContext).load(picUrl)
+                        .placeholder(R.drawable.home_adviosr_img)
+                        .bitmapTransform(new CropCircleTransformation(mContext))
+                        .into(imageView);
+            }
         }
     }
 }

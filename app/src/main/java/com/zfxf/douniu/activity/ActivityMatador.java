@@ -118,9 +118,18 @@ public class ActivityMatador extends FragmentActivity implements View.OnClickLis
             @Override
             public void onResponseMessage(SimulationResult result) {
                 SimulationDetail detail = result.user_detail;
-                Glide.with(ActivityMatador.this).load(detail.url)
-                        .placeholder(R.drawable.home_adviosr_img)
-                        .bitmapTransform(new CropCircleTransformation(ActivityMatador.this)).into(img);
+                if(detail.url.contains("http")){
+                    Glide.with(ActivityMatador.this).load(detail.url)
+                            .placeholder(R.drawable.home_adviosr_img)
+                            .bitmapTransform(new CropCircleTransformation(ActivityMatador.this)).into(img);
+                }else {
+                    String picUrl = getResources().getString(R.string.file_host_address)
+                            +getResources().getString(R.string.showpic)
+                            +detail.url;
+                    Glide.with(ActivityMatador.this).load(picUrl)
+                            .placeholder(R.drawable.home_adviosr_img)
+                            .bitmapTransform(new CropCircleTransformation(ActivityMatador.this)).into(img);
+                }
                 tv_name.setText(detail.ud_nickname);
                 tv_fans.setText(detail.ud_fensi);
                 tv_type.setText(detail.ud_ul_name);

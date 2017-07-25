@@ -84,10 +84,20 @@ public class HeadlineDetailAdapter extends RecyclerView.Adapter<HeadlineDetailAd
         }
 
         public void setRefreshData(CommentInformationResult result) {
-            Glide.with(mContext).load(result.ud_photo_fileid)
-                    .placeholder(R.drawable.home_adviosr_img)
-                    .bitmapTransform(new CropCircleTransformation(mContext))
-                    .into(img);
+            if(result.ud_photo_fileid.contains("http")){
+                Glide.with(mContext).load(result.ud_photo_fileid)
+                        .placeholder(R.drawable.home_adviosr_img)
+                        .bitmapTransform(new CropCircleTransformation(mContext))
+                        .into(img);
+            }else {
+                String picUrl = mContext.getResources().getString(R.string.file_host_address)
+                        +mContext.getResources().getString(R.string.showpic)
+                        +result.ud_photo_fileid;
+                Glide.with(mContext).load(picUrl)
+                        .placeholder(R.drawable.home_adviosr_img)
+                        .bitmapTransform(new CropCircleTransformation(mContext))
+                        .into(img);
+            }
             name.setText(result.ud_nickname);
             detail.setText(result.ccp_info);
             time.setText(result.ccp_time);

@@ -86,7 +86,10 @@ public class HomeChooseAdapter extends RecyclerView.Adapter<HomeChooseAdapter.My
         }
 
         public void setRefreshData(IndexStockListInfo bean, int position) {
-            Glide.with(mContext).load(bean.zf_fieldid)
+            String picUrl = mContext.getResources().getString(R.string.file_host_address)
+                    +mContext.getResources().getString(R.string.showpic)
+                    +bean.zf_fieldid;
+            Glide.with(mContext).load(picUrl)
                     .placeholder(R.drawable.home_choose).into(img);
             type.setText(bean.zf_title);
             income.setText(bean.zf_pjsy+"%");

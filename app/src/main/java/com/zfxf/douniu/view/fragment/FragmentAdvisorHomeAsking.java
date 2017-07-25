@@ -101,8 +101,10 @@ public class FragmentAdvisorHomeAsking extends BaseFragment {
 								}
 								if (bean.zc_sfjf.equals("0")){
 									Intent intent = new Intent(CommonUtils.getContext(), ActivityToPay.class);
-									intent.putExtra("type","问股");
+									intent.putExtra("info","微问答,"+bean.sx_ub_id+","+bean.zc_id);
+									intent.putExtra("type","一元偷偷看");
 									intent.putExtra("count",bean.zc_fee);
+									intent.putExtra("sx_id",bean.sx_ub_id);
 									intent.putExtra("from",bean.ud_nickname);
 									startActivity(intent);
 									getActivity().overridePendingTransition(0,0);

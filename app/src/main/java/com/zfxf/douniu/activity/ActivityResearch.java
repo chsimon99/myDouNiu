@@ -22,6 +22,7 @@ import com.zfxf.douniu.adapter.recycleView.HomeResearchStockAdapter;
 import com.zfxf.douniu.adapter.recycleView.HomeResearchTouguAdapter;
 import com.zfxf.douniu.adapter.recycleView.HomeResearchZhiboAdapter;
 import com.zfxf.douniu.bean.CourseResult;
+import com.zfxf.douniu.bean.ResearchInfo;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.RecycleViewLunboDivider;
@@ -118,7 +119,7 @@ public class ActivityResearch extends FragmentActivity implements View.OnClickLi
 
             @Override
             public void afterTextChanged(Editable s) {
-                resetRecycleView();
+//                resetRecycleView();
                 if(isResearch){
                     isResearch = false;
                     return;
@@ -190,6 +191,7 @@ public class ActivityResearch extends FragmentActivity implements View.OnClickLi
                 break;
             case R.id.et_research:
                 ll_result.setVisibility(View.GONE);
+                resetRecycleView();
 //                research.setText("");
                 if(research.isFocusable()){
 
@@ -275,7 +277,13 @@ public class ActivityResearch extends FragmentActivity implements View.OnClickLi
                             mStock.setPullRefreshEnable(false);//下拉刷新
                             mStockAdapter.setOnItemClickListener(new HomeResearchStockAdapter.MyItemClickListener() {
                                 @Override
-                                public void onItemClick(View v, int positon) {
+                                public void onItemClick(View v, ResearchInfo info) {
+                                    Intent intent = new Intent(ActivityResearch.this, ActivityStockInfo.class);
+                                    intent.putExtra("code",info.mg_code);
+                                    intent.putExtra("name",info.mg_name);
+                                    startActivity(intent);
+                                    finish();
+                                    overridePendingTransition(0,0);
                                 }
                             });
                         }else {

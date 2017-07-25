@@ -25,87 +25,89 @@ import butterknife.ButterKnife;
 
 
 public class FragmentMyselfSubscribeChoice extends BaseFragment {
-	private View view;
+    private View view;
 
-	@BindView(R.id.tv_myself_subscribe_choice)
-	TextView wait;
+    @BindView(R.id.tv_myself_subscribe_choice)
+    TextView wait;
 
-	@BindView(R.id.rv_myself_subscribe_choice)
-	PullLoadMoreRecyclerView mRecyclerView;
-	private MyselfSubscribeChoiceAdapter mSubscribeChoiceAdapter;
-	private RecycleViewDivider mDivider;
+    @BindView(R.id.rv_myself_subscribe_choice)
+    PullLoadMoreRecyclerView mRecyclerView;
+    private MyselfSubscribeChoiceAdapter mSubscribeChoiceAdapter;
+    private RecycleViewDivider mDivider;
 
-	@Override
-	public View initView(LayoutInflater inflater) {
-		if (view == null) {
-			view = inflater.inflate(R.layout.fragment_myself_subscribe_choice, null);
-		}
-		ViewGroup parent = (ViewGroup) view.getParent();
-		if(parent !=null){
-			parent.removeView(view);
-		}
-		ButterKnife.bind(this,view);
-		return view;
-	}
+    @Override
+    public View initView(LayoutInflater inflater) {
+        if (view == null) {
+            view = inflater.inflate(R.layout.fragment_myself_subscribe_choice, null);
+        }
+        ViewGroup parent = (ViewGroup) view.getParent();
+        if (parent != null) {
+            parent.removeView(view);
+        }
+        ButterKnife.bind(this, view);
+        return view;
+    }
 
-	@Override
-	public void init() {
-		super.init();
-	}
-	@Override
-	public void initdata() {
-		super.initdata();
-		visitInternet();
-	}
+    @Override
+    public void init() {
+        super.init();
+    }
 
-	private void visitInternet() {
-		CommonUtils.showProgressDialog(getActivity(),"加载中……");
-		NewsInternetRequest.getMyXuanGuListInformation(1, new NewsInternetRequest.ForResultXuanGuListener() {
-			@Override
-			public void onResponseMessage(XuanguResult result) {
-				if(result.news_list.size()==0){
-					wait.setVisibility(View.VISIBLE);
-				}else {
-					if(mSubscribeChoiceAdapter == null){
-						mSubscribeChoiceAdapter = new MyselfSubscribeChoiceAdapter(getActivity(),result.news_list);
-					}
+    @Override
+    public void initdata() {
+        super.initdata();
+        visitInternet();
+    }
 
-					mRecyclerView.setLinearLayout();
-					mRecyclerView.setAdapter(mSubscribeChoiceAdapter);
-					if(mDivider == null){
-						mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL,
-								CommonUtils.px2dip(getActivity(), 20), Color.parseColor("#f4f4f4"));
-						mRecyclerView.addItemDecoration(mDivider);
-					}
-					mRecyclerView.setPullRefreshEnable(false);
-					mRecyclerView.setPushRefreshEnable(false);
+    private void visitInternet() {
+        CommonUtils.showProgressDialog(getActivity(), "加载中……");
+        NewsInternetRequest.getMyXuanGuListInformation(1, new NewsInternetRequest.ForResultXuanGuListener() {
+            @Override
+            public void onResponseMessage(XuanguResult result) {
+                if (result.news_list.size() == 0) {
+                    wait.setVisibility(View.VISIBLE);
+                }
+                if (mSubscribeChoiceAdapter == null) {
+                    mSubscribeChoiceAdapter = new MyselfSubscribeChoiceAdapter(getActivity(), result.news_list);
+                }
 
-					mSubscribeChoiceAdapter.setOnItemClickListener(new MyselfSubscribeChoiceAdapter.MyItemClickListener() {
-						@Override
-						public void onItemClick(View v, int id) {
-							Intent intent = new Intent(getActivity(), ActivityIntelligenceChoose.class);
-							intent.putExtra("id",id);
-							getActivity().startActivity(intent);
-							getActivity().overridePendingTransition(0,0);
-						}
-					});
-				}
-				CommonUtils.dismissProgressDialog();
-			}
-		});
-	}
+                mRecyclerView.setLinearLayout();
+                mRecyclerView.setAdapter(mSubscribeChoiceAdapter);
+                if (mDivider == null) {
+                    mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL,
+                            CommonUtils.px2dip(getActivity(), 20), Color.parseColor("#f4f4f4"));
+                    mRecyclerView.addItemDecoration(mDivider);
+                }
+                mRecyclerView.setPullRefreshEnable(false);
+                mRecyclerView.setPushRefreshEnable(false);
 
-	@Override
-	public void initListener() {
-		super.initListener();
-	}
-	@Override
-	public void onResume() {
-		super.onResume();
-		if(SpTools.getBoolean(getActivity(), Constants.subscribe,false)){//如果已经支付成功，重新刷新数据
-			mSubscribeChoiceAdapter = null;
-			visitInternet();
-			SpTools.setBoolean(getActivity(), Constants.subscribe,false);
-		}
-	}
+                mSubscribeChoiceAdapter.setOnItemClickListener(new MyselfSubscribeChoiceAdapter.MyItemClickListener() {
+                    @Override
+                    public void onItemClick(View v, int id) {
+                        Intent intent = new Intent(getActivity(), ActivityIntelligenceChoose.class);
+                        intent.putExtra("id", id);
+                        getActivity().startActivity(intent);
+                        getActivity().overridePendingTransition(0, 0);
+                    }
+                });
+
+                CommonUtils.dismissProgressDialog();
+            }
+        });
+    }
+
+    @Override
+    public void initListener() {
+        super.initListener();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (SpTools.getBoolean(getActivity(), Constants.subscribe, false)) {//如果已经支付成功，重新刷新数据
+            mSubscribeChoiceAdapter = null;
+            visitInternet();
+            SpTools.setBoolean(getActivity(), Constants.subscribe, false);
+        }
+    }
 }

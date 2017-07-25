@@ -21,10 +21,12 @@ public interface Constants {
     String imgurl = "IMGURL";
     String buy = "BUY";
     String subscribe = "SUBSCRIBE";
+    String publicsubscribe = "PUBLICSUBSCRIBE";
     String read = "READ";
     int resultCodeLogin	= 1;
     int resultCodeEditInfor	= 2;
     String getIndexInformation = "GETINDEXINFORMATION";
     String APP_ID = "wx086c758d5e01f463";
     String error = "ERROR";
+    String payweixin = "PAYWEIXIN";
 }

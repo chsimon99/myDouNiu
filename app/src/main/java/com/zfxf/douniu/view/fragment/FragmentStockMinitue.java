@@ -1,6 +1,7 @@
 package com.zfxf.douniu.view.fragment;
 
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.zfxf.douniu.chart.MChartAdapter;
 import com.zfxf.douniu.chart.MTrendView;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.view.chart.formatter.TimeFormatter;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,6 +116,17 @@ public class FragmentStockMinitue extends BaseFragment {
     public void initdata() {
         super.initdata();
         mHandler = new Handler();
+        mFiveHandler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what) {
+                    case 1:
+                        showFive(((StockInfo)msg.obj),Float.parseFloat(((StockInfo)msg.obj).mg_zs));
+                        break;
+                }
+            }
+        };
         drawKLine();
         activity = getActivity();
         mTimer = new Timer();
@@ -183,7 +196,7 @@ public class FragmentStockMinitue extends BaseFragment {
                 return;
             }
             stock_zs = Float.parseFloat(stockResult.gupiao_info.mg_zs);
-            showFive(stockResult.gupiao_info,stock_zs);
+//            showFive(stockResult.gupiao_info,stock_zs);
             if(oldStockInfos.size() == (stockResult.mg_gupiao.size())){//数据相同
                 return;
             }else if(oldStockInfos.size() > (stockResult.mg_gupiao.size())){
@@ -233,7 +246,7 @@ public class FragmentStockMinitue extends BaseFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        NewsInternetRequest.cannel(activity);
+        OkHttpUtils.getInstance().getOkHttpClient().dispatcher().cancelAll();
         if(mTask!=null){
             mTask.stop();
         }
@@ -307,5 +320,10 @@ public class FragmentStockMinitue extends BaseFragment {
                 },0,5000l);
             }
         }
+    }
+
+    public static Handler mFiveHandler;
+    public static Handler getmFiveHandler(){
+        return mFiveHandler;
     }
 }

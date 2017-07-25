@@ -93,7 +93,10 @@ public class NewTopPolicyAdapter extends RecyclerView.Adapter<NewTopPolicyAdapte
             name.setText(bean.get("ud_nickname"));
             title.setText(bean.get("cc_title"));
             detail.setText(bean.get("cc_description"));
-            Glide.with(mContext).load(bean.get("headImg"))
+            String picUrl = mContext.getResources().getString(R.string.file_host_address)
+                    +mContext.getResources().getString(R.string.showpic)
+                    +bean.get("headImg");
+            Glide.with(mContext).load(picUrl)
                     .placeholder(R.drawable.home_adviosr_img)
                     .bitmapTransform(new CropCircleTransformation(mContext))
                     .into(img);

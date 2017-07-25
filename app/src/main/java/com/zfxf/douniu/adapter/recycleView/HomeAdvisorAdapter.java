@@ -89,7 +89,10 @@ public class HomeAdvisorAdapter extends RecyclerView.Adapter<HomeAdvisorAdapter.
         }
 
         public void setRefreshData(IndexAdvisorListInfo bean) {
-            Glide.with(mContext).load(bean.headImg)
+            String picUrl = mContext.getResources().getString(R.string.file_host_address)
+                    +mContext.getResources().getString(R.string.showpic)
+                    +bean.headImg;
+            Glide.with(mContext).load(picUrl)
                     .placeholder(R.drawable.home_adviosr_img)
                     .bitmapTransform(new CropCircleTransformation(mContext)).into(imageView);
             name.setText(bean.ud_nickname);

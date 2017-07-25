@@ -131,7 +131,7 @@ public class FragmentAdvisorAllPublic extends BaseFragment{
 				}
 				CommonUtils.dismissProgressDialog();
 			}
-		},getActivity().getResources().getString(R.string.gongkelist));
+		},null,getActivity().getResources().getString(R.string.gongkelist));
 	}
 
 	@Override
@@ -184,11 +184,11 @@ public class FragmentAdvisorAllPublic extends BaseFragment{
 			mMyLunBO.restartLunBO();//不用restart是为了防止突然轮播的速度快
 			isOnPause = false;
 		}
-		if(SpTools.getBoolean(getActivity(), Constants.subscribe,false)){//如果已经支付成功，重新刷新数据
+		if(SpTools.getBoolean(getActivity(), Constants.publicsubscribe,false)){//如果已经支付成功，重新刷新数据
 			currentPage = 1;
 			mAllPublicAdapter = null;
 			CommonUtils.showProgressDialog(getActivity(),"加载中……");
-			SpTools.setBoolean(getActivity(), Constants.subscribe,false);
+			SpTools.setBoolean(getActivity(), Constants.publicsubscribe,false);
 			visitInternet();
 		}
 		super.onResume();

@@ -76,7 +76,7 @@ public class FragmentAdvisorAllReference extends BaseFragment{
 	}
 
 	private void visitInternet() {
-		NewsInternetRequest.getListInformation(currentPage+"", null, new NewsInternetRequest.ForResultPolicyInfoListener() {
+		NewsInternetRequest.getListInformation(currentPage+"", null, null,new NewsInternetRequest.ForResultReferenceInfoListener() {
 			@Override
 			public void onResponseMessage(List<Map<String, String>> lists, String totalpage, List<LunBoListInfo> lunbo_list) {
 				totlePage = Integer.parseInt(totalpage);

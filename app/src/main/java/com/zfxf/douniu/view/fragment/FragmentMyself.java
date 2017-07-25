@@ -294,7 +294,9 @@ public class FragmentMyself extends BaseFragment implements View.OnClickListener
 					String nickname = map.get("ud_nickname");
 					String address = map.get("ud_addr");
 					String borth = map.get("ud_borth");
-					final String photoUrl = map.get("ud_photo_fileid");
+					final String photoUrl = getResources().getString(R.string.file_host_address)
+							+getResources().getString(R.string.showpic)
+							+map.get("ud_photo_fileid");
 					if (TextUtils.isEmpty(nickname)) {
 						name.setText("请您去设置昵称");
 					} else {

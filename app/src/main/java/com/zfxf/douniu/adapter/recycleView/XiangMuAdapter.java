@@ -92,7 +92,10 @@ public class XiangMuAdapter extends RecyclerView.Adapter<XiangMuAdapter.MyHolder
             }
             name.setText(bean.get("cc_title"));
             time.setText(bean.get("cc_datetime"));
-            Glide.with(mContext).load(bean.get("cc_fielid")).placeholder(R.drawable.xiangmu_img)
+            String picUrl = mContext.getResources().getString(R.string.file_host_address)
+                    +mContext.getResources().getString(R.string.showpic)
+                    +bean.get("cc_fielid");
+            Glide.with(mContext).load(picUrl).placeholder(R.drawable.xiangmu_img)
                     .into(bgImg);
         }
     }

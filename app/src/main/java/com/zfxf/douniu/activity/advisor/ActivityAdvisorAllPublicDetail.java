@@ -83,7 +83,10 @@ public class ActivityAdvisorAllPublicDetail extends FragmentActivity implements 
             NewsInternetRequest.getCourseInformation(mId, new NewsInternetRequest.ForResultCourseInfoListener() {
                 @Override
                 public void onResponseMessage(CourseResult courseResult) {
-                    Glide.with(ActivityAdvisorAllPublicDetail.this).load(courseResult.news_info.img)
+                    String picUrl = getResources().getString(R.string.file_host_address)
+                            +getResources().getString(R.string.showpic)
+                            +courseResult.news_info.img;
+                    Glide.with(ActivityAdvisorAllPublicDetail.this).load(picUrl)
                             .placeholder(R.drawable.advisor_detail).into(img);
                     tv_title.setText(courseResult.news_info.cc_title);
                     from.setText(courseResult.news_info.ud_nickname);
@@ -139,6 +142,9 @@ public class ActivityAdvisorAllPublicDetail extends FragmentActivity implements 
                     overridePendingTransition(0,0);
                     return;
                 }
+                if(TextUtils.isEmpty(mAuthUbId)){
+                    return;
+                }
                 //关注本公开课的播主
                 if (follow.getText().toString().equals("关注")) {
                     subscribeInternet(Integer.parseInt(mAuthUbId),6,0);
@@ -153,6 +159,9 @@ public class ActivityAdvisorAllPublicDetail extends FragmentActivity implements 
                     Intent intent = new Intent(this, ActivityLogin.class);
                     startActivity(intent);
                     overridePendingTransition(0,0);
+                    return;
+                }
+                if(TextUtils.isEmpty(mAuthUbId)){
                     return;
                 }
                 if (subscribe.getText().toString().equals("立即预约")) {
@@ -217,7 +226,7 @@ public class ActivityAdvisorAllPublicDetail extends FragmentActivity implements 
                                 subscribeCannel();
                                 CommonUtils.toastMessage("取消预约成功");
                             }
-                            SpTools.setBoolean(ActivityAdvisorAllPublicDetail.this, Constants.subscribe,true);
+                            SpTools.setBoolean(ActivityAdvisorAllPublicDetail.this, Constants.publicsubscribe,true);
                         }else{
                             if(type == 0){
                                 CommonUtils.toastMessage("关注成功");

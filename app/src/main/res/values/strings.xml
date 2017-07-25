@@ -32,7 +32,7 @@
     <string-array name="fragment_new_top_titles">
         <item>政策解读</item>
         <item>事件追踪</item>
-        <item>观点视角</item>
+        <item>数据分析</item>
     </string-array>
 
     <string-array name="fragment_new_titles">
@@ -42,8 +42,8 @@
     </string-array>
 
     <string-array name="advisot_list_titles">
-        <item>金牌</item>
-        <item>首席</item>
+        <item>首席投顾</item>
+        <item>金牌投顾</item>
     </string-array>
 
     <string-array name="fragment_myself_consume_titles">

@@ -127,7 +127,9 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
                     String nickname = map.get("ud_nickname");
                     String address = map.get("ud_addr");
                     String borth = map.get("ud_borth");
-                    String photoUrl = map.get("ud_photo_fileid");
+                    String photoUrl = getResources().getString(R.string.file_host_address)
+                            +getResources().getString(R.string.showpic)
+                            +map.get("ud_photo_fileid");
                     String memo = map.get("ud_memo");
                     if(!TextUtils.isEmpty(nickname)){
                         textName.setText(nickname);

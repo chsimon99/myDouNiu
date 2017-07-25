@@ -136,14 +136,14 @@ public class FragmentMarket extends BaseFragment implements View.OnClickListener
 	}
 
 	private void selectSelect() {
-		select.setTextColor(Color.parseColor("#FB6733"));
+		select.setTextColor(Color.parseColor("#FF6905"));
 		select.setBackgroundResource(R.drawable.backgroud_bg_white_right);
 		market.setTextColor(Color.parseColor("#FFFFFF"));
 		market.setBackgroundResource(R.drawable.backgroud_bg_null);
 	}
 
 	private void selectMarket() {
-		market.setTextColor(Color.parseColor("#FB6733"));
+		market.setTextColor(Color.parseColor("#FF6905"));
 		market.setBackgroundResource(R.drawable.backgroud_bg_white_left);
 		select.setTextColor(Color.parseColor("#FFFFFF"));
 		select.setBackgroundResource(R.drawable.backgroud_bg_null);

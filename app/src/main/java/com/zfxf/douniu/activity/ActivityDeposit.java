@@ -69,6 +69,7 @@ public class ActivityDeposit extends FragmentActivity implements View.OnClickLis
         mOrder = getIntent().getStringExtra("order");
         api = WXAPIFactory.createWXAPI(this,  Constants.APP_ID);
         api.registerApp(Constants.APP_ID);
+        instance = this;
         initData();
         initListener();
     }
@@ -178,10 +179,10 @@ public class ActivityDeposit extends FragmentActivity implements View.OnClickLis
                         req.timeStamp = otherResult.wx_params.timestamp;
                         req.sign = otherResult.wx_params.sign;
                         api.sendReq(req);
+                        SpTools.setInt(CommonUtils.getContext(),Constants.payweixin,1);//牛币购买的微信支付
                     }
                 }
 //                SpTools.setBoolean(ActivityDeposit.this, Constants.buy, true);
-                finish();
             }
         });
     }
@@ -216,6 +217,7 @@ public class ActivityDeposit extends FragmentActivity implements View.OnClickLis
                     if (TextUtils.equals(resultStatus, "9000")) {
                         SpTools.setBoolean(ActivityDeposit.this, Constants.buy, true);
                         Toast.makeText(ActivityDeposit.this, "支付成功", Toast.LENGTH_SHORT).show();
+                        finish();
                     } else {
                         Toast.makeText(ActivityDeposit.this, "支付失败", Toast.LENGTH_SHORT).show();
                     }
@@ -226,5 +228,14 @@ public class ActivityDeposit extends FragmentActivity implements View.OnClickLis
             }
         }
     };
-
+    private static ActivityDeposit instance;
+    public static ActivityDeposit getInstance() {
+        return instance;
+    }
+    public void showResult(int i){
+        if(i == 2){
+            SpTools.setBoolean(CommonUtils.getContext(), Constants.buy, true);
+            finish();
+        }
+    }
 }

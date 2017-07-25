@@ -135,9 +135,18 @@ public class ActivitySimulation extends FragmentActivity implements View.OnClick
             public void onResponseMessage(SimulationResult result) {
                 SimulationDetail detail = result.user_detail;
                 mChigu = result.mn_chigu;
-                Glide.with(ActivitySimulation.this).load(detail.url)
-                        .placeholder(R.drawable.home_adviosr_img)
-                        .bitmapTransform(new CropCircleTransformation(ActivitySimulation.this)).into(img);
+                if(detail.url.contains("http")){
+                    Glide.with(ActivitySimulation.this).load(detail.url)
+                            .placeholder(R.drawable.home_adviosr_img)
+                            .bitmapTransform(new CropCircleTransformation(ActivitySimulation.this)).into(img);
+                }else {
+                    String picUrl = getResources().getString(R.string.file_host_address)
+                            +getResources().getString(R.string.showpic)
+                            +detail.url;
+                    Glide.with(ActivitySimulation.this).load(picUrl)
+                            .placeholder(R.drawable.home_adviosr_img)
+                            .bitmapTransform(new CropCircleTransformation(ActivitySimulation.this)).into(img);
+                }
                 tv_name.setText(detail.ud_nickname);
                 tv_fans.setText(detail.ud_fensi);
                 tv_type.setText(detail.ud_ul_name);

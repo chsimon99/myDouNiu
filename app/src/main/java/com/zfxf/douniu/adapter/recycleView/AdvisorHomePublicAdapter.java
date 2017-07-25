@@ -133,7 +133,10 @@ public class AdvisorHomePublicAdapter extends RecyclerView.Adapter<AdvisorHomePu
             }, mContext.getResources().getString(R.string.userdy));
         }
         public void setRefreshData(Map<String, String> bean, int position) {
-            Glide.with(mContext).load(bean.get("cc_fielid"))
+            String picUrl = mContext.getResources().getString(R.string.file_host_address)
+                    +mContext.getResources().getString(R.string.showpic)
+                    +bean.get("cc_fielid");
+            Glide.with(mContext).load(picUrl)
                     .placeholder(R.drawable.public_img).into(img);
             title.setText(bean.get("cc_title"));
             myCount.setText(bean.get("dy_count"));

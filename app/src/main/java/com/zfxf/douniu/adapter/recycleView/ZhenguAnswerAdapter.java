@@ -92,7 +92,10 @@ public class ZhenguAnswerAdapter extends RecyclerView.Adapter<ZhenguAnswerAdapte
         }
 
         public void setRefreshData(AnswerListInfo bean) {
-            Glide.with(mContext).load(bean.url)
+            String picUrl = mContext.getResources().getString(R.string.file_host_address)
+                    +mContext.getResources().getString(R.string.showpic)
+                    +bean.url;
+            Glide.with(mContext).load(picUrl)
                     .bitmapTransform(new CropCircleTransformation(mContext))
                     .placeholder(R.drawable.home_adviosr_img).into(imageView);
             name.setText(bean.ud_nickname);

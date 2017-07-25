@@ -88,18 +88,21 @@ public class AdvisorAdapter extends RecyclerView.Adapter<AdvisorAdapter.MyHolder
         }
 
         public void setRefreshData(AnswerChiefListInfo bean) {
-            Glide.with(mContext).load(bean.url)
+            String picUrl = mContext.getResources().getString(R.string.file_host_address)
+                    +mContext.getResources().getString(R.string.showpic)
+                    +bean.url;
+            Glide.with(mContext).load(picUrl)
                     .bitmapTransform(new CropCircleTransformation(mContext))
                     .placeholder(R.drawable.home_adviosr_img).into(imageView);
             name.setText(bean.ud_nickname);
             price.setText(bean.df_fee+"/次");
             count.setText("已回答"+bean.df_count+"人次");
-            if(bean.df_sfsx.equals("首席")){
-                type.setVisibility(View.VISIBLE);
-                gold.setVisibility(View.GONE);
-            }else {
+            if(bean.df_sfsx.equals("金牌")){
                 type.setVisibility(View.GONE);
                 gold.setVisibility(View.VISIBLE);
+            }else {
+                type.setVisibility(View.VISIBLE);
+                gold.setVisibility(View.GONE);
             }
         }
     }

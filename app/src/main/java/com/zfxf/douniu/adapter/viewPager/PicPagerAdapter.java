@@ -47,7 +47,10 @@ public class PicPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, final int position) {
         int pos = position % mDatas.size();
         ImageView iv = new ImageView(mContext);
-        Glide.with(mContext).load(mDatas.get(pos).image)
+        String picUrl = mContext.getResources().getString(R.string.file_host_address)
+                +mContext.getResources().getString(R.string.showpic)
+                +mDatas.get(pos).image;
+        Glide.with(mContext).load(picUrl)
                 .placeholder(R.drawable.home_banner).into(iv);
         iv.setScaleType(ImageView.ScaleType.FIT_XY);
         container.addView(iv);

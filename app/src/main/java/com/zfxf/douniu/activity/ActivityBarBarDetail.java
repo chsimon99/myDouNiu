@@ -95,10 +95,20 @@ public class ActivityBarBarDetail extends FragmentActivity implements View.OnCli
                     CommonUtils.toastMessage("获取头条详情失败，请重试");
                     return;
                 }
-                Glide.with(ActivityBarBarDetail.this).load(news_info.ud_photo_fileid)
-                        .placeholder(R.drawable.home_adviosr_img)
-                        .bitmapTransform(new CropCircleTransformation(ActivityBarBarDetail.this))
-                        .into(img);
+                if(news_info.ud_photo_fileid.contains("http")){
+                    Glide.with(ActivityBarBarDetail.this).load(news_info.ud_photo_fileid)
+                            .placeholder(R.drawable.home_adviosr_img)
+                            .bitmapTransform(new CropCircleTransformation(ActivityBarBarDetail.this))
+                            .into(img);
+                }else {
+                    String picUrl = getResources().getString(R.string.file_host_address)
+                            +getResources().getString(R.string.showpic)
+                            +news_info.ud_photo_fileid;
+                    Glide.with(ActivityBarBarDetail.this).load(picUrl)
+                            .placeholder(R.drawable.home_adviosr_img)
+                            .bitmapTransform(new CropCircleTransformation(ActivityBarBarDetail.this))
+                            .into(img);
+                }
                 name.setText(news_info.ud_nickname);
                 detail_title.setText(news_info.cc_title);
                 detail_detail.setText(Html.fromHtml(news_info.cc_context));

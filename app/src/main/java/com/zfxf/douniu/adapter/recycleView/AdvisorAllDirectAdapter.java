@@ -85,7 +85,10 @@ public class AdvisorAllDirectAdapter extends RecyclerView.Adapter<AdvisorAllDire
         }
 
         public void setRefreshData(Map<String, String> bean, int position) {
-            Glide.with(mContext).load(bean.get("headImg"))
+            String picUrl = mContext.getResources().getString(R.string.file_host_address)
+                    +mContext.getResources().getString(R.string.showpic)
+                    +bean.get("headImg");
+            Glide.with(mContext).load(picUrl)
                     .placeholder(R.drawable.home_adviosr_img)
                     .bitmapTransform(new CropCircleTransformation(mContext))
                     .into(img);

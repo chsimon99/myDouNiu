@@ -54,7 +54,7 @@ public class ActivityAdvisorList extends FragmentActivity implements View.OnClic
         setContentView(R.layout.activity_advisor_list);
         ButterKnife.bind(this);
 
-        title.setText("分析师列表");
+        title.setText("投顾列表");
         edit.setVisibility(View.INVISIBLE);
 
         initdata();

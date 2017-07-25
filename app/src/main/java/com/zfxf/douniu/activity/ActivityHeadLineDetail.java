@@ -16,8 +16,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.adapter.recycleView.HeadlineDetailAdapter;
@@ -81,17 +87,12 @@ public class ActivityHeadLineDetail extends FragmentActivity implements View.OnC
     TextView count_zan;//点赞数量
     @BindView(R.id.tv_headline_detail_count_shang)
     TextView count_shang;//打赏数量
-    @BindView(R.id.tv_headline_detail_profile)
-    TextView profile;//简介
     @BindView(R.id.tv_headline_detail_comment)
     TextView comment;
     @BindView(R.id.tv_headline_detail_commentcount)
     TextView comment_count;//评论数量
-    @BindView(R.id.tv_headline_detail_jianjie)
-    TextView jianjie;
     @BindView(R.id.wv_headline_detail)
     WebView mWebView;
-
     @BindView(R.id.et_headline_detail)
     EditText et_comment;
 
@@ -102,6 +103,9 @@ public class ActivityHeadLineDetail extends FragmentActivity implements View.OnC
     private String mIsDz;
     private int mPlTotal;
     private String sx_id;
+    private String webUrl;//H5的url
+    private String mTitle;//标题
+    private String datetime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,10 +115,9 @@ public class ActivityHeadLineDetail extends FragmentActivity implements View.OnC
         title.setText("头条详情");
 
         edit.setVisibility(View.INVISIBLE);
-        share.setVisibility(View.INVISIBLE);
+        share.setVisibility(View.VISIBLE);
         mNewsinfoId = getIntent().getIntExtra("newsinfoId", 0);
         detail_title.getPaint().setFakeBoldText(true);//加粗
-        jianjie.getPaint().setFakeBoldText(true);//加粗
         comment.getPaint().setFakeBoldText(true);//加粗
         initData();
         initListener();
@@ -138,17 +141,21 @@ public class ActivityHeadLineDetail extends FragmentActivity implements View.OnC
                     CommonUtils.toastMessage("获取头条详情失败，请重试");
                     return;
                 }
-                Glide.with(ActivityHeadLineDetail.this).load(news_info.ud_photo_fileid)
+                String picUrl = getResources().getString(R.string.file_host_address)
+                        +getResources().getString(R.string.showpic)
+                        +news_info.ud_photo_fileid;
+                Glide.with(ActivityHeadLineDetail.this).load(picUrl)
                         .placeholder(R.drawable.home_adviosr_img)
                         .bitmapTransform(new CropCircleTransformation(ActivityHeadLineDetail.this))
                         .into(img);
                 name.setText(news_info.ud_nickname);
                 sx_id = news_info.ud_ub_id;
-                detail_title.setText(news_info.cc_title);
-//                detail_detail.setText(Html.fromHtml(news_info.cc_context));
-                mWebView.loadUrl(news_info.context_url);
-                profile.setText(news_info.cc_description);
-                time.setText(news_info.cc_datetime);
+                mTitle = news_info.cc_title;
+                detail_title.setText(mTitle);
+                webUrl = news_info.context_url;
+                mWebView.loadUrl(webUrl);
+                datetime = news_info.cc_datetime;
+                time.setText(datetime);
                 count.setText(news_info.cc_count);
                 count_zan.setText("赞"+news_info.cc_agr);
 
@@ -247,7 +254,16 @@ public class ActivityHeadLineDetail extends FragmentActivity implements View.OnC
                 finish();
                 break;
             case R.id.iv_base_share:
-
+                UMImage thumb =  new UMImage(this, R.drawable.icon_logo);
+                UMWeb web = new UMWeb(webUrl);
+                web.setTitle(mTitle);//标题
+//                web.setDescription(mFrom+" "+datetime);//描述
+                web.setDescription(" "+datetime);//描述
+                web.setThumb(thumb);  //缩略图
+                new ShareAction(ActivityHeadLineDetail.this).withText("斗牛财经")
+                        .withMedia(web)
+                        .setDisplayList(SHARE_MEDIA.SINA,SHARE_MEDIA.QQ,SHARE_MEDIA.WEIXIN,	SHARE_MEDIA.WEIXIN_CIRCLE)
+                        .setCallback(shareListener).open();
                 break;
             case R.id.ll_headline_detail_zan:
                 if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
@@ -302,6 +318,35 @@ public class ActivityHeadLineDetail extends FragmentActivity implements View.OnC
     private void finishAll() {
 
     }
+    private UMShareListener shareListener = new UMShareListener() {
+        /**
+         * @descrption 分享开始的回调 @param platform 平台类型
+         */
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+        }
+        /**
+         * @descrption 分享成功的回调 @param platform 平台类型
+         */
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            Toast.makeText(ActivityHeadLineDetail.this,"分享成功了",Toast.LENGTH_LONG).show();
+        }
+        /**
+         * @descrption 分享失败的回调 @param platform 平台类型 @param t 错误原因
+         */
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            Toast.makeText(ActivityHeadLineDetail.this,"分享失败"+t.getMessage(),Toast.LENGTH_LONG).show();
+        }
+        /**
+         * @descrption 分享取消的回调 @param platform 平台类型
+         */
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            Toast.makeText(ActivityHeadLineDetail.this,"分享取消了",Toast.LENGTH_LONG).show();
+        }
+    };
 
     @Override
     protected void onResume() {

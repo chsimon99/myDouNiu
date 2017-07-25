@@ -62,32 +62,31 @@ public class FragmentMyselfSubscribePublic extends BaseFragment {
 		NewsInternetRequest.getMySubscribeListInfromation(0, new NewsInternetRequest.ForResultMyPublicListener() {
 			@Override
 			public void onResponseMessage(MyContentResult result) {
-				if(result.news_list.size()==0){
+				if (result.news_list.size() == 0) {
 					wait.setVisibility(View.VISIBLE);
-				}else{
-					if (mSubscribePublicAdapter == null) {
-						mSubscribePublicAdapter = new MyselfSubscribePublicAdapter(getActivity(), result.news_list);
-					}
-
-					mRecyclerView.setLinearLayout();
-					mRecyclerView.setAdapter(mSubscribePublicAdapter);
-					if (mDivider == null) {
-						mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
-						mRecyclerView.addItemDecoration(mDivider);
-					}
-					mRecyclerView.setPullRefreshEnable(false);
-					mRecyclerView.setPushRefreshEnable(false);
-
-					mSubscribePublicAdapter.setOnItemClickListener(new MyselfSubscribePublicAdapter.MyItemClickListener() {
-						@Override
-						public void onItemClick(View v, int id) {
-							Intent intent = new Intent(CommonUtils.getContext(), ActivityAdvisorAllPublicDetail.class);
-							intent.putExtra("id",id);
-							startActivity(intent);
-							getActivity().overridePendingTransition(0,0);
-						}
-					});
 				}
+				if (mSubscribePublicAdapter == null) {
+					mSubscribePublicAdapter = new MyselfSubscribePublicAdapter(getActivity(), result.news_list);
+				}
+
+				mRecyclerView.setLinearLayout();
+				mRecyclerView.setAdapter(mSubscribePublicAdapter);
+				if (mDivider == null) {
+					mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
+					mRecyclerView.addItemDecoration(mDivider);
+				}
+				mRecyclerView.setPullRefreshEnable(false);
+				mRecyclerView.setPushRefreshEnable(false);
+
+				mSubscribePublicAdapter.setOnItemClickListener(new MyselfSubscribePublicAdapter.MyItemClickListener() {
+					@Override
+					public void onItemClick(View v, int id) {
+						Intent intent = new Intent(CommonUtils.getContext(), ActivityAdvisorAllPublicDetail.class);
+						intent.putExtra("id", id);
+						startActivity(intent);
+						getActivity().overridePendingTransition(0, 0);
+					}
+				});
 				CommonUtils.dismissProgressDialog();
 			}
 		},null,null);
@@ -101,10 +100,10 @@ public class FragmentMyselfSubscribePublic extends BaseFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if(SpTools.getBoolean(getActivity(), Constants.subscribe,false)){//如果已经支付成功，重新刷新数据
+		if(SpTools.getBoolean(getActivity(), Constants.publicsubscribe,false)){//如果已经支付成功，重新刷新数据
 			mSubscribePublicAdapter = null;
 			visitInternet();
-			SpTools.setBoolean(getActivity(), Constants.subscribe,false);
+			SpTools.setBoolean(getActivity(), Constants.publicsubscribe,false);
 		}
 	}
 }

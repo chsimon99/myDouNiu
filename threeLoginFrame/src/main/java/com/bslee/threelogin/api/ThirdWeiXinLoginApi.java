@@ -12,9 +12,9 @@ import com.bslee.threelogin.model.WeiXinToken;
 import com.bslee.threelogin.model.WeiXinUserInfo;
 import com.bslee.threelogin.network.HttpUrlUtils;
 import com.bslee.threelogin.util.UIUtils;
-import com.tencent.mm.sdk.modelmsg.SendAuth;
-import com.tencent.mm.sdk.openapi.IWXAPI;
-import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import org.json.JSONObject;
 

@@ -83,7 +83,10 @@ public class MyselfSubscribeCapitalAdapter extends RecyclerView.Adapter<MyselfSu
         }
 
         public void setRefreshData(MyContentList bean, int position) {
-            Glide.with(mContext).load(bean.cc_fielid)
+            String picUrl = mContext.getResources().getString(R.string.file_host_address)
+                    +mContext.getResources().getString(R.string.showpic)
+                    +bean.cc_fielid;
+            Glide.with(mContext).load(picUrl)
                     .placeholder(R.drawable.public_img).into(img);
             title.setText(bean.cc_title);
             from.setText(bean.ud_nickname);

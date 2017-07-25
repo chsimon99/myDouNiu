@@ -339,7 +339,10 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
         public Object instantiateItem(ViewGroup container, final int position) {
             int pos = position % mDatas.size();
             ImageView iv = new ImageView(getActivity());
-            Glide.with(getActivity()).load(mDatas.get(pos).image)
+            String picUrl = getResources().getString(R.string.file_host_address)
+                    +getResources().getString(R.string.showpic)
+                    +mDatas.get(pos).image;
+            Glide.with(getActivity()).load(picUrl)
                     .placeholder(R.drawable.home_banner).into(iv);
             iv.setScaleType(ImageView.ScaleType.FIT_XY);
             container.addView(iv);

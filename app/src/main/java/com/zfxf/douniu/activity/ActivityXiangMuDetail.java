@@ -136,7 +136,10 @@ public class ActivityXiangMuDetail extends FragmentActivity implements View.OnCl
             @Override
             public void onResponseMessage(OtherResult otherResult) {
                 ProjectListResult projectInfo = otherResult.project_info;
-                Glide.with(ActivityXiangMuDetail.this).load(projectInfo.cc_fielid)
+                String picUrl = getResources().getString(R.string.file_host_address)
+                        +getResources().getString(R.string.showpic)
+                        +projectInfo.cc_fielid;
+                Glide.with(ActivityXiangMuDetail.this).load(picUrl)
                         .placeholder(R.drawable.xiangmu_img)
                         .into(img);
                 name.setText(projectInfo.cc_title);

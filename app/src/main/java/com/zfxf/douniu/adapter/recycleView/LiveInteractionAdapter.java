@@ -98,10 +98,19 @@ public class LiveInteractionAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         }
 
         public void setRefreshData(LivingInteract bean) {
-            Glide.with(mContext).load(bean.headImg)
-                    .placeholder(R.drawable.home_adviosr_img)
-                    .bitmapTransform(new CropCircleTransformation(mContext))
-                    .into(imageView);
+            if(bean.headImg.contains("http")){
+                Glide.with(mContext).load(bean.headImg)
+                        .placeholder(R.drawable.home_adviosr_img)
+                        .bitmapTransform(new CropCircleTransformation(mContext))
+                        .into(imageView);
+            }else {
+                String picUrl = mContext.getResources().getString(R.string.file_host_address)
+                        +mContext.getResources().getString(R.string.showpic)
+                        +bean.headImg;
+                Glide.with(mContext).load(picUrl)
+                        .placeholder(R.drawable.home_adviosr_img)
+                        .bitmapTransform(new CropCircleTransformation(mContext)).into(imageView);
+            }
             name.setText(bean.ud_nickname);
             time.setText(bean.zp_date);
             content.setText(bean.zp_pl);
@@ -132,10 +141,19 @@ public class LiveInteractionAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         }
 
         public void setRefreshData(LivingInteract bean) {
-            Glide.with(mContext).load(bean.headImg)
-                    .placeholder(R.drawable.home_adviosr_img)
-                    .bitmapTransform(new CropCircleTransformation(mContext))
-                    .into(imageView);
+            if(bean.headImg.contains("http")){
+                Glide.with(mContext).load(bean.headImg)
+                        .placeholder(R.drawable.home_adviosr_img)
+                        .bitmapTransform(new CropCircleTransformation(mContext))
+                        .into(imageView);
+            }else {
+                String picUrl = mContext.getResources().getString(R.string.file_host_address)
+                        +mContext.getResources().getString(R.string.showpic)
+                        +bean.headImg;
+                Glide.with(mContext).load(picUrl)
+                        .placeholder(R.drawable.home_adviosr_img)
+                        .bitmapTransform(new CropCircleTransformation(mContext)).into(imageView);
+            }
             name.setText(bean.ud_nickname);
             time.setText(bean.zp_date);
             content.setText(bean.zp_pl);
