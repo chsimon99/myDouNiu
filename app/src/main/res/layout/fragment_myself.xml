@@ -40,7 +40,7 @@
                         android:layout_width="@dimen/dm160"
                         android:layout_height="@dimen/dm160"
                         android:layout_centerInParent="true"
-                        android:src="@drawable/advisor_home_img"/>
+                        android:src="@drawable/home_adviosr_img"/>
                 </RelativeLayout>
                 <TextView
                     android:id="@+id/tv_myself_name"
@@ -102,7 +102,7 @@
                         android:layout_below="@id/iv_myself_stock"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="@dimen/dm010"
-                        android:text="我的问股"
+                        android:text="我的问答"
                         android:textColor="@color/colorText"
                         android:textSize="@dimen/dm022"/>
                 </RelativeLayout>

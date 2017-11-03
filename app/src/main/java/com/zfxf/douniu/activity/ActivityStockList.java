@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.adapter.recycleView.MarketMarketAdapter;
+import com.zfxf.douniu.bean.SimulationInfo;
 import com.zfxf.douniu.bean.SimulationResult;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
@@ -86,10 +87,11 @@ public class ActivityStockList extends FragmentActivity implements View.OnClickL
 
                         mAttentionAdvisorAdapter.setOnItemClickListener(new MarketMarketAdapter.MyItemClickListener() {
                             @Override
-                            public void onItemClick(View v, String code,String name) {
+                            public void onItemClick(View v,SimulationInfo bean) {
                                 Intent intent = new Intent(ActivityStockList.this, ActivityStockInfo.class);
-                                intent.putExtra("code",code);
-                                intent.putExtra("name",name);
+                                intent.putExtra("code",bean.mg_code);
+                                intent.putExtra("name",bean.mg_name);
+                                intent.putExtra("model",bean.name);
                                 startActivity(intent);
                                 overridePendingTransition(0,0);
                             }

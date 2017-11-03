@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:orientation="vertical">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:background="@color/colorBgGary"
+                  android:layout_marginLeft="@dimen/dm018"
+                  android:layout_marginRight="@dimen/dm018"
+                  android:paddingBottom="@dimen/dm020"
+                  android:paddingTop="@dimen/dm020"
+                  android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="名称"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/dm024"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="涨跌幅"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/dm024"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="right"
+            android:text="领涨个股"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/dm024"/>
+    </LinearLayout>
+    <com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView
+        android:id="@+id/rv_market_trade"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dm020"
+        android:layout_marginRight="@dimen/dm020"/>
+</LinearLayout>

@@ -14,4 +14,8 @@ public class MessageInfo {
     public String sm_id;//id
     public String sm_type;//类别 0 系统消息1 预警消息
 
+    public String sm_ub_id;//
+    public String sx_ub_id;//
+    public String id;//
+
 }

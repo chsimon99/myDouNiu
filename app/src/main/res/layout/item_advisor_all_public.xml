@@ -17,6 +17,7 @@
             android:id="@+id/iv_advisor_all_public_img"
             android:layout_width="@dimen/dm118"
             android:layout_height="@dimen/dm118"
+            android:layout_gravity="center"
             android:layout_marginLeft="@dimen/dm018"
             android:src="@drawable/public_img"/>
         <LinearLayout
@@ -89,7 +90,7 @@
                 android:layout_marginTop="@dimen/dm040"
                 android:background="@drawable/backgroud_button_app_color"
                 android:gravity="center"
-                android:text="预约"
+                android:text="订阅"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/dm024"/>
         </LinearLayout>

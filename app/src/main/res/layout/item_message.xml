@@ -69,8 +69,6 @@
                 android:layout_marginRight="@dimen/dm020"
                 android:text="看哈瞌睡的卡号发看哈书返回ask好的卡号是开发还是卡号发"
                 android:textColor="@color/colorText"
-                android:maxLines="1"
-                android:ellipsize="end"
                 android:textSize="@dimen/dm024"/>
         </LinearLayout>
     </LinearLayout>

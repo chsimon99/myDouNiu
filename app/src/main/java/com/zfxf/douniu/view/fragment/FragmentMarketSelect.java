@@ -117,14 +117,14 @@ public class FragmentMarketSelect extends BaseFragment implements View.OnClickLi
 							mDivider = new RecycleViewDivider(getActivity(), LinearLayoutManager.HORIZONTAL);
 							mRecyclerView.addItemDecoration(mDivider);
 						}
-						mRecyclerView.setPullRefreshEnable(false);//上拉刷新
 						mRecyclerView.setFooterViewText("加载更多……");
 						mSelectAdapter.setOnItemClickListener(new MarketSelectAdapter.MyItemClickListener() {
 							@Override
-							public void onItemClick(View v, String code,String name) {
+							public void onItemClick(View v, SimulationInfo bean) {
 								Intent intent = new Intent(getActivity(), ActivityStockInfo.class);
-								intent.putExtra("code",code);
-								intent.putExtra("name",name);
+								intent.putExtra("code",bean.mg_code);
+								intent.putExtra("name",bean.mg_name);
+								intent.putExtra("model",bean.name);
 								startActivity(intent);
 								getActivity().overridePendingTransition(0,0);
 							}
@@ -176,6 +176,15 @@ public class FragmentMarketSelect extends BaseFragment implements View.OnClickLi
 		mRecyclerView.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
 			@Override
 			public void onRefresh() {
+				currentPage = 1;
+				mSelectAdapter = null;
+				visitInternet();
+				mRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
+					@Override
+					public void run() {
+						mRecyclerView.setPullLoadMoreCompleted();
+					}
+				}, 200);
 			}
 
 			@Override
@@ -264,16 +273,29 @@ public class FragmentMarketSelect extends BaseFragment implements View.OnClickLi
 	public void onResume() {
 		super.onResume();
 		if(SpTools.getBoolean(getActivity(), Constants.buy,false)){//删除股票后
+			type = 0;
 			currentPage = 1;
 			mSelectAdapter = null;
 			visitInternet();
 			SpTools.setBoolean(getActivity(), Constants.buy,false);
 		}
 		if(SpTools.getBoolean(getActivity(), Constants.alreadyLogout,false)){//退出登陆后
+			if(mSelectAdapter !=null){
+				mSelectAdapter.deleteDatas();
+				mSelectAdapter.notifyDataSetChanged();
+			}
+			type = 0;
 			currentPage = 1;
 			mSelectAdapter = null;
 			visitInternet();
 			SpTools.setBoolean(getActivity(), Constants.alreadyLogout,false);
+		}
+		if(SpTools.getBoolean(getActivity(), Constants.alreadyLogin,false)){//登陆后
+			type = 0;
+			currentPage = 1;
+			mSelectAdapter = null;
+			visitInternet();
+			SpTools.setBoolean(getActivity(), Constants.alreadyLogin,false);
 		}
 	}
 }

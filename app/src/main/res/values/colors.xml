@@ -24,6 +24,8 @@
     <color name="colorGray">#CCCCCC</color>
     <color name="colorWhiteE">#EEEEEE</color>
     <color name="WhiteE">#f5f5f5</color>
+    <color name="payText">#fefbfb</color>
+    <color name="blueWeb">#0362ff</color>
 
 
 
@@ -48,4 +50,6 @@
 
     <color name="black">#000000</color>
     <color name="light_blue">#6593cb</color>
+
+    <color name="bg_color">#f6fbfe</color>
 </resources>

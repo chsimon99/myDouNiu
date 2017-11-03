@@ -23,7 +23,7 @@ public class MarketSelectAdapter extends RecyclerView.Adapter<MarketSelectAdapte
     private List<SimulationInfo> mDatas;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, String code,String name);
+        void onItemClick(View v, SimulationInfo bean);
     }
 
     public MarketSelectAdapter(Context context, List<SimulationInfo> datas) {
@@ -54,6 +54,9 @@ public class MarketSelectAdapter extends RecyclerView.Adapter<MarketSelectAdapte
     public void addDatas(List<SimulationInfo> data) {
         mDatas.addAll(data);
     }
+    public void deleteDatas() {
+        mDatas.clear();
+    }
     class MyHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private MyItemClickListener mListener;
         TextView name;
@@ -74,7 +77,7 @@ public class MarketSelectAdapter extends RecyclerView.Adapter<MarketSelectAdapte
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, mDatas.get(getPosition()).mg_code,mDatas.get(getPosition()).mg_name);
+                mListener.onItemClick(v, mDatas.get(getPosition()));
             }
         }
 
@@ -85,6 +88,8 @@ public class MarketSelectAdapter extends RecyclerView.Adapter<MarketSelectAdapte
             ratio.setText(bean.mg_zfz);
             if(bean.mg_zfz.contains("+")){
                 ratio.setBackgroundResource(R.drawable.backgroud_button_red_color);
+            }else if(bean.mg_zfz.contains("停牌")){
+                ratio.setBackgroundResource(R.drawable.backgroud_button_gray_color);
             }else {
                 ratio.setBackgroundResource(R.drawable.backgroud_button_green_color);
             }

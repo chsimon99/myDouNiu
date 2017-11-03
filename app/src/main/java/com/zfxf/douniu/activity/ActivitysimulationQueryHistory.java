@@ -110,6 +110,7 @@ public class ActivitysimulationQueryHistory extends FragmentActivity implements 
                         }
                         currentPage++;
                     }
+                    mRecyclerView.setPullRefreshEnable(false);//下拉刷新
                     CommonUtils.dismissProgressDialog();
                 }
             }

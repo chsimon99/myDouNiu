@@ -3,6 +3,7 @@ package com.zfxf.douniu.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
@@ -173,5 +174,25 @@ public class ActivityAskAdvisor extends FragmentActivity implements View.OnClick
     public void onBackPressed() {
         super.onBackPressed();
         CommonUtils.dismissProgressDialog();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(SpTools.getBoolean(this, Constants.buy,false)){
+            SpTools.setBoolean(this, Constants.buy,false);
+
+            final AlertDialog mDialog;
+            AlertDialog.Builder builder = new AlertDialog.Builder(ActivityAskAdvisor.this); //先得到构造器
+            mDialog = builder.create();
+            mDialog.show();
+            View view = View.inflate(ActivityAskAdvisor.this, R.layout.activity_pay_ok_dialog, null);
+            mDialog.getWindow().setContentView(view);
+            view.findViewById(R.id.tv_pay_ok_dialog_confirm).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDialog.dismiss();
+                }
+            });
+        }
     }
 }

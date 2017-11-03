@@ -22,6 +22,9 @@ public class SimulationInfo {
     public String mg_cbj;//购买成本价
     public String mg_kmsl;//可买数量
 
+    public String name;//股票类型 1深A  2指数  3沪A
+    public String mb_name;//
+
     public boolean isSelect;//是否选中
 
     public boolean isSelect() {
@@ -36,6 +39,10 @@ public class SimulationInfo {
     public String mg_rxjg;//入选价
     public String mg_zgj;//最高价
     public String mg_tjly;//推荐理由
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public void setMg_code(String mg_code) {
         this.mg_code = mg_code;
@@ -59,5 +66,8 @@ public class SimulationInfo {
     public String mj_cjj;//成交价
     public String mj_cjl;//成交量
     public String mj_result;//结果
+
+    public String dj_buy_date;//买入时间
+    public String dj_sell_date;//卖出时间
 
 }

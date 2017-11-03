@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -128,12 +129,12 @@ public class ActivityAdvisorHome extends FragmentActivity implements View.OnClic
 
 
         if(list_fragment.size() == 0){
+            list_fragment.add(mFragmentAdvisorHomeCapital);
             list_fragment.add(mFragmentAdvisorHomeDirect);
             list_fragment.add(mFragmentAdvisorHomePublic);
             list_fragment.add(mFragmentAdvisorHomeSecret);
             list_fragment.add(mFragmentAdvisorHomeGold);
             list_fragment.add(mFragmentAdvisorHomeOne);
-            list_fragment.add(mFragmentAdvisorHomeCapital);
         }
         if(list_title.size() == 0){
             String[] titleStrings = CommonUtils.getResource().getStringArray(R.array.advisor_home_item_titles);
@@ -164,7 +165,7 @@ public class ActivityAdvisorHome extends FragmentActivity implements View.OnClic
                         +getResources().getString(R.string.showpic)
                         +indexResult.user_info.zt_fileid;
                 Glide.with(ActivityAdvisorHome.this).load(picUrl)
-                        .placeholder(R.drawable.advisor_home_img)
+                        .placeholder(R.drawable.home_adviosr_img)
                         .bitmapTransform(new CropCircleTransformation(ActivityAdvisorHome.this)).into(mView);
                 mNickname = indexResult.user_info.ud_nickname;
                 mFee = indexResult.user_info.df_fee;
@@ -272,6 +273,21 @@ public class ActivityAdvisorHome extends FragmentActivity implements View.OnClic
         if(SpTools.getBoolean(this, Constants.alreadyLogin,false)){
             visitInternet();
             SpTools.setBoolean(this, Constants.alreadyLogin,false);
+        }
+        if(SpTools.getBoolean(this, Constants.buy,false)){
+            SpTools.setBoolean(this, Constants.buy,false);
+            final AlertDialog mDialog;
+            AlertDialog.Builder builder = new AlertDialog.Builder(ActivityAdvisorHome.this); //先得到构造器
+            mDialog = builder.create();
+            mDialog.show();
+            View view = View.inflate(ActivityAdvisorHome.this, R.layout.activity_pay_ok_dialog, null);
+            mDialog.getWindow().setContentView(view);
+            view.findViewById(R.id.tv_pay_ok_dialog_confirm).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mDialog.dismiss();
+                }
+            });
         }
     }
 }

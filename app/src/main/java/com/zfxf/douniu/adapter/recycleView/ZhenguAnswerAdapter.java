@@ -66,7 +66,7 @@ public class ZhenguAnswerAdapter extends RecyclerView.Adapter<ZhenguAnswerAdapte
         ImageView unlock;
         TextView name;
         TextView title;
-        TextView detail;
+//        TextView detail;
         TextView time;
         TextView count;
         public MyHolder(View itemView, MyItemClickListener listener) {
@@ -77,7 +77,7 @@ public class ZhenguAnswerAdapter extends RecyclerView.Adapter<ZhenguAnswerAdapte
             unlock = (ImageView) itemView.findViewById(R.id.iv_bar_bar_unlock_yy);
             name = (TextView) itemView.findViewById(R.id.tv_bar_bar_name);
             title = (TextView) itemView.findViewById(R.id.tv_bar_bar_title);
-            detail = (TextView) itemView.findViewById(R.id.tv_bar_bar_detail);
+//            detail = (TextView) itemView.findViewById(R.id.tv_bar_bar_detail);
             time = (TextView) itemView.findViewById(R.id.tv_bar_bar_time);
             count = (TextView) itemView.findViewById(R.id.tv_bar_bar_count);
 
@@ -100,7 +100,7 @@ public class ZhenguAnswerAdapter extends RecyclerView.Adapter<ZhenguAnswerAdapte
                     .placeholder(R.drawable.home_adviosr_img).into(imageView);
             name.setText(bean.ud_nickname);
             title.setText(bean.zc_context);
-            detail.setText(bean.zc_pl);
+//            detail.setText(bean.zc_pl);
             time.setText(bean.zc_date);
             count.setText(bean.zc_count);
             if(bean.zc_sfjf.equals("0")){

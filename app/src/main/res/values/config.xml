@@ -73,6 +73,10 @@
     <string name="sikeinfo">index.php/cms/sikeinfo</string>
     <!--看头条轮播图详情-->
     <string name="headlunbo">index.php/cms/headlunbo</string>
+    <!--项目申请-->
+    <string name="projectapply">index.php/cms/projectapply</string>
+    <!--项目调研-->
+    <string name="projectdiaoyan">index.php/cms/projectdiaoyan</string>
 
     <!--直播课列表-->
     <string name="zhibolist">index.php/zhibo/zhibolist</string>
@@ -105,6 +109,10 @@
     <string name="myAskStock">index.php/user/myAskStock</string>
     <!--我的牛币在支付页面显示-->
     <string name="mynb">index.php/user/mynb</string>
+    <!--获取风险评估分数-->
+    <string name="myriskgrade">index.php/user/myriskgrade</string>
+    <!--上传风险评估答案-->
+    <string name="answer">index.php/user/answer</string>
 
     <!--主页列表-->
     <string name="index">index.php/dn/index</string>
@@ -120,6 +128,14 @@
     <string name="xuangudy">index.php/dn/xuangudy</string>
     <!--主页搜索-->
     <string name="indexSearch">index.php/dn/search</string>
+    <!--选股王的购买方式-->
+    <string name="xuangubuy">index.php/dn/xuangubuy</string>
+    <!--斗牛直播室上传视频-->
+    <string name="videoadd">index.php/dn/videoadd</string>
+    <!--斗牛直播室视频列表-->
+    <string name="videolist">index.php/dn/videolist</string>
+    <!--斗牛直播室视频列表点赞-->
+    <string name="videodz">index.php/dn/videodz</string>
 
 
     <!--微问答列表-->

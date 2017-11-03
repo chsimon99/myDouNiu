@@ -109,6 +109,8 @@ public class FragmentSimulationStockSold extends BaseFragment implements View.On
 	private String mStock_dt;
 	private String mStock_zt;
 
+	private String model = "";//股票的类型
+
 	@Override
 	public View initView(LayoutInflater inflater) {
 		if (view == null) {
@@ -135,7 +137,7 @@ public class FragmentSimulationStockSold extends BaseFragment implements View.On
 	private void visitInternet(String code) {
 		CommonUtils.showProgressDialog(getActivity(),"加载中……");
 		reset();
-		NewsInternetRequest.getSimulationSellInformation(code, new NewsInternetRequest.ForResultSimulationIndexListener() {
+		NewsInternetRequest.getSimulationSellInformation(code,model, new NewsInternetRequest.ForResultSimulationIndexListener() {
 			@Override
 			public void onResponseMessage(SimulationResult result) {
 				if(result.mn_chigu !=null){
@@ -158,6 +160,7 @@ public class FragmentSimulationStockSold extends BaseFragment implements View.On
 						tv_name.setText(detail.mg_name);
 						mStockCode = detail.mc_code;
 						tv_code.setText(mStockCode);
+						model = detail.name;
 						visitInternet(mStockCode);
 						mScrollview.smoothScrollTo(0,0);
 					}
@@ -443,7 +446,7 @@ public class FragmentSimulationStockSold extends BaseFragment implements View.On
 		}
 
 		NewsInternetRequest.simulationSellStock( tv_code.getText().toString(),tv_name.getText().toString()
-				, et_count.getText().toString(),et_price.getText().toString(), new NewsInternetRequest.ForResultListener() {
+				, et_count.getText().toString(),et_price.getText().toString(), model,new NewsInternetRequest.ForResultListener() {
 					@Override
 					public void onResponseMessage(String info) {
 						if(info.equals("成功")){
@@ -485,6 +488,7 @@ public class FragmentSimulationStockSold extends BaseFragment implements View.On
 				mStockCode = data.getExtras().getString("code");
 				tv_name.setText(stockName);
 				tv_code.setText(mStockCode);
+				model = data.getExtras().getString("model");
 				visitInternet(mStockCode);
 				break;
 		}

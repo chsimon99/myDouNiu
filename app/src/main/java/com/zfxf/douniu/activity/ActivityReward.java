@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -139,6 +140,10 @@ public class ActivityReward extends FragmentActivity implements View.OnClickList
                 finish();
                 break;
             case R.id.rl_reward_confirm:
+                if(TextUtils.isEmpty(money.getText().toString())){
+                    CommonUtils.toastMessage("请填写打赏金额");
+                    return;
+                }
                 Intent intent = new Intent(this,ActivityToPay.class);
                 if(dashangType.equals("直播")){
                     intent.putExtra("info","直播打赏,"+mSx_id+","+mId);

@@ -83,7 +83,7 @@ public class FragmentLiveInteraction extends BaseFragment {
     }
     class AutoScrollTask implements Runnable {
         public void start() {/**开始轮播*/
-            CommonUtils.postTaskDelay(this, 5000);
+            CommonUtils.postTaskDelay(this, 10000);
         }
         public void stop() { /**结束轮播*/
             CommonUtils.removeTask(this);
@@ -216,8 +216,12 @@ public class FragmentLiveInteraction extends BaseFragment {
                 if(mInteractionAdapter == null){
                     return;
                 }
-                CommonUtils.showProgressDialog(getActivity(),"发表评论中……");
                 String contents = et_interaction.getText().toString();
+                if(TextUtils.isEmpty(contents)){
+                    CommonUtils.toastMessage("评论内容不能为空");
+                    return;
+                }
+                CommonUtils.showProgressDialog(getActivity(),"发表评论中……");
 //                SimpleDateFormat df = new SimpleDateFormat("HH:mm:ss");
 //                String nowTime = df.format(new Date());
 //                LivingInteract interact = new LivingInteract();

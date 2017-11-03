@@ -1,5 +1,6 @@
 package com.zfxf.douniu.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.adapter.viewPager.BarItemAdapter;
 import com.zfxf.douniu.utils.CommonUtils;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.fragment.FragmentLiveInteraction;
 import com.zfxf.douniu.view.fragment.FragmentLiveLiving;
 
@@ -107,12 +110,18 @@ public class ActivityLiving extends FragmentActivity implements View.OnClickList
     }
 
     private void finishAll() {
-
+        if(!SpTools.getBoolean(this, Constants.isOpenApp,false)){
+            Intent intent = new Intent(this, MainActivityTabHost.class);
+            startActivity(intent);
+            overridePendingTransition(0,0);
+        }
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         CommonUtils.dismissProgressDialog();
+        finishAll();
+        finish();
     }
 }

@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -71,8 +72,8 @@ public class ActivitySimulation extends FragmentActivity implements View.OnClick
     @BindView(R.id.iv_matador_startfive)
     ImageView start_five;
 
-//    @BindView(R.id.rl_matador_more)
-//    RelativeLayout rl_more;
+    @BindView(R.id.rl_matador_more)
+    RelativeLayout rl_more;
 
     @BindView(R.id.ll_matador_buy)
     LinearLayout ll_buy;
@@ -201,6 +202,7 @@ public class ActivitySimulation extends FragmentActivity implements View.OnClick
         ll_sold.setOnClickListener(this);
         ll_entrust.setOnClickListener(this);
         ll_query.setOnClickListener(this);
+        rl_more.setOnClickListener(this);
     }
     public static List<SimulationPositionDetail> getList(){
         return mChigu;
@@ -234,6 +236,16 @@ public class ActivitySimulation extends FragmentActivity implements View.OnClick
             case R.id.ll_matador_query:
                 mIntent = new Intent(this,ActivitySimulationStock.class);
                 setIndex(5);
+                startActivity(mIntent);
+                overridePendingTransition(0,0);
+                break;
+            case R.id.iv_base_question:
+                mIntent = new Intent(this,ActivitySimulationExplain.class);
+                startActivity(mIntent);
+                overridePendingTransition(0,0);
+                break;
+            case R.id.rl_matador_more:
+                mIntent = new Intent(this,ActivityMatadorRank.class);
                 startActivity(mIntent);
                 overridePendingTransition(0,0);
                 break;

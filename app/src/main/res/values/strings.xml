@@ -10,18 +10,18 @@
     </string-array>
 
     <string-array name="bar_item_titles">
-        <item>斗牛吧</item>
         <item>斗牛直播室</item>
         <item>斗牛士评级</item>
+        <item>斗牛吧</item>
     </string-array>
 
     <string-array name="advisor_home_item_titles">
+        <item>大参考</item>
         <item>直播课</item>
         <item>公开课</item>
         <item>私密课</item>
         <item>金股池</item>
         <item>微问答</item>
-        <item>大参考</item>
     </string-array>
 
     <string-array name="advisor_home_gold_titles">
@@ -81,8 +81,15 @@
         <item>查询</item>
     </string-array>
 
+    <string-array name="market_plate_titles">
+        <item>行业</item>
+        <item>概念</item>
+    </string-array>
+
+    <string name="evaluate_one_result">保守型</string>
     <string name="evaluate_second_result">稳健型</string>
     <string name="evaluate_third_result">积极型</string>
+    <string name="evaluate_one_content">此类投资者不愿意接受暂时的投资损失或者极小的资产波动，关注本金的安全，往往属于风险厌恶型的投资者，首要投资目标是保持投资的稳定性与资产的保值，并在此基础上尽可能使资产一定程度的增值，不愿意承受或能承受少许本金的损失和波动。这类投资者需要注意为达到上述目标回报率可能很低，以换取本金免于受损和较高的流动性</string>
     <string name="evaluate_second_content">此类投资者愿意承担一定程度的风险，主要强调投资风险和资产增值之间的平衡，主要投资目标是资产的增值，为了获得一定收益可以承受投资产品价格的波动，甚至可以承受一段时间内投资产品价格的下跌，此类投资者可以承受一定程度的资产波动风险和本金亏损风险</string>
     <string name="evaluate_third_content">此类投资者为了获得高回报的投资收益能够承受投资产品价格的剧烈波动，也可以承担这种波动所带来的结果，投资目标主要是取得超额收益，为实现投资目标愿意冒比较大的投资风险，此类投资者能够承担相当大的投资风险和本金亏损风险</string>
     <string name="filter_vcode">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
@@ -99,4 +106,16 @@
     <string name="loading">正在加载...</string>
     <string name="load_succeed">加载成功</string>
     <string name="load_fail">加载失败</string>
+
+    <string name="hello">Hello World, JPush!</string>
+    <string name="tag_hint">Tag为大小写字母，数字，下划线,中文， 多个用以逗号分隔</string>
+    <string name="alias_hint">Alias为大小写字母，数字，下划线</string>
+    <string name="style_hint">style为数字</string>
+    <string name="error_style_empty">style不能为空</string>
+    <string name="error_alias_empty">alias不能为空</string>
+    <string name="error_tag_empty">tag不能为空</string>
+    <string name="error_tag_gs_empty">格式不对</string>
+    <string name="error_network">网络连接异常,初始化失败 请检查网络！</string>
+    <string name="logining">程序在后台执行, 请查看日志！</string>
+    <string name="setting_su">设置成功</string>
 </resources>

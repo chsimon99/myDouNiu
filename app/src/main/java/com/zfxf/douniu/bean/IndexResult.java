@@ -14,6 +14,8 @@ public class IndexResult {
     public List<IndexStockListInfo> xuangu_list;//主页选股王
     public List<IndexLivingListInfo> zhibo_list;//主页热门直播
     public List<LunBoListInfo> lunbo_list;//轮播图
+    public List<LunBoListInfo> text_list;//文字轮播
+    public List<LunBoListInfo> text_list2;//文字轮播2
     public String total;//页数
     public advisorDetailInfo user_info;//首席个人主业信息
     public List<AnswerChiefListInfo> online_chief;//微问答主页分析师列表
@@ -21,4 +23,6 @@ public class IndexResult {
     public AnswerListInfo context_info;//微问答回答详情 和 打赏详情
 
     public List<AnswerListInfo> jiage_list;//微问答主页精彩回答
+
+    public String grade;//风险评估分数
 }

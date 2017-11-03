@@ -73,6 +73,17 @@
         android:textSize="@dimen/dm026"
         android:visibility="gone"/>
     <TextView
+        android:id="@+id/tv_base_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/dm020"
+        android:text="重新测试"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/dm026"
+        android:visibility="gone"/>
+    <TextView
         android:id="@+id/tv_base_done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -83,5 +94,18 @@
         android:textColor="@color/colorWhite"
         android:visibility="gone"
         android:textSize="@dimen/dm030"/>
+    <TextView
+        android:id="@+id/tv_base_apply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/dm020"
+        android:text="项目申请"
+        android:paddingTop="@dimen/dm020"
+        android:textColor="@color/colorWhite"
+        android:visibility="gone"
+        android:textSize="@dimen/dm026"/>
 
 </RelativeLayout>

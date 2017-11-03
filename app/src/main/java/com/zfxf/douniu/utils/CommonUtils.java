@@ -9,12 +9,14 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.zfxf.douniu.R;
 import com.zfxf.douniu.base.BaseApplication;
 import com.zfxf.douniu.view.LoadingDialog;
 
@@ -286,7 +288,23 @@ public class CommonUtils {
     public static void dismissProgressDialog() {
         if (progressDialog != null && progressDialog.isShowing()) {
             progressDialog.dismiss();
+            progressDialog = null;
         }
-        progressDialog = null;
+    }
+
+    public static void payOkDialog() {
+        final AlertDialog mDialog;
+        AlertDialog.Builder builder=new AlertDialog.Builder(CommonUtils.getContext()); //先得到构造器
+        mDialog = builder.create();
+        mDialog.show();
+        View view = View.inflate(CommonUtils.getContext(), R.layout.activity_pay_ok_dialog, null);
+        mDialog.getWindow().setContentView(view);
+
+        view.findViewById(R.id.tv_pay_ok_dialog_confirm).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
     }
 }

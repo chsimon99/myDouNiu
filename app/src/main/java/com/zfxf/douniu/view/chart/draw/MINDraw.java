@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.chart.EntityImpl.MINImpl;
 import com.zfxf.douniu.view.chart.impl.IKChartView;
 
@@ -37,13 +38,15 @@ public class MINDraw extends BaseDraw<MINImpl> {
 
     @Override
     public void drawTranslated(@Nullable MINImpl lastPoint, @NonNull MINImpl curPoint, float lastX, float curX, @NonNull Canvas canvas, @NonNull IKChartView view, int position) {
+
+        //画实价
+        if (lastPoint.getClosePrice() != 0) {
+//            drawCandle(view, canvas,lastX, curX,curPoint);//画阴影，不过画的顺序会覆盖底部的格子
+            view.drawMainLine(canvas, ma5Paint, lastX, lastPoint.getClosePrice(), curX, curPoint.getClosePrice());
+        }
         //画均价
         if (lastPoint.getAVPrice() != 0) {
             view.drawMainLine(canvas, ma10Paint, lastX, lastPoint.getAVPrice(), curX, curPoint.getAVPrice());
-        }
-        //画实价
-        if (lastPoint.getClosePrice() != 0) {
-            view.drawMainLine(canvas, ma5Paint, lastX, lastPoint.getClosePrice(), curX, curPoint.getClosePrice());
         }
     }
 
@@ -57,6 +60,15 @@ public class MINDraw extends BaseDraw<MINImpl> {
 //        canvas.drawText(text, x, y, ma10Paint);
 //        x += ma10Paint.measureText(text);
     }
+    private void drawCandle(IKChartView view, Canvas canvas, float lastX, float cutX, @NonNull MINImpl curPoint){
+        float eX = cutX - lastX;
+        float r = eX / 2;
+        float pointX = cutX - r;
+        redPaint.setColor(mContext.getResources().getColor(R.color.bg_color));
+        canvas.drawRect(pointX - r, view.getMainPoint(curPoint.getClosePrice())
+                + CommonUtils.px2dip(CommonUtils.getContext(),5), pointX + r, view.getMainBottom(), redPaint);
+    }
+
 
     @Override
     public float getMaxValue(MINImpl point) {

@@ -1,6 +1,7 @@
 package com.zfxf.douniu.view.fragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,9 +12,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.igexin.sdk.PushManager;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.activity.ActivityAdvisorHome;
 import com.zfxf.douniu.activity.ActivityAdvisorList;
@@ -40,8 +41,10 @@ import com.zfxf.douniu.utils.MyLunBo;
 import com.zfxf.douniu.utils.SpTools;
 import com.zfxf.douniu.view.FullyLinearLayoutManager;
 import com.zfxf.douniu.view.InnerView;
+import com.zfxf.douniu.view.LooperTextView;
 import com.zfxf.douniu.view.RecycleViewDivider;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -94,6 +97,19 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
     @BindView(R.id.ll_home_xiangmu)
     LinearLayout ll_xiangmu;
 
+    @BindView(R.id.ll_home_textlunbo)
+    LinearLayout ll_text_lunbo;
+    @BindView(R.id.lt_home)
+    LooperTextView lt_home;
+    @BindView(R.id.v_home_tab)
+    View v_tab;
+    @BindView(R.id.ll_home_textlunbo2)
+    LinearLayout ll_text_lunbo2;
+    @BindView(R.id.lt_home2)
+    LooperTextView lt_home2;
+    @BindView(R.id.v_home_tab2)
+    View v_tab2;
+
     @BindView(R.id.rv_home_advisor)
     RecyclerView mAdvisorRecyclerView;//金牌首席recycleview
     private LinearLayoutManager mAdvisorManager;
@@ -112,6 +128,8 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
     private MyLunBo mMyLunBO;
     private RecycleViewDivider mDivider;
     private myPicAdapter mPicAdapter;
+    private List<LunBoListInfo> mTextList1;
+    private List<LunBoListInfo> mTextList2;
 
     @Override
     public View initView(LayoutInflater inflater) {
@@ -136,6 +154,7 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
     @Override
     public void initdata() {
         visitInternet();
+        String clientid = PushManager.getInstance().getClientid(CommonUtils.getContext());
         super.initdata();
     }
     int LunboSize = 1;
@@ -149,7 +168,6 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
                     CommonUtils.toastMessage("网络不稳定，加载数据失败，请重试");
                     return;
                 }
-
                 LunboSize = indexResult.lunbo_list.size();
                 if(LunboSize>0){
                     if(mPicAdapter == null){
@@ -221,7 +239,28 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
                         getActivity().overridePendingTransition(0,0);
                     }
                 });
+                if(indexResult.text_list.size()>0){
+                    ll_text_lunbo.setVisibility(View.VISIBLE);
+                    v_tab.setVisibility(View.GONE);
+                    mTextList1 = indexResult.text_list;
+                    List<String> text = new ArrayList<>();
+                    for(int i = 0; i< mTextList1.size(); i++){
+                        text.add(mTextList1.get(i).context);
+                    }
+                    lt_home.setTipList(text);
 
+                }
+                if(indexResult.text_list2.size()>0){
+                    ll_text_lunbo2.setVisibility(View.VISIBLE);
+                    v_tab2.setVisibility(View.GONE);
+                    mTextList2 = indexResult.text_list2;
+                    List<String> text = new ArrayList<>();
+                    for(int i = 0; i< mTextList2.size(); i++){
+                        text.add(mTextList2.get(i).context);
+                    }
+                    lt_home2.setTipList(text);
+
+                }
                 CommonUtils.dismissProgressDialog();
             }
         });
@@ -241,6 +280,8 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
         ll_xiangmu.setOnClickListener(this);
         message.setOnClickListener(this);
         research.setOnClickListener(this);
+        lt_home.setOnClickListener(this);
+        lt_home2.setOnClickListener(this);
     }
     Intent intent;
     @Override
@@ -254,15 +295,15 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
                 break;
             case R.id.ll_home_zhibo:
                 MainActivityTabHost.setTabHost(2);
-                MainActivityTabHost.setIndex(2);
+                MainActivityTabHost.setIndex(3);
                 break;
             case R.id.ll_home_gkk:
                 MainActivityTabHost.setTabHost(2);
-                MainActivityTabHost.setIndex(3);
+                MainActivityTabHost.setIndex(4);
                 break;
             case R.id.ll_home_smk:
                 MainActivityTabHost.setTabHost(2);
-                MainActivityTabHost.setIndex(4);
+                MainActivityTabHost.setIndex(5);
                 break;
             case R.id.ll_home_bar:
 
@@ -280,7 +321,7 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
 //                getActivity().startActivity(intent);
 //                getActivity().overridePendingTransition(0,0);
                 MainActivityTabHost.setTabHost(2);
-                MainActivityTabHost.setIndex(6);
+                MainActivityTabHost.setIndex(7);
                 break;
             case R.id.ll_home_moni:
                 if(SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
@@ -314,8 +355,34 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
                 startActivity(intent);
                 getActivity().overridePendingTransition(0,0);
                 break;
+            case R.id.lt_home:
+                textHomeJump(mTextList1.get(lt_home.getThisIndex()));
+                break;
+            case R.id.lt_home2:
+                textHomeJump(mTextList2.get(lt_home2.getThisIndex()));
+                break;
         }
         intent = null;
+    }
+
+    private void textHomeJump(LunBoListInfo bean) {
+        SpTools.setBoolean(getActivity(),Constants.textlunbo,true);
+        if(bean.type.equals("直播")){
+            Intent intent = new Intent(CommonUtils.getContext(), ActivityLiving.class);
+            intent.putExtra("id",Integer.parseInt(bean.url));
+            intent.putExtra("sx_id",bean.ub_id);
+            startActivity(intent);
+            getActivity().overridePendingTransition(0,0);
+        }else if(bean.type.equals("首席")){
+            Intent intent = new Intent(getActivity(), ActivityAdvisorHome.class);
+            intent.putExtra("id",Integer.parseInt(bean.url));
+            startActivity(intent);
+            getActivity().overridePendingTransition(0,0);
+        }else if(bean.type.equals("链接")){
+            Uri uri = Uri.parse(bean.url);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        }
     }
 
     class myPicAdapter extends PagerAdapter {
@@ -349,7 +416,7 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
             iv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    itemClick(position % mDatas.size());
+                    itemClick(mDatas.get(position % mDatas.size()));
                 }
             });
             return iv;
@@ -359,8 +426,23 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
             container.removeView((View) object);
         }
     }
-    public void itemClick(int pos){
-        Toast.makeText(getActivity(),"您点击的是第 "+ (++pos) +" 个Item",Toast.LENGTH_SHORT).show();
+    public void itemClick(LunBoListInfo bean){
+        if(bean.type.equals("直播")){
+            Intent intent = new Intent(CommonUtils.getContext(), ActivityLiving.class);
+            intent.putExtra("id",Integer.parseInt(bean.url));
+            intent.putExtra("sx_id",bean.ub_id);
+            startActivity(intent);
+            getActivity().overridePendingTransition(0,0);
+        }else if(bean.type.equals("首席")){
+            Intent intent = new Intent(getActivity(), ActivityAdvisorHome.class);
+            intent.putExtra("id",Integer.parseInt(bean.url));
+            startActivity(intent);
+            getActivity().overridePendingTransition(0,0);
+        }else if(bean.type.equals("链接")){
+            Uri uri = Uri.parse(bean.url);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        }
     }
 
     private boolean isOnPause = false;
@@ -372,10 +454,27 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
     }
     @Override
     public void onResume() {
-
         if(isOnPause){//防止轮播图暂定不动
             if(mMyLunBO !=null) mMyLunBO.restartLunBO();
             isOnPause = false;
+        }
+        if(SpTools.getBoolean(getActivity(),Constants.textlunbo,false)){
+            if(mTextList1 != null){
+                List<String> text = new ArrayList<>();
+                for(int i = 0; i< mTextList1.size(); i++){
+                    text.add(mTextList1.get(i).context);
+                }
+                lt_home.setTipList(text);
+            }
+
+            if(mTextList2 != null){
+                List<String> text2 = new ArrayList<>();
+                for(int i = 0; i< mTextList2.size(); i++){
+                    text2.add(mTextList2.get(i).context);
+                }
+                lt_home2.setTipList(text2);
+            }
+            SpTools.setBoolean(getActivity(),Constants.textlunbo,false);
         }
         super.onResume();
     }

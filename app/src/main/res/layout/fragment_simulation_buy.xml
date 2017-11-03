@@ -470,12 +470,16 @@
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_fragment_simulation_buy"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dm025"
-                    android:background="@color/colorWhite"/>
+                <RelativeLayout android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_fragment_simulation_buy"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dm025"
+                        android:background="@color/colorWhite"/>
+                </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
     </com.zfxf.douniu.view.MyScrollview>

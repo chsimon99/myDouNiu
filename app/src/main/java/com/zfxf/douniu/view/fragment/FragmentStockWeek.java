@@ -13,6 +13,7 @@ import com.zfxf.douniu.chart.KChartAdapter;
 import com.zfxf.douniu.chart.KChartView;
 import com.zfxf.douniu.chart.KLineEntity;
 import com.zfxf.douniu.internet.NewsInternetRequest;
+import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.chart.formatter.DateFormatter;
 
 import java.util.ArrayList;
@@ -68,12 +69,13 @@ public class FragmentStockWeek extends BaseFragment {
         mKChartView.setDateTimeFormatter(new DateFormatter());
         mKChartView.setGridRows(4);
         mKChartView.setGridColumns(4);
+        mKChartView.setOverScrollRange(CommonUtils.dip2px(CommonUtils.getContext(),4));
         visitInternet();
 
     }
 
     private void visitInternet() {
-        NewsInternetRequest.getStockKLineInformation(getActivity().getIntent().getStringExtra("code"), currentPage, "1", new NewsInternetRequest.ForResultStockKLineInfoListener() {
+        NewsInternetRequest.getStockKLineInformation(getActivity().getIntent().getStringExtra("code"),getActivity().getIntent().getStringExtra("model"), currentPage, "1", new NewsInternetRequest.ForResultStockKLineInfoListener() {
             @Override
             public void onResponseMessage(StockResult result) {
                 if(result == null){

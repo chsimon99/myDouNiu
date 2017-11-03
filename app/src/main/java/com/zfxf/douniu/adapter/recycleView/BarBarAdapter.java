@@ -64,7 +64,7 @@ public class BarBarAdapter extends RecyclerView.Adapter<BarBarAdapter.MyHolder> 
         ImageView imageView;
         TextView name;
         TextView title;
-        TextView detail;
+//        TextView detail;
         TextView time;
         TextView count;
         public MyHolder(View itemView, MyItemClickListener listener) {
@@ -73,7 +73,7 @@ public class BarBarAdapter extends RecyclerView.Adapter<BarBarAdapter.MyHolder> 
             imageView = (ImageView) itemView.findViewById(R.id.iv_bar_bar_img);
             name = (TextView) itemView.findViewById(R.id.tv_bar_bar_name);
             title = (TextView) itemView.findViewById(R.id.tv_bar_bar_title);
-            detail = (TextView) itemView.findViewById(R.id.tv_bar_bar_detail);
+//            detail = (TextView) itemView.findViewById(R.id.tv_bar_bar_detail);
             time = (TextView) itemView.findViewById(R.id.tv_bar_bar_time);
             count = (TextView) itemView.findViewById(R.id.tv_bar_bar_count);
 
@@ -92,7 +92,7 @@ public class BarBarAdapter extends RecyclerView.Adapter<BarBarAdapter.MyHolder> 
             count.setText(bean.get("cc_count"));
             name.setText(bean.get("ud_nickname"));
             title.setText(bean.get("cc_title"));
-            detail.setText(bean.get("cc_description"));
+//            detail.setText(bean.get("cc_description"));
             if(bean.get("headImg").contains("http")){
                 Glide.with(mContext).load(bean.get("headImg"))
                         .placeholder(R.drawable.home_adviosr_img)

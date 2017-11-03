@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dm016"
+        android:layout_height="1dp"
         android:background="@color/colorBgGary"/>
-    <com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView
-        android:id="@+id/rv_bar_zhibo"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent">
+        <com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView
+            android:id="@+id/rv_bar_zhibo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/dm018"
+            android:layout_marginRight="@dimen/dm018"/>
+        <ImageView
+            android:id="@+id/iv_bar_zhibo_add"
+            android:layout_width="@dimen/dm100"
+            android:layout_height="@dimen/dm100"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/dm150"
+            android:layout_marginRight="@dimen/dm018"
+            android:src="@drawable/pic_add"/>
+    </RelativeLayout>
 </LinearLayout>

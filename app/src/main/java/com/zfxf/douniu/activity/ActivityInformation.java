@@ -1,5 +1,6 @@
 package com.zfxf.douniu.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMWeb;
@@ -150,7 +152,7 @@ public class ActivityInformation extends FragmentActivity implements View.OnClic
                 web.setDescription(mFrom+" "+datetime);//描述
                 new ShareAction(ActivityInformation.this).withText("斗牛财经")
                         .withMedia(web)
-                        .setDisplayList(SHARE_MEDIA.SINA,SHARE_MEDIA.QQ,SHARE_MEDIA.WEIXIN,	SHARE_MEDIA.WEIXIN_CIRCLE)
+                        .setDisplayList(SHARE_MEDIA.SINA,SHARE_MEDIA.QQ,SHARE_MEDIA.QZONE,SHARE_MEDIA.WEIXIN,SHARE_MEDIA.WEIXIN_CIRCLE)
                         .setCallback(shareListener).open();
                 break;
         }
@@ -191,7 +193,12 @@ public class ActivityInformation extends FragmentActivity implements View.OnClic
          */
         @Override
         public void onCancel(SHARE_MEDIA platform) {
-            Toast.makeText(CommonUtils.getContext(),"分享取消了",Toast.LENGTH_LONG).show();
+//            Toast.makeText(CommonUtils.getContext(),"分享取消了",Toast.LENGTH_LONG).show();
         }
     };
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode,resultCode,data);
+    }
 }

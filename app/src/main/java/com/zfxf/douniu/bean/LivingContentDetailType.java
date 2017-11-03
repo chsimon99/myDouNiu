@@ -1,5 +1,7 @@
 package com.zfxf.douniu.bean;
 
+import java.util.List;
+
 /**
  * @author Admin
  * @time 2017/4/7 9:44
@@ -11,7 +13,7 @@ public class LivingContentDetailType {
     public String text;//文字内容
     public String url;//声音url
     public String length;//声音长度
-
+    public List<LivingContentLinks> links;
     public boolean isShow;
 
     public boolean isShow() {

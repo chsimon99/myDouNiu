@@ -80,11 +80,7 @@ public class HomeResearchStockAdapter extends RecyclerView.Adapter<HomeResearchS
         }
 
         public void setRefreshData(ResearchInfo bean, int position) {
-            if(bean.mg_code.startsWith("6",0)){
-                type.setText("沪A");
-            }else {
-                type.setText("深A");
-            }
+            type.setText(bean.mb_name);
             name.setText(bean.mg_name);
             code.setText(bean.mg_code);
         }

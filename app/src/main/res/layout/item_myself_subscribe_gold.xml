@@ -23,137 +23,177 @@
                 android:text="快刀九郎的金股池"
                 android:textColor="@color/colorTitle"
                 android:textSize="@dimen/dm028"/>
+            <TextView
+                android:id="@+id/tv_advisor_home_gold_type"
+                android:layout_width="@dimen/dm040"
+                android:layout_height="@dimen/dm033"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dm010"
+                android:background="@drawable/backgroud_button_app_color"
+                android:gravity="center"
+                android:text="短"
+                android:textColor="@color/white"
+                android:textSize="@dimen/dm024"/>
             <View
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"/>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/tv_advisor_home_gold_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="468"
-                    android:textColor="@color/colorTitle"
-                    android:textSize="@dimen/dm022"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dm010"
-                    android:text="人订阅"
-                    android:textColor="@color/titleTextGray"
-                    android:textSize="@dimen/dm022"/>
-            </LinearLayout>
         </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dm020"
             android:orientation="horizontal">
-            <RelativeLayout
-                android:layout_width="@dimen/dm320"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dm020">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1.8"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
                 <TextView
-                    android:id="@+id/tv_advisor_home_gold_gupiao"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="入选个股"
-                    android:textColor="@color/titleText"
-                    android:textSize="@dimen/dm024"/>
-                <TextView
-                    android:id="@+id/tv_advisor_home_gold_fudu"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:text="涨跌幅"
+                    android:text="历史战绩"
                     android:textColor="@color/titleText"
                     android:textSize="@dimen/dm024"/>
                 <TextView
                     android:id="@+id/tv_advisor_home_gold_item1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_advisor_home_gold_gupiao"
                     android:layout_marginTop="@dimen/dm010"
                     android:text="天山股份(002340)"
                     android:textColor="@color/colorText"
                     android:textSize="@dimen/dm024"/>
                 <TextView
-                    android:id="@+id/tv_advisor_home_gold_range1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@id/tv_advisor_home_gold_fudu"
-                    android:layout_marginTop="@dimen/dm010"
-                    android:text="+4.56%"
-                    android:textColor="@color/colorRise"
-                    android:textSize="@dimen/dm024"/>
-                <TextView
                     android:id="@+id/tv_advisor_home_gold_item2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_advisor_home_gold_item1"
                     android:layout_marginTop="@dimen/dm010"
                     android:text="格林美(002340)"
                     android:textColor="@color/colorText"
                     android:textSize="@dimen/dm024"/>
                 <TextView
+                    android:id="@+id/tv_advisor_home_gold_item3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dm010"
+                    android:text="路桥建设(002340)"
+                    android:textColor="@color/colorText"
+                    android:textSize="@dimen/dm024"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tv_advisor_home_gold_fudu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="涨跌幅"
+                    android:textColor="@color/titleText"
+                    android:textSize="@dimen/dm024"/>
+                <TextView
+                    android:id="@+id/tv_advisor_home_gold_range1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dm010"
+                    android:text="+4.56%"
+                    android:textColor="@color/colorRise"
+                    android:textSize="@dimen/dm024"/>
+                <TextView
                     android:id="@+id/tv_advisor_home_gold_range2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@id/tv_advisor_home_gold_range1"
                     android:layout_marginTop="@dimen/dm010"
                     android:text="-2.50%"
                     android:textColor="@color/colorFall"
                     android:textSize="@dimen/dm024"/>
                 <TextView
-                    android:id="@+id/tv_advisor_home_gold_item3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_advisor_home_gold_item2"
-                    android:layout_marginTop="@dimen/dm010"
-                    android:text="路桥建设(002340)"
-                    android:textColor="@color/colorText"
-                    android:textSize="@dimen/dm024"/>
-                <TextView
                     android:id="@+id/tv_advisor_home_gold_range3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@id/tv_advisor_home_gold_range2"
                     android:layout_marginTop="@dimen/dm010"
                     android:text="+6.50%"
                     android:textColor="@color/colorRise"
                     android:textSize="@dimen/dm024"/>
-            </RelativeLayout>
-            <View
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"/>
+            </LinearLayout>
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dm072"
-                android:orientation="horizontal">
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
                 <TextView
-                    android:id="@+id/tv_advisor_home_gold_type1"
-                    android:layout_width="@dimen/dm080"
-                    android:layout_height="@dimen/dm080"
-                    android:background="@drawable/backgroud_circle_rise"
-                    android:gravity="center"
-                    android:text="涨"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/dm038"/>
-                <TextView
-                    android:id="@+id/tv_advisor_home_gold_type2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dm030"
-                    android:text="+4.56%"
-                    android:textColor="@color/colorRise"
-                    android:textSize="@dimen/dm028"/>
+                    android:text="买入时间"
+                    android:layout_gravity="center"
+                    android:textColor="@color/titleText"
+                    android:textSize="@dimen/dm024"/>
+                <TextView
+                    android:id="@+id/tv_advisor_home_gold_time_in1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dm010"
+                    android:text="07-23"
+                    android:layout_gravity="center"
+                    android:textColor="@color/colorText"
+                    android:textSize="@dimen/dm024"/>
+                <TextView
+                    android:id="@+id/tv_advisor_home_gold_time_in2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dm010"
+                    android:text="07-23"
+                    android:layout_gravity="center"
+                    android:textColor="@color/colorText"
+                    android:textSize="@dimen/dm024"/>
+                <TextView
+                    android:id="@+id/tv_advisor_home_gold_time_in3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dm010"
+                    android:text="07-23"
+                    android:layout_gravity="center"
+                    android:textColor="@color/colorText"
+                    android:textSize="@dimen/dm024"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="卖出时间"
+                    android:textColor="@color/titleText"
+                    android:textSize="@dimen/dm024"/>
+                <TextView
+                    android:id="@+id/tv_advisor_home_gold_time_out1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dm010"
+                    android:text="07-23"
+                    android:textColor="@color/colorText"
+                    android:textSize="@dimen/dm024"/>
+                <TextView
+                    android:id="@+id/tv_advisor_home_gold_time_out2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dm010"
+                    android:text="07-23"
+                    android:textColor="@color/colorText"
+                    android:textSize="@dimen/dm024"/>
+                <TextView
+                    android:id="@+id/tv_advisor_home_gold_time_out3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dm010"
+                    android:text="07-23"
+                    android:textColor="@color/colorText"
+                    android:textSize="@dimen/dm024"/>
             </LinearLayout>
         </LinearLayout>
         <View
@@ -177,14 +217,26 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"/>
-            <TextView
-                android:id="@+id/tv_advisor_home_gold_time"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dm010"
-                android:text="发布周期：03/08-03/11"
-                android:textColor="@color/colorText"
-                android:textSize="@dimen/dm024"/>
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_advisor_home_gold_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="468"
+                    android:textColor="@color/colorTitle"
+                    android:textSize="@dimen/dm022"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dm010"
+                    android:text="人订阅"
+                    android:textColor="@color/titleTextGray"
+                    android:textSize="@dimen/dm022"/>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

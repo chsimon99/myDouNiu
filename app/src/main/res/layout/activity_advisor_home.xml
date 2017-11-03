@@ -53,7 +53,7 @@
                         android:layout_width="@dimen/dm160"
                         android:layout_height="@dimen/dm160"
                         android:layout_centerInParent="true"
-                        android:src="@drawable/advisor_home_img"/>
+                        android:src="@drawable/home_adviosr_img"/>
                 </RelativeLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"

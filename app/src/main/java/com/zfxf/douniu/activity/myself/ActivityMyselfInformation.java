@@ -145,19 +145,19 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
                     }
 
                     if(TextUtils.isEmpty(photoUrl)){
-                        img.setImageResource(R.drawable.advisor_home_img);
+                        img.setImageResource(R.drawable.home_adviosr_img);
                         CommonUtils.dismissProgressDialog();
                     }else {
                         Bitmap cacheBitmap = CommonUtils.getCacheFile("myicon.jpg");
                         if(cacheBitmap == null){
                             Glide.with(ActivityMyselfInformation.this).load(photoUrl)
-                                    .placeholder(R.drawable.advisor_home_img)
+                                    .placeholder(R.drawable.home_adviosr_img)
                                     .bitmapTransform(new CropCircleTransformation(ActivityMyselfInformation.this))
                                     .into(img);
                         }else {
                             byte[] bytes=CommonUtils.getBitMapByteArray(cacheBitmap);
                             Glide.with(ActivityMyselfInformation.this).load(bytes)
-                                    .placeholder(R.drawable.advisor_home_img)
+                                    .placeholder(R.drawable.home_adviosr_img)
                                     .bitmapTransform(new CropCircleTransformation(ActivityMyselfInformation.this))
                                     .into(img);
                         }
@@ -238,6 +238,10 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
         }
         switch (v.getId()){
             case R.id.iv_base_back:
+                if(TextUtils.isEmpty(editName.getText().toString()) && textName.getText().toString().equals("请输入您的昵称")){
+                    CommonUtils.toastMessage("请输入您的昵称，不能超过8个字");
+                    return;
+                }
                 saveText();
                 if(number>0){
                     confirm();
@@ -247,10 +251,18 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
                 }
                 break;
             case R.id.ll_myself_information_date:
+                if(TextUtils.isEmpty(editName.getText().toString()) && textName.getText().toString().equals("请输入您的昵称")){
+                    CommonUtils.toastMessage("请输入您的昵称，不能超过8个字");
+                    return;
+                }
                 saveText();
                 getTime();
                 break;
             case R.id.ll_myself_information_address:
+                if(TextUtils.isEmpty(editName.getText().toString()) && textName.getText().toString().equals("请输入您的昵称")){
+                    CommonUtils.toastMessage("请输入您的昵称，不能超过8个字");
+                    return;
+                }
                 saveText();
                 getAddress();
                 break;
@@ -292,6 +304,10 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
     private boolean isText = false;
     private boolean isInfo = false;
     private void saveText() {
+        if(TextUtils.isEmpty(editName.getText().toString())&& textName.getText().toString().equals("请输入您的昵称")){
+            CommonUtils.toastMessage("请输入您的昵称，不能超过8个字");
+            return;
+        }
         if(isText){
             isText = false;
             textName.setVisibility(View.VISIBLE);
@@ -311,6 +327,10 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
     @Override
     public void onBackPressed() {
         CommonUtils.dismissProgressDialog();
+        if(TextUtils.isEmpty(editName.getText().toString()) && textName.getText().toString().equals("请输入您的昵称")){
+            CommonUtils.toastMessage("请输入您的昵称，不能超过8个字");
+            return;
+        }
         saveText();
         if(number>0){
             confirm();
@@ -325,7 +345,11 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
         if(textName.isShown()){
             textName.setVisibility(View.GONE);
             editName.setVisibility(View.VISIBLE);
-            editName.setText(textName.getText().toString());
+            if(textName.getText().toString().equals("请输入您的昵称")){
+                editName.setText("");
+            }else {
+                editName.setText(textName.getText().toString());
+            }
             editName.setFocusable(true);
             editName.setFocusableInTouchMode(true);
             editName.requestFocus();
@@ -483,12 +507,12 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
 //                    zoomBitMap.compress(Bitmap.CompressFormat.PNG, 100, baos);
 //                    byte[] bytes=baos.toByteArray();
 //                    Glide.with(this).load(bytes)
-//                            .placeholder(R.drawable.advisor_home_img)
+//                            .placeholder(R.drawable.home_adviosr_img)
 //                            .bitmapTransform(new CropCircleTransformation(this))
 //                            .into(img);
 //                    number++;
 //                }else{
-//                    img.setImageResource(R.drawable.advisor_home_img);
+//                    img.setImageResource(R.drawable.home_adviosr_img);
 //                }
 //                break;
 //        }
@@ -516,7 +540,7 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
                                     zoomBitMap.compress(Bitmap.CompressFormat.PNG, 100, baos);
                                     byte[] bytes=baos.toByteArray();
                                     Glide.with(ActivityMyselfInformation.this).load(bytes)
-                                            .placeholder(R.drawable.advisor_home_img)
+                                            .placeholder(R.drawable.home_adviosr_img)
                                             .bitmapTransform(new CropCircleTransformation(ActivityMyselfInformation.this))
                                             .into(img);
                                     number++;
@@ -527,7 +551,7 @@ public class ActivityMyselfInformation extends FragmentActivity implements View.
                         Bitmap cacheBitmap = CommonUtils.getCacheFile("myicon.jpg");
                             byte[] bytes=CommonUtils.getBitMapByteArray(cacheBitmap);
                             Glide.with(ActivityMyselfInformation.this).load(bytes)
-                                    .placeholder(R.drawable.advisor_home_img)
+                                    .placeholder(R.drawable.home_adviosr_img)
                                     .bitmapTransform(new CropCircleTransformation(ActivityMyselfInformation.this))
                                     .into(img);
                     }

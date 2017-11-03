@@ -13,6 +13,7 @@ import com.zfxf.douniu.chart.KChartAdapter;
 import com.zfxf.douniu.chart.KChartView;
 import com.zfxf.douniu.chart.KLineEntity;
 import com.zfxf.douniu.internet.NewsInternetRequest;
+import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.chart.formatter.DateFormatter;
 
 import java.util.ArrayList;
@@ -68,71 +69,13 @@ public class FragmentStockMonth extends BaseFragment {
         mKChartView.setDateTimeFormatter(new DateFormatter());
         mKChartView.setGridRows(4);
         mKChartView.setGridColumns(4);
+        mKChartView.setOverScrollRange(CommonUtils.dip2px(CommonUtils.getContext(),4));
         visitInternet();
 
-//        new Thread(new Runnable() {
-//
-//            @Override
-//            public void run() {
-//                String fileName = "ibm.json"; //k线图的数据
-//                String res = "";
-//                try {
-//                    InputStream in = getResources().getAssets().open(fileName);
-//                    int length = in.available();
-//                    byte[] buffer = new byte[length];
-//                    in.read(buffer);
-//                    res = EncodingUtils.getString(buffer, "UTF-8");
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//                final List<KLineEntity> data = new Gson().fromJson(res, new TypeToken<List<KLineEntity>>() {
-//                }.getType());
-//                DataHelper.calculate(data);
-//                getActivity().runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        mAdapter.addFooterData(data);
-//                        mKChartView.startAnimation();
-//
-//                        KLineEntity entity = data.get(data.size() - 1);
-//                        price.setText(en
-//                        tity.getClosePrice() + "");
-//                        max.setText("最高：" + entity.getHighPrice() + "");
-//                        min.setText("最低：" + entity.getLowPrice() + "");
-//                        yesPrice.setText("开盘：" + entity.getOpenPrice() + "");
-//                        shoupan.setText("收盘：" + entity.getClosePrice() + "");
-//                    }
-//                });
-//            }
-//        }).start();
-//        mAdapter = new KChartAdapter();
-//        mKChartView.setAdapter(mAdapter);
-//        mKChartView.setDateTimeFormatter(new DateFormatter());
-//        mKChartView.setGridRows(4);
-//        mKChartView.setGridColumns(4);
-//        //长按的触发事件
-//        mKChartView.setOnSelectedChangedListener(new IKChartView.OnSelectedChangedListener() {
-//            @Override
-//            public void onSelectedChanged(IKChartView view, Object point, int index) {
-//                final KLineEntity data = (KLineEntity) point;
-//                getActivity().runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        price.setText(data.getClosePrice() + "");
-//                        max.setText("最高：" + data.getHighPrice() + "");
-//                        min.setText("最低：" + data.getLowPrice() + "");
-//                        yesPrice.setText("开盘：" + data.getOpenPrice() + "");
-//                        shoupan.setText("收盘：" + data.getClosePrice() + "");
-//                        percent.setText(data.get + "");
-//                    }
-//                });
-//                Log.i("onSelectedChanged", "index:" + index + " closePrice:" + data.getClosePrice());
-//            }
-//        });
     }
 
     private void visitInternet() {
-        NewsInternetRequest.getStockKLineInformation(getActivity().getIntent().getStringExtra("code"), currentPage, "2", new NewsInternetRequest.ForResultStockKLineInfoListener() {
+        NewsInternetRequest.getStockKLineInformation(getActivity().getIntent().getStringExtra("code"),getActivity().getIntent().getStringExtra("model"), currentPage, "2", new NewsInternetRequest.ForResultStockKLineInfoListener() {
             @Override
             public void onResponseMessage(StockResult result) {
                 if(result == null){

@@ -165,20 +165,29 @@
                 android:layout_width="@dimen/dm080"
                 android:layout_height="@dimen/dm080"
                 android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/dm080"
                 android:src="@drawable/icon_wx"/>
             <View
                 android:layout_width="0dp"
-                android:visibility="gone"
                 android:layout_height="match_parent"
                 android:layout_weight="1"/>
             <ImageView
                 android:id="@+id/iv_login_qq"
                 android:layout_width="@dimen/dm080"
-                android:visibility="gone"
                 android:layout_height="@dimen/dm080"
                 android:layout_gravity="center"
-                android:layout_marginRight="@dimen/dm150"
                 android:src="@drawable/icon_qq"/>
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+            <ImageView
+                android:id="@+id/iv_login_sina"
+                android:layout_width="@dimen/dm080"
+                android:layout_height="@dimen/dm080"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/dm080"
+                android:src="@drawable/icon_sina"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

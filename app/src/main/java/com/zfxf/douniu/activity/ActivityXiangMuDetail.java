@@ -3,8 +3,8 @@ package com.zfxf.douniu.activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,6 +21,8 @@ import com.zfxf.douniu.utils.SpTools;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
+import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 
 /**
  * @author IMXU
@@ -29,7 +31,7 @@ import butterknife.ButterKnife;
  * 邮箱：butterfly_xu@sina.com
  *
 */
-public class ActivityXiangMuDetail extends FragmentActivity implements View.OnClickListener{
+public class ActivityXiangMuDetail extends AppCompatActivity implements View.OnClickListener{
 
     @BindView(R.id.iv_base_back)
     ImageView back;
@@ -37,22 +39,32 @@ public class ActivityXiangMuDetail extends FragmentActivity implements View.OnCl
     ImageView edit;
     @BindView(R.id.tv_base_title)
     TextView title;
+    @BindView(R.id.iv_base_question)
+    ImageView question;
 
-    @BindView(R.id.iv_xiangmu_detail_img)
-    ImageView img;//项目图片
+//    @BindView(R.id.iv_xiangmu_detail_img)
+//    ImageView img;//项目图片
     @BindView(R.id.iv_xiangmu_detail_type)
     ImageView type;//项目进度
 
     @BindView(R.id.tv_xiangmu_detail_name)
     TextView name;//项目名称
-    @BindView(R.id.tv_xiangmu_detail_time)
-    TextView time;//项目截至时间
+    @BindView(R.id.tv_xiangmu_detail_lingyu)
+    TextView lingyu;//所属领域
+    @BindView(R.id.tv_xiangmu_detail_money)
+    TextView money;//融资金额
+    @BindView(R.id.tv_xiangmu_detail_address)
+    TextView address;//公司地址
+    @BindView(R.id.tv_xiangmu_detail_phone)
+    TextView phone;//联系电话
     @BindView(R.id.tv_xiangmu_detail_content)
     TextView content;//项目内容
-    @BindView(R.id.tv_xiangmu_detail_human)
-    TextView human;//项目适合人群
     @BindView(R.id.tv_xiangmu_detail_qualify)
-    TextView qualify;//项目资格
+    TextView qualify;//项目调研
+
+    @BindView(R.id.videoplayer)
+    JCVideoPlayerStandard videoplayer;
+
     private int mNewsinfoId;
     private String mPhone;
 
@@ -64,6 +76,7 @@ public class ActivityXiangMuDetail extends FragmentActivity implements View.OnCl
 
         title.setText("好项目详情");
         edit.setVisibility(View.INVISIBLE);
+        question.setVisibility(View.VISIBLE);
         mNewsinfoId = getIntent().getIntExtra("newsinfoId", 0);
         initdata();
         initListener();
@@ -80,6 +93,7 @@ public class ActivityXiangMuDetail extends FragmentActivity implements View.OnCl
     private void initListener() {
         back.setOnClickListener(this);
         qualify.setOnClickListener(this);
+        question.setOnClickListener(this);
     }
 
     @Override
@@ -89,13 +103,23 @@ public class ActivityXiangMuDetail extends FragmentActivity implements View.OnCl
                 finishAll();
                 finish();
                 break;
-            case R.id.tv_xiangmu_detail_qualify:
+            case R.id.iv_base_question://项目说明
+                Intent in = new Intent(this, ActivityXiangMuExplain.class);
+                startActivity(in);
+                overridePendingTransition(0,0);
+
+                break;
+            case R.id.tv_xiangmu_detail_qualify://项目调研跳转
                 if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
                     Intent intent = new Intent(this, ActivityLogin.class);
                     startActivity(intent);
                     overridePendingTransition(0,0);
                 }else {
-                    showDailog();
+//                    showDailog();
+                    Intent intent = new Intent(this, ActivityXiangMuResearch.class);
+                    intent.putExtra("id",mNewsinfoId);
+                    startActivity(intent);
+                    overridePendingTransition(0,0);
                 }
                 break;
             case R.id.tv_contract_dialog_cannel:
@@ -136,22 +160,30 @@ public class ActivityXiangMuDetail extends FragmentActivity implements View.OnCl
             @Override
             public void onResponseMessage(OtherResult otherResult) {
                 ProjectListResult projectInfo = otherResult.project_info;
+
                 String picUrl = getResources().getString(R.string.file_host_address)
                         +getResources().getString(R.string.showpic)
-                        +projectInfo.cc_fielid;
-                Glide.with(ActivityXiangMuDetail.this).load(picUrl)
-                        .placeholder(R.drawable.xiangmu_img)
-                        .into(img);
+                        +projectInfo.video_pic;
+//                String shipinUrl = getResources().getString(R.string.file_host_address)
+//                        +getResources().getString(R.string.showpic)
+//                        +projectInfo.video;
+                videoplayer.setUp(projectInfo.video ,JCVideoPlayerStandard.SCREEN_LAYOUT_NORMAL, "","","");
+                Glide.with(ActivityXiangMuDetail.this).load(picUrl).into(videoplayer.thumbImageView);
+
+//                Glide.with(ActivityXiangMuDetail.this).load(picUrl)
+//                        .placeholder(R.drawable.xiangmu_img)
+//                        .into(img);
                 name.setText(projectInfo.cc_title);
-                time.setText(projectInfo.cc_datetime);
                 if(Integer.parseInt(projectInfo.biaoshi) == 0){
                     type.setImageResource(R.drawable.xiangmu_yure);
                 }else{
                     type.setImageResource(R.drawable.xiangmu_ing);
                 }
+                lingyu.setText(projectInfo.shiyong);
+                money.setText(projectInfo.feiyong);
+                address.setText(projectInfo.addr);
+                phone.setText(projectInfo.phone);
                 content.setText(projectInfo.cc_description);
-                human.setText(projectInfo.shiyong);
-                qualify.setText("认购项目("+ projectInfo.feiyong+"元起)");
                 CommonUtils.dismissProgressDialog();
             }
         },getResources().getString(R.string.projectinfo));
@@ -159,7 +191,16 @@ public class ActivityXiangMuDetail extends FragmentActivity implements View.OnCl
 
     @Override
     public void onBackPressed() {
+        if (JCVideoPlayer.backPress()) {
+            return;
+        }
         super.onBackPressed();
         CommonUtils.dismissProgressDialog();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JCVideoPlayer.releaseAllVideos();
     }
 }

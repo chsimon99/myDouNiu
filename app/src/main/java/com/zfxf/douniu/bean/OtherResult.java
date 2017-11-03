@@ -33,5 +33,8 @@ public class OtherResult {
     public WeiXinInfo wx_params;//微信返回信息
 
     public String url;
+    public String zc_id;//问股返回
+    public String cc_id;//项目申请返回
+    public String pd_id;//项目调研返回
 
 }

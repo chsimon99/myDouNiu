@@ -12,7 +12,7 @@
         android:layout_height="@dimen/dm300"
         android:background="@color/colorWhite"
         android:gravity="start"
-        android:hint="问股速回，解您所困。24小时无人解答，将按支付路径全额退款"
+        android:hint="问股速回，解您所困。工作日24小时内无人解答，将按支付路径全额退款"
         android:imeOptions="actionDone"
         android:inputType="textMultiLine"
         android:paddingLeft="@dimen/dm020"

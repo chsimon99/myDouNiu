@@ -80,6 +80,7 @@ public class ActivityMyselfRvaluateFifth extends FragmentActivity implements Vie
         confirm.setOnClickListener(this);
     }
     int num = 3;
+    String answer = "A";
     @Override
     public void onClick(View v) {
 
@@ -93,28 +94,35 @@ public class ActivityMyselfRvaluateFifth extends FragmentActivity implements Vie
                 first_select.setVisibility(View.VISIBLE);
                 first_noselect.setVisibility(View.INVISIBLE);
                 num = 3;
+                answer = "A";
                 break;
             case R.id.ll_myself_rvaluate_second:
                 reset();
                 second_select.setVisibility(View.VISIBLE);
                 second_noselect.setVisibility(View.INVISIBLE);
                 num = 5;
+                answer = "B";
                 break;
             case R.id.ll_myself_rvaluate_third:
                 reset();
                 third_select.setVisibility(View.VISIBLE);
                 third_noselect.setVisibility(View.INVISIBLE);
                 num = 7;
+                answer = "C";
                 break;
             case R.id.ll_myself_rvaluate_fourth:
                 reset();
                 fourth_select.setVisibility(View.VISIBLE);
                 fourth_noselect.setVisibility(View.INVISIBLE);
                 num = 9;
+                answer = "D";
                 break;
             case R.id.rl_myself_rvaluate_confirm:
                 int result = SpTools.getInt(this, Constants.rvaluateResult, 0);
                 result = result+num;
+                String answerStr = SpTools.getString(this, Constants.rvaluateAnswer, "");
+                answerStr = answerStr + answer;
+                SpTools.setString(this, Constants.rvaluateAnswer,answerStr);
                 Intent intent = new Intent(this,ActivityMyselfRvaluateSix.class);
                 startActivity(intent);
                 overridePendingTransition(0,0);

@@ -99,6 +99,8 @@ public class MyselfConsumeWaitAdapter extends RecyclerView.Adapter<MyselfConsume
                 content.setText(bean.pmo_info);
             }else if(bean.type.equals("5")){
                 content.setText("大参考 "+bean.pmo_info);
+            }else if(bean.type.equals("6")){
+                content.setText("选股王");
             }
             price.setText("￥"+bean.pmo_fee+"元");
         }

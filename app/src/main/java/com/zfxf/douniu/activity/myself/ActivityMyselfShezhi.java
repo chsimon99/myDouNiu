@@ -146,6 +146,7 @@ public class ActivityMyselfShezhi extends FragmentActivity implements View.OnCli
                                 SpTools.setBoolean(CommonUtils.getContext(), Constants.isLogin,false);
                                 SpTools.setBoolean(CommonUtils.getContext(), Constants.alreadyLogout,true);
                                 SpTools.setString(CommonUtils.getContext(),Constants.userId,"");
+                                SpTools.setInt(CommonUtils.getContext(), Constants.rvaluateResult, 0);
                                 CommonUtils.deleteBitmap("myicon.jpg");
                                 FragmentMyself.exit();
                                 finishAll();

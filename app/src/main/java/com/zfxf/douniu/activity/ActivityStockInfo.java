@@ -37,6 +37,8 @@ import com.zfxf.douniu.view.fragment.FragmentStockWeek;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.text.DecimalFormat;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -108,6 +110,10 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
     TextView tv_hudong;
     @BindView(R.id.v_stock_info_hudong)
     View v_hudong;
+    @BindView(R.id.rl_stock_info_news)
+    RelativeLayout rl_news;//新闻
+    @BindView(R.id.tv_stock_info_news)
+    TextView tv_news;
 
     @BindView(R.id.ll_stock_info_buy)
     LinearLayout ll_buy;//买入界面
@@ -191,6 +197,8 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
     LinearLayout ll_moni;//模拟交易
     @BindView(R.id.ll_stock_info_zixuan)
     LinearLayout ll_zixuan;//加自选
+    @BindView(R.id.v_stock_info_monijiayi)
+    View v_moni;
     @BindView(R.id.iv_stock_info_zixuan)
     ImageView iv_zixuan;
     @BindView(R.id.tv_stock_info_zixuan)
@@ -240,6 +248,11 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
     private String mStock_dt;
     private String mStock_zt;
     private Handler fiveHandler;
+    private String model;//股票类型 1深A  2指数  3沪A
+    private Timer mTimer;
+    private StockInfo mStockInfo;
+    private String mName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -248,11 +261,23 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
         ButterKnife.bind(this);
         //传过来的标题
         mCode = getIntent().getStringExtra("code");
-        String name = getIntent().getStringExtra("name");//传过来的标题
+        model = getIntent().getStringExtra("model");
+        //传过来的标题
+        mName = getIntent().getStringExtra("name");
         title.setTextSize(16);
-        title.setText(name+"\n"+mCode);
+        title.setText(mName +"\n"+mCode);
         edit.setVisibility(View.INVISIBLE);
         share.setVisibility(View.INVISIBLE);
+
+        if(model.equals("2")){
+            rl_zixun.setVisibility(View.GONE);
+            rl_hudong.setVisibility(View.GONE);
+            rl_notice.setVisibility(View.GONE);
+            rl_news.setVisibility(View.VISIBLE);
+            ll_moni.setVisibility(View.GONE);
+            v_moni.setVisibility(View.GONE);
+        }
+
         tv_confirm_buy.getPaint().setFakeBoldText(true);//加粗
         tv_confirm_sold.getPaint().setFakeBoldText(true);//加粗
         tv_cancel_buy.getPaint().setFakeBoldText(true);//加粗
@@ -277,7 +302,7 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
                                 message.what = 1;
                                 fiveHandler.sendMessage(message);
                             }
-
+                            mStockInfo = (StockInfo)msg.obj;
                             if(((StockInfo)msg.obj).mg_cz.contains("+")){
                                 tv_xj.setTextColor(getResources().getColor(R.color.colorRise));
                                 tv_cz.setTextColor(getResources().getColor(R.color.colorRise));
@@ -311,7 +336,17 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
                 }
             };
         }
-        alwaysRefresh();
+
+        mTimer = new Timer();
+        mTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                visitInternet();
+            }
+        },0,5000l);
+//        alwaysRefresh();
+
+
         if(mFragmentStockMinitue == null){
             mFragmentStockMinitue = new FragmentStockMinitue();
         }
@@ -339,7 +374,7 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
     }
     private int newstype = 0;
     private void visitGetNewsInfo() {
-        NewsInternetRequest.getStockNewsInformation(mCode, newstype, new NewsInternetRequest.ForResultStockNewsInfoListener() {
+        NewsInternetRequest.getStockNewsInformation(mCode, newstype,model, new NewsInternetRequest.ForResultStockNewsInfoListener() {
             @Override
             public void onResponseMessage(StockResult result) {
                 if(result!=null){
@@ -369,21 +404,21 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
                         }
                     });
                 }
-                if (mStockNoticeAdapter == null) {
-                    mStockNoticeAdapter.notifyDataSetChanged();
-                }
+//                if (mStockNoticeAdapter == null) {
+//                    mStockNoticeAdapter.notifyDataSetChanged();
+//                }
             }
         });
     }
 
     private void visitInternet() {
-        NewsInternetRequest.getStockDetailInformation(mCode,new NewsInternetRequest.ForResultStockInfoListener() {
+        NewsInternetRequest.getStockDetailInformation(mCode,model,new NewsInternetRequest.ForResultStockInfoListener() {
             @Override
             public void onResponseMessage(StockResult result) {
                 if(result != null){
                     if(result.station.equals("0")){//修市
-                        if(mTask !=null){
-                            mTask.stop();
+                        if(mTimer !=null){
+                            mTimer.cancel();
                         }
                     }
                     if(result.gupiao_info !=null){
@@ -400,24 +435,24 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
     }
 
     private static Handler mHandler;
-    private static AutoScrollTask mTask;
-    private void alwaysRefresh() {
-        mTask = new AutoScrollTask();
-        mTask.start();
-    }
-    class AutoScrollTask implements Runnable {
-        public void start() {/**开始轮播*/
-            mHandler.postDelayed(this, 5000l);
-        }
-        public void stop() { /**结束轮播*/
-           mHandler.removeCallbacks(this);
-        }
-        @Override
-        public void run() {
-            visitInternet();
-            start();
-        }
-    }
+//    private static AutoScrollTask mTask;
+//    private void alwaysRefresh() {
+//        mTask = new AutoScrollTask();
+//        mTask.start();
+//    }
+//    class AutoScrollTask implements Runnable {
+//        public void start() {/**开始轮播*/
+//            mHandler.postDelayed(this, 5000l);
+//        }
+//        public void stop() { /**结束轮播*/
+//           mHandler.removeCallbacks(this);
+//        }
+//        @Override
+//        public void run() {
+//            visitInternet();
+//            start();
+//        }
+//    }
 
     private void initListener() {
         back.setOnClickListener(this);
@@ -631,6 +666,9 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
                 et_buy_price.setText(f+"");
                 break;
             case R.id.tv_stock_info_buy_count_all:
+                if(TextUtils.isEmpty(mg_zzc) || TextUtils.isEmpty(nowPrice)){
+                    return;
+                }
                 count= (int) (Float.parseFloat(mg_zzc)/Float.parseFloat(nowPrice));
                 count= changeCount(count);
                 if(count == 0){
@@ -640,6 +678,9 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
                 et_buy_count.setText(count+"");
                 break;
             case R.id.tv_stock_info_buy_count_half:
+                if(TextUtils.isEmpty(mg_zzc) || TextUtils.isEmpty(nowPrice)){
+                    return;
+                }
                 count = (int) ((Float.parseFloat(mg_zzc)*0.5)/Float.parseFloat(nowPrice));
                 count= changeCount(count);
                 if(count == 0){
@@ -649,6 +690,9 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
                 et_buy_count.setText(count+"");
                 break;
             case R.id.tv_stock_info_buy_count_three:
+                if(TextUtils.isEmpty(mg_zzc) || TextUtils.isEmpty(nowPrice)){
+                    return;
+                }
                 count = (int) (Float.parseFloat(mg_zzc)/(Float.parseFloat(nowPrice)*3));
                 count= changeCount(count);
                 if(count == 0){
@@ -658,6 +702,9 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
                 et_buy_count.setText(count+"");
                 break;
             case R.id.tv_stock_info_buy_count_four:
+                if(TextUtils.isEmpty(mg_zzc) || TextUtils.isEmpty(nowPrice)){
+                    return;
+                }
                 count = (int) ((Float.parseFloat(mg_zzc)*0.25)/Float.parseFloat(nowPrice));
                 count= changeCount(count);
                 if(count == 0){
@@ -803,6 +850,15 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
                 et_sold_count.setText(changeCount(Integer.parseInt(s_count))+"");
                 confirmSoldDialog();
                 break;
+            case R.id.ll_stock_info_yujing://预警
+//                Intent intent = new Intent(this,ActivityWarning.class);
+//                intent.putExtra("name",mName);
+//                intent.putExtra("code",mCode);
+//                intent.putExtra("price",mStockInfo.mg_xj);
+//                intent.putExtra("ratio",mStockInfo.mg_zf);
+//                startActivity(intent);
+//                overridePendingTransition(0,0);
+                break;
         }
     }
 
@@ -855,7 +911,7 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
             return;
         }
         NewsInternetRequest.simulationBuyStock( tv_buy_code.getText().toString(),tv_buy_name.getText().toString()
-                , et_buy_count.getText().toString(),et_buy_price.getText().toString(), new NewsInternetRequest.ForResultListener() {
+                , et_buy_count.getText().toString(),et_buy_price.getText().toString(),model,new NewsInternetRequest.ForResultListener() {
                     @Override
                     public void onResponseMessage(String info) {
                         if(info.equals("成功")){
@@ -876,7 +932,7 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
             return;
         }
         NewsInternetRequest.simulationSellStock( tv_sold_code.getText().toString(),tv_sold_name.getText().toString()
-                , et_sold_count.getText().toString(),et_sold_price.getText().toString(), new NewsInternetRequest.ForResultListener() {
+                , et_sold_count.getText().toString(),et_sold_price.getText().toString(), model,new NewsInternetRequest.ForResultListener() {
                     @Override
                     public void onResponseMessage(String info) {
                         if(info.equals("成功")){
@@ -892,7 +948,7 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
     }
 
     private void getMoniStockInfoBuy() {
-        NewsInternetRequest.getSimulationBuyInformation(mCode, new NewsInternetRequest.ForResultSimulationIndexListener() {
+        NewsInternetRequest.getSimulationBuyInformation(mCode,model, new NewsInternetRequest.ForResultSimulationIndexListener() {
             @Override
             public void onResponseMessage(SimulationResult result) {
                 if(result.mn_gupiao !=null){
@@ -910,7 +966,7 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
         });
     }
     private void getMoniStockInfoSell() {
-        NewsInternetRequest.getSimulationSellInformation(mCode, new NewsInternetRequest.ForResultSimulationIndexListener() {
+        NewsInternetRequest.getSimulationSellInformation(mCode,model, new NewsInternetRequest.ForResultSimulationIndexListener() {
             @Override
             public void onResponseMessage(SimulationResult result) {
                 if(result.mn_gupiao !=null){
@@ -963,9 +1019,9 @@ public class ActivityStockInfo extends FragmentActivity implements View.OnClickL
     protected void onDestroy() {
         super.onDestroy();
         OkHttpUtils.getInstance().getOkHttpClient().dispatcher().cancelAll();//关闭网络请求
-        if(mTask !=null){
-            mTask.stop();
-            mTask = null;
+        if(mTimer !=null){
+            mTimer.cancel();
+            mTimer = null;
         }
         mHandler = null;
     }

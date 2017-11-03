@@ -49,6 +49,8 @@ public class ActivityGoldPond extends FragmentActivity implements View.OnClickLi
     TextView tv_money;//费用
     @BindView(R.id.tv_gold_pond_detail_people)
     TextView tv_people;//适用人群
+    @BindView(R.id.tv_gold_pond_detail_tese)
+    TextView tv_tese;//金股池特色
     @BindView(R.id.tv_gold_pond_detail_subscribe)
     TextView tv_subscribe;//订阅人数
     @BindView(R.id.tv_gold_pond_detail_time)
@@ -64,6 +66,11 @@ public class ActivityGoldPond extends FragmentActivity implements View.OnClickLi
     RelativeLayout rl_stock;//入选个股
     @BindView(R.id.ll_gold_pond_detail)
     LinearLayout pay_info;//购买提示信息(与分割线互斥)
+
+    @BindView(R.id.tv_gold_pond_detail_deletime)
+    TextView tv_deletime;//到期时间
+    @BindView(R.id.iv_gold_pond_detail_jiantou)
+    ImageView iv_jiantou;
     @BindView(R.id.v_gold_pond_detail)
     View pay_info_view;//购买提示信息分割线
     @BindView(R.id.v_gold_pond_detail_view)
@@ -86,6 +93,8 @@ public class ActivityGoldPond extends FragmentActivity implements View.OnClickLi
     private String dj_type;
     private String nickname;
     private String mFee;
+    private String mDys;
+    private String history_url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,26 +156,33 @@ public class ActivityGoldPond extends FragmentActivity implements View.OnClickLi
                 dj_type = result.dn_jgc.dj_type;
                 nickname = result.dn_jgc.ud_nickname;
                 tv_name.setText(nickname +"的金股池");
-                tv_subscribe.setText(result.dn_jgc.dy_count);
+                mDys = result.dn_jgc.dy_count;
+                tv_subscribe.setText(mDys);
                 mFee = result.dn_jgc.dy_fee;
-                tv_money.setText("￥"+ mFee);
-                tv_time.setText("发布周期:"+result.dn_jgc.jgcfa_date);
+                history_url = result.dn_jgc.history_url;
+                //                tv_money.setText("￥"+ mFee);
+//                tv_time.setText("发布周期:"+result.dn_jgc.jgcfa_date);
+                tv_tese.setText(result.dn_jgc.djf_gcts);
                 tv_people.setText(result.dn_jgc.djf_syrq);
                 tv_brief.setText(result.dn_jgc.djf_fxts);
                 tv_count.setText(result.jgc_count+"股");
                 mStatus = result.status;
                 if(mStatus.equals("1")){
                     pay_info.setVisibility(View.INVISIBLE);
+                    iv_jiantou.setVisibility(View.INVISIBLE);
                     tv_confirm.setVisibility(View.GONE);
                     pay_info_view2.setVisibility(View.GONE);
                     rv_stock.setVisibility(View.VISIBLE);
                     pay_info_view.setVisibility(View.VISIBLE);
-
+                    tv_deletime.setVisibility(View.VISIBLE);
+                    tv_deletime.setText("到期时间："+result.dn_jgc.djf_edate);
                 }else{
                     pay_info.setVisibility(View.VISIBLE);
+                    iv_jiantou.setVisibility(View.VISIBLE);
                     tv_confirm.setVisibility(View.VISIBLE);
                     rv_stock.setVisibility(View.GONE);
                     pay_info_view.setVisibility(View.GONE);
+                    tv_deletime.setVisibility(View.GONE);
 
                 }
                 CommonUtils.dismissProgressDialog();
@@ -196,15 +212,19 @@ public class ActivityGoldPond extends FragmentActivity implements View.OnClickLi
                 toPay();
                 break;
             case R.id.rl_gold_pond_detail_history:
-                Intent intent = new Intent(this,Activityhistory.class);
-                intent.putExtra("sx_id",mSx_id+"");
-                intent.putExtra("type",dj_type);
+//                Intent intent = new Intent(this,Activityhistory.class);
+//                intent.putExtra("sx_id",mSx_id+"");
+//                intent.putExtra("type",dj_type);
+                Intent intent = new Intent(this,ActivityGoldHistory.class);
+                intent.putExtra("url",history_url);
+                intent.putExtra("name","历史战绩");
                 startActivity(intent);
                 overridePendingTransition(0,0);
                 break;
             case R.id.rl_gold_pond_detail_stock:
                 if(mStatus.equals("1")){
                     pay_info.setVisibility(View.INVISIBLE);
+                    iv_jiantou.setVisibility(View.INVISIBLE);
                     rv_stock.setVisibility(View.VISIBLE);
                     tv_confirm.setVisibility(View.GONE);
                     pay_info_view2.setVisibility(View.GONE);
@@ -213,6 +233,7 @@ public class ActivityGoldPond extends FragmentActivity implements View.OnClickLi
                 }else{
                     toPay();
                     pay_info.setVisibility(View.VISIBLE);
+                    iv_jiantou.setVisibility(View.VISIBLE);
                     rv_stock.setVisibility(View.GONE);
                     pay_info_view.setVisibility(View.GONE);
 
@@ -225,21 +246,29 @@ public class ActivityGoldPond extends FragmentActivity implements View.OnClickLi
         Intent intent = new Intent(this,ActivityToPay.class);
         intent.putExtra("info","金股池,"+mSx_id+","+mJgcId);
         intent.putExtra("type","金股池");
-        intent.putExtra("from",nickname);
+        intent.putExtra("from","金股池");
         intent.putExtra("count",mFee);
+        intent.putExtra("planId",mJgcId);
         intent.putExtra("sx_id",mSx_id+"");
+        intent.putExtra("dycount",mDys);
         startActivity(intent);
         overridePendingTransition(0,0);
     }
 
     private void finishAll() {
-
+        if(!SpTools.getBoolean(this, Constants.isOpenApp,false)){
+            Intent intent = new Intent(this, MainActivityTabHost.class);
+            startActivity(intent);
+            overridePendingTransition(0,0);
+        }
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         CommonUtils.dismissProgressDialog();
+        finishAll();
+        finish();
     }
 
     @Override

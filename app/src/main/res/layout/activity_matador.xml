@@ -28,7 +28,7 @@
                         android:id="@+id/iv_matador_img"
                         android:layout_width="@dimen/dm150"
                         android:layout_height="@dimen/dm150"
-                        android:src="@drawable/advisor_home_img"/>
+                        android:src="@drawable/home_adviosr_img"/>
                     <RelativeLayout android:layout_width="match_parent"
                                     android:layout_height="wrap_content">
 
@@ -194,7 +194,7 @@
                         android:id="@+id/tv_matador_mes_asset"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2,000,000.00"
+                        android:text="1000000.00"
                         android:textColor="@color/colorTitle"
                         android:textSize="@dimen/dm028"/>
                     <TextView

@@ -3,7 +3,14 @@ package com.zfxf.douniu.adapter.recycleView;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.UnderlineSpan;
 import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -11,10 +18,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.bean.LivingContent;
 import com.zfxf.douniu.bean.LivingContentDetail;
 import com.zfxf.douniu.bean.LivingContentDetailType;
+import com.zfxf.douniu.bean.LivingContentLinks;
+import com.zfxf.douniu.utils.CommonUtils;
 
 import java.util.List;
 
@@ -31,9 +41,11 @@ public class LiveLivingAdapter extends RecyclerView.Adapter {
 
     private int living_text = 1;
     private int living_sound = 2;
+    private int living_picture = 3;
 
 
     public interface MyItemClickListener {
+        //LivingContentDetailType 直播的内容
         void onItemClick(View v, int positon , LivingContentDetailType type ,ImageView view);
     }
 
@@ -50,14 +62,19 @@ public class LiveLivingAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         MySoundHolder mySoundHolder = null;
         MyTextHolder myTextHolder = null;
+        MyPictureHolder myPictureHolder = null;
         if(viewType == living_text){
-            View view = View.inflate(mContext, R.layout.item_live_living_text, null);
+            View view = LayoutInflater.from(mContext).inflate(R.layout.item_live_living_text, parent,false);
             myTextHolder = new MyTextHolder(view, mItemClickListener);
             return myTextHolder;
-        }else{
-            View view = View.inflate(mContext, R.layout.item_live_living_sound, null);
+        }else if(viewType == living_sound){
+            View view = LayoutInflater.from(mContext).inflate(R.layout.item_live_living_sound, parent,false);
             mySoundHolder = new MySoundHolder(view,mItemClickListener);
             return mySoundHolder;
+        }else {
+            View view = LayoutInflater.from(mContext).inflate(R.layout.item_live_living_picture, parent,false);
+            myPictureHolder = new MyPictureHolder(view,mItemClickListener);
+            return myPictureHolder;
         }
     }
 
@@ -68,6 +85,8 @@ public class LiveLivingAdapter extends RecyclerView.Adapter {
             ((MyTextHolder) holder).setRefreshData(mDatas.get(position),position);
         }else if(holder instanceof MySoundHolder){
             ((MySoundHolder) holder).setRefreshData(mDatas.get(position),position);
+        }else if(holder instanceof MyPictureHolder){
+            ((MyPictureHolder) holder).setRefreshData(mDatas.get(position),position);
         }
     }
 
@@ -86,7 +105,9 @@ public class LiveLivingAdapter extends RecyclerView.Adapter {
     public int getItemViewType(int position) {
         if(mDatas.get(position).zc_context.type.equals("0")){
             return living_text;
-        }else{
+        }else if(mDatas.get(position).zc_context.type.equals("2")){
+            return living_picture;
+        }else {
             return living_sound;
         }
     }
@@ -112,8 +133,37 @@ public class LiveLivingAdapter extends RecyclerView.Adapter {
         }
 
         public void setRefreshData(LivingContentDetail bean, int position) {
+            if(bean.zc_context.links.size()>0){
+                content.setText(getClickableSpan(bean.zc_context.links,bean.zc_context.text));
+                //设置超链接可点击
+                content.setMovementMethod(LinkMovementMethod.getInstance());
+            }else {
+                content.setText(bean.zc_context.text);
+            }
             time.setText(bean.zc_time);
-            content.setText(bean.zc_context.text);
+
+        }
+        private SpannableString getClickableSpan(List<LivingContentLinks> links,String text){
+            SpannableString spannableString = new SpannableString(text);
+            for(int i = 0;i<links.size();i++){
+                //设置下划线文字
+                spannableString.setSpan(new UnderlineSpan(), Integer.parseInt(links.get(i).start), Integer.parseInt(links.get(i).end), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                //设置文字的单击事件
+                final int finalI = i;
+                spannableString.setSpan(new ClickableSpan() {
+                    @Override
+                    public void onClick(View widget) {
+                        if (mListener != null) {
+                            mListener.onItemClick(widget, finalI,mDatas.get(getPosition()).zc_context,null);
+                        }
+                    }
+                }, Integer.parseInt(links.get(i).start), Integer.parseInt(links.get(i).end), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                //设置文字的前景色
+                spannableString.setSpan(new ForegroundColorSpan(CommonUtils.getContext().getResources().
+                        getColor(R.color.blueWeb)), Integer.parseInt(links.get(i).start),
+                        Integer.parseInt(links.get(i).end), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+            return spannableString;
         }
     }
     class MySoundHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -180,6 +230,35 @@ public class LiveLivingAdapter extends RecyclerView.Adapter {
             view.setImageResource(R.drawable.voiceanimation);
             voiceAnimation = (AnimationDrawable) view.getDrawable();
             voiceAnimation.start();
+        }
+    }
+    class MyPictureHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private MyItemClickListener mListener;
+        TextView time;
+        ImageView img;
+
+        public MyPictureHolder(View itemView, MyItemClickListener listener) {
+            super(itemView);
+            this.mListener = listener;
+            time = (TextView) itemView.findViewById(R.id.tv_live_living_pic_time);
+            img = (ImageView) itemView.findViewById(R.id.iv_live_living_pic_img);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (mListener != null) {
+                mListener.onItemClick(v, getPosition(),mDatas.get(getPosition()).zc_context,null);
+            }
+        }
+
+        public void setRefreshData(LivingContentDetail bean, int position) {
+            time.setText(bean.zc_time);
+            String picUrl = mContext.getResources().getString(R.string.file_host_address)
+                    +mContext.getResources().getString(R.string.showpic)
+                    +bean.zc_context.url;
+            Glide.with(mContext).load(picUrl)
+                    .dontTransform().into(img);
         }
     }
 }

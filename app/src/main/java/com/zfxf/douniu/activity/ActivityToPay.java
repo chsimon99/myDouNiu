@@ -22,7 +22,9 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.bean.OtherResult;
+import com.zfxf.douniu.bean.PayStyle;
 import com.zfxf.douniu.bean.ProjectListResult;
+import com.zfxf.douniu.bean.XuanguResult;
 import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.utils.Constants;
@@ -45,6 +47,41 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
     @BindView(R.id.tv_base_title)
     TextView title;
 
+    @BindView(R.id.tv_topay_type_name)
+    TextView tv_name;//购买的类型 智能选股王和金股池
+    @BindView(R.id.tv_topay_type_count)
+    TextView tv_count;//订阅数量
+    @BindView(R.id.rl_topay_money1)
+    RelativeLayout rl_money1;//选择支付的类型
+    @BindView(R.id.rl_topay_money2)
+    RelativeLayout rl_money2;
+    @BindView(R.id.rl_topay_money3)
+    RelativeLayout rl_money3;
+    @BindView(R.id.tv_topay_type_name1)
+    TextView tv_name1;//购买类型
+    @BindView(R.id.tv_topay_price1)
+    TextView tv_price1;//购买类型价格
+    @BindView(R.id.tv_topay_type_name2)
+    TextView tv_name2;//购买类型
+    @BindView(R.id.tv_topay_price2)
+    TextView tv_price2;//购买类型价格
+    @BindView(R.id.tv_topay_type_name3)
+    TextView tv_name3;//购买类型
+    @BindView(R.id.tv_topay_price3)
+    TextView tv_price3;//购买类型价格
+    @BindView(R.id.tv_topay_type_yuan1)
+    TextView tv_yuan1;
+    @BindView(R.id.tv_topay_type_yuan2)
+    TextView tv_yuan2;
+    @BindView(R.id.tv_topay_type_yuan3)
+    TextView tv_yuan3;
+    @BindView(R.id.iv_topay_select1)
+    ImageView iv_select1;
+    @BindView(R.id.iv_topay_select2)
+    ImageView iv_select2;
+    @BindView(R.id.iv_topay_select3)
+    ImageView iv_select3;
+
     @BindView(R.id.tv_topay_towho)
     TextView towho;
     @BindView(R.id.tv_topay_money)
@@ -66,6 +103,10 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
     LinearLayout wx;
     @BindView(R.id.ll_topay_zfb)
     LinearLayout zfb;
+    @BindView(R.id.ll_topay_orignal)
+    LinearLayout ll_original;//其他购买界面
+    @BindView(R.id.ll_topay_type)
+    LinearLayout ll_type;//智能选股王和金股池购买界面
 
     @BindView(R.id.iv_topay_niu_select)
     ImageView niu_select;
@@ -88,12 +129,19 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
     @BindView(R.id.rl_topay_pay)
     RelativeLayout pay;
     private String mCount;
+    private String mType;//购买的类型周、月、季等
     private String sx_id;
     private static List<ProjectListResult> mNiubiStyle = new ArrayList<ProjectListResult>();
     private String mInfo;
     private String mOrder;
     private int mChange = 0;
     private IWXAPI api;
+    private String mFrom;
+    private int mPlanId;
+    private List<PayStyle> mFeeList;
+    private String mDycount;
+    private String mBuytype = "";//付款类型
+    private int mNiubi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,16 +150,28 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
         ButterKnife.bind(this);
         title.setText("提交订单");
         edit.setVisibility(View.INVISIBLE);
-        String mytype = getIntent().getStringExtra("type");
+        mBuytype = getIntent().getStringExtra("type");
         mInfo = getIntent().getStringExtra("info");
         mCount = getIntent().getStringExtra("count");
         sx_id = getIntent().getStringExtra("sx_id");
-        String from = getIntent().getStringExtra("from");
+        mFrom = getIntent().getStringExtra("from");
         mOrder = getIntent().getStringExtra("order");
+        mDycount = getIntent().getStringExtra("dycount");
+
         mChange = getIntent().getIntExtra("change", 0);
+        mPlanId = getIntent().getIntExtra("planId", 0);//方案id
         money.setText("￥"+ mCount);
-        type.setText(mytype);
-        towho.setText(from);
+        type.setText(mBuytype);
+        towho.setText(mFrom);
+
+        tv_yuan1.getPaint().setFakeBoldText(true);//加粗
+        tv_yuan2.getPaint().setFakeBoldText(true);//加粗
+        tv_yuan3.getPaint().setFakeBoldText(true);//加粗
+        tv_price1.getPaint().setFakeBoldText(true);//加粗
+        tv_price2.getPaint().setFakeBoldText(true);//加粗
+        tv_price3.getPaint().setFakeBoldText(true);//加粗
+        iv_select1.setVisibility(View.VISIBLE);
+
         api = WXAPIFactory.createWXAPI(this,  Constants.APP_ID);
         api.registerApp(Constants.APP_ID);
         instance = this;
@@ -121,9 +181,18 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
 
     private void initData() {
         visitInternet();
-        yu_e.setVisibility(View.VISIBLE);
-        yu_e_pay.setVisibility(View.VISIBLE);
-        v_yu_e.setVisibility(View.GONE);
+        if("选股王".equals(mFrom)){
+            tv_name.setText("智能选股王");
+            getBuyListInfo();
+        }else if("金股池".equals(mFrom)){
+            tv_name.setText("金股池");
+            getBuyListInfo();
+        }else {
+            ll_original.setVisibility(View.VISIBLE);
+        }
+//        yu_e.setVisibility(View.VISIBLE);
+//        yu_e_pay.setVisibility(View.VISIBLE);
+//        v_yu_e.setVisibility(View.GONE);
         if(mCount.equals("0")){
             rl_wx.setVisibility(View.GONE);
             rl_zfb.setVisibility(View.GONE);
@@ -132,21 +201,55 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
         }
     }
 
+    private void getBuyListInfo() {
+        NewsInternetRequest.BuyListInformation(mPlanId + "", sx_id,new NewsInternetRequest.ForResultXuanGuListener() {
+            @Override
+            public void onResponseMessage(XuanguResult result) {
+                if(result.fee_list.size()>0){
+                    mFeeList = result.fee_list;
+                    tv_name1.setText(mFeeList.get(0).m_type+"卡");
+                    tv_price1.setText(mFeeList.get(0).m_fee);
+                    tv_name2.setText(mFeeList.get(1).m_type+"卡");
+                    tv_price2.setText(mFeeList.get(1).m_fee);
+                    tv_name3.setText(mFeeList.get(2).m_type+"卡");
+                    tv_price3.setText(mFeeList.get(2).m_fee);
+                    ll_type.setVisibility(View.VISIBLE);
+                    mCount = mFeeList.get(0).m_fee;
+                    mType = mFeeList.get(0).m_type;
+                    if(mNiubi>0){
+                        if((mNiubi -Integer.parseInt(mCount)*10)>=0){//牛币充足
+                            yu_e.setVisibility(View.GONE);
+                            yu_e_pay.setVisibility(View.GONE);
+                            v_yu_e.setVisibility(View.VISIBLE);
+                        }else {//牛币不足
+                            yu_e.setVisibility(View.VISIBLE);
+                            yu_e_pay.setVisibility(View.VISIBLE);
+                            v_yu_e.setVisibility(View.GONE);
+                        }
+                    }
+                    tv_count.setText("已订阅"+mDycount+"人次");
+                }
+            }
+        });
+    }
+
     private void visitInternet() {
         NewsInternetRequest.getNiuBiShow(new NewsInternetRequest.ForResultNewsInfoListener() {
             @Override
             public void onResponseMessage(OtherResult otherResult) {
-                int niubi = Integer.parseInt(otherResult.my_wallet);
-                if((niubi-Integer.parseInt(mCount)*10)>=0){//牛币充足
-                    yu_e.setVisibility(View.GONE);
-                    yu_e_pay.setVisibility(View.GONE);
-                    v_yu_e.setVisibility(View.VISIBLE);
-                }else {//牛币不足
-                    yu_e.setVisibility(View.VISIBLE);
-                    yu_e_pay.setVisibility(View.VISIBLE);
-                    v_yu_e.setVisibility(View.GONE);
+                mNiubi = Integer.parseInt(otherResult.my_wallet);
+                if(Integer.parseInt(mCount) > 0){
+                    if((mNiubi -Integer.parseInt(mCount)*10)>=0){//牛币充足
+                        yu_e.setVisibility(View.GONE);
+                        yu_e_pay.setVisibility(View.GONE);
+                        v_yu_e.setVisibility(View.VISIBLE);
+                    }else {//牛币不足
+                        yu_e.setVisibility(View.VISIBLE);
+                        yu_e_pay.setVisibility(View.VISIBLE);
+                        v_yu_e.setVisibility(View.GONE);
+                    }
                 }
-                yu_e_count.setText(niubi+"牛币");
+                yu_e_count.setText(mNiubi +"牛币");
                 yu_e_pay.setText(otherResult.niubi_style_info+" 去充值》");
                 mNiubiStyle = otherResult.niubi_style;
             }
@@ -163,6 +266,9 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
         zfb.setOnClickListener(this);
         pay.setOnClickListener(this);
         yu_e_pay.setOnClickListener(this);
+        rl_money1.setOnClickListener(this);
+        rl_money2.setOnClickListener(this);
+        rl_money3.setOnClickListener(this);
     }
     Intent intent;
     int i = 0;
@@ -175,6 +281,10 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
                 finish();
                 break;
             case R.id.rl_topay_pay://暂时是直接支付成功
+                if(i == 0){
+                    CommonUtils.toastMessage("请选择支付方式");
+                    return;
+                }
                 switch (i){
                     case 1:
                         payType = "niubi";
@@ -188,6 +298,27 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
                 }
                 if(TextUtils.isEmpty(mOrder)){
                     mOrder = "";
+                }
+                if("选股王".equals(mFrom)){
+                    if(TextUtils.isEmpty(mType)){
+                        CommonUtils.toastMessage("请选择购买类型");
+                        return;
+                    }
+                    if(TextUtils.isEmpty(mOrder)){
+                        mInfo = mInfo+","+mType;
+                    }else {
+                        mInfo = mInfo.substring(0,mInfo.length()-1)+mType;
+                    }
+                }else if("金股池".equals(mFrom)){
+                    if(TextUtils.isEmpty(mType)){
+                        CommonUtils.toastMessage("请选择购买类型");
+                        return;
+                    }
+                    if(TextUtils.isEmpty(mOrder)){
+                        mInfo = mInfo+","+mType;
+                    }else {
+                        mInfo = mInfo.substring(0,mInfo.length()-1)+mType;
+                    }
                 }
                 NewsInternetRequest.sendOrderInformation(mOrder,mCount, 0+"", mChange+"", payType, mInfo, sx_id, new NewsInternetRequest.ForResultNewsInfoListener() {
                     @Override
@@ -204,6 +335,7 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
                                     .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
+                                            mOrder = otherResult.pay_morder.pmo_order;
                                             dialog.dismiss();
                                         }
                                     }).show();
@@ -235,8 +367,49 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
                 startActivity(intent);
                 overridePendingTransition(0,0);
                 break;
+            case R.id.rl_topay_money1:
+                resetSelect();
+                iv_select1.setVisibility(View.VISIBLE);
+                if(mFeeList.size()>0){
+                    mCount = mFeeList.get(0).m_fee;
+                    mType = mFeeList.get(0).m_type;
+                }
+                break;
+            case R.id.rl_topay_money2:
+                resetSelect();
+                iv_select2.setVisibility(View.VISIBLE);
+                if(mFeeList.size()>0){
+                    mCount = mFeeList.get(1).m_fee;
+                    mType = mFeeList.get(1).m_type;
+                }
+                break;
+            case R.id.rl_topay_money3:
+                resetSelect();
+                iv_select3.setVisibility(View.VISIBLE);
+                if(mFeeList.size()>0){
+                    mCount = mFeeList.get(2).m_fee;
+                    mType = mFeeList.get(2).m_type;
+                }
+                break;
         }
         intent = null;
+        if(mNiubi>0){
+            if((mNiubi -Integer.parseInt(mCount)*10)>=0){//牛币充足
+                yu_e.setVisibility(View.GONE);
+                yu_e_pay.setVisibility(View.GONE);
+                v_yu_e.setVisibility(View.VISIBLE);
+            }else {//牛币不足
+                yu_e.setVisibility(View.VISIBLE);
+                yu_e_pay.setVisibility(View.VISIBLE);
+                v_yu_e.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private void resetSelect() {
+        iv_select1.setVisibility(View.GONE);
+        iv_select2.setVisibility(View.GONE);
+        iv_select3.setVisibility(View.GONE);
     }
 
     private void confirmOrder(String pmo_order, String pmo_id) {
@@ -273,7 +446,17 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
                     }
                 }else if(payType.equals("niubi")){
                     //牛币支付
-                    SpTools.setBoolean(ActivityToPay.this, Constants.buy, true);
+                    if("一元偷偷看".equals(mBuytype)){
+                        Intent intent = new Intent(CommonUtils.getContext(), ActivityAnswerDetail.class);
+                        intent.putExtra("id",mPlanId+"");
+                        startActivity(intent);
+                        overridePendingTransition(0,0);
+                        SpTools.setBoolean(ActivityToPay.this, Constants.yiyuanbuy, true);
+                        CommonUtils.toastMessage("支付成功");
+                    }else {
+                        SpTools.setBoolean(ActivityToPay.this, Constants.buy, true);
+                        CommonUtils.toastMessage("支付成功");
+                    }
                     finish();
                 }
             }
@@ -308,7 +491,16 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
                     String resultStatus = payResult.getResultStatus();
                     // 判断resultStatus 为9000则代表支付成功
                     if (TextUtils.equals(resultStatus, "9000")) {
-                        SpTools.setBoolean(ActivityToPay.this, Constants.buy, true);
+                        if("一元偷偷看".equals(mBuytype)){
+                            Intent intent = new Intent(CommonUtils.getContext(), ActivityAnswerDetail.class);
+                            intent.putExtra("id",mPlanId+"");
+                            startActivity(intent);
+                            overridePendingTransition(0,0);
+                            SpTools.setBoolean(ActivityToPay.this, Constants.yiyuanbuy, true);
+                            CommonUtils.toastMessage("支付成功");
+                        }else {
+                            SpTools.setBoolean(ActivityToPay.this, Constants.buy, true);
+                        }
                         Toast.makeText(ActivityToPay.this, "支付成功", Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
@@ -328,7 +520,17 @@ public class ActivityToPay extends FragmentActivity implements View.OnClickListe
     }
     public void showResult(int i){
         if(i == 2){
-            SpTools.setBoolean(CommonUtils.getContext(), Constants.buy, true);
+            if("一元偷偷看".equals(mBuytype)){
+                Intent intent = new Intent(CommonUtils.getContext(), ActivityAnswerDetail.class);
+                intent.putExtra("id",mPlanId+"");
+                startActivity(intent);
+                overridePendingTransition(0,0);
+                SpTools.setBoolean(ActivityToPay.this, Constants.yiyuanbuy, true);
+                CommonUtils.toastMessage("支付成功");
+            }else {
+                SpTools.setBoolean(ActivityToPay.this, Constants.buy, true);
+                CommonUtils.toastMessage("支付成功");
+            }
             finish();
         }
     }

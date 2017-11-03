@@ -1,7 +1,6 @@
 package com.zfxf.douniu.activity.advisor;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
@@ -12,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.ActivityShipinWeb;
 import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.bean.CourseResult;
 import com.zfxf.douniu.internet.NewsInternetRequest;
@@ -72,7 +72,7 @@ public class ActivityAdvisorAllPublicDetail extends FragmentActivity implements 
         ButterKnife.bind(this);
         mId = getIntent().getIntExtra("id",0);
         title.setText("课程详情");
-
+        edit.setVisibility(View.INVISIBLE);
         initdata();
         initListener();
     }
@@ -109,7 +109,7 @@ public class ActivityAdvisorAllPublicDetail extends FragmentActivity implements 
                         zhibo.setText("直播已结束");
                         zhibo.setTextColor(getResources().getColor(R.color.colorText));
                     }else if(courseResult.news_info.status.equals("1")){
-                        zhibo.setText("正在直播中 >");
+                        zhibo.setText("观看点这里 >");
                         zhibo.setTextColor(getResources().getColor(R.color.colorTitle));
                     }else if(courseResult.news_info.status.equals("2")){
                         zhibo.setText("直播还未开始");
@@ -126,6 +126,7 @@ public class ActivityAdvisorAllPublicDetail extends FragmentActivity implements 
         ll_subscribe.setOnClickListener(this);
         subscribe.setOnClickListener(this);
         zhibo.setOnClickListener(this);
+        img.setOnClickListener(this);
     }
 
     @Override
@@ -164,20 +165,22 @@ public class ActivityAdvisorAllPublicDetail extends FragmentActivity implements 
                 if(TextUtils.isEmpty(mAuthUbId)){
                     return;
                 }
-                if (subscribe.getText().toString().equals("立即预约")) {
+                if (subscribe.getText().toString().equals("立即订阅")) {
                     subscribeInternet(mId,0,0);
                 } else {
                     subscribeInternet(mId,0,1);
                 }
                 break;
             case R.id.tv_advisor_all_public_detail_status:
-                if(zhibo.getText().toString().contains("正在直播")){
+            case R.id.iv_advisor_all_public_detail_img:
+                if(zhibo.getText().toString().contains("观看")){
                     if(TextUtils.isEmpty(mUrl)){
                         return;
                     }
-                    Uri uri = Uri.parse(mUrl);
-                    Intent it = new Intent(Intent.ACTION_VIEW, uri);
-                    startActivity(it);
+                    Intent intent = new Intent(ActivityAdvisorAllPublicDetail.this, ActivityShipinWeb.class);
+                    intent.putExtra("url",mUrl);
+                    startActivity(intent);
+                    overridePendingTransition(0,0);
                 }
                 break;
         }
@@ -194,13 +197,13 @@ public class ActivityAdvisorAllPublicDetail extends FragmentActivity implements 
     }
 
     private void subscribeCannel() {
-        subscribe.setText("立即预约");
+        subscribe.setText("立即订阅");
         subscribe.setBackgroundResource(R.drawable.backgroud_button_app_color);
         subscribe.setBackgroundColor(CommonUtils.getContext().getResources().getColor(R.color.colorTitle));
     }
 
     private void subscribeSuccess() {
-        subscribe.setText("已预约");
+        subscribe.setText("已订阅");
         subscribe.setBackgroundResource(R.drawable.backgroud_button_gary_color);
         subscribe.setBackgroundColor(CommonUtils.getContext().getResources().getColor(R.color.colorGray));
     }
@@ -221,10 +224,10 @@ public class ActivityAdvisorAllPublicDetail extends FragmentActivity implements 
                             mCount.setText(count);
                             if(type == 0){
                                 subscribeSuccess();
-                                CommonUtils.toastMessage("预约成功");
+                                CommonUtils.toastMessage("订阅成功");
                             }else{
                                 subscribeCannel();
-                                CommonUtils.toastMessage("取消预约成功");
+                                CommonUtils.toastMessage("取消订阅成功");
                             }
                             SpTools.setBoolean(ActivityAdvisorAllPublicDetail.this, Constants.publicsubscribe,true);
                         }else{

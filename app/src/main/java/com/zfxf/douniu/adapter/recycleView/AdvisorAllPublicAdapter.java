@@ -138,7 +138,7 @@ public class AdvisorAllPublicAdapter extends RecyclerView.Adapter<AdvisorAllPubl
                     if(mSubListener !=null){
                         mSubListener.onItemClick(v,Integer.parseInt(mDatas.get(getRealPosition(this)).get("cc_id"))
                                 ,type.getText().toString());
-                        if (type.getText().toString().equals("已预约")) {
+                        if (type.getText().toString().equals("已订阅")) {
                             subscribeInternet(1);
                         } else {
                             subscribeInternet(0);
@@ -160,13 +160,13 @@ public class AdvisorAllPublicAdapter extends RecyclerView.Adapter<AdvisorAllPubl
                     , 0, mtype, new NewsInternetRequest.ForResultListener() {
                         @Override
                         public void onResponseMessage(String count) {
-                            if (type.getText().toString().equals("预约")) {
-                                type.setText("已预约");
-                                CommonUtils.toastMessage("预约成功");
+                            if (type.getText().toString().equals("订阅")) {
+                                type.setText("已订阅");
+                                CommonUtils.toastMessage("订阅成功");
                                 type.setBackgroundResource(R.drawable.backgroud_button_gary_color);
                             } else {
-                                type.setText("预约");
-                                CommonUtils.toastMessage("取消预约成功");
+                                type.setText("订阅");
+                                CommonUtils.toastMessage("取消订阅成功");
                                 type.setBackgroundResource(R.drawable.backgroud_button_app_color);
                             }
                             myCount.setText(count);
@@ -185,10 +185,10 @@ public class AdvisorAllPublicAdapter extends RecyclerView.Adapter<AdvisorAllPubl
             myCount.setText(bean.get("dy_count"));
             time.setText(bean.get("cc_datetime"));
             if(bean.get("has_dy").equals("0")){
-                type.setText("预约");
+                type.setText("订阅");
                 type.setBackgroundResource(R.drawable.backgroud_button_app_color);
             }else{
-                type.setText("已预约");
+                type.setText("已订阅");
                 type.setBackgroundResource(R.drawable.backgroud_button_gary_color);
             }
         }
@@ -198,7 +198,7 @@ public class AdvisorAllPublicAdapter extends RecyclerView.Adapter<AdvisorAllPubl
                 mPagerAdapter = new PicPagerAdapter(datas, mContext, new PicPagerAdapter.MyOnClickListener() {
                     @Override
                     public void onItemClick(int positon) {
-                        CommonUtils.toastMessage("您点击的是第 " + (++positon) + " 个Item");
+//                        CommonUtils.toastMessage("您点击的是第 " + (++positon) + " 个Item");
                     }
                 });
                 mViewPage.setAdapter(mPagerAdapter);

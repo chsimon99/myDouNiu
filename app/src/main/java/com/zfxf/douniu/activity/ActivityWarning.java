@@ -46,6 +46,8 @@ public class ActivityWarning extends FragmentActivity implements View.OnClickLis
     ImageView iv_ratio;
     @BindView(R.id.rl_waring_sccess)
     RelativeLayout confirm;
+
+    boolean isUp,isDown,isRatio;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +55,22 @@ public class ActivityWarning extends FragmentActivity implements View.OnClickLis
         ButterKnife.bind(this);
         title.setText("预警");
         edit.setVisibility(View.INVISIBLE);
+        String name = getIntent().getStringExtra("name");
+        String code = getIntent().getStringExtra("code");
+        String price = getIntent().getStringExtra("price");
+        String ratio = getIntent().getStringExtra("ratio");
+        if(ratio.contains("+")){
+            tv_price.setTextColor(getResources().getColor(R.color.colorRise));
+            tv_ratio.setTextColor(getResources().getColor(R.color.colorRise));
+        }else {
+            tv_price.setTextColor(getResources().getColor(R.color.colorFall));
+            tv_ratio.setTextColor(getResources().getColor(R.color.colorFall));
+        }
+        tv_name.setText(name);
+        tv_code.setText(code);
+        tv_price.setText(price);
+        tv_ratio.setText(ratio);
+
         initData();
         initListener();
     }
@@ -64,6 +82,9 @@ public class ActivityWarning extends FragmentActivity implements View.OnClickLis
     private void initListener() {
         back.setOnClickListener(this);
         confirm.setOnClickListener(this);
+        iv_up.setOnClickListener(this);
+        iv_down.setOnClickListener(this);
+        iv_ratio.setOnClickListener(this);
     }
 
     @Override
@@ -74,6 +95,33 @@ public class ActivityWarning extends FragmentActivity implements View.OnClickLis
                 finish();
                 break;
             case R.id.rl_waring_sccess:
+                break;
+            case R.id.iv_warning_up:
+                if(isUp){
+                    isUp = !isUp;
+                    iv_up.setImageResource(R.drawable.icon_open);
+                }else {
+                    isUp = !isUp;
+                    iv_up.setImageResource(R.drawable.icon_shut);
+                }
+                break;
+            case R.id.iv_warning_down:
+                if(isDown){
+                    isDown = !isDown;
+                    iv_down.setImageResource(R.drawable.icon_open);
+                }else {
+                    isDown = !isDown;
+                    iv_down.setImageResource(R.drawable.icon_shut);
+                }
+                break;
+            case R.id.iv_warning_ratio:
+                if(isRatio){
+                    isRatio = !isRatio;
+                    iv_ratio.setImageResource(R.drawable.icon_open);
+                }else {
+                    isRatio = !isRatio;
+                    iv_ratio.setImageResource(R.drawable.icon_shut);
+                }
                 break;
         }
     }

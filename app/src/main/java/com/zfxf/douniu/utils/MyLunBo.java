@@ -99,6 +99,7 @@ public class MyLunBo {
                         mTask.stop();
                         break;
                     case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL:
                         mTask.start();
                         break;
                 }

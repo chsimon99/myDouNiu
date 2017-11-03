@@ -120,10 +120,12 @@ public class MarketZiXuanAdapter extends RecyclerView.Adapter<MarketZiXuanAdapte
             name.setText(bean.mg_name+"\n"+bean.mg_code);
             price.setText(bean.mg_xj);
             ratio.setText(bean.mg_zfz);
-            if(bean.mg_zfz.contains("-")){
-                ratio.setTextColor(mContext.getResources().getColor(R.color.colorFall));
-            }else {
+            if(bean.mg_zfz.contains("+")){
                 ratio.setTextColor(mContext.getResources().getColor(R.color.colorRise));
+            }else if(bean.mg_zfz.contains("停牌")){
+                ratio.setTextColor(mContext.getResources().getColor(R.color.colorGray));
+            }else {
+                ratio.setTextColor(mContext.getResources().getColor(R.color.colorFall));
             }
             if(bean.isSelect){
                 mImageView.setImageResource(R.drawable.my_select);

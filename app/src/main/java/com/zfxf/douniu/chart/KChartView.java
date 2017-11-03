@@ -5,11 +5,9 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 import com.zfxf.douniu.view.chart.BaseKChart;
-import com.zfxf.douniu.view.chart.draw.BOLLDraw;
 import com.zfxf.douniu.view.chart.draw.KDJDraw;
 import com.zfxf.douniu.view.chart.draw.MACDDraw;
 import com.zfxf.douniu.view.chart.draw.MainDraw;
-import com.zfxf.douniu.view.chart.draw.RSIDraw;
 import com.zfxf.douniu.view.chart.draw.VolDraw;
 
 
@@ -33,8 +31,8 @@ public class KChartView extends BaseKChart {
         addChildDraw("VOL", new VolDraw(getContext()).withMainChart(true));
         addChildDraw("MACD", new MACDDraw(getContext()));
         addChildDraw("KDJ", new KDJDraw(getContext()));
-        addChildDraw("RSI", new RSIDraw(getContext()));
-        addChildDraw("BOLL", new BOLLDraw(getContext()));
+//        addChildDraw("RSI", new RSIDraw(getContext()));
+//        addChildDraw("BOLL", new BOLLDraw(getContext()));
         setMainDraw(new MainDraw(getContext()));
     }
 

@@ -1,1 +1,1 @@
-include ':app', ':mylibrary', ':threeLoginFrame'
+include ':app', ':mylibrary', ':jcvideoplayer-lib', ':android-pdf-viewer'

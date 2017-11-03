@@ -2,6 +2,7 @@ package com.zfxf.douniu.adapter.recycleView;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -66,6 +67,7 @@ public class MatadorAdapter extends RecyclerView.Adapter<MatadorAdapter.MyHolder
         TextView income;
         TextView detail;
         TextView level_name;
+        TextView rank;
         ImageView start_three;
         ImageView start_four;
         ImageView start_five;
@@ -78,9 +80,11 @@ public class MatadorAdapter extends RecyclerView.Adapter<MatadorAdapter.MyHolder
             count = (TextView) itemView.findViewById(R.id.tv_home_advisor_number);
             income = (TextView) itemView.findViewById(R.id.tv_home_advisor_income);
             detail = (TextView) itemView.findViewById(R.id.tv_home_advisor_detail);
+            rank = (TextView) itemView.findViewById(R.id.tv_home_advisor_rank);
             start_three = (ImageView) itemView.findViewById(R.id.iv_home_advisor_start_three);
             start_four = (ImageView) itemView.findViewById(R.id.iv_home_advisor_start_four);
             start_five = (ImageView) itemView.findViewById(R.id.iv_home_advisor_start_five);
+            rank.getPaint().setFakeBoldText(true);//加粗
             this.mListener = listener;
             itemView.setOnClickListener(this);
         }
@@ -105,9 +109,15 @@ public class MatadorAdapter extends RecyclerView.Adapter<MatadorAdapter.MyHolder
                         .placeholder(R.drawable.home_adviosr_img)
                         .bitmapTransform(new CropCircleTransformation(mContext)).into(imageView);
             }
+            if(!TextUtils.isEmpty(bean.mf_zpm)){
+                rank.setVisibility(View.VISIBLE);
+                rank.setText(bean.mf_zpm);
+            }else {
+                rank.setVisibility(View.GONE);
+            }
             name.setText(bean.ud_nickname);
             count.setText(bean.gz_count);
-            income.setText("近期收益："+bean.mf_bysy+"%");
+            income.setText("收益:"+bean.mf_bysy+"%");
             detail.setText(bean.ud_memo);
             level_name.setText(bean.ud_ul_name);
             if(bean.ud_ul_level.equals("4")){

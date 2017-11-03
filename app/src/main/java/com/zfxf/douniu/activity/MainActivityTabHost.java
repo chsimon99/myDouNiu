@@ -16,7 +16,6 @@ import com.igexin.sdk.PushManager;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.base.BaseApplication;
 import com.zfxf.douniu.service.DemoIntentService;
-import com.zfxf.douniu.service.DemoPushService;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.utils.Constants;
 import com.zfxf.douniu.utils.SpTools;
@@ -25,6 +24,8 @@ import com.zfxf.douniu.view.fragment.FragmentHome;
 import com.zfxf.douniu.view.fragment.FragmentMarket;
 import com.zfxf.douniu.view.fragment.FragmentMyself;
 import com.zfxf.douniu.view.fragment.FragmentNews;
+
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * 
@@ -49,11 +50,12 @@ public class MainActivityTabHost extends FragmentActivity {
 		initView();
 		//注册推送
 		PushManager.getInstance().initialize(this.getApplicationContext(), DemoIntentService.class);
-		PushManager.getInstance().initialize(this.getApplicationContext(), DemoPushService.class);
+//		PushManager.getInstance().initialize(this.getApplicationContext(), DemoPushService.class);
 
 		if(!TextUtils.isEmpty(SpTools.getString(this,Constants.userId,""))){
 			PushManager.getInstance().bindAlias(CommonUtils.getContext(),SpTools.getString(this,Constants.userId,""));
 		}
+		SpTools.setBoolean(CommonUtils.getContext(),Constants.isOpenApp,true);
 	}
 
 	/**
@@ -100,7 +102,8 @@ public class MainActivityTabHost extends FragmentActivity {
 				exitTime = System.currentTimeMillis();
 			} else {
 				BaseApplication.getThreadPool().shutdownNow();//关闭线程池
-				SpTools.setString(this, Constants.getIndexInformation,"");
+//				SpTools.setString(this, Constants.getIndexInformation,"");
+				SpTools.setBoolean(CommonUtils.getContext(),Constants.isOpenApp,false);
 				finish();
 				System.exit(0);
 			}
@@ -122,5 +125,21 @@ public class MainActivityTabHost extends FragmentActivity {
 	public void onBackPressed() {
 		super.onBackPressed();
 		CommonUtils.dismissProgressDialog();//保证没有加载数据，dialog也关闭
+	}
+	@Override
+	protected void onPause() {
+		super.onPause();
+		JPushInterface.onPause(this);
+	}
+	@Override
+	protected void onResume() {
+		super.onResume();
+		JPushInterface.onResume(this);
+	}
+
+	@Override
+	protected void onDestroy() {
+		SpTools.setBoolean(CommonUtils.getContext(),Constants.isOpenApp,false);
+		super.onDestroy();
 	}
 }

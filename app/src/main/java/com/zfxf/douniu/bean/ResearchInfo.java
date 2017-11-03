@@ -11,7 +11,8 @@ public class ResearchInfo {
     public String mg_name;//股票名称
     public String mg_id;//股票id
     public String mg_code;//股票code
-    public String mg_mb_name;//股票来源
+    public String name;// 1深A  2指数  3沪A
+    public String mb_name;//股票来源
 
 
     public String ud_ub_id;//投顾的id

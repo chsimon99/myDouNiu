@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBgGary"
+    android:orientation="vertical">
+    <include layout="@layout/activity_base_title"/>
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+        <com.github.barteksc.pdfviewer.PDFView
+            android:id="@+id/pdf_gold_pond"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <com.zfxf.douniu.utils.HorizontalProgressBarWithNumber
+            android:id="@+id/pb_goldpond_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dm030"
+            android:paddingRight="@dimen/dm030"
+            app:progress_reached_color="@color/colorTitle"
+            app:progress_text_color="@color/colorTitle"
+            android:visibility="gone"
+        />
+    </RelativeLayout>
+
+</LinearLayout>

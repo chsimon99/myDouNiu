@@ -293,6 +293,13 @@ public abstract class BaseKChart extends ScrollAndScaleView implements
         canvas.scale(1, 1);
         drawGird(canvas);
         drawK(canvas);
+//        if(mMainDraw instanceof MainDraw){
+//            drawGird(canvas);
+//            drawK(canvas);
+//        }else {//分时图的时候先画k线，再画格线
+//            drawK(canvas);
+//            drawGird(canvas);
+//        }
         drawText(canvas);
         drawValue(canvas, isLongPress ? mSelectedIndex : mStopIndex);
         canvas.restore();
@@ -304,6 +311,12 @@ public abstract class BaseKChart extends ScrollAndScaleView implements
 
     public float getChildY(float value) {
         return (mChildMaxValue - value) * mChildScaleY + mMainHeight + mMainChildSpace;
+    }
+    public float getMainBottom(){
+        return getMainY(mMainMinValue);
+    }
+    public float getMainPoint(float value){
+        return getMainY(value);
     }
 
     /**

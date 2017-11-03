@@ -60,7 +60,7 @@ public class AdvisorAllGoldPondHistoryAdapter extends RecyclerView.Adapter<Advis
         private TextView name;
         private TextView number;
         private TextView price;
-        private TextView highprice;
+        private TextView time;
         private TextView highrise;
         private TextView reason;
 
@@ -70,7 +70,7 @@ public class AdvisorAllGoldPondHistoryAdapter extends RecyclerView.Adapter<Advis
             name = (TextView) itemView.findViewById(R.id.tv_gold_pond_history_item_name);
             number = (TextView) itemView.findViewById(R.id.tv_gold_pond_history_item_number);
             price = (TextView) itemView.findViewById(R.id.tv_gold_pond_history_item_price);
-            highprice = (TextView) itemView.findViewById(R.id.tv_gold_pond_history_item_highprice);
+            time = (TextView) itemView.findViewById(R.id.tv_gold_pond_history_item_highprice);
             highrise = (TextView) itemView.findViewById(R.id.tv_gold_pond_history_item_highrise);
             reason = (TextView) itemView.findViewById(R.id.tv_gold_pond_history_item_reason);
 
@@ -88,14 +88,12 @@ public class AdvisorAllGoldPondHistoryAdapter extends RecyclerView.Adapter<Advis
             name.setText(bean.mg_name);
             number.setText(bean.mg_code);
             if(bean.mg_zfz.contains("+")){
-                highprice.setTextColor(mContext.getResources().getColor(R.color.colorRise));
                 highrise.setTextColor(mContext.getResources().getColor(R.color.colorRise));
             }else {
-                highprice.setTextColor(mContext.getResources().getColor(R.color.colorFall));
                 highrise.setTextColor(mContext.getResources().getColor(R.color.colorFall));
             }
             price.setText(bean.mg_rxjg);
-            highprice.setText(bean.mg_zgj);
+            time.setText(bean.dj_buy_date);
             highrise.setText(bean.mg_zfz);
             reason.setText("推荐理由："+bean.mg_tjly);
         }

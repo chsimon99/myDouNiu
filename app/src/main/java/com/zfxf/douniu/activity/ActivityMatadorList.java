@@ -61,11 +61,11 @@ public class ActivityMatadorList extends FragmentActivity implements View.OnClic
     }
 
     private void initData() {
+        CommonUtils.showProgressDialog(this,"加载中……");
         visitInternet();
     }
 
     private void visitInternet() {
-        CommonUtils.showProgressDialog(this,"加载中……");
         NewsInternetRequest.getMatadorListInformation(mId, currentPage,new NewsInternetRequest.ForResultMatadorIndexListener() {
             @Override
             public void onResponseMessage(MatadorResult indexResult) {

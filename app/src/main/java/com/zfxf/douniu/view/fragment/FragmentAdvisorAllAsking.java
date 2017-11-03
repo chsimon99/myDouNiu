@@ -1,6 +1,7 @@
 package com.zfxf.douniu.view.fragment;
 
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -101,6 +102,11 @@ public class FragmentAdvisorAllAsking extends BaseFragment implements View.OnCli
 		NewsInternetRequest.getAnswerIndexInformation(new NewsInternetRequest.ForResultAnswerIndexListener() {
 			@Override
 			public void onResponseMessage(final IndexResult result) {
+				if(result == null){
+					text_refresh.setVisibility(View.VISIBLE);
+					CommonUtils.dismissProgressDialog();
+					return;
+				}
 				if(result.online_chief ==null){
 					CommonUtils.dismissProgressDialog();
 					return;
@@ -173,11 +179,12 @@ public class FragmentAdvisorAllAsking extends BaseFragment implements View.OnCli
 
 						if (bean.zc_sfjf.equals("0")){
 							Intent intent = new Intent(CommonUtils.getContext(), ActivityToPay.class);
-							intent.putExtra("info","微问答,"+bean.sx_ub_id+","+bean.zc_id);
+							intent.putExtra("info","微问答,"+bean.sx_ub_id+","+bean.zc_id+",一元");
 							intent.putExtra("type","一元偷偷看");
 							intent.putExtra("count",bean.zc_fee);
 							intent.putExtra("sx_id",bean.sx_ub_id);
 							intent.putExtra("from",bean.ud_nickname);
+							intent.putExtra("planId",Integer.parseInt(bean.zc_id));
 							startActivity(intent);
 							getActivity().overridePendingTransition(0,0);
 						}else{
@@ -192,9 +199,9 @@ public class FragmentAdvisorAllAsking extends BaseFragment implements View.OnCli
 				CommonUtils.dismissProgressDialog();
 			}
 		});
-		if(mAdvisorAdapter == null & mAnswerAdapter==null){
-			text_refresh.setVisibility(View.VISIBLE);
-		}
+//		if(mAdvisorAdapter == null & mAnswerAdapter==null){
+//			text_refresh.setVisibility(View.VISIBLE);
+//		}
 	}
 
 	@Override
@@ -247,7 +254,6 @@ public class FragmentAdvisorAllAsking extends BaseFragment implements View.OnCli
 		mAdvisorManager = null;
 		mAdvisorAdapter = null;
 	}
-
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -255,6 +261,24 @@ public class FragmentAdvisorAllAsking extends BaseFragment implements View.OnCli
 			mAnswerAdapter = null;
 			visitInternet();
 			SpTools.setBoolean(getActivity(), Constants.buy,false);
+
+			final AlertDialog mDialog;
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()); //先得到构造器
+			mDialog = builder.create();
+			mDialog.show();
+			View view = View.inflate(getActivity(), R.layout.activity_pay_ok_dialog, null);
+			mDialog.getWindow().setContentView(view);
+			view.findViewById(R.id.tv_pay_ok_dialog_confirm).setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					mDialog.dismiss();
+				}
+			});
+		}
+		if(SpTools.getBoolean(getActivity(), Constants.yiyuanbuy,false)){
+			mAnswerAdapter = null;
+			visitInternet();
+			SpTools.setBoolean(getActivity(), Constants.yiyuanbuy, false);
 		}
 		if(SpTools.getBoolean(getActivity(), Constants.read,false)){
 			mAnswerAdapter = null;

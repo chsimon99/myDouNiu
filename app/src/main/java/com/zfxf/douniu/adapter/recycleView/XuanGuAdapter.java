@@ -60,14 +60,14 @@ public class XuanGuAdapter extends RecyclerView.Adapter<XuanGuAdapter.MyHolder> 
         TextView name;
         TextView ratio;//最新市值
         TextView price;//入选价
-        TextView nowprice;//现价
+        TextView time;//入选时间
 
         public MyHolder(View itemView, MyItemClickListener listener) {
             super(itemView);
             this.mListener = listener;
             name = (TextView) itemView.findViewById(R.id.tv_item_xuangu_name);
             price = (TextView) itemView.findViewById(R.id.tv_item_xuangu_price);
-            nowprice = (TextView) itemView.findViewById(R.id.tv_item_xuangu_nowprice);
+            time = (TextView) itemView.findViewById(R.id.tv_item_xuangu_time);
             ratio = (TextView) itemView.findViewById(R.id.tv_item_xuangu_ratio);
 //            itemView.setOnClickListener(this);
         }
@@ -81,8 +81,8 @@ public class XuanGuAdapter extends RecyclerView.Adapter<XuanGuAdapter.MyHolder> 
 
         public void setRefreshData(XuanguGupiaoDetail bean) {
             name.setText(bean.zg_mg_name+"\n"+bean.zg_mg_code);
-            price.setText("/"+bean.zg_rxj);
-            nowprice.setText(bean.mg_xj);
+            price.setText(bean.mg_xj+"/"+bean.zg_rxj);
+            time.setText(bean.zg_rxdate);
             ratio.setText(bean.zg_zgzf+"%");
         }
     }

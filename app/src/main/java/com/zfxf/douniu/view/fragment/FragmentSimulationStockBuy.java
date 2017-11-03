@@ -111,6 +111,8 @@ public class FragmentSimulationStockBuy extends BaseFragment implements View.OnC
 	private String mStock_zt;
 	private String mStock_dt;
 
+	private String model = "";//股票的类型
+
 	@Override
 	public View initView(LayoutInflater inflater) {
 		if (view == null) {
@@ -137,7 +139,7 @@ public class FragmentSimulationStockBuy extends BaseFragment implements View.OnC
 	private void visitInternet(String code) {
 		CommonUtils.showProgressDialog(getActivity(),"加载中……");
 		reset();
-		NewsInternetRequest.getSimulationBuyInformation(code, new NewsInternetRequest.ForResultSimulationIndexListener() {
+		NewsInternetRequest.getSimulationBuyInformation(code,model,new NewsInternetRequest.ForResultSimulationIndexListener() {
 			@Override
 			public void onResponseMessage(SimulationResult result) {
 				if(result.mn_chigu !=null){
@@ -160,6 +162,7 @@ public class FragmentSimulationStockBuy extends BaseFragment implements View.OnC
 						tv_name.setText(detail.mg_name);
 						mStockCode = detail.mc_code;
 						tv_code.setText(mStockCode);
+						model = detail.name;
 						visitInternet(mStockCode);
 						mScrollview.smoothScrollTo(0,0);
 					}
@@ -356,6 +359,7 @@ public class FragmentSimulationStockBuy extends BaseFragment implements View.OnC
 			case R.id.ll_simulation_buy_search:
 				Intent intent = new Intent(getActivity(), ActivityMarketResearch.class);
 				intent.putExtra("simulation",true);
+				intent.putExtra("type",1);
 				startActivityForResult(intent, mRequestCode);
 				getActivity().overridePendingTransition(0,0);
 				break;
@@ -434,7 +438,7 @@ public class FragmentSimulationStockBuy extends BaseFragment implements View.OnC
 			return;
 		}
 		NewsInternetRequest.simulationBuyStock( tv_code.getText().toString(),tv_name.getText().toString()
-				, et_count.getText().toString(),et_price.getText().toString(), new NewsInternetRequest.ForResultListener() {
+				, et_count.getText().toString(),et_price.getText().toString(),model, new NewsInternetRequest.ForResultListener() {
 					@Override
 					public void onResponseMessage(String info) {
 						if(info.equals("成功")){
@@ -477,6 +481,7 @@ public class FragmentSimulationStockBuy extends BaseFragment implements View.OnC
 				mStockCode = data.getExtras().getString("code");
 				tv_name.setText(stockName);
 				tv_code.setText(mStockCode);
+				model = data.getExtras().getString("model");
 				visitInternet(mStockCode);
 				break;
 		}

@@ -82,9 +82,14 @@ public class ActivityAnswer extends FragmentActivity implements View.OnClickList
                             public void onItemClick(View v, int positon,AnswerListInfo bean) {
                                 if (bean.zc_sfjf.equals("0")){
                                     Intent intent = new Intent(CommonUtils.getContext(), ActivityToPay.class);
-                                    intent.putExtra("type","问股");
+
+                                    intent.putExtra("info","微问答,"+bean.sx_ub_id+","+bean.zc_id);
+                                    intent.putExtra("type","一元偷偷看");
                                     intent.putExtra("count",bean.zc_fee);
+                                    intent.putExtra("sx_id",bean.sx_ub_id);
                                     intent.putExtra("from",bean.ud_nickname);
+                                    intent.putExtra("planId",Integer.parseInt(bean.zc_id));
+
                                     startActivity(intent);
                                     overridePendingTransition(0,0);
                                 }else{
@@ -182,6 +187,12 @@ public class ActivityAnswer extends FragmentActivity implements View.OnClickList
             mAdapter = null;
             visitInternet();
             SpTools.setBoolean(this, Constants.buy,false);
+        }
+        if(SpTools.getBoolean(this, Constants.yiyuanbuy,false)){
+            currentPage = 1;
+            mAdapter = null;
+            visitInternet();
+            SpTools.setBoolean(this, Constants.yiyuanbuy, false);
         }
     }
 }

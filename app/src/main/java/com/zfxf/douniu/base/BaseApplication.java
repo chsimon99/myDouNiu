@@ -4,11 +4,13 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 
-import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareConfig;
+import com.zfxf.douniu.utils.Constants;
+import com.zfxf.douniu.utils.SpTools;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.io.File;
@@ -16,6 +18,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import cn.jpush.android.api.JPushInterface;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 
@@ -67,14 +70,19 @@ public class BaseApplication extends Application {
         mHandler = new Handler();// 定义一个handler
         threadPool = Executors.newCachedThreadPool();//定义一个线程池
         PlatformConfig.setWeixin("wx086c758d5e01f463","0ffe0ba97f1480d02ae91f9c1fbdea7a");
-//        PlatformConfig.setQQZone("100424468", "c7394704798a158208a74ab60104f0ba");
+        PlatformConfig.setQQZone("1106186645", "Ht2eoNaECmvd8AHW");
         PlatformConfig.setSinaWeibo("1211225805", "0a1b01274b5c4d78e177a6d1ee3717c6","http://sns.whalecloud.com/sina2/callback");
-        Config.DEBUG = true;
+//        Config.DEBUG = true;
 
         UMShareConfig config = new UMShareConfig();
         config.isNeedAuthOnGetUserInfo(true);
         UMShareAPI.get(this).setShareConfig(config);
 
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
+        if(!TextUtils.isEmpty(SpTools.getString(this, Constants.userId,""))){
+            JPushInterface.setAlias(this,1,SpTools.getString(this,Constants.userId,""));
+        }
         String path = mContext.getCacheDir().getAbsolutePath();
         int cacheSize = 10 * 1024 * 1024; // 10 MiB
         OkHttpClient client = new OkHttpClient.Builder()

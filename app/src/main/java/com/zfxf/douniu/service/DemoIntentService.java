@@ -11,6 +11,7 @@ import com.igexin.sdk.message.FeedbackCmdMessage;
 import com.igexin.sdk.message.GTCmdMessage;
 import com.igexin.sdk.message.GTTransmitMessage;
 import com.igexin.sdk.message.SetTagCmdMessage;
+import com.zfxf.douniu.utils.CommonUtils;
 
 /**
  * 继承 GTIntentService 接收来自个推的消息, 所有消息在线程中回调, 如果注册了该服务, 则务必要在 AndroidManifest中声明, 否则无法接受消息<br>
@@ -21,7 +22,7 @@ import com.igexin.sdk.message.SetTagCmdMessage;
  */
 public class DemoIntentService extends GTIntentService {
 
-    private static final String TAG = "douniu";
+    private static final String TAG = "douniucaijing";
 
     /**
      * 为了观察透传数据变化.
@@ -34,7 +35,8 @@ public class DemoIntentService extends GTIntentService {
 
     @Override
     public void onReceiveServicePid(Context context, int pid) {
-        Log.d(TAG, "onReceiveServicePid -> " + pid);
+//        Log.d(TAG, "onReceiveServicePid -> " + pid);
+        CommonUtils.logMes("----+ pid----"+ pid);
     }
 
     @Override
@@ -50,6 +52,9 @@ public class DemoIntentService extends GTIntentService {
         boolean result = PushManager.getInstance().sendFeedbackMessage(context, taskid, messageid, 90001);
         Log.d(TAG, "call sendFeedbackMessage = " + (result ? "success" : "failed"));
 
+        CommonUtils.logMes("----result----" + (result ? "success" : "failed"));
+        CommonUtils.logMes("------"+"appid = " + appid + "\ntaskid = " + taskid + "\nmessageid = " + messageid + "\npkg = " + pkg
+                + "\ncid = " + cid);
         Log.d(TAG, "onReceiveMessageData -> " + "appid = " + appid + "\ntaskid = " + taskid + "\nmessageid = " + messageid + "\npkg = " + pkg
                 + "\ncid = " + cid);
 

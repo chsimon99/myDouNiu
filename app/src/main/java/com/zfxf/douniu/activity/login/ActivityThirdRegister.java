@@ -72,6 +72,10 @@ public class ActivityThirdRegister extends FragmentActivity implements View.OnCl
             title.setText("QQ注册");
             iv_img.setImageResource(R.drawable.icon_qq);
             tv_text.setText("QQ登陆");
+        }else if(mLoginType.equals("3")){
+            title.setText("微博注册");
+            iv_img.setImageResource(R.drawable.icon_sina);
+            tv_text.setText("微博登陆");
         }
         edit.setVisibility(View.INVISIBLE);
         initdata();

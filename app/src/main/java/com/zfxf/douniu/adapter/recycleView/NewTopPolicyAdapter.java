@@ -13,8 +13,6 @@ import com.zfxf.douniu.R;
 import java.util.List;
 import java.util.Map;
 
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
-
 /**
  * @author Admin
  * @time 2017/3/29 9:37
@@ -51,6 +49,7 @@ public class NewTopPolicyAdapter extends RecyclerView.Adapter<NewTopPolicyAdapte
         holder.setRefreshData(mDatas.get(position), position);
     }
 
+
     @Override
     public int getItemCount() {
         return mDatas.size();
@@ -64,9 +63,8 @@ public class NewTopPolicyAdapter extends RecyclerView.Adapter<NewTopPolicyAdapte
         ImageView img;
         TextView count;
         TextView time;
-        TextView name;
+//        TextView name;
         TextView title;
-        TextView detail;
 
         public MyHolder(View itemView, MyItemClickListener listener) {
             super(itemView);
@@ -74,9 +72,8 @@ public class NewTopPolicyAdapter extends RecyclerView.Adapter<NewTopPolicyAdapte
             img = (ImageView) itemView.findViewById(R.id.iv_headline_img);
             count = (TextView) itemView.findViewById(R.id.tv_headline_count);
             time = (TextView) itemView.findViewById(R.id.tv_headline_time);
-            name = (TextView) itemView.findViewById(R.id.tv_headline_name);
+//            name = (TextView) itemView.findViewById(R.id.tv_headline_name);
             title = (TextView) itemView.findViewById(R.id.tv_headline_title);
-            detail = (TextView) itemView.findViewById(R.id.tv_headline_detail);
             itemView.setOnClickListener(this);
         }
 
@@ -90,16 +87,13 @@ public class NewTopPolicyAdapter extends RecyclerView.Adapter<NewTopPolicyAdapte
         public void setRefreshData(Map<String, String> bean, int position) {
             count.setText(bean.get("cc_count"));
             time.setText(bean.get("cc_datetime"));
-            name.setText(bean.get("ud_nickname"));
+//            name.setText(bean.get("cc_from"));
             title.setText(bean.get("cc_title"));
-            detail.setText(bean.get("cc_description"));
             String picUrl = mContext.getResources().getString(R.string.file_host_address)
                     +mContext.getResources().getString(R.string.showpic)
-                    +bean.get("headImg");
+                    +bean.get("cc_fielid");
             Glide.with(mContext).load(picUrl)
-                    .placeholder(R.drawable.home_adviosr_img)
-                    .bitmapTransform(new CropCircleTransformation(mContext))
-                    .into(img);
+                    .placeholder(R.drawable.public_img).into(img);
         }
     }
 }

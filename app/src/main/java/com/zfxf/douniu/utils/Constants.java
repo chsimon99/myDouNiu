@@ -11,6 +11,7 @@ public interface Constants {
     String ISSETUP = "issetup";
     String userId = "USERID";
     String rvaluateResult = "RVALUATERESULT";
+    String rvaluateAnswer = "RVALUATEANSWER";
     String rvaluateSuccess = "RVALUATESUCCESS";
     String isLogin = "ISLOGIN";
     String sendOrder = "SENDORDER";
@@ -20,6 +21,7 @@ public interface Constants {
     String nickname = "NICKNAME";
     String imgurl = "IMGURL";
     String buy = "BUY";
+    String yiyuanbuy = "YIYUNABUY";
     String subscribe = "SUBSCRIBE";
     String publicsubscribe = "PUBLICSUBSCRIBE";
     String read = "READ";
@@ -29,4 +31,7 @@ public interface Constants {
     String APP_ID = "wx086c758d5e01f463";
     String error = "ERROR";
     String payweixin = "PAYWEIXIN";
+    String isOpenApp = "isOpenApp";
+    String textlunbo = "textlunbo";
+
 }

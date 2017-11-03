@@ -120,7 +120,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyHolder
                 convertView = View.inflate(mContext,R.layout.item_history_detail,null);
                 holder.stock_name = (TextView) convertView.findViewById(R.id.tv_history_detail_item_name);
                 holder.price = (TextView) convertView.findViewById(R.id.tv_history_detail_item_price);
-                holder.highPrice = (TextView) convertView.findViewById(R.id.tv_history_detail_item_highprice);
+                holder.time = (TextView) convertView.findViewById(R.id.tv_history_detail_item_highprice);
                 holder.rise = (TextView) convertView.findViewById(R.id.tv_history_detail_item_rise);
                 convertView.setTag(holder);
             }else{
@@ -128,13 +128,11 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyHolder
             }
             holder.stock_name.setText(lists.get(position).zg_mg_name+"\n"+lists.get(position).zg_mg_code);
             holder.price.setText(lists.get(position).zg_rxj);
-            holder.highPrice.setText(lists.get(position).mg_zg);
+            holder.time.setText(lists.get(position).zg_rxdate);
             if(lists.get(position).zg_zgzf.contains("-")){
                 holder.rise.setTextColor(mContext.getResources().getColor(R.color.colorFall));
-                holder.highPrice.setTextColor(mContext.getResources().getColor(R.color.colorFall));
             }else {
                 holder.rise.setTextColor(mContext.getResources().getColor(R.color.colorRise));
-                holder.highPrice.setTextColor(mContext.getResources().getColor(R.color.colorRise));
             }
             holder.rise.setText(lists.get(position).zg_zgzf+"%");
             return convertView;
@@ -142,7 +140,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.MyHolder
         class ViewHolder{
             public TextView stock_name;
             public TextView price;
-            public TextView highPrice;
+            public TextView time;
             public TextView rise;
         }
     }

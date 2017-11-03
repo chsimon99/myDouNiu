@@ -80,7 +80,7 @@ public class ActivityMyselfRvaluateOne extends FragmentActivity implements View.
     }
 
     private void initdata() {
-
+        SpTools.setBoolean(this, Constants.rvaluateSuccess,false);//设置成风险评估重新测试
     }
     private void initListener() {
         back.setOnClickListener(this);
@@ -92,6 +92,7 @@ public class ActivityMyselfRvaluateOne extends FragmentActivity implements View.
         confirm.setOnClickListener(this);
     }
     int num = 3;
+    String answer = "A";
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -104,36 +105,42 @@ public class ActivityMyselfRvaluateOne extends FragmentActivity implements View.
                 first_select.setVisibility(View.VISIBLE);
                 first_noselect.setVisibility(View.INVISIBLE);
                 num = 3;
+                answer = "A";
                 break;
             case R.id.ll_myself_rvaluate_second:
                 reset();
                 second_select.setVisibility(View.VISIBLE);
                 second_noselect.setVisibility(View.INVISIBLE);
                 num = 7;
+                answer = "B";
                 break;
             case R.id.ll_myself_rvaluate_third:
                 reset();
                 third_select.setVisibility(View.VISIBLE);
                 third_noselect.setVisibility(View.INVISIBLE);
                 num = 9;
+                answer = "C";
                 break;
             case R.id.ll_myself_rvaluate_fourth:
                 reset();
                 fourth_select.setVisibility(View.VISIBLE);
                 fourth_noselect.setVisibility(View.INVISIBLE);
                 num = 5;
+                answer = "D";
                 break;
             case R.id.ll_myself_rvaluate_fifth:
                 reset();
                 fifth_select.setVisibility(View.VISIBLE);
                 fifth_noselect.setVisibility(View.INVISIBLE);
                 num = 1;
+                answer = "E";
                 break;
             case R.id.rl_myself_rvaluate_confirm:
                 Intent intent = new Intent(this,ActivityMyselfRvaluateTwo.class);
                 startActivity(intent);
                 overridePendingTransition(0,0);
                 SpTools.setInt(this, Constants.rvaluateResult,num);
+                SpTools.setString(this, Constants.rvaluateAnswer,answer);
                 finishAll();
                 finish();
                 break;

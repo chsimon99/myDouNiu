@@ -7,7 +7,7 @@
     android:orientation="vertical">
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dm016"
+        android:layout_height="1dp"
         android:background="@color/colorBgGary"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="@dimen/dm024"
-                android:text="杂谈"
+                android:text="热股"
                 android:textColor="@color/colorText"
                 android:textSize="@dimen/dm028"/>
         </LinearLayout>

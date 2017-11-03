@@ -189,7 +189,7 @@ public class LoginInternetRequest {
      * @param view 验证码的View
      * @param listener listener
      */
-    public static void register(String phoneNumber, String vc_code, String password, String code, TextView view, ForResultListener listener){
+    public static void register(final String phoneNumber, String vc_code, String password, String code, TextView view, ForResultListener listener){
         mListener = listener;
         mTextView = view;
         if(!CommonUtils.isNetworkAvailable(CommonUtils.getContext())){

@@ -50,11 +50,6 @@ android {
             keyPassword "lchtime"
         }
     }
-    sourceSets {
-        main {
-            jniLibs.srcDirs = ['libs']
-        }
-    }
 }
 
 dependencies {
@@ -74,7 +69,7 @@ dependencies {
     compile 'com.android.support:design:25.1.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'jp.wasabeef:glide-transformations:2.0.0'
-    compile 'com.github.LuckSiege.PictureSelector:picture_library:v2.0.2'
+    compile 'com.github.LuckSiege.PictureSelector:picture_library:v2.0.7'
     compile files('libs/alipaySingle-20170510.jar')
     compile files('libs/libammsdk.jar')
     compile files('libs/GetuiSDK2.10.2.0.jar')
@@ -88,4 +83,9 @@ dependencies {
     compile files('libs/umeng_social_shareboard.jar')
     compile files('libs/umeng_social_shareview.jar')
     compile files('libs/umeng_social_tool.jar')
+    compile files('libs/jcore-android-1.1.6.jar')
+    compile files('libs/jpush-android-3.0.8.jar')
+    compile project(':jcvideoplayer-lib')
+    compile 'com.github.barteksc:android-pdf-viewer:2.7.0-beta.1'
+    compile 'com.timqi.collapsibletextview:library:1.1.2'
 }

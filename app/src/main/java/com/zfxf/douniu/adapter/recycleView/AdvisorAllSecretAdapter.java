@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.adapter.viewPager.PicPagerAdapter;
 import com.zfxf.douniu.bean.LunBoListInfo;
-import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.utils.MyLunBo;
 import com.zfxf.douniu.view.InnerView;
 
@@ -136,7 +135,7 @@ public class AdvisorAllSecretAdapter extends RecyclerView.Adapter<AdvisorAllSecr
                 mPagerAdapter = new PicPagerAdapter(datas, mContext, new PicPagerAdapter.MyOnClickListener() {
                     @Override
                     public void onItemClick(int positon) {
-                        CommonUtils.toastMessage("您点击的是第 " + (++positon) + " 个Item");
+//                        CommonUtils.toastMessage("您点击的是第 " + (++positon) + " 个Item");
                     }
                 });
                 mViewPage.setAdapter(mPagerAdapter);

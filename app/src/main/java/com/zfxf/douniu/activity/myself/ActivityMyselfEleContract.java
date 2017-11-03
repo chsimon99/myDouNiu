@@ -43,7 +43,7 @@ public class ActivityMyselfEleContract extends FragmentActivity implements View.
     }
 
     private void initdata() {
-        mWebView.loadUrl(getResources().getString(R.string.service_host_address).concat("index.php/dn/index/agreement\n"));
+        mWebView.loadUrl(getResources().getString(R.string.service_host_address).concat("index.php/dn/index/agreement"));
     }
     private void initListener() {
         back.setOnClickListener(this);

@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
@@ -86,6 +87,9 @@ public class FragmentStockMinitue extends BaseFragment {
     @BindView(R.id.tv_stock_minitue_sell1_count)
     TextView tv_sell1_count;
 
+    @BindView(R.id.ll_stock_minitue_five)
+    LinearLayout ll_five;
+
     private static MChartAdapter mAdapter;
 
     private static Float stock_zs;
@@ -104,6 +108,9 @@ public class FragmentStockMinitue extends BaseFragment {
             parent.removeView(view);
         }
         ButterKnife.bind(this, view);
+        if(getActivity().getIntent().getStringExtra("model").equals("2")){//指数的时候不显示买卖界面
+            ll_five.setVisibility(View.GONE);
+        }
         return view;
     }
 
@@ -127,7 +134,7 @@ public class FragmentStockMinitue extends BaseFragment {
                 }
             }
         };
-        drawKLine();
+//        drawKLine();
         activity = getActivity();
         mTimer = new Timer();
         mTimer.schedule(new TimerTask() {
@@ -135,7 +142,7 @@ public class FragmentStockMinitue extends BaseFragment {
             public void run() {
                 visitInternet();
             }
-        },0,5000l);
+        },0,30000l);
         if(mAdapter == null){
             mAdapter = new MChartAdapter();
         }
@@ -145,13 +152,13 @@ public class FragmentStockMinitue extends BaseFragment {
         minView.setGridColumns(4);
 
     }
-
     private void visitInternet() {
-        NewsInternetRequest.getStockInformation(activity.getIntent().getStringExtra("code"), activity, null, new NewsInternetRequest.ForResultStockFensiInfoListener() {
+        NewsInternetRequest.getStockSencondInformation(activity.getIntent().getStringExtra("code"), activity.getIntent().getStringExtra("model"), new NewsInternetRequest.ForResultStockFensiInfoListener() {
             @Override
             public void onResponseMessage(StockResult result) {
                 if(result !=null){
                     stockResult = result;
+                    drawStock();
                     if(result.station.equals("0")){//修市
                         if(mTimer !=null){
                             mTimer.cancel();
@@ -167,28 +174,29 @@ public class FragmentStockMinitue extends BaseFragment {
         datas = new ArrayList<>();
     }
 
-    private void drawKLine() {
-        alwaysRefresh();
-    }
     private static Handler mHandler;
-    private AutoScrollTask mTask;
-    private void alwaysRefresh() {
-        mTask = new AutoScrollTask();
-        mTask.start();
-    }
-    class AutoScrollTask implements Runnable {
-        public void start() {/**开始轮播*/
-            mHandler.postDelayed(this, 5000l);
-        }
-        public void stop() { /**结束轮播*/
-            mHandler.removeCallbacks(this);
-        }
-        @Override
-        public void run() {
-            drawStock();
-            start();
-        }
-    }
+
+//    private void drawKLine() {
+//        alwaysRefresh();
+//    }
+//    private AutoScrollTask mTask;
+//    private void alwaysRefresh() {
+//        mTask = new AutoScrollTask();
+//        mTask.start();
+//    }
+//    class AutoScrollTask implements Runnable {
+//        public void start() {/**开始轮播*/
+//            mHandler.postDelayed(this, 5000l);
+//        }
+//        public void stop() { /**结束轮播*/
+//            mHandler.removeCallbacks(this);
+//        }
+//        @Override
+//        public void run() {
+//            drawStock();
+//            start();
+//        }
+//    }
 
     private void drawStock() {
         if(stockResult !=null){
@@ -247,49 +255,51 @@ public class FragmentStockMinitue extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         OkHttpUtils.getInstance().getOkHttpClient().dispatcher().cancelAll();
-        if(mTask!=null){
-            mTask.stop();
-        }
+//        if(mTask!=null){
+//            mTask.stop();
+//        }
         if(mTimer !=null){
             mTimer.cancel();
         }
         mAdapter = null;
-        mTask = null;
+//        mTask = null;
     }
 
     private void showFive(StockInfo bean, Float zs) {
-        setColorAndValue(Float.parseFloat(bean.PricePrice1),zs,tv_sell1_price,tv_sell1_count,bean.SellVolume1);
-        setColorAndValue(Float.parseFloat(bean.PricePrice2),zs,tv_sell2_price,tv_sell2_count,bean.SellVolume2);
-        setColorAndValue(Float.parseFloat(bean.PricePrice3),zs,tv_sell3_price,tv_sell3_count,bean.SellVolume3);
-        setColorAndValue(Float.parseFloat(bean.PricePrice4),zs,tv_sell4_price,tv_sell4_count,bean.SellVolume4);
-        setColorAndValue(Float.parseFloat(bean.PricePrice5),zs,tv_sell5_price,tv_sell5_count,bean.SellVolume5);
+        setColorAndValue(bean.PricePrice1,zs,tv_sell1_price,tv_sell1_count,bean.SellVolume1);
+        setColorAndValue(bean.PricePrice2,zs,tv_sell2_price,tv_sell2_count,bean.SellVolume2);
+        setColorAndValue(bean.PricePrice3,zs,tv_sell3_price,tv_sell3_count,bean.SellVolume3);
+        setColorAndValue(bean.PricePrice4,zs,tv_sell4_price,tv_sell4_count,bean.SellVolume4);
+        setColorAndValue(bean.PricePrice5,zs,tv_sell5_price,tv_sell5_count,bean.SellVolume5);
 
-        setColorAndValue(Float.parseFloat(bean.BuyPrice1),zs,tv_buy1_price,tv_buy1_count,bean.BuyVolume1);
-        setColorAndValue(Float.parseFloat(bean.BuyPrice2),zs,tv_buy2_price,tv_buy2_count,bean.BuyVolume2);
+        setColorAndValue(bean.BuyPrice1,zs,tv_buy1_price,tv_buy1_count,bean.BuyVolume1);
+        setColorAndValue(bean.BuyPrice2,zs,tv_buy2_price,tv_buy2_count,bean.BuyVolume2);
 
-        setColorAndValue(Float.parseFloat(bean.BuyPrice3),zs,tv_buy3_price,tv_buy3_count,bean.BuyVolume3);
-        setColorAndValue(Float.parseFloat(bean.BuyPrice4),zs,tv_buy4_price,tv_buy4_count,bean.BuyVolume4);
-        setColorAndValue(Float.parseFloat(bean.BuyPrice5),zs,tv_buy5_price,tv_buy5_count,bean.BuyVolume5);
+        setColorAndValue(bean.BuyPrice3,zs,tv_buy3_price,tv_buy3_count,bean.BuyVolume3);
+        setColorAndValue(bean.BuyPrice4,zs,tv_buy4_price,tv_buy4_count,bean.BuyVolume4);
+        setColorAndValue(bean.BuyPrice5,zs,tv_buy5_price,tv_buy5_count,bean.BuyVolume5);
     }
 
-    private void setColorAndValue(Float price, Float zs, TextView tv_price, TextView tv_count, String Volume) {
+    private void setColorAndValue(String price, Float zs, TextView tv_price, TextView tv_count, String Volume) {
+        Float aFloat = 0f;
         if(activity != null){
-            if(price == 0){
+            aFloat = Float.parseFloat(price);
+            if(aFloat == 0){
                 tv_price.setText("--");
                 tv_count.setText("--");
                 return;
             }
-            if(price > zs){
+            if(aFloat > zs){
                 tv_price.setTextColor(activity.getResources().getColor(R.color.colorRise));
                 tv_count.setTextColor(activity.getResources().getColor(R.color.colorRise));
-            }else if(price == zs){
+            }else if(aFloat == zs){
                 tv_price.setTextColor(activity.getResources().getColor(R.color.titleText));
                 tv_count.setTextColor(activity.getResources().getColor(R.color.titleText));
             }else {
                 tv_price.setTextColor(activity.getResources().getColor(R.color.colorFall));
                 tv_count.setTextColor(activity.getResources().getColor(R.color.colorFall));
             }
-            tv_price.setText(price+"");
+            tv_price.setText(price);
             tv_count.setText(Volume);
         }
     }
@@ -299,17 +309,17 @@ public class FragmentStockMinitue extends BaseFragment {
         super.onHiddenChanged(hidden);
         if(hidden){
             //onPause
-            if(mTask !=null){
-                mTask.stop();
-            }
+//            if(mTask !=null){
+//                mTask.stop();
+//            }
             if(mTimer !=null){
                 mTimer.cancel();
             }
         } else {
             //onResume
-            if(mTask !=null){
-                mTask.start();
-            }
+//            if(mTask !=null){
+//                mTask.start();
+//            }
             if(mTimer !=null){
                 mTimer = new Timer();
                 mTimer.schedule(new TimerTask() {

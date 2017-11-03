@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="library-1.1.2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.timqi.collapsibletextview/library/1.1.2/jars/classes.jar!/" />
+      <root url="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.timqi.collapsibletextview/library/1.1.2/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://D:/Program Files/Android/gradl/.gradle/caches/modules-2/files-2.1/com.timqi.collapsibletextview/library/1.1.2/de5c55398f534f547a14ce097e9cb183ade9dbb1/library-1.1.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -28,6 +28,7 @@ import com.zfxf.douniu.utils.Constants;
 import com.zfxf.douniu.utils.SpTools;
 
 import java.util.Map;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -66,6 +67,8 @@ public class ActivityLogin extends FragmentActivity implements View.OnClickListe
     ImageView qq;
     @BindView(R.id.iv_login_wx)
     ImageView wx;
+    @BindView(R.id.iv_login_sina)
+    ImageView sina;
     UMShareAPI mShareAPI;
     String[] mPermissionList = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE
             ,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CALL_PHONE
@@ -100,6 +103,7 @@ public class ActivityLogin extends FragmentActivity implements View.OnClickListe
         forget.setOnClickListener(this);
         qq.setOnClickListener(this);
         wx.setOnClickListener(this);
+        sina.setOnClickListener(this);
     }
 
     private boolean isEye = false;
@@ -135,6 +139,14 @@ public class ActivityLogin extends FragmentActivity implements View.OnClickListe
                 overridePendingTransition(0,0);
                 break;
             case R.id.iv_login_qq:
+                CommonUtils.toastMessage("QQ登录");
+                platform = SHARE_MEDIA.QQ;
+                LoginPlatformInfo();
+                break;
+            case R.id.iv_login_sina:
+                CommonUtils.toastMessage("微博登录");
+                platform = SHARE_MEDIA.SINA;
+                LoginPlatformInfo();
                 break;
             case R.id.iv_login_wx:
                 CommonUtils.toastMessage("微信登录");
@@ -198,7 +210,7 @@ public class ActivityLogin extends FragmentActivity implements View.OnClickListe
     }
     //判断是否获得权限
     private boolean getisPermission() {
-        boolean quanxian=true;
+        boolean quanxian = true;
         for (int i=0;i<mPermissionList.length;i++){
             if(ContextCompat.checkSelfPermission(ActivityLogin.this, mPermissionList[i]) != PackageManager.PERMISSION_GRANTED){
                 quanxian=false;
@@ -232,11 +244,11 @@ public class ActivityLogin extends FragmentActivity implements View.OnClickListe
         @Override
         public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
             Toast.makeText(ActivityLogin.this, "登录成功了", Toast.LENGTH_LONG).show();
-//            Set<String> keySet = data.keySet();
-//            //遍历循环，得到里面的key值----用户名，头像....
-//            for (String string : keySet) {
-//                CommonUtils.logMes("------data--------"+string);
-//            }
+            Set<String> keySet = data.keySet();
+            //遍历循环，得到里面的key值----用户名，头像....
+            for (String string : keySet) {
+                CommonUtils.logMes("------data-----"+string+"-----key-----="+data.get(string));
+            }
             threeLogin(data);
         }
 
@@ -268,8 +280,14 @@ public class ActivityLogin extends FragmentActivity implements View.OnClickListe
             url = data.get("profile_image_url");
             loginType = "1";
         }else if(platform == SHARE_MEDIA.QQ){
+            uuid = data.get("uid");
+            name = data.get("name");
+            url = data.get("iconurl");
             loginType = "2";
         }else if(platform == SHARE_MEDIA.SINA){
+            uuid = data.get("id");
+            name = data.get("screen_name");
+            url = data.get("profile_image_url");
             loginType = "3";
         }
 

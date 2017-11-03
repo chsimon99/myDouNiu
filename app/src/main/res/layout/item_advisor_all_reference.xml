@@ -78,6 +78,7 @@
             android:id="@+id/iv_advisor_all_reference_img"
             android:layout_width="@dimen/dm118"
             android:layout_height="@dimen/dm118"
+            android:layout_gravity="center"
             android:layout_marginLeft="@dimen/dm035"
             android:src="@drawable/public_img"/>
     </LinearLayout>

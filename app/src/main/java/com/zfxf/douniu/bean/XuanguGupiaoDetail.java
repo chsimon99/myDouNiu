@@ -17,4 +17,5 @@ public class XuanguGupiaoDetail {
     public String mg_zg;//最高价
     public String zg_date;//id
     public String mg_xj;//现价
+    public String zg_rxdate;//入选时间
 }

@@ -171,10 +171,17 @@ public class ActivityAskStock extends FragmentActivity implements View.OnClickLi
                         return;
                     }
                 }
+                if (TextUtils.isEmpty(askstock.getText().toString())) {
+                    CommonUtils.toastMessage("请输入问股的内容");
+                    return;
+                }
                 //提交服务器
                 confirm();
                 break;
             case R.id.ll_askstock_contact:
+                Intent intent = new Intent(CommonUtils.getContext(), ActivityMianZe.class);
+                startActivity(intent);
+                overridePendingTransition(0,0);
                 //细则说明
                 break;
         }
@@ -196,20 +203,18 @@ public class ActivityAskStock extends FragmentActivity implements View.OnClickLi
                         }
                         NewsInternetRequest.sendAskingStock(askstock.getText().toString(), mSx_id, mTv_fee, new NewsInternetRequest.ForResultListener() {
                             @Override
-                            public void onResponseMessage(String code) {
-                                if(code.equals("成功")){
-                                    Intent intent = new Intent(ActivityAskStock.this,ActivityToPay.class);
-                                    intent.putExtra("info","微问答,"+mSx_id+","+"");
-                                    intent.putExtra("type","微问答");
-                                    intent.putExtra("from",toName);
-                                    intent.putExtra("count",mTv_fee);
-                                    intent.putExtra("sx_id",mSx_id);
-                                    startActivity(intent);
-                                    overridePendingTransition(0,0);
-                                    finishAll();
-                                    finish();
-                                    dialog.dismiss();
-                                }
+                            public void onResponseMessage(String zc_id) {
+                                Intent intent = new Intent(ActivityAskStock.this, ActivityToPay.class);
+                                intent.putExtra("info", "微问答," + mSx_id + "," + zc_id);
+                                intent.putExtra("type", "微问答");
+                                intent.putExtra("from", toName);
+                                intent.putExtra("count", mTv_fee);
+                                intent.putExtra("sx_id", mSx_id);
+                                startActivity(intent);
+                                overridePendingTransition(0, 0);
+                                finishAll();
+                                finish();
+                                dialog.dismiss();
                             }
                         });
                     }

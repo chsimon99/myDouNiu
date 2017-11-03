@@ -106,11 +106,21 @@ public class FragmentMyselfConsumeWait extends BaseFragment {
 										}
 									}else if(info.type.equals("4")){
 										intent.putExtra("type","打赏");
+									}else if(info.type.equals("6")){
+										intent.putExtra("type","选股王");
 									}
-									intent.putExtra("from",info.ud_nickname);
+									if(info.type.equals("6")){
+										intent.putExtra("from","选股王");
+									}else if(info.type.equals("1")){
+										intent.putExtra("from","金股池");
+									}else {
+										intent.putExtra("from",info.ud_nickname);
+									}
 									intent.putExtra("count",info.pmo_fee);
 									intent.putExtra("sx_id",info.sx_ub_id);
 									intent.putExtra("order",info.pmo_order);
+									intent.putExtra("dycount",info.dy_count);
+									intent.putExtra("planId",Integer.parseInt(info.id));
 									if(info.pmo_info.contains("充值")){
 										intent.putExtra("change",1);
 									}

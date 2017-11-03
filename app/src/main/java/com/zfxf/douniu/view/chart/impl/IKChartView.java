@@ -45,6 +45,15 @@ public interface IKChartView {
     float getChildY(float value);
 
     /**
+     * 获取主图最下方的坐标值
+     */
+    float getMainBottom();
+    /**
+     * 获取主图当前点的坐标值
+     */
+    float getMainPoint(float value);
+
+    /**
      * 在主区域画线
      * @param startX    开始点的横坐标
      * @param stopX     开始点的值

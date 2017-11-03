@@ -5,7 +5,7 @@
     android:orientation="vertical">
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dm016"
+        android:layout_height="1dp"
         android:background="@color/colorBgGary"/>
     <com.zfxf.douniu.view.MyScrollview
         android:layout_width="match_parent"

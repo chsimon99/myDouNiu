@@ -16,4 +16,6 @@ public class SimulationPositionDetail {
     public String mc_ccsl;//持仓数量
     public String mc_ljyk;//累计盈亏
     public String mc_kmsl;//可卖数量
+    public String mb_name;//股票所属
+    public String name;//股票类型
 }

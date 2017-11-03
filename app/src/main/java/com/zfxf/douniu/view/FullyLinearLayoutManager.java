@@ -3,7 +3,6 @@ package com.zfxf.douniu.view;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -38,11 +37,11 @@ public class FullyLinearLayoutManager extends LinearLayoutManager {
         final int widthSize = View.MeasureSpec.getSize(widthSpec);
         final int heightSize = View.MeasureSpec.getSize(heightSpec);
 
-        Log.i(TAG, "onMeasure called. \nwidthMode " + widthMode
-                + " \nheightMode " + heightSpec
-                + " \nwidthSize " + widthSize
-                + " \nheightSize " + heightSize
-                + " \ngetItemCount() " + getItemCount());
+//        Log.i(TAG, "onMeasure called. \nwidthMode " + widthMode
+//                + " \nheightMode " + heightSpec
+//                + " \nwidthSize " + widthSize
+//                + " \nheightSize " + heightSize
+//                + " \ngetItemCount() " + getItemCount());
 
         int width = 0;
         int height = 0;

@@ -7,9 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.widget.EditText;
@@ -18,11 +16,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
-import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.activity.login.ActivityLogin;
@@ -43,7 +40,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * @author IMXU
@@ -63,8 +59,8 @@ public class ActivityHeadLineDetail extends FragmentActivity implements View.OnC
     @BindView(R.id.tv_base_title)
     TextView title;
 
-    @BindView(R.id.iv_headline_detail_img)
-    ImageView img;
+//    @BindView(R.id.iv_headline_detail_img)
+//    ImageView img;
     @BindView(R.id.rv_headline_detail)
     RecyclerView mRecyclerView;
     @BindView(R.id.ll_headline_detail_shang)
@@ -95,6 +91,8 @@ public class ActivityHeadLineDetail extends FragmentActivity implements View.OnC
     WebView mWebView;
     @BindView(R.id.et_headline_detail)
     EditText et_comment;
+    @BindView(R.id.tv_headline_detail_send)
+    TextView tv_send;//发送评论
 
     private LinearLayoutManager mAdvisorManager;
     private HeadlineDetailAdapter mDetailAdapter;
@@ -106,6 +104,7 @@ public class ActivityHeadLineDetail extends FragmentActivity implements View.OnC
     private String webUrl;//H5的url
     private String mTitle;//标题
     private String datetime;
+    private String mFrom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,14 +140,13 @@ public class ActivityHeadLineDetail extends FragmentActivity implements View.OnC
                     CommonUtils.toastMessage("获取头条详情失败，请重试");
                     return;
                 }
-                String picUrl = getResources().getString(R.string.file_host_address)
-                        +getResources().getString(R.string.showpic)
-                        +news_info.ud_photo_fileid;
-                Glide.with(ActivityHeadLineDetail.this).load(picUrl)
-                        .placeholder(R.drawable.home_adviosr_img)
-                        .bitmapTransform(new CropCircleTransformation(ActivityHeadLineDetail.this))
-                        .into(img);
-                name.setText(news_info.ud_nickname);
+//                String picUrl = getResources().getString(R.string.file_host_address)
+//                        +getResources().getString(R.string.showpic)
+//                        +news_info.ud_photo_fileid;
+//                Glide.with(ActivityHeadLineDetail.this).load(picUrl)
+//                        .placeholder(R.drawable.public_img).into(img);
+                mFrom = news_info.cc_from;
+                name.setText(news_info.cc_from);
                 sx_id = news_info.ud_ub_id;
                 mTitle = news_info.cc_title;
                 detail_title.setText(mTitle);
@@ -196,54 +194,55 @@ public class ActivityHeadLineDetail extends FragmentActivity implements View.OnC
         ll_shang.setOnClickListener(this);
         ll_zan.setOnClickListener(this);
         et_comment.setOnClickListener(this);
-        et_comment.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                switch(actionId){
-                    case EditorInfo.IME_ACTION_DONE:
-                        if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
-                            intent = new Intent(ActivityHeadLineDetail.this, ActivityLogin.class);
-                            startActivity(intent);
-                            overridePendingTransition(0,0);
-                            return false;
-                        }
-                        String str = et_comment.getText().toString();
-                        if(TextUtils.isEmpty(str)){
-                            CommonUtils.toastMessage("评论的内容不能为空");
-                            break;
-                        }
-                        NewsInternetRequest.publishComment(mNewsinfoId, str, new NewsInternetRequest.ForResultNewsInfoListener() {
-                            @Override
-                            public void onResponseMessage(OtherResult result) {
-                                CommentResult commentResult = result.cms_contextpl;
-                                CommentInformationResult informationResult = new CommentInformationResult();
-                                informationResult.setUd_nickname(commentResult.ccp_ud_nickname);
-                                informationResult.setUd_photo_fileid(commentResult.ud_photo_fileid);
-                                informationResult.setCcp_info(commentResult.ccp_info);
-                                informationResult.setCcp_time(commentResult.ccp_time);
-                                mDetailAdapter.addDatas(informationResult);
-                                mRecyclerView.post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        mDetailAdapter.notifyDataSetChanged();
-                                    }
-                                });
-                                CommonUtils.toastMessage("发表评论成功");
-                                mPlTotal++;
-                                ll_sofa.setVisibility(View.GONE);
-                                comment_count.setText("("+ mPlTotal +")");
-                            }
-                        });
-                        break;
-                }
-                et_comment.setText("");
-                et_comment.setFocusable(false);
-                InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                mRecyclerView.smoothScrollToPosition(0);//滑动到第一条，不起作用
-                return false;
-            }
-        });
+        tv_send.setOnClickListener(this);
+//        et_comment.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                switch(actionId){
+//                    case EditorInfo.IME_ACTION_DONE:
+//                        if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+//                            intent = new Intent(ActivityHeadLineDetail.this, ActivityLogin.class);
+//                            startActivity(intent);
+//                            overridePendingTransition(0,0);
+//                            return false;
+//                        }
+//                        String str = et_comment.getText().toString();
+//                        if(TextUtils.isEmpty(str)){
+//                            CommonUtils.toastMessage("评论的内容不能为空");
+//                            break;
+//                        }
+//                        NewsInternetRequest.publishComment(mNewsinfoId, str, new NewsInternetRequest.ForResultNewsInfoListener() {
+//                            @Override
+//                            public void onResponseMessage(OtherResult result) {
+//                                CommentResult commentResult = result.cms_contextpl;
+//                                CommentInformationResult informationResult = new CommentInformationResult();
+//                                informationResult.setUd_nickname(commentResult.ccp_ud_nickname);
+//                                informationResult.setUd_photo_fileid(commentResult.ud_photo_fileid);
+//                                informationResult.setCcp_info(commentResult.ccp_info);
+//                                informationResult.setCcp_time(commentResult.ccp_time);
+//                                mDetailAdapter.addDatas(informationResult);
+//                                mRecyclerView.post(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        mDetailAdapter.notifyDataSetChanged();
+//                                    }
+//                                });
+//                                CommonUtils.toastMessage("发表评论成功");
+//                                mPlTotal++;
+//                                ll_sofa.setVisibility(View.GONE);
+//                                comment_count.setText("("+ mPlTotal +")");
+//                            }
+//                        });
+//                        break;
+//                }
+//                et_comment.setText("");
+//                et_comment.setFocusable(false);
+//                InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+//                mRecyclerView.smoothScrollToPosition(0);//滑动到第一条，不起作用
+//                return false;
+//            }
+//        });
     }
     Intent intent;
     @Override
@@ -254,15 +253,13 @@ public class ActivityHeadLineDetail extends FragmentActivity implements View.OnC
                 finish();
                 break;
             case R.id.iv_base_share:
-                UMImage thumb =  new UMImage(this, R.drawable.icon_logo);
                 UMWeb web = new UMWeb(webUrl);
                 web.setTitle(mTitle);//标题
-//                web.setDescription(mFrom+" "+datetime);//描述
-                web.setDescription(" "+datetime);//描述
-                web.setThumb(thumb);  //缩略图
+                web.setDescription(mFrom+" "+datetime);//描述
+//                web.setDescription(" "+datetime);//描述
                 new ShareAction(ActivityHeadLineDetail.this).withText("斗牛财经")
                         .withMedia(web)
-                        .setDisplayList(SHARE_MEDIA.SINA,SHARE_MEDIA.QQ,SHARE_MEDIA.WEIXIN,	SHARE_MEDIA.WEIXIN_CIRCLE)
+                        .setDisplayList(SHARE_MEDIA.SINA,SHARE_MEDIA.QQ,SHARE_MEDIA.QZONE,SHARE_MEDIA.WEIXIN,SHARE_MEDIA.WEIXIN_CIRCLE)
                         .setCallback(shareListener).open();
                 break;
             case R.id.ll_headline_detail_zan:
@@ -312,6 +309,46 @@ public class ActivityHeadLineDetail extends FragmentActivity implements View.OnC
                     imm.toggleSoftInput(0,InputMethodManager.SHOW_FORCED);
                 }
                 break;
+            case R.id.tv_headline_detail_send:
+                if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
+                    intent = new Intent(ActivityHeadLineDetail.this, ActivityLogin.class);
+                    startActivity(intent);
+                    overridePendingTransition(0,0);
+                    return;
+                }
+                String str = et_comment.getText().toString();
+                if(TextUtils.isEmpty(str)){
+                    CommonUtils.toastMessage("评论的内容不能为空");
+                    break;
+                }
+                NewsInternetRequest.publishComment(mNewsinfoId, str, new NewsInternetRequest.ForResultNewsInfoListener() {
+                    @Override
+                    public void onResponseMessage(OtherResult result) {
+                        CommentResult commentResult = result.cms_contextpl;
+                        CommentInformationResult informationResult = new CommentInformationResult();
+                        informationResult.setUd_nickname(commentResult.ccp_ud_nickname);
+                        informationResult.setUd_photo_fileid(commentResult.ud_photo_fileid);
+                        informationResult.setCcp_info(commentResult.ccp_info);
+                        informationResult.setCcp_time(commentResult.ccp_time);
+                        mDetailAdapter.addDatas(informationResult);
+                        mRecyclerView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mDetailAdapter.notifyDataSetChanged();
+                            }
+                        });
+                        CommonUtils.toastMessage("发表评论成功");
+                        mPlTotal++;
+                        ll_sofa.setVisibility(View.GONE);
+                        comment_count.setText("("+ mPlTotal +")");
+                    }
+                });
+                et_comment.setText("");
+                et_comment.setFocusable(false);
+                InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                mRecyclerView.smoothScrollToPosition(0);//滑动到第一条，不起作用
+                break;
         }
     }
 
@@ -344,7 +381,7 @@ public class ActivityHeadLineDetail extends FragmentActivity implements View.OnC
          */
         @Override
         public void onCancel(SHARE_MEDIA platform) {
-            Toast.makeText(ActivityHeadLineDetail.this,"分享取消了",Toast.LENGTH_LONG).show();
+//            Toast.makeText(ActivityHeadLineDetail.this,"分享取消了",Toast.LENGTH_LONG).show();
         }
     };
 
@@ -379,5 +416,10 @@ public class ActivityHeadLineDetail extends FragmentActivity implements View.OnC
         } else {
             mRecyclerView.scrollToPosition(n);
         }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode,resultCode,data);
     }
 }

@@ -54,6 +54,7 @@ public class ActivityMarketResearch extends FragmentActivity implements View.OnC
     private List<SimulationSearchInfo> mStrings = new ArrayList<SimulationSearchInfo>();
     private RecycleViewDivider mDivider;
     private boolean mSimulation;
+    private int mType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,7 @@ public class ActivityMarketResearch extends FragmentActivity implements View.OnC
         setContentView(R.layout.activity_market_research);
         ButterKnife.bind(this);
         mSimulation = getIntent().getBooleanExtra("simulation", false);
+        mType = getIntent().getIntExtra("type", 0);//搜索的类型 0 所有 1模拟盘的搜索
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
@@ -98,7 +100,7 @@ public class ActivityMarketResearch extends FragmentActivity implements View.OnC
                         CommonUtils.toastMessage("开始搜索");
                         InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                        NewsInternetRequest.getSearchStockInformation(research.getText().toString(), new NewsInternetRequest.ForResultSimulationIndexListener() {
+                        NewsInternetRequest.getSearchStockInformation(research.getText().toString(),mType,new NewsInternetRequest.ForResultSimulationIndexListener() {
                             @Override
                             public void onResponseMessage(SimulationResult result) {
                                 if(result.mg_gupiao.size() == 0){
@@ -128,6 +130,7 @@ public class ActivityMarketResearch extends FragmentActivity implements View.OnC
                     Intent intent = new Intent(ActivityMarketResearch.this, ActivityStockInfo.class);
                     intent.putExtra("code",info.mg_code);
                     intent.putExtra("name",info.mg_name);
+                    intent.putExtra("model",info.name);
                     startActivity(intent);
                     overridePendingTransition(0,0);
                 }
@@ -163,6 +166,7 @@ public class ActivityMarketResearch extends FragmentActivity implements View.OnC
         Intent intent = new Intent();
         intent.putExtra("name",info.mg_name);
         intent.putExtra("code",info.mg_code);
+        intent.putExtra("model",info.name);
         setResult(2,intent);
     }
 

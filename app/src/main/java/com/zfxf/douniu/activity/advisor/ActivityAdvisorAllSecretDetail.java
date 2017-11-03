@@ -1,7 +1,6 @@
 package com.zfxf.douniu.activity.advisor;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
@@ -11,6 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.ActivityShipinWeb;
 import com.zfxf.douniu.activity.ActivityToPay;
 import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.bean.CourseResult;
@@ -69,6 +69,7 @@ public class ActivityAdvisorAllSecretDetail extends FragmentActivity implements 
         mId = getIntent().getIntExtra("id",0);
         title.setText("课程详情");
         zhibo.setVisibility(View.GONE);
+        edit.setVisibility(View.INVISIBLE);
         initdata();
         initListener();
     }
@@ -107,7 +108,7 @@ public class ActivityAdvisorAllSecretDetail extends FragmentActivity implements 
                         zhibo.setText("直播已结束");
                         zhibo.setTextColor(getResources().getColor(R.color.colorText));
                     }else if(courseResult.news_info.status.equals("1")){
-                        zhibo.setText("正在直播中 >");
+                        zhibo.setText("观看点这里 >");
                         zhibo.setTextColor(getResources().getColor(R.color.colorTitle));
                     }else if(courseResult.news_info.status.equals("2")){
                         zhibo.setText("直播还未开始");
@@ -136,6 +137,7 @@ public class ActivityAdvisorAllSecretDetail extends FragmentActivity implements 
         back.setOnClickListener(this);
         pay.setOnClickListener(this);
         zhibo.setOnClickListener(this);
+        img.setOnClickListener(this);
     }
 
     @Override
@@ -165,14 +167,19 @@ public class ActivityAdvisorAllSecretDetail extends FragmentActivity implements 
                     overridePendingTransition(0,0);
                 }
                 break;
+            case R.id.iv_advisor_all_secret_detail_img:
             case R.id.tv_advisor_all_secret_detail_status:
-                if(zhibo.getText().toString().contains("正在直播")){
+                if(zhibo.getText().toString().contains("观看")){
                     if(TextUtils.isEmpty(mUrl)){
                         return;
                     }
-                    Uri uri = Uri.parse(mUrl);
-                    Intent it = new Intent(Intent.ACTION_VIEW, uri);
-                    startActivity(it);
+//                    Uri uri = Uri.parse(mUrl);
+//                    Intent it = new Intent(Intent.ACTION_VIEW, uri);
+//                    startActivity(it);
+                    Intent intent = new Intent(ActivityAdvisorAllSecretDetail.this, ActivityShipinWeb.class);
+                    intent.putExtra("url",mUrl);
+                    startActivity(intent);
+                    overridePendingTransition(0,0);
                 }
                 break;
         }

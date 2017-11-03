@@ -11,6 +11,9 @@ public class LunBoListInfo {
     public String spc_id;//id
     public String title;//标题
     public String image;//图片地址
-    public String url;//
+    public String url;//调转的id 可能是url
     public String type;//
+    public String ub_id;//首席id
+
+    public String context;//
 }

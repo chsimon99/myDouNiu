@@ -14,8 +14,14 @@ public class ProjectListResult {
     public String shiyong;//适用人群
     public String feiyong;//费用
     public String cc_datetime;//时间
+    public String fileid;//
+    public String filename;//
+    public String addr;//地址
+    public String phone;//电话
     public String cc_fielid;//图片地址
     public String biaoshi;// 0预热 1进行
+    public String video_pic;// 视频图片
+    public String video;// 视频地址
 
 
     public String name;// 方式

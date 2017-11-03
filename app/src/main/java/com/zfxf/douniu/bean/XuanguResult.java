@@ -22,4 +22,6 @@ public class XuanguResult {
     public String jgc_count;//入选股数量
 
     public List<XuanguHistoryDetail> ls_result;//金股池历史数据
+
+    public List<PayStyle> fee_list;//选股王购买3种类型
 }

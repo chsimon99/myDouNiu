@@ -19,9 +19,12 @@ public class XuanguDetail {
     public String zf_dys;//订阅数
     public String zf_date;//时间
     public String zf_info;//详情
+    public String zf_url;//url
     public List<XuanguItemList> item_list;
     public String has_dy;//是否订阅
     public String zf_fieldid;//图片
+    public String has_buy;//是否购买
+    public String end_time;//到期时间
 
     public String zi_id;//id
     public String zi_title;//标题

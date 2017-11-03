@@ -27,6 +27,7 @@ import com.zfxf.douniu.activity.myself.ActivityMyselfSubscribe;
 import com.zfxf.douniu.activity.myself.ActivityMyselfWallet;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.internet.LoginInternetRequest;
+import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.utils.Constants;
 import com.zfxf.douniu.utils.SpTools;
@@ -99,7 +100,7 @@ public class FragmentMyself extends BaseFragment implements View.OnClickListener
 		super.initdata();
 		//访问网络获取个人信息
 		if(!SpTools.getBoolean(getActivity(),Constants.isLogin,false)){
-			img.setImageResource(R.drawable.advisor_home_img);
+			img.setImageResource(R.drawable.home_adviosr_img);
 			name.setText("注册/登陆");
 			return;
 		}
@@ -114,12 +115,11 @@ public class FragmentMyself extends BaseFragment implements View.OnClickListener
 			if (cacheBitmap != null) {
 				byte[] bytes = CommonUtils.getBitMapByteArray(cacheBitmap);
 				Glide.with(getActivity()).load(bytes)
-						.placeholder(R.drawable.advisor_home_img)
+						.placeholder(R.drawable.home_adviosr_img)
 						.bitmapTransform(new CropCircleTransformation(getActivity()))
 						.into(img);
 				return;
 			}
-
 		}
 		getUserInformation();
 	}
@@ -203,16 +203,42 @@ public class FragmentMyself extends BaseFragment implements View.OnClickListener
 				if(!SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
 					toLogin();
 				}else {
-					boolean isSuccess = SpTools.getBoolean(CommonUtils.getContext(), Constants.rvaluateSuccess, false);
-					if(isSuccess){
+					int resultNum = SpTools.getInt(getActivity(), Constants.rvaluateResult, 0);
+					if(resultNum == 0){
+						NewsInternetRequest.getMyRiskGrade(new NewsInternetRequest.ForResultListener() {
+							@Override
+							public void onResponseMessage(String count) {
+								if(!TextUtils.isEmpty(count)){
+									if("0".equals(count)){
+										intent = new Intent(CommonUtils.getContext(), ActivityMyselfRvaluateOne.class);
+										startActivity(intent);
+										getActivity().overridePendingTransition(0,0);
+									}else {
+										SpTools.setInt(getActivity(),Constants.rvaluateResult,Integer.parseInt(count));
+										intent = new Intent(CommonUtils.getContext(), ActivityMyselfRvaluateResult.class);
+										startActivity(intent);
+										getActivity().overridePendingTransition(0,0);
+									}
+								}else {
+									CommonUtils.toastMessage("网络不好请重试");
+								}
+							}
+						});
+					}else {
 						intent = new Intent(CommonUtils.getContext(), ActivityMyselfRvaluateResult.class);
 						startActivity(intent);
 						getActivity().overridePendingTransition(0,0);
-					}else{
-						intent = new Intent(CommonUtils.getContext(), ActivityMyselfRvaluateOne.class);
-						startActivity(intent);
-						getActivity().overridePendingTransition(0,0);
 					}
+//					boolean isSuccess = SpTools.getBoolean(CommonUtils.getContext(), Constants.rvaluateSuccess, false);
+//					if(isSuccess){
+//						intent = new Intent(CommonUtils.getContext(), ActivityMyselfRvaluateResult.class);
+//						startActivity(intent);
+//						getActivity().overridePendingTransition(0,0);
+//					}else{
+//						intent = new Intent(CommonUtils.getContext(), ActivityMyselfRvaluateOne.class);
+//						startActivity(intent);
+//						getActivity().overridePendingTransition(0,0);
+//					}
 				}
 				break;
 			case R.id.ll_myself_contract:
@@ -272,7 +298,7 @@ public class FragmentMyself extends BaseFragment implements View.OnClickListener
 		if(isExit){
 			isExit = false;
 			if(!SpTools.getBoolean(getActivity(),Constants.isLogin,false)){
-				img.setImageResource(R.drawable.advisor_home_img);
+				img.setImageResource(R.drawable.home_adviosr_img);
 				name.setText("注册/登陆");
 			}
 		}
@@ -304,13 +330,13 @@ public class FragmentMyself extends BaseFragment implements View.OnClickListener
 						SpTools.setString(getActivity(),Constants.nickname,nickname);
 					}
 					if (TextUtils.isEmpty(photoUrl)) {
-						img.setImageResource(R.drawable.advisor_home_img);
+						img.setImageResource(R.drawable.home_adviosr_img);
 					} else {
 						SpTools.setString(getActivity(),Constants.imgurl,photoUrl);
 						Bitmap cacheBitmap = CommonUtils.getCacheFile("myicon.jpg");
 						if (cacheBitmap == null) {
 							Glide.with(getActivity()).load(photoUrl)
-									.placeholder(R.drawable.advisor_home_img)
+									.placeholder(R.drawable.home_adviosr_img)
 									.bitmapTransform(new CropCircleTransformation(getActivity()))
 									.into(img);
 
@@ -330,7 +356,7 @@ public class FragmentMyself extends BaseFragment implements View.OnClickListener
 						} else {
 							byte[] bytes = CommonUtils.getBitMapByteArray(cacheBitmap);
 							Glide.with(getActivity()).load(bytes)
-									.placeholder(R.drawable.advisor_home_img)
+									.placeholder(R.drawable.home_adviosr_img)
 									.bitmapTransform(new CropCircleTransformation(getActivity()))
 									.into(img);
 						}

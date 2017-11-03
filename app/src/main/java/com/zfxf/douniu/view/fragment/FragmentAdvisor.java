@@ -148,12 +148,12 @@ public class FragmentAdvisor extends BaseFragment implements View.OnClickListene
 			mFragmentAdvisorAllReference = new FragmentAdvisorAllReference();
 		}
 		if(list_fragment.size() == 0){
+			list_fragment.add(mFragmentAdvisorAllReference);
 			list_fragment.add(mFragmentAdvisorAllDirect);
 			list_fragment.add(mFragmentAdvisorAllPublic);
 			list_fragment.add(mFragmentAdvisorAllSecret);
 			list_fragment.add(mFragmentAdvisorAllGoldPond);
 			list_fragment.add(mFragmentAdvisorAllAsking);
-			list_fragment.add(mFragmentAdvisorAllReference);
 		}
 
 		if (mAdapter == null) {

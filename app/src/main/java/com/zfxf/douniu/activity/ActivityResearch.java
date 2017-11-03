@@ -192,7 +192,7 @@ public class ActivityResearch extends FragmentActivity implements View.OnClickLi
             case R.id.et_research:
                 ll_result.setVisibility(View.GONE);
                 resetRecycleView();
-//                research.setText("");
+                researchContent = "";
                 if(research.isFocusable()){
 
                 }else{//打开键盘
@@ -206,10 +206,13 @@ public class ActivityResearch extends FragmentActivity implements View.OnClickLi
                 break;
         }
     }
-
+    private String researchContent = "";//临时变量获取搜索值，防止加载更多的时候为空
     private void visitInternet() {
         isResearch = true;
-        NewsInternetRequest.getResearchInformation(research.getText().toString(), currentPage + "", type + "", new NewsInternetRequest.ForResultResearchInfoListener() {
+        if(TextUtils.isEmpty(researchContent)){
+            researchContent = research.getText().toString();
+        }
+        NewsInternetRequest.getResearchInformation(researchContent, currentPage + "", type + "", new NewsInternetRequest.ForResultResearchInfoListener() {
             @Override
             public void onResponseMessage(CourseResult result) {
                 String name = research.getText().toString();
@@ -281,6 +284,7 @@ public class ActivityResearch extends FragmentActivity implements View.OnClickLi
                                     Intent intent = new Intent(ActivityResearch.this, ActivityStockInfo.class);
                                     intent.putExtra("code",info.mg_code);
                                     intent.putExtra("name",info.mg_name);
+                                    intent.putExtra("model",info.name);
                                     startActivity(intent);
                                     finish();
                                     overridePendingTransition(0,0);

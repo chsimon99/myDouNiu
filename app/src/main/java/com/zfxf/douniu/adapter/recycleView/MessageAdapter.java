@@ -24,7 +24,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyHolder
     private List<MessageInfo> mDatas;
 
     public interface MyItemClickListener {
-        void onItemClick(View v, int id);
+        void onItemClick(View v, int id,MessageInfo bean);
     }
 
     public MessageAdapter(Context context, List<MessageInfo> datas) {
@@ -78,7 +78,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyHolder
         @Override
         public void onClick(View v) {
             if (mListener != null) {
-                mListener.onItemClick(v, Integer.parseInt(mDatas.get(getPosition()).sm_id));
+                mListener.onItemClick(v, getPosition(),mDatas.get(getPosition()));
             }
         }
 
@@ -87,10 +87,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyHolder
             content.setText(bean.sm_context);
             time.setText(bean.sm_date);
             title.setText(bean.sm_title);
-            if(bean.sm_type.equals("0")){
-                img.setImageResource(R.drawable.message_system);
-            }else {
+            if(bean.sm_ub_id.equals("0")){
                 img.setImageResource(R.drawable.message_alarm);
+            }else {
+                img.setImageResource(R.drawable.message_system);
             }
         }
     }

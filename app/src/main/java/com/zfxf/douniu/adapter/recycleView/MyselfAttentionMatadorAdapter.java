@@ -90,9 +90,18 @@ public class MyselfAttentionMatadorAdapter extends RecyclerView.Adapter<MyselfAt
         }
 
         public void setRefreshData(IndexAdvisorListInfo bean, int position) {
-            Glide.with(mContext).load(bean.headImg)
-                    .placeholder(R.drawable.home_adviosr_img)
-                    .bitmapTransform(new CropCircleTransformation(mContext)).into(img);
+            if(bean.headImg.contains("http")){
+                Glide.with(mContext).load(bean.headImg)
+                        .placeholder(R.drawable.home_adviosr_img)
+                        .bitmapTransform(new CropCircleTransformation(mContext)).into(img);
+            }else {
+                String picUrl = mContext.getResources().getString(R.string.file_host_address)
+                        +mContext.getResources().getString(R.string.showpic)
+                        +bean.headImg;
+                Glide.with(mContext).load(picUrl)
+                        .placeholder(R.drawable.home_adviosr_img)
+                        .bitmapTransform(new CropCircleTransformation(mContext)).into(img);
+            }
             name.setText(bean.ud_nickname);
             month.setText(bean.mf_bysy+"%");
             week.setText(bean.mf_bzsy+"%");

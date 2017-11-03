@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -25,6 +25,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
+
 /**
  * @author IMXU
  * @time   2017/5/3 13:26
@@ -32,7 +34,7 @@ import butterknife.ButterKnife;
  * 邮箱：butterfly_xu@sina.com
  *
 */
-public class ActivityBar extends FragmentActivity implements View.OnClickListener{
+public class ActivityBar extends AppCompatActivity implements View.OnClickListener{
 
     @BindView(R.id.iv_base_back)
     ImageView back;
@@ -71,9 +73,9 @@ public class ActivityBar extends FragmentActivity implements View.OnClickListene
             mFragmentBarGrade = new FragmentBarGrade();
         }
         if(list_fragment.size() == 0){
-            list_fragment.add(mFragmentBarBar);
             list_fragment.add(mFragmentBarZhibo);
             list_fragment.add(mFragmentBarGrade);
+            list_fragment.add(mFragmentBarBar);
         }
         if(list_title.size() == 0){
             String[] titleStrings = CommonUtils.getResource().getStringArray(R.array.bar_item_titles);
@@ -127,6 +129,9 @@ public class ActivityBar extends FragmentActivity implements View.OnClickListene
 
     @Override
     public void onBackPressed() {
+        if (JCVideoPlayer.backPress()) {
+            return;
+        }
         super.onBackPressed();
         CommonUtils.dismissProgressDialog();
     }

@@ -17,14 +17,20 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.MainActivityTabHost" android:launchMode="singleTask"/>
-        <activity android:name=".activity.ActivityBar"/>
+        <activity android:name=".activity.ActivityBar"
+                  android:configChanges="orientation|screenSize|keyboardHidden"
+                  android:hardwareAccelerated="true"
+                  android:screenOrientation="portrait"/>
         <activity android:name=".activity.ActivityZhengu"/>
         <activity android:name=".activity.ActivityAskAdvisor"/>
         <activity android:name=".activity.ActivityAnswer"/>
         <activity android:name=".activity.ActivityAnswerDetail"/>
         <activity android:name=".activity.ActivityAskStock"/>
         <activity android:name=".activity.ActivityXiangMu"/>
-        <activity android:name=".activity.ActivityXiangMuDetail"/>
+        <activity android:name=".activity.ActivityXiangMuDetail"
+                  android:configChanges="orientation|screenSize|keyboardHidden"
+                  android:hardwareAccelerated="true"
+                  android:screenOrientation="portrait"/>
         <activity android:name=".activity.ActivityAdvisorHome" android:launchMode="singleTask"/>
         <activity android:name=".activity.login.ActivityLogin"/>
         <activity android:name=".activity.login.ActivityRegister"/>
@@ -88,6 +94,19 @@
         <activity android:name=".activity.login.ActivityThirdRegister"/>
         <activity android:name=".activity.ActivityMessageInformation"/>
         <activity android:name=".activity.ActivityStockNewsInformation"/>
+        <activity android:name=".activity.ActivityMianZe"/>
+        <activity android:name=".activity.ActivityXiangMuApply"/>
+        <activity android:name=".activity.ActivityXiangMuResearch"/>
+        <activity android:name=".activity.ActivitySimulationExplain"/>
+        <activity android:name=".activity.ActivityXiangMuExplain"/>
+        <activity android:name=".activity.ActivityPicturePreView"/>
+        <activity android:name=".activity.ActivityMatadorRank"/>
+        <activity android:name=".activity.ActivityMarketPlate"/>
+        <activity android:name=".activity.ActivityVideoUpload"/>
+        <activity android:name=".activity.ActivityXiangmuPlan"/>
+        <activity android:name=".activity.ActivityGoldHistory"/>
+        <activity android:name=".activity.ActivityShipinWeb"/>
+        <activity android:name=".activity.ActivityVideoUploadInfo"/>
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -162,8 +181,10 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
         </activity>
         <activity
-            android:name="com.igexin.sdk.GActivity" android:excludeFromRecents="true"
-            android:exported="true" android:process=":pushservice"
+            android:name="com.igexin.sdk.GActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:process=":pushservice"
             android:taskAffinity="com.igexin.sdk.PushActivityTask"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         <service
@@ -209,7 +230,7 @@
             </intent-filter>
 
         </activity>
-                <!--QQ精简版 -->
+        <!--QQ精简版 -->
         <activity
             android:name="com.umeng.qq.tencent.AuthActivity"
             android:launchMode="singleTask"
@@ -241,6 +262,107 @@
             android:value="5955c3f7aed1794d85000143" >
         </meta-data>
         <!-- 友盟分享和登陆配置结束 -->
+
+
+        <!-- Rich push 核心功能 since 2.0.6-->
+        <activity
+            android:name="cn.jpush.android.ui.PopWinActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:exported="false"
+            android:theme="@style/MyDialogStyle">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="com.zfxf.douniu" />
+            </intent-filter>
+        </activity>
+        <!-- Required SDK核心功能-->
+        <activity
+            android:name="cn.jpush.android.ui.PushActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="cn.jpush.android.ui.PushActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="com.zfxf.douniu" />
+            </intent-filter>
+        </activity>
+        <!-- Required SDK 核心功能-->
+        <!-- 可配置android:process参数将PushService放在其他进程中 -->
+        <service
+            android:name="cn.jpush.android.service.PushService"
+            android:process=":mult"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTER" />
+                <action android:name="cn.jpush.android.intent.REPORT" />
+                <action android:name="cn.jpush.android.intent.PushService" />
+                <action android:name="cn.jpush.android.intent.PUSH_TIME" />
+            </intent-filter>
+        </service>
+        <!-- since 1.8.0 option 可选项。用于同一设备中不同应用的JPush服务相互拉起的功能。 -->
+        <!-- 若不启用该功能可删除该组件，将不拉起其他应用也不能被其他应用拉起 -->
+        <service
+            android:name="cn.jpush.android.service.DaemonService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.DaemonService" />
+                <category android:name="com.zfxf.douniu" />
+            </intent-filter>
+
+        </service>
+        <!-- Required SDK核心功能-->
+        <receiver
+            android:name="cn.jpush.android.service.PushReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter android:priority="1000">
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />   <!--Required  显示通知栏 -->
+                <category android:name="com.zfxf.douniu" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+            <!-- Optional -->
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+        <!-- Required SDK核心功能-->
+        <service
+            android:name="cn.jpush.android.service.DownloadService"
+            android:enabled="true"
+            android:exported="false" >
+        </service>
+        <!-- User defined. 用户自定义的广播接收器-->
+        <receiver
+            android:name=".service.JupushReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <!--Required 用户注册SDK的intent-->
+                <action android:name="cn.jpush.android.intent.REGISTRATION" />
+                <!--Required 用户接收SDK消息的intent-->
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
+                <!--Required 用户接收SDK通知栏信息的intent-->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
+                <!--Required 用户打开自定义通知栏的intent-->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
+                <!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                <action android:name="cn.jpush.android.intent.CONNECTION" />
+                <category android:name="com.zfxf.douniu" />
+            </intent-filter>
+        </receiver>
+        <!-- Required SDK核心功能-->
+        <receiver android:name="cn.jpush.android.service.AlarmReceiver" android:exported="false"/>
+        <!-- Required  . Enable it you can get statistics data with channel -->
+        <meta-data android:name="JPUSH_CHANNEL" android:value="developer-default"/>
+        <meta-data android:name="JPUSH_APPKEY" android:value="b4cefea6e2f94c03821435d5" /> <!--  </>值来自开发者平台取得的AppKey-->
+
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -287,5 +409,34 @@
     <!-- 个推SDK权限配置结束 -->
 
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+
+
+
+    <!-- Required -->
+    <permission
+        android:name="com.zfxf.douniu.permission.JPUSH_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <!-- Required  一些系统要求的权限，如访问网络等-->
+    <uses-permission android:name="com.zfxf.douniu.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- Optional for location -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> <!-- 用于开启 debug 版本的应用在6.0 系统上 层叠窗口权限 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
 
 </manifest>

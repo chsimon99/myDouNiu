@@ -33,7 +33,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="最高价格"
+            android:text="入选时间"
             android:textColor="@color/titleText"
             android:textSize="@dimen/dm028"/>
         <TextView

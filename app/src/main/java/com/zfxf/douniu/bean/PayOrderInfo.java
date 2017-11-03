@@ -17,5 +17,8 @@ public class PayOrderInfo {
     public String sx_ub_id;//首席id
     public String pmo_sm;//说明
     public String ud_nickname;//昵称
+    public String dy_count;//订阅数量
+    public String djf_ub_id;//方案id
+    public String id;//首席id
 
 }

@@ -13,7 +13,12 @@ public class SimulationBuyBean {
     public String uo_long;
     public String uo_lat;
     public String uo_high;
+    public String name;
     public SimulationInfo mn_gupiao;//用户信息
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public void setUb_id(int ub_id) {
         this.ub_id = ub_id;

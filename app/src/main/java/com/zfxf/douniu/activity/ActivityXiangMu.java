@@ -39,6 +39,8 @@ public class ActivityXiangMu extends FragmentActivity implements View.OnClickLis
     ImageView edit;
     @BindView(R.id.tv_base_title)
     TextView title;
+    @BindView(R.id.tv_base_apply)
+    TextView apply;
 
     @BindView(R.id.rv_xiangmu)
     PullLoadMoreRecyclerView mRecyclerView;
@@ -55,6 +57,7 @@ public class ActivityXiangMu extends FragmentActivity implements View.OnClickLis
 
         title.setText("好项目");
         edit.setVisibility(View.INVISIBLE);
+        apply.setVisibility(View.VISIBLE);
 
         initdata();
         initListener();
@@ -66,6 +69,7 @@ public class ActivityXiangMu extends FragmentActivity implements View.OnClickLis
     }
     private void initListener() {
         back.setOnClickListener(this);
+        apply.setOnClickListener(this);
 
         mRecyclerView.setOnPullLoadMoreListener(new PullLoadMoreRecyclerView.PullLoadMoreListener() {
             @Override
@@ -100,6 +104,11 @@ public class ActivityXiangMu extends FragmentActivity implements View.OnClickLis
             case R.id.iv_base_back:
                 finishAll();
                 finish();
+                break;
+            case R.id.tv_base_apply:
+                Intent intent = new Intent(this,ActivityXiangMuApply.class);
+                startActivity(intent);
+                overridePendingTransition(0,0);
                 break;
         }
     }

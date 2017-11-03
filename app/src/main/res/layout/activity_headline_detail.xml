@@ -24,12 +24,14 @@
                     android:orientation="horizontal"
                     android:paddingBottom="@dimen/dm035"
                     android:paddingTop="@dimen/dm035">
-                    <ImageView
-                        android:id="@+id/iv_headline_detail_img"
-                        android:layout_width="@dimen/dm100"
-                        android:layout_height="@dimen/dm100"
-                        android:layout_marginLeft="@dimen/dm020"
-                        android:scaleType="fitXY"/>
+                    <!--<ImageView-->
+                        <!--android:id="@+id/iv_headline_detail_img"-->
+                        <!--android:layout_width="@dimen/dm120"-->
+                        <!--android:layout_height="@dimen/dm120"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:layout_marginLeft="@dimen/dm020"-->
+                        <!--android:src="@drawable/public_img"-->
+                        <!--android:scaleType="fitXY"/>-->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -37,7 +39,7 @@
                         android:orientation="vertical">
                         <TextView
                             android:id="@+id/tv_headline_detail_title"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="@dimen/dm016"
                             android:text=""
@@ -46,7 +48,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dm020"
+                            android:layout_marginTop="@dimen/dm010"
                             android:orientation="horizontal">
                             <TextView
                                 android:id="@+id/tv_headline_detail_name"
@@ -55,12 +57,17 @@
                                 android:layout_gravity="center"
                                 android:text=""
                                 android:textColor="@color/titleText"
-                                android:textSize="@dimen/dm024"/>
+                                android:textSize="@dimen/dm022"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dm010"
+                            android:orientation="horizontal">
                             <ImageView
                                 android:layout_width="@dimen/dm020"
                                 android:layout_height="@dimen/dm020"
                                 android:layout_gravity="center"
-                                android:layout_marginLeft="@dimen/dm030"
                                 android:src="@drawable/bar_time"/>
                             <TextView
                                 android:id="@+id/tv_headline_detail_time"
@@ -176,7 +183,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/dm015"
-                        android:text="(24)"
+                        android:text="(0)"
                         android:textColor="@color/titleText"
                         android:textSize="@dimen/dm024"/>
                 </LinearLayout>
@@ -221,16 +228,18 @@
                     android:layout_height="@dimen/dm080"/>
             </LinearLayout>
         </com.zfxf.douniu.view.MyScrollview>
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/dm080"
             android:layout_alignParentBottom="true"
             android:background="@color/colorBgGary"
             android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal">
             <EditText
                 android:id="@+id/et_headline_detail"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="@dimen/dm015"
                 android:layout_marginLeft="@dimen/dm020"
@@ -244,6 +253,17 @@
                 android:paddingRight="@dimen/dm010"
                 android:textColor="@color/colorText"
                 android:textSize="@dimen/dm024"/>
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_headline_detail_send"
+                android:layout_width="@dimen/dm090"
+                android:layout_height="@dimen/dm050"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/dm020"
+                android:background="@drawable/backgroud_button_app_color"
+                android:gravity="center"
+                android:text="发送"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/dm028"/>
+        </LinearLayout>
     </RelativeLayout>
 </LinearLayout>
