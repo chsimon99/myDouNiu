@@ -7,8 +7,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.zfxf.douniu.activity.ActivityGoldPond;
-import com.zfxf.douniu.activity.ActivityLiving;
+import com.zfxf.douniu.activity.goldpool.ActivityGoldPond;
+import com.zfxf.douniu.activity.living.ActivityLiving;
 import com.zfxf.douniu.activity.MainActivityTabHost;
 import com.zfxf.douniu.utils.CommonUtils;
 

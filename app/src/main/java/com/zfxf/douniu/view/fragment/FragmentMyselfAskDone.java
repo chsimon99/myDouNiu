@@ -9,7 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.activity.ActivityAnswerDetail;
+import com.zfxf.douniu.activity.askstock.ActivityAnswerDetail;
 import com.zfxf.douniu.adapter.recycleView.MyselfAskDoneAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.bean.NewsResult;

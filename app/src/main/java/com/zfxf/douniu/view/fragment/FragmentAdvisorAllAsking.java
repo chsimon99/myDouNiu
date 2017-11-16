@@ -12,11 +12,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.activity.ActivityAnswer;
-import com.zfxf.douniu.activity.ActivityAnswerDetail;
-import com.zfxf.douniu.activity.ActivityAskAdvisor;
-import com.zfxf.douniu.activity.ActivityAskStock;
-import com.zfxf.douniu.activity.ActivityToPay;
+import com.zfxf.douniu.activity.askstock.ActivityAnswer;
+import com.zfxf.douniu.activity.askstock.ActivityAnswerDetail;
+import com.zfxf.douniu.activity.askstock.ActivityAskAdvisor;
+import com.zfxf.douniu.activity.askstock.ActivityAskStock;
+import com.zfxf.douniu.activity.pay.ActivityToPay;
 import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.adapter.recycleView.ZhenguAdvisorAdapter;
 import com.zfxf.douniu.adapter.recycleView.ZhenguAnswerAdapter;

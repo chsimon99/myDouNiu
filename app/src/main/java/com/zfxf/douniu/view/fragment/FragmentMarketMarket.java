@@ -1,6 +1,7 @@
 package com.zfxf.douniu.view.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,9 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.activity.ActivityStockInfo;
-import com.zfxf.douniu.activity.ActivityStockList;
+import com.zfxf.douniu.activity.stock.ActivityStockInfo;
+import com.zfxf.douniu.activity.stock.ActivityStockList;
 import com.zfxf.douniu.adapter.recycleView.MarketMarketAdapter;
 import com.zfxf.douniu.adapter.recycleView.MarketTradeAdapter;
 import com.zfxf.douniu.adapter.viewPager.MarketHomeAdapter;
@@ -25,7 +30,6 @@ import com.zfxf.douniu.internet.NewsInternetRequest;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.FullyLinearLayoutManager;
 import com.zfxf.douniu.view.MarketInnerView;
-import com.zfxf.douniu.view.PullToRefreshLayout;
 import com.zfxf.douniu.view.RecycleViewDivider;
 
 import java.util.ArrayList;
@@ -33,6 +37,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 
 /**
  * @author IMXU
@@ -112,9 +117,8 @@ public class FragmentMarketMarket extends BaseFragment implements View.OnClickLi
 
 	private RecycleViewDivider mRiseDivider;
 	private RecycleViewDivider mFallDivider;
-	@BindView(R.id.ptrl_market_market)
-	PullToRefreshLayout mRefreshLayout;
-
+	@BindView(R.id.srl_market_market)
+	SmartRefreshLayout smartRefreshLayout;
 	@Override
 	public View initView(LayoutInflater inflater) {
 		if (view == null) {
@@ -128,6 +132,20 @@ public class FragmentMarketMarket extends BaseFragment implements View.OnClickLi
 		sz_index.getPaint().setFakeBoldText(true);//加粗
 		shz_index.getPaint().setFakeBoldText(true);//加粗
 		cy_index.getPaint().setFakeBoldText(true);//加粗
+
+		ClassicsHeader header = new ClassicsHeader(getActivity());
+		header.setPrimaryColors(this.getResources().getColor(R.color.colorTitle), Color.WHITE);
+		smartRefreshLayout.setRefreshHeader(header);
+		smartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+			@Override
+			public void onRefresh(RefreshLayout refreshlayout) {
+				mRiseAdapter = null;
+				mFallAdapter = null;
+				mMarketHomeAdapter = null;
+				datas.clear();
+				visitInternet();
+			}
+		});
 		return view;
 	}
 
@@ -145,7 +163,7 @@ public class FragmentMarketMarket extends BaseFragment implements View.OnClickLi
 	}
 
 	private void visitInternet() {
-		NewsInternetRequest.getQuotationIndexInformation(new NewsInternetRequest.ForResultSimulationIndexListener() {
+		NewsInternetRequest.getQuotationIndexInformation(getContext(),new NewsInternetRequest.ForResultSimulationIndexListener() {
 			@Override
 			public void onResponseMessage(final SimulationResult result) {
 				if(result!=null){
@@ -289,9 +307,7 @@ public class FragmentMarketMarket extends BaseFragment implements View.OnClickLi
 
 				}
 				CommonUtils.dismissProgressDialog();
-				if(mRefreshLayout!=null){
-					mRefreshLayout.refreshFinish(PullToRefreshLayout.SUCCEED);
-				}
+				smartRefreshLayout.finishRefresh(500);
 			}
 		});
 	}
@@ -306,27 +322,6 @@ public class FragmentMarketMarket extends BaseFragment implements View.OnClickLi
 		ll_cy.setOnClickListener(this);
 		ll_shz.setOnClickListener(this);
 		ll_sz.setOnClickListener(this);
-		mRefreshLayout.setOnRefreshListener(new PullToRefreshLayout.OnRefreshListener() {
-			@Override
-			public void onRefresh(PullToRefreshLayout pullToRefreshLayout) {
-				mRiseAdapter = null;
-				mFallAdapter = null;
-				mMarketHomeAdapter = null;
-				datas.clear();
-				visitInternet();
-//				mRiseRecyclerView.postDelayed(new Runnable() {//防止滑动过快，loading界面显示太快
-//					@Override
-//					public void run() {
-//						mRefreshLayout.refreshFinish(PullToRefreshLayout.SUCCEED);
-//					}
-//				},1000);
-			}
-
-			@Override
-			public void onLoadMore(PullToRefreshLayout pullToRefreshLayout) {
-				//已经在pullableScrollview中修改了canPullUp方法，一直返回false
-			}
-		});
 	}
 	Intent mIntent;
 	@Override

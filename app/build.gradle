@@ -50,6 +50,9 @@ android {
             keyPassword "lchtime"
         }
     }
+    dexOptions {
+        jumboMode true
+    }
 }
 
 dependencies {
@@ -61,6 +64,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile project(':mylibrary')
     compile 'com.android.support:recyclerview-v7:25.1.1'
+    compile 'com.android.support:design:25.1.1'
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.zhy:okhttputils:2.6.2'
@@ -88,4 +92,6 @@ dependencies {
     compile project(':jcvideoplayer-lib')
     compile 'com.github.barteksc:android-pdf-viewer:2.7.0-beta.1'
     compile 'com.timqi.collapsibletextview:library:1.1.2'
+    compile 'com.scwang.smartrefresh:SmartRefreshLayout:1.0.3'
+    compile 'com.github.chrisbanes:PhotoView:2.1.3'
 }

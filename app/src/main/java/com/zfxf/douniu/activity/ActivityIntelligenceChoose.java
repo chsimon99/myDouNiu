@@ -12,7 +12,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.goldpool.ActivityGoldHistory;
 import com.zfxf.douniu.activity.login.ActivityLogin;
+import com.zfxf.douniu.activity.pay.ActivityToPay;
 import com.zfxf.douniu.adapter.recycleView.XuanGuAdapter;
 import com.zfxf.douniu.bean.XuanguResult;
 import com.zfxf.douniu.internet.NewsInternetRequest;

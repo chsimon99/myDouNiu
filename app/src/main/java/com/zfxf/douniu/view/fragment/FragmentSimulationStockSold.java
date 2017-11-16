@@ -14,8 +14,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.activity.ActivityMarketResearch;
-import com.zfxf.douniu.activity.ActivitySimulationStock;
+import com.zfxf.douniu.activity.stock.ActivityMarketResearch;
+import com.zfxf.douniu.activity.simulation.ActivitySimulationStock;
 import com.zfxf.douniu.adapter.recycleView.MatadorPositonAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.bean.SimulationPositionDetail;

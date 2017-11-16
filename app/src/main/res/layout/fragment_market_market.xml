@@ -5,11 +5,10 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
     android:orientation="vertical">
-    <com.zfxf.douniu.view.PullToRefreshLayout
-        android:id="@+id/ptrl_market_market"
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:layout_width="match_parent"
+        android:id="@+id/srl_market_market"
         android:layout_height="match_parent">
-        <include layout="@layout/refresh_head"/>
 
         <com.zfxf.douniu.view.PullableScrollView
             android:layout_width="match_parent"
@@ -403,6 +402,5 @@
                     android:background="@color/colorBgGary"/>
             </LinearLayout>
         </com.zfxf.douniu.view.PullableScrollView>
-        <include layout="@layout/load_more"/>
-    </com.zfxf.douniu.view.PullToRefreshLayout>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>

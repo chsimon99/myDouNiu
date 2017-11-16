@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.activity.ActivityLiving;
+import com.zfxf.douniu.activity.living.ActivityLiving;
 import com.zfxf.douniu.adapter.recycleView.AdvisorHomeDirectAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.bean.LunBoListInfo;

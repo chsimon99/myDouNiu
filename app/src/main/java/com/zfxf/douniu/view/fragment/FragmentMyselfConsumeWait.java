@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.activity.ActivityToPay;
+import com.zfxf.douniu.activity.pay.ActivityToPay;
 import com.zfxf.douniu.adapter.recycleView.MyselfConsumeWaitAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.bean.PayListResult;

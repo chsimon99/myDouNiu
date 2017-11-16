@@ -11,9 +11,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.activity.ActivityMarketResearch;
-import com.zfxf.douniu.activity.ActivityMySelfStock;
-import com.zfxf.douniu.activity.ActivityStockInfo;
+import com.zfxf.douniu.activity.stock.ActivityMarketResearch;
+import com.zfxf.douniu.activity.stock.ActivityMySelfStock;
+import com.zfxf.douniu.activity.stock.ActivityStockInfo;
 import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.adapter.recycleView.MarketSelectAdapter;
 import com.zfxf.douniu.base.BaseFragment;

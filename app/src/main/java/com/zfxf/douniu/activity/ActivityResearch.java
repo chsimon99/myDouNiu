@@ -18,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.living.ActivityLiving;
+import com.zfxf.douniu.activity.stock.ActivityStockInfo;
 import com.zfxf.douniu.adapter.recycleView.HomeResearchStockAdapter;
 import com.zfxf.douniu.adapter.recycleView.HomeResearchTouguAdapter;
 import com.zfxf.douniu.adapter.recycleView.HomeResearchZhiboAdapter;
@@ -30,7 +32,13 @@ import com.zfxf.douniu.view.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
+/**
+ * @author IMXU
+ * @time   2017/11/10 15:39
+ * @des    主页的搜索
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 public class ActivityResearch extends FragmentActivity implements View.OnClickListener{
 
     @BindView(R.id.et_research)

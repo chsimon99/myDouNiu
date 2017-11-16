@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.pay.ActivityToPay;
 import com.zfxf.douniu.adapter.recycleView.RewardAdapter;
 import com.zfxf.douniu.bean.AnswerListInfo;
 import com.zfxf.douniu.bean.IndexResult;
@@ -27,7 +28,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
-
+/**
+ * @author IMXU
+ * @time   2017/11/10 15:39
+ * @des    打赏
+ * 邮箱：butterfly_xu@sina.com
+ *
+*/
 public class ActivityReward extends FragmentActivity implements View.OnClickListener{
 
     @BindView(R.id.iv_base_back)

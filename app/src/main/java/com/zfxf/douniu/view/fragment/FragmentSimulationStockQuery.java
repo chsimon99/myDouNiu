@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.activity.ActivitysimulationQueryHistory;
-import com.zfxf.douniu.activity.ActivitysimulationQueryToday;
+import com.zfxf.douniu.activity.simulation.ActivitysimulationQueryHistory;
+import com.zfxf.douniu.activity.simulation.ActivitysimulationQueryToday;
 import com.zfxf.douniu.base.BaseFragment;
 
 import butterknife.BindView;

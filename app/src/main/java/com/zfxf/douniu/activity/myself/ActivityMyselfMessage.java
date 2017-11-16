@@ -10,8 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.activity.ActivityGoldPond;
-import com.zfxf.douniu.activity.ActivityLiving;
+import com.zfxf.douniu.activity.goldpool.ActivityGoldPond;
+import com.zfxf.douniu.activity.living.ActivityLiving;
 import com.zfxf.douniu.adapter.recycleView.MessageAdapter;
 import com.zfxf.douniu.bean.CourseResult;
 import com.zfxf.douniu.bean.MessageInfo;

@@ -17,14 +17,14 @@ import com.bumptech.glide.Glide;
 import com.igexin.sdk.PushManager;
 import com.zfxf.douniu.R;
 import com.zfxf.douniu.activity.ActivityAdvisorHome;
-import com.zfxf.douniu.activity.ActivityAdvisorList;
-import com.zfxf.douniu.activity.ActivityBar;
+import com.zfxf.douniu.activity.advisor.ActivityAdvisorList;
+import com.zfxf.douniu.activity.bar.ActivityBar;
 import com.zfxf.douniu.activity.ActivityHeadline;
 import com.zfxf.douniu.activity.ActivityIntelligenceChoose;
-import com.zfxf.douniu.activity.ActivityLiving;
+import com.zfxf.douniu.activity.living.ActivityLiving;
 import com.zfxf.douniu.activity.ActivityResearch;
-import com.zfxf.douniu.activity.ActivitySimulation;
-import com.zfxf.douniu.activity.ActivityXiangMu;
+import com.zfxf.douniu.activity.simulation.ActivitySimulation;
+import com.zfxf.douniu.activity.goodproject.ActivityXiangMu;
 import com.zfxf.douniu.activity.MainActivityTabHost;
 import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.activity.myself.ActivityMyselfMessage;
@@ -84,7 +84,7 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
     LinearLayout ll_zhibo;
     @BindView(R.id.ll_home_gkk)
     LinearLayout ll_gkk;
-    @BindView(R.id.ll_home_smk)
+    @BindView(R.id.ll_home_money)
     LinearLayout ll_smk;
     @BindView(R.id.ll_home_bar)
     LinearLayout ll_bar;
@@ -293,37 +293,33 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
                 getActivity().startActivity(intent);
                 getActivity().overridePendingTransition(0,0);
                 break;
-            case R.id.ll_home_zhibo:
+            case R.id.ll_home_zhibo://直播秀
                 MainActivityTabHost.setTabHost(2);
                 MainActivityTabHost.setIndex(3);
                 break;
-            case R.id.ll_home_gkk:
+            case R.id.ll_home_gkk://公开课
                 MainActivityTabHost.setTabHost(2);
                 MainActivityTabHost.setIndex(4);
                 break;
-            case R.id.ll_home_smk:
-                MainActivityTabHost.setTabHost(2);
-                MainActivityTabHost.setIndex(5);
+            case R.id.ll_home_money://财来了
+//                MainActivityTabHost.setTabHost(2);
+//                MainActivityTabHost.setIndex(5);
                 break;
-            case R.id.ll_home_bar:
-
+            case R.id.ll_home_bar://斗牛吧
                 intent = new Intent(getActivity(), ActivityBar.class);
                 getActivity().startActivity(intent);
                 getActivity().overridePendingTransition(0,0);
                 break;
-            case R.id.ll_home_toutiao:
+            case R.id.ll_home_toutiao://看头条
                 intent = new Intent(getActivity(), ActivityHeadline.class);
                 getActivity().startActivity(intent);
                 getActivity().overridePendingTransition(0,0);
                 break;
-            case R.id.ll_home_wenda:
-//                intent = new Intent(getActivity(), ActivityZhengu.class);
-//                getActivity().startActivity(intent);
-//                getActivity().overridePendingTransition(0,0);
+            case R.id.ll_home_wenda://微问答
                 MainActivityTabHost.setTabHost(2);
-                MainActivityTabHost.setIndex(7);
+                MainActivityTabHost.setIndex(6);
                 break;
-            case R.id.ll_home_moni:
+            case R.id.ll_home_moni://模拟盘
                 if(SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
                     intent = new Intent(getActivity(), ActivitySimulation.class);
                     getActivity().startActivity(intent);
@@ -334,12 +330,12 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
                     getActivity().overridePendingTransition(0,0);
                 }
                 break;
-            case R.id.ll_home_xiangmu:
+            case R.id.ll_home_xiangmu://好项目
                 intent = new Intent(getActivity(), ActivityXiangMu.class);
                 getActivity().startActivity(intent);
                 getActivity().overridePendingTransition(0,0);
                 break;
-            case R.id.iv_home_message:
+            case R.id.iv_home_message://我的消息
                 if(SpTools.getBoolean(CommonUtils.getContext(), Constants.isLogin,false)){
                     intent = new Intent(CommonUtils.getContext(), ActivityMyselfMessage.class);
                     startActivity(intent);
@@ -350,7 +346,7 @@ public class FragmentHome extends BaseFragment implements View.OnClickListener{
                     getActivity().overridePendingTransition(0,0);
                 }
                 break;
-            case R.id.ll_home_research:
+            case R.id.ll_home_research://搜索
                 intent = new Intent(CommonUtils.getContext(), ActivityResearch.class);
                 startActivity(intent);
                 getActivity().overridePendingTransition(0,0);

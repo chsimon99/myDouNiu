@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.activity.ActivityGoldPond;
+import com.zfxf.douniu.activity.goldpool.ActivityGoldPond;
 import com.zfxf.douniu.adapter.recycleView.MyselfSubscribeGoldAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.bean.SimulationResult;

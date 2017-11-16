@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.activity.ActivityMarketResearch;
+import com.zfxf.douniu.activity.stock.ActivityMarketResearch;
 import com.zfxf.douniu.base.BaseFragment;
 
 import butterknife.BindView;

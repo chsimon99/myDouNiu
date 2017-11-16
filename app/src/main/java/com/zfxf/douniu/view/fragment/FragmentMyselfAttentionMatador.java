@@ -9,7 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.activity.ActivityMatador;
+import com.zfxf.douniu.activity.bar.ActivityMatador;
 import com.zfxf.douniu.adapter.recycleView.MyselfAttentionMatadorAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.bean.MatadorResult;

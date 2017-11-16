@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.activity.ActivityLiving;
+import com.zfxf.douniu.activity.living.ActivityLiving;
 import com.zfxf.douniu.adapter.recycleView.AdvisorAllDirectAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.bean.LunBoListInfo;

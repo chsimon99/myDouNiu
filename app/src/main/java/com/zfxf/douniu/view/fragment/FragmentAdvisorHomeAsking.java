@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.activity.ActivityAnswerDetail;
-import com.zfxf.douniu.activity.ActivityToPay;
+import com.zfxf.douniu.activity.askstock.ActivityAnswerDetail;
+import com.zfxf.douniu.activity.pay.ActivityToPay;
 import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.adapter.recycleView.AdvisorHomeAskingAdapter;
 import com.zfxf.douniu.base.BaseFragment;

@@ -18,8 +18,8 @@
     <string-array name="advisor_home_item_titles">
         <item>大参考</item>
         <item>直播课</item>
-        <item>公开课</item>
-        <item>私密课</item>
+        <item>大咖课</item>
+        <!--<item>私密课</item>-->
         <item>金股池</item>
         <item>微问答</item>
     </string-array>
@@ -27,6 +27,11 @@
     <string-array name="advisor_home_gold_titles">
         <item>短线持仓</item>
         <item>中线持仓</item>
+    </string-array>
+
+    <string-array name="advisor_home_coffee_titles">
+        <item>公开课</item>
+        <item>私密课</item>
     </string-array>
 
     <string-array name="fragment_new_top_titles">

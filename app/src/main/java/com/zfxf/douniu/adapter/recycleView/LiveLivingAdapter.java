@@ -257,8 +257,7 @@ public class LiveLivingAdapter extends RecyclerView.Adapter {
             String picUrl = mContext.getResources().getString(R.string.file_host_address)
                     +mContext.getResources().getString(R.string.showpic)
                     +bean.zc_context.url;
-            Glide.with(mContext).load(picUrl)
-                    .dontTransform().into(img);
+            Glide.with(mContext).load(picUrl).into(img);
         }
     }
 }

@@ -1726,7 +1726,9 @@ public class NewsInternetRequest {
      * 行情首页信息
      * @param listener
      */
-    public static void getQuotationIndexInformation(ForResultSimulationIndexListener listener){
+    public static void getQuotationIndexInformation(Context context,ForResultSimulationIndexListener listener){
+//        MyDialog myDialog = MyDialog.showDialog(context);
+//        myDialog.show();
         simulationIndexListener = listener;
         new BaseInternetRequest(context, new BaseInternetRequest.HttpUtilsListener() {
             @Override

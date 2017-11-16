@@ -39,7 +39,7 @@ public class FragmentAdvisor extends BaseFragment implements View.OnClickListene
 	private myPageAdapter mAdapter;
 	private List<String> list_title = new ArrayList<>();
 	private Fragment mFragmentAdvisorAllDirect;
-	private Fragment mFragmentAdvisorAllPublic;
+	private Fragment mFragmentAdvisorAllCoffee;
 	private Fragment mFragmentAdvisorAllSecret;
 	private Fragment mFragmentAdvisorAllAsking;
 	private Fragment mFragmentAdvisorAllReference;
@@ -49,8 +49,6 @@ public class FragmentAdvisor extends BaseFragment implements View.OnClickListene
 	TextView tv_direct;
 	@BindView(R.id.tv_fragment_advisor_public)
 	TextView tv_public;
-	@BindView(R.id.tv_fragment_advisor_secret)
-	TextView tv_secret;
 	@BindView(R.id.tv_fragment_advisor_gold)
 	TextView tv_gold;
 	@BindView(R.id.tv_fragment_advisor_ask)
@@ -61,8 +59,6 @@ public class FragmentAdvisor extends BaseFragment implements View.OnClickListene
 	View v_direct;
 	@BindView(R.id.v_fragment_advisor_public)
 	View v_public;
-	@BindView(R.id.v_fragment_advisor_secret)
-	View v_secret;
 	@BindView(R.id.v_fragment_advisor_gold)
 	View v_gold;
 	@BindView(R.id.v_fragment_advisor_ask)
@@ -84,26 +80,30 @@ public class FragmentAdvisor extends BaseFragment implements View.OnClickListene
 	public View initView(LayoutInflater inflater) {
 		if (view == null) {
 			view = inflater.inflate(R.layout.fragment_advisor, null);
+			ButterKnife.bind(this,view);
+			/**
+			 * 放在这里防止点首席的时候，滑动条消失的问题
+			 */
+			initTabLineWidth();
 		}
 		ViewGroup parent = (ViewGroup) view.getParent();
 		if(parent !=null){
 			parent.removeView(view);
 		}
-		ButterKnife.bind(this,view);
-		initTabLineWidth();
+
 		return view;
 	}
 	/**
-	 * 设置滑动条的宽度为屏幕的1/6(根据Tab的个数而定)
+	 * 设置滑动条的宽度为屏幕的1/5(根据Tab的个数而定)
 	 */
 	private void initTabLineWidth() {
 		DisplayMetrics dpMetrics = new DisplayMetrics();
 		getActivity().getWindow().getWindowManager().getDefaultDisplay().getMetrics(dpMetrics);
 		screenWidth = dpMetrics.widthPixels;
 		mLp = (RelativeLayout.LayoutParams) v_v.getLayoutParams();
-		mLp.width = screenWidth / 6;
+		mLp.width = screenWidth / 5;
 		mRlp = (RelativeLayout.LayoutParams) rl_view.getLayoutParams();
-		mRlp.width = screenWidth / 6;
+		mRlp.width = screenWidth / 5;
 		rl_view.setLayoutParams(mRlp);
 		rl_view.setPadding(CommonUtils.px2dip(getContext(),20),0,CommonUtils.px2dip(getContext(),20),0);
 		v_v.setLayoutParams(mLp);
@@ -124,16 +124,15 @@ public class FragmentAdvisor extends BaseFragment implements View.OnClickListene
 		super.initdata();
 		tv_direct.setText(list_title.get(0));
 		tv_public.setText(list_title.get(1));
-		tv_secret.setText(list_title.get(2));
-		tv_gold.setText(list_title.get(3));
-		tv_ask.setText(list_title.get(4));
-		tv_reference.setText(list_title.get(5));
+		tv_gold.setText(list_title.get(2));
+		tv_ask.setText(list_title.get(3));
+		tv_reference.setText(list_title.get(4));
 
 		if(mFragmentAdvisorAllDirect == null){
 			mFragmentAdvisorAllDirect = new FragmentAdvisorAllDirect();
 		}
-		if(mFragmentAdvisorAllPublic == null){
-			mFragmentAdvisorAllPublic = new FragmentAdvisorAllPublic();
+		if(mFragmentAdvisorAllCoffee == null){
+			mFragmentAdvisorAllCoffee = new FragmentAdvisorAllCoffeeLesson();
 		}
 		if(mFragmentAdvisorAllSecret == null){
 			mFragmentAdvisorAllSecret = new FragmentAdvisorAllSecret();
@@ -150,8 +149,8 @@ public class FragmentAdvisor extends BaseFragment implements View.OnClickListene
 		if(list_fragment.size() == 0){
 			list_fragment.add(mFragmentAdvisorAllReference);
 			list_fragment.add(mFragmentAdvisorAllDirect);
-			list_fragment.add(mFragmentAdvisorAllPublic);
-			list_fragment.add(mFragmentAdvisorAllSecret);
+			list_fragment.add(mFragmentAdvisorAllCoffee);
+//			list_fragment.add(mFragmentAdvisorAllSecret);
 			list_fragment.add(mFragmentAdvisorAllGoldPond);
 			list_fragment.add(mFragmentAdvisorAllAsking);
 		}
@@ -166,8 +165,8 @@ public class FragmentAdvisor extends BaseFragment implements View.OnClickListene
 		if(index > 0){
 			newPositon = index-2;
 			select(newPositon);
-			mRlp.width = (newPositon+1) * screenWidth / 6;
-			mLp.leftMargin = newPositon * (screenWidth / 6);
+			mRlp.width = (newPositon+1) * screenWidth / 5;
+			mLp.leftMargin = newPositon * (screenWidth / 5);
 			rl_view.setLayoutParams(mRlp);
 			v_v.setLayoutParams(mLp);
 			MainActivityTabHost.setIndex(0);
@@ -187,15 +186,12 @@ public class FragmentAdvisor extends BaseFragment implements View.OnClickListene
 				tv_public.setTextColor(getActivity().getResources().getColor(R.color.colorWhite));
 				break;
 			case 2:
-				tv_secret.setTextColor(getActivity().getResources().getColor(R.color.colorWhite));
-				break;
-			case 3:
 				tv_gold.setTextColor(getActivity().getResources().getColor(R.color.colorWhite));
 				break;
-			case 4:
+			case 3:
 				tv_ask.setTextColor(getActivity().getResources().getColor(R.color.colorWhite));
 				break;
-			case 5:
+			case 4:
 				tv_reference.setTextColor(getActivity().getResources().getColor(R.color.colorWhite));
 				break;
 		}
@@ -211,7 +207,6 @@ public class FragmentAdvisor extends BaseFragment implements View.OnClickListene
 //		v_reference.setVisibility(View.INVISIBLE);
 		tv_direct.setTextColor(getActivity().getResources().getColor(R.color.colorGrayWhite));
 		tv_public.setTextColor(getActivity().getResources().getColor(R.color.colorGrayWhite));
-		tv_secret.setTextColor(getActivity().getResources().getColor(R.color.colorGrayWhite));
 		tv_gold.setTextColor(getActivity().getResources().getColor(R.color.colorGrayWhite));
 		tv_ask.setTextColor(getActivity().getResources().getColor(R.color.colorGrayWhite));
 		tv_reference.setTextColor(getActivity().getResources().getColor(R.color.colorGrayWhite));
@@ -244,23 +239,24 @@ public class FragmentAdvisor extends BaseFragment implements View.OnClickListene
 					getLeftMargin(positionOffset,0);
 				}else if(lastPositon == 4 && position == 4){
 					getLeftMargin(positionOffset,0);
-				}else if(lastPositon == 5 && position == 5){
-					getLeftMargin(positionOffset,0);
-				}else if(lastPositon == 5 && position == 4){
-					getLeftMargin(positionOffset,1);
 				}else if(lastPositon == 4 && position == 3){
 					getLeftMargin(positionOffset,1);
 				}else if(lastPositon == 3 && position == 2){
 					getLeftMargin(positionOffset,1);
 				}
+//				else if(lastPositon == 5 && position == 5){
+//					getLeftMargin(positionOffset,0);
+//				}else if(lastPositon == 5 && position == 4){
+//					getLeftMargin(positionOffset,1);
+//				}
 				rl_view.setLayoutParams(mRlp);
 				v_v.setLayoutParams(mLp);
 			}
 
 			private void getLeftMargin(float positionOffset,int offset) {
-				int margin = (int) (-(offset-positionOffset) * (screenWidth * 1.0 / 6) + lastPositon * (screenWidth / 6));
+				int margin = (int) (-(offset-positionOffset) * (screenWidth * 1.0 / 5) + lastPositon * (screenWidth / 5));
 				mLp.leftMargin = margin;
-				mRlp.width = margin+screenWidth / 6;
+				mRlp.width = margin+screenWidth / 5;
 			}
 
 			@Override
@@ -275,7 +271,6 @@ public class FragmentAdvisor extends BaseFragment implements View.OnClickListene
 		});
 		tv_direct.setOnClickListener(this);
 		tv_public.setOnClickListener(this);
-		tv_secret.setOnClickListener(this);
 		tv_gold.setOnClickListener(this);
 		tv_ask.setOnClickListener(this);
 		tv_reference.setOnClickListener(this);
@@ -290,17 +285,14 @@ public class FragmentAdvisor extends BaseFragment implements View.OnClickListene
 			case R.id.tv_fragment_advisor_public:
 				select(1);
 				break;
-			case R.id.tv_fragment_advisor_secret:
+			case R.id.tv_fragment_advisor_gold:
 				select(2);
 				break;
-			case R.id.tv_fragment_advisor_gold:
+			case R.id.tv_fragment_advisor_ask:
 				select(3);
 				break;
-			case R.id.tv_fragment_advisor_ask:
-				select(4);
-				break;
 			case R.id.tv_fragment_advisor_reference:
-				select(5);
+				select(4);
 				break;
 		}
 

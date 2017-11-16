@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.activity.ActivityGoldPond;
+import com.zfxf.douniu.activity.goldpool.ActivityGoldPond;
 import com.zfxf.douniu.adapter.recycleView.AdvisorHomeGoldAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.bean.SimulationResult;

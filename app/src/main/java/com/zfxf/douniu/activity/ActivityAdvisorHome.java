@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
+import com.zfxf.douniu.activity.askstock.ActivityAskStock;
 import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.adapter.viewPager.BarItemAdapter;
 import com.zfxf.douniu.bean.IndexResult;

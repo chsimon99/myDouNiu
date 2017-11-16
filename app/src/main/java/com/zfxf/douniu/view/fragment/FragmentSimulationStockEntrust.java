@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.activity.ActivitySimulationStock;
+import com.zfxf.douniu.activity.simulation.ActivitySimulationStock;
 import com.zfxf.douniu.adapter.recycleView.SimulationEntrustAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.bean.SimulationEntrust;

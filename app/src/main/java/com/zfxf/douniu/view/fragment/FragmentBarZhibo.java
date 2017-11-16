@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.activity.ActivityVideoUpload;
+import com.zfxf.douniu.activity.bar.ActivityVideoUpload;
 import com.zfxf.douniu.adapter.recycleView.BarShipinAdapter;
 import com.zfxf.douniu.base.BaseFragment;
 import com.zfxf.douniu.bean.NewsResult;

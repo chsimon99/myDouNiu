@@ -34,7 +34,6 @@ public class MarketHomeAdapter extends PagerAdapter {
     }
     @Override
     public Object instantiateItem(ViewGroup container, final int position) {
-        CommonUtils.logMes("-------position------"+position);
         LinearLayout layout = mDatas.get(position);
         TextView tv_name = (TextView) layout.findViewById(R.id.tv_market_home_name_item1);
         TextView tv_index = (TextView) layout.findViewById(R.id.tv_market_home_index_item1);

@@ -10,8 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.activity.ActivityMatador;
-import com.zfxf.douniu.activity.ActivityMatadorList;
+import com.zfxf.douniu.activity.bar.ActivityMatador;
+import com.zfxf.douniu.activity.bar.ActivityMatadorList;
 import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.adapter.recycleView.MatadorAdapter;
 import com.zfxf.douniu.base.BaseFragment;

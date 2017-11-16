@@ -212,4 +212,8 @@
     <!--消息详情信息-->
     <string name="messageInfo">index.php/index/message/messageInfo</string>
 
+
+    <!--资讯快讯信息-->
+    <string name="newsExpress">http://app.cnstock.com/api/xcx/kx</string>
+
 </resources>

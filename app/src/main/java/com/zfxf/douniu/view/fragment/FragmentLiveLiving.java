@@ -13,10 +13,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.activity.ActivityGoldPond;
+import com.zfxf.douniu.activity.goldpool.ActivityGoldPond;
 import com.zfxf.douniu.activity.ActivityHeadLineDetail;
-import com.zfxf.douniu.activity.ActivityInformation;
-import com.zfxf.douniu.activity.ActivityPicturePreView;
+import com.zfxf.douniu.activity.news.ActivityInformation;
+import com.zfxf.douniu.activity.living.ActivityPicturePreView;
 import com.zfxf.douniu.activity.ActivityReward;
 import com.zfxf.douniu.activity.advisor.ActivityAdvisorAllPublicDetail;
 import com.zfxf.douniu.activity.advisor.ActivityAdvisorAllSecretDetail;
@@ -136,6 +136,8 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
                             ImageView currentView;
                             @Override
                             public void onItemClick(View v, int positon, final LivingContentDetailType type, final ImageView view) {
+                                CommonUtils.logMes("--positon--"+positon);
+                                CommonUtils.logMes("--type--"+type);
                                 if(type.type.equals("1")){
                                     if(currentPos == positon){
 //                                        stopAnimation(view);
@@ -178,35 +180,40 @@ public class FragmentLiveLiving extends BaseFragment implements View.OnClickList
                                     startActivity(intent);
                                     getActivity().overridePendingTransition(0,0);
                                 }else if(type.type.equals("0")){//文字
-//                                    CommonUtils.toastMessage("--id--"+type.links.get(positon).content_id);
+                                    if(type.links.size() == 0){
+                                        return;
+                                    }
+//                                    CommonUtils.logMes("--id--"+type.links.get(positon).content_id);
                                     //  判断 type来跳转 0公开课 1私密课 2金股池 3咨询 4看头条
-                                    if(type.links.get(positon).type.equals("0")){
-                                        Intent intent = new Intent(CommonUtils.getContext(), ActivityAdvisorAllPublicDetail.class);
-                                        intent.putExtra("id",Integer.parseInt(type.links.get(positon).content_id));
-                                        startActivity(intent);
-                                        getActivity().overridePendingTransition(0,0);
-                                    }else if(type.links.get(positon).type.equals("1")){
-                                        Intent intent = new Intent(CommonUtils.getContext(), ActivityAdvisorAllSecretDetail.class);
-                                        intent.putExtra("id",Integer.parseInt(type.links.get(positon).content_id));
-                                        startActivity(intent);
-                                        getActivity().overridePendingTransition(0,0);
-                                    }else if(type.links.get(positon).type.equals("2")){
-                                        Intent intent = new Intent(CommonUtils.getContext(), ActivityGoldPond.class);
-                                        intent.putExtra("jgcId",Integer.parseInt(type.links.get(positon).content_id));
-                                        intent.putExtra("id",Integer.parseInt(type.links.get(positon).auth_id));
-                                        startActivity(intent);
-                                        getActivity().overridePendingTransition(0,0);
-                                    }else if(type.links.get(positon).type.equals("3")){
-                                        Intent intent = new Intent(getActivity(), ActivityInformation.class);
-                                        intent.putExtra("type","资讯详情");
-                                        intent.putExtra("newsinfoId",Integer.parseInt(type.links.get(positon).content_id));
-                                        startActivity(intent);
-                                        getActivity().overridePendingTransition(0,0);
-                                    }else if(type.links.get(positon).type.equals("4")){
-                                        Intent intent = new Intent(CommonUtils.getContext(), ActivityHeadLineDetail.class);
-                                        intent.putExtra("newsinfoId",Integer.parseInt(type.links.get(positon).content_id));
-                                        startActivity(intent);
-                                        getActivity().overridePendingTransition(0, 0);
+                                    for(int i = 0;i<type.links.size();i++){
+                                        if(type.links.get(i).type.equals("0")){
+                                            Intent intent = new Intent(CommonUtils.getContext(), ActivityAdvisorAllPublicDetail.class);
+                                            intent.putExtra("id",Integer.parseInt(type.links.get(i).content_id));
+                                            startActivity(intent);
+                                            getActivity().overridePendingTransition(0,0);
+                                        }else if(type.links.get(i).type.equals("1")){
+                                            Intent intent = new Intent(CommonUtils.getContext(), ActivityAdvisorAllSecretDetail.class);
+                                            intent.putExtra("id",Integer.parseInt(type.links.get(i).content_id));
+                                            startActivity(intent);
+                                            getActivity().overridePendingTransition(0,0);
+                                        }else if(type.links.get(i).type.equals("2")){
+                                            Intent intent = new Intent(CommonUtils.getContext(), ActivityGoldPond.class);
+                                            intent.putExtra("jgcId",Integer.parseInt(type.links.get(i).content_id));
+                                            intent.putExtra("id",Integer.parseInt(type.links.get(i).auth_id));
+                                            startActivity(intent);
+                                            getActivity().overridePendingTransition(0,0);
+                                        }else if(type.links.get(i).type.equals("3")){
+                                            Intent intent = new Intent(getActivity(), ActivityInformation.class);
+                                            intent.putExtra("type","资讯详情");
+                                            intent.putExtra("newsinfoId",Integer.parseInt(type.links.get(i).content_id));
+                                            startActivity(intent);
+                                            getActivity().overridePendingTransition(0,0);
+                                        }else if(type.links.get(i).type.equals("4")){
+                                            Intent intent = new Intent(CommonUtils.getContext(), ActivityHeadLineDetail.class);
+                                            intent.putExtra("newsinfoId",Integer.parseInt(type.links.get(i).content_id));
+                                            startActivity(intent);
+                                            getActivity().overridePendingTransition(0, 0);
+                                        }
                                     }
                                 }
                             }

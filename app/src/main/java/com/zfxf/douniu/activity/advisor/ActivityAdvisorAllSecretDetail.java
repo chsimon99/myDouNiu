@@ -10,8 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.activity.ActivityShipinWeb;
-import com.zfxf.douniu.activity.ActivityToPay;
+import com.zfxf.douniu.activity.pay.ActivityToPay;
 import com.zfxf.douniu.activity.login.ActivityLogin;
 import com.zfxf.douniu.bean.CourseResult;
 import com.zfxf.douniu.internet.NewsInternetRequest;

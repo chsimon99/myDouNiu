@@ -2,10 +2,10 @@ package com.zfxf.douniu.adapter.recycleView;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.zfxf.douniu.R;
@@ -57,16 +57,11 @@ public class NewExpressAdapter extends RecyclerView.Adapter<NewExpressAdapter.My
         mDatas.addAll(data);
     }
     public void addTopDatas(Map<String, String> maps) {
-        mDatas.get(0).put("this_date","");
         mDatas.add(0,maps);
     }
     public void deleteAll() {
         mDatas.clear();
     }
-    public String getLastId(){
-        return mDatas.get(mDatas.size()-1).get("cc_id");
-    }
-
     /**
      * 复用这个属性来进行多布局展示
      * @param position
@@ -82,6 +77,7 @@ public class NewExpressAdapter extends RecyclerView.Adapter<NewExpressAdapter.My
         TextView content;
         TextView data;
         TextView time;
+        LinearLayout ll_red;
 
         public MyHolder(View itemView, MyItemClickListener listener) {
             super(itemView);
@@ -89,6 +85,7 @@ public class NewExpressAdapter extends RecyclerView.Adapter<NewExpressAdapter.My
             content = (TextView) itemView.findViewById(R.id.tv_new_express_content);
             data = (TextView) itemView.findViewById(R.id.tv_new_express_data);
             time = (TextView) itemView.findViewById(R.id.tv_new_express_time);
+            ll_red = (LinearLayout) itemView.findViewById(R.id.ll_new_express_red);
             itemView.setOnClickListener(this);
         }
 
@@ -100,15 +97,50 @@ public class NewExpressAdapter extends RecyclerView.Adapter<NewExpressAdapter.My
         }
 
         public void setRefreshData(Map<String, String> bean, int position) {
-            String thisDate = bean.get("this_date");
-            if(TextUtils.isEmpty(thisDate)){
-                data.setVisibility(View.GONE);
-            }else {
+//            String thisDate = bean.get("this_date");
+//            if(TextUtils.isEmpty(thisDate)){
+//                data.setVisibility(View.GONE);
+//            }else {
+//                data.setVisibility(View.VISIBLE);
+//                data.setText(thisDate);
+//            }
+            if(!TextUtils.isEmpty(bean.get("top"))){
+                daytime = dealTime(mDatas.get(1).get("dateline"))[0];
                 data.setVisibility(View.VISIBLE);
-                data.setText(thisDate);
+                data.setText(daytime);
+                time.setVisibility(View.GONE);
+                content.setVisibility(View.GONE);
+                ll_red.setVisibility(View.GONE);
+            }else {
+                if(daytime.equals(dealTime(bean.get("dateline"))[0])){//是同一天
+                    data.setVisibility(View.GONE);
+                }else {//不是同一天的时候
+                    data.setVisibility(View.VISIBLE);
+                    data.setText(dealTime(bean.get("dateline"))[0]);
+                }
+                daytime = dealTime(bean.get("dateline"))[0];
+                time.setText(dealTime(bean.get("dateline"))[1]);
+                content.setText(bean.get("desc"));
             }
-            time.setText(bean.get("cc_datetime"));
-            content.setText(Html.fromHtml(bean.get("cc_context")));
+//            if(TextUtils.isEmpty(daytime)){
+//                daytime = dealTime(bean.get("dateline"))[0];
+//                data.setVisibility(View.VISIBLE);
+//                data.setText(dealTime(bean.get("dateline"))[0]);
+//            }else {
+//                if(daytime.equals(dealTime(bean.get("dateline"))[0])){//是同一天
+//                    data.setVisibility(View.GONE);
+//                }else {//不是同一天的时候
+//                    data.setVisibility(View.VISIBLE);
+//                    data.setText(dealTime(bean.get("dateline"))[0]);
+//                }
+//                daytime = dealTime(bean.get("dateline"))[0];
+//            }
         }
+    }
+
+    private String daytime;
+    private String[] dealTime(String time) {
+        int pos = time.indexOf("日");
+        return new String[]{time.substring(0, pos + 2),time.substring(pos + 2, time.length())};
     }
 }

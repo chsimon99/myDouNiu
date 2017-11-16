@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zfxf.douniu.R;
-import com.zfxf.douniu.activity.ActivityInformation;
+import com.zfxf.douniu.activity.news.ActivityInformation;
 import com.zfxf.douniu.adapter.recycleView.NewNoticeAdapter;
 import com.zfxf.douniu.utils.CommonUtils;
 import com.zfxf.douniu.view.RecycleViewDivider;

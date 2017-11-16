@@ -23,6 +23,7 @@
             android:layout_marginTop="@dimen/dm024"
             android:orientation="horizontal">
             <LinearLayout
+                android:id="@+id/ll_new_express_red"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/dm005"

@@ -64,6 +64,27 @@
                     android:layout_weight="1"
                     android:orientation="horizontal">
                     <LinearLayout
+                        android:id="@+id/ll_home_toutiao"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="@dimen/dm090"
+                            android:layout_height="@dimen/dm090"
+                            android:layout_gravity="center"
+                            android:src="@drawable/home_toutiao"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/dm018"
+                            android:text="看头条"
+                            android:textColor="@color/colorText"
+                            android:textSize="@dimen/dm028"/>
+                    </LinearLayout>
+                    <LinearLayout
                         android:id="@+id/ll_home_zhibo"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -95,34 +116,13 @@
                             android:layout_width="@dimen/dm090"
                             android:layout_height="@dimen/dm090"
                             android:layout_gravity="center"
-                            android:src="@drawable/home_gkk"/>
+                            android:src="@drawable/home_dkk"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/dm018"
-                            android:text="公开课"
-                            android:textColor="@color/colorText"
-                            android:textSize="@dimen/dm028"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:id="@+id/ll_home_smk"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-                        <ImageView
-                            android:layout_width="@dimen/dm090"
-                            android:layout_height="@dimen/dm090"
-                            android:layout_gravity="center"
-                            android:src="@drawable/home_smk"/>
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/dm018"
-                            android:text="私密课"
+                            android:text="大咖课"
                             android:textColor="@color/colorText"
                             android:textSize="@dimen/dm028"/>
                     </LinearLayout>
@@ -154,7 +154,7 @@
                     android:layout_weight="1"
                     android:orientation="horizontal">
                     <LinearLayout
-                        android:id="@+id/ll_home_toutiao"
+                        android:id="@+id/ll_home_money"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
@@ -164,13 +164,13 @@
                             android:layout_width="@dimen/dm090"
                             android:layout_height="@dimen/dm090"
                             android:layout_gravity="center"
-                            android:src="@drawable/home_toutiao"/>
+                            android:src="@drawable/home_money"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_marginTop="@dimen/dm018"
-                            android:text="看头条"
+                            android:text="财来了"
                             android:textColor="@color/colorText"
                             android:textSize="@dimen/dm028"/>
                     </LinearLayout>
